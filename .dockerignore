@@ -1,0 +1,8 @@
+.DS_Store
+.git
+.idea
+Dockerfile
+LICENSE
+README.md
+docker-compose.yml
+venv

@@ -1,0 +1,4 @@
+*.apk
+*.jar
+*.keystore
+venv

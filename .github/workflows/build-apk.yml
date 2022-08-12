@@ -1,0 +1,41 @@
+name: Build Revanced APK
+# Enable Buildkit and let compose use it to speed up image building
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '*.py'
+      - requirements.txt
+      - entrypoint
+      - Dockerfile
+      - docker-compose.yml
+      - .env
+  workflow_call:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  build-apk:
+    name: APK Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+
+      - name: Build APK
+        run: |
+          docker-compose up
+
+      - name: Upload Build Artifact(youtube)
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "apks/*-output.apk"
+          token: ${{ secrets.GH_TOKEN }}
+          tag: Latest-${{ github.run_id }}-${{ github.run_attempt }}
