@@ -35,6 +35,7 @@ jobs:
 
       - name: Build APK
         run: |
+          cat .env
           docker-compose up
 
       - name: Upload Build Artifact(youtube)
