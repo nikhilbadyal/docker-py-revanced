@@ -90,7 +90,7 @@ class Downloader:
             logger.debug("Invalid app")
             sys.exit(1)
         parser = LexborHTMLParser(session.get(page).text)
-        suburl = parser.css_first("a.downloadLink").attributes["href"]
+        suburl = parser.css_first(".appRowVariantTag>.accent_color").attributes["href"]
         last2 = cls.find_second_last(suburl, "/")
         version_url = suburl[last2:]
         minus_occurance = version_url.rfind("-")
