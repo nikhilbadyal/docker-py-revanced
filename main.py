@@ -1,3 +1,4 @@
+import os
 import subprocess
 import sys
 from atexit import register
@@ -288,6 +289,9 @@ def main() -> None:
             arg_parser = ArgParser
             logger.debug("Trying to build %s" % app)
             app_patches, version = patches.get(app=app)
+            if os.getenv(f"{app}_VERSION".upper()):
+                print("here")
+                version = os.getenv(f"{app}_VERSION".upper())
             if app == "reddit" or app == "twitter":
                 downloader.apkmirror_reddit_twitter(app, version)
             else:

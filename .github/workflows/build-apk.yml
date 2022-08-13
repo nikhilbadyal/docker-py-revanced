@@ -29,6 +29,10 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v3
 
+      - name: Update Env for custom build
+        run: |
+          echo ${{ secrets.ENVS }} >> .env
+
       - name: Build APK
         run: |
           docker-compose up
