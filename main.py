@@ -212,7 +212,7 @@ class ArgParser:
         cls._PATCHES.extend(["-e", name])
 
     @classmethod
-    def run(cls, app: str) -> None:
+    def run(cls, app: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
         args = [
             "-jar",
@@ -226,6 +226,9 @@ class ArgParser:
             "-o",
             f"{app}-output.apk",
         ]
+        if is_experimental:
+            logger.debug("Using experimental features")
+            args.append("--experimental")
         if app == "reddit":
             args.append("-r")
             args.remove("-m")
@@ -295,12 +298,17 @@ def main() -> None:
 
     for app in apps:
         try:
+            is_experimental = False
             arg_parser = ArgParser
             logger.debug("Trying to build %s" % app)
             app_patches, version = patches.get(app=app)
             if os.getenv(f"{app}_VERSION".upper()):
-                version = os.getenv(f"{app}_VERSION".upper())
+                env_version = os.getenv(f"{app}_VERSION".upper())
                 logger.debug(f"Picked {app} version {version} from env.")
+                if env_version > version:
+                    is_experimental = True
+                version = env_version
+
             if app == "reddit" or app == "twitter":
                 downloader.apkmirror_reddit_twitter(app)
             else:
@@ -308,7 +316,7 @@ def main() -> None:
             get_patches()
             # downloader.report()
             logger.debug(f"Download completed {app}")
-            arg_parser.run(app=app)
+            arg_parser.run(app=app, is_experimental=is_experimental)
         except Exception as e:
             logger.exception(f"Failed to build {app} because of {e}")
             sys.exit(-1)
