@@ -64,24 +64,34 @@ class Downloader:
         logger.debug(f"Finished Extracting and download link from {page}")
 
     @classmethod
+    def get_download_page(cls, parser, main_page):
+        apm = parser.css(".apkm-badge")
+        sub_url = ""
+        for is_apm in apm:
+            if "APK" in is_apm.text():
+                parser = is_apm.parent
+                sub_url = parser.css_first(".accent_color").attributes["href"]
+                break
+        if sub_url == "":
+            logger.exception(f"Unable to find any apk on apkmirror on {main_page}")
+            sys.exit(-1)
+        download_url = apk_mirror + sub_url
+        return download_url
+
+    @classmethod
     def apkmirror(cls, app: str, version: str) -> None:
-        logger.debug(f"Trying to download {app} apk from apkmirror")
         version = "-".join(
             v.zfill(2 if i else 0) for i, v in enumerate(version.split("."))
         )
-        logger.debug(f"Version for {app} to download  from apkmirror is {version}")
-        page = f"""
-        {apk_mirror}/apk/google-inc/
-        {app}/{app}-{version}-release/{app}-{version}-android-apk-download/
-        """
-        cls.extract_download_link(page, app)
+        logger.debug(f"Trying to download {app} version {version} apk from apkmirror")
+        main_page = f"{apk_mirror}/apk/google-inc/{app}/{app}-{version}-release/"
+        parser = LexborHTMLParser(session.get(main_page).text)
+        download_page = cls.get_download_page(parser, main_page)
+        cls.extract_download_link(download_page, app)
+        logger.debug(f"Downloaded {app} apk from apkmirror")
 
     @classmethod
-    def find_second_last(cls, text: str, pattern: str) -> int:
-        return text.rfind(pattern, 0, text.rfind(pattern))
-
-    @classmethod
-    def apkmirror_reddit_twitter(cls, app: str, version: str) -> None:
+    def apkmirror_reddit_twitter(cls, app: str) -> None:
         logger.debug(f"Trying to download {app} apk from apkmirror in rt")
         if app == "reddit":
             page = f"{apk_mirror}/apk/redditinc/reddit/"
@@ -91,15 +101,13 @@ class Downloader:
             logger.debug("Invalid app")
             sys.exit(1)
         parser = LexborHTMLParser(session.get(page).text)
-        suburl = parser.css_first(".appRowVariantTag>.accent_color").attributes["href"]
-        last2 = cls.find_second_last(suburl, "/")
-        version_url = suburl[last2:]
-        minus_occurance = version_url.rfind("-")
-        version_url = version_url[:minus_occurance]
-        download_url = version_url + "-2-android-apk-download/"
-        url = apk_mirror + suburl + download_url[1:]
-        page = url
-        cls.extract_download_link(page, app)
+        main_page = parser.css_first(".appRowVariantTag>.accent_color").attributes[
+            "href"
+        ]
+        main_page = f"{apk_mirror}{main_page}"
+        parser = LexborHTMLParser(session.get(main_page).text)
+        download_page = cls.get_download_page(parser, main_page)
+        cls.extract_download_link(download_page, app)
         logger.debug(f"Downloaded {app} apk from apkmirror in rt")
 
     @classmethod
@@ -112,7 +120,8 @@ class Downloader:
         url = parser.css("li.Box-row > div:nth-child(1) > a:nth-child(2)")[:-2][
             -1
         ].attributes["href"]
-        cls._download("https://github.com" + url, Path(url).with_stem(name).name)
+        extension = url.rfind(".")
+        cls._download("https://github.com" + url, name + url[extension:])
 
     @classmethod
     def report(cls) -> None:
@@ -290,10 +299,9 @@ def main() -> None:
             logger.debug("Trying to build %s" % app)
             app_patches, version = patches.get(app=app)
             if os.getenv(f"{app}_VERSION".upper()):
-                print("here")
                 version = os.getenv(f"{app}_VERSION".upper())
             if app == "reddit" or app == "twitter":
-                downloader.apkmirror_reddit_twitter(app, version)
+                downloader.apkmirror_reddit_twitter(app)
             else:
                 downloader.apkmirror(app, version)
             get_patches()
