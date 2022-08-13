@@ -300,6 +300,7 @@ def main() -> None:
             app_patches, version = patches.get(app=app)
             if os.getenv(f"{app}_VERSION".upper()):
                 version = os.getenv(f"{app}_VERSION".upper())
+                logger.debug(f"Picked {app} version {version} from env.")
             if app == "reddit" or app == "twitter":
                 downloader.apkmirror_reddit_twitter(app)
             else:

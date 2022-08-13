@@ -31,11 +31,11 @@ jobs:
 
       - name: Update Env for custom build
         run: |
-          echo ${{ secrets.ENVS }} >> .env
+          echo "${{ secrets.ENVS }}" >> .env
 
       - name: Build APK
         run: |
-          cat .env
+          cat .env &&
           docker-compose up
 
       - name: Upload Build Artifact(youtube)
