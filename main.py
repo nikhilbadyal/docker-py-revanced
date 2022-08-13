@@ -301,7 +301,7 @@ def main() -> None:
             logger.debug(f"Download completed {app}")
             arg_parser.run(app=app)
         except Exception as e:
-            logger.debug(f"Failed to build {app} because of {e}")
+            logger.exception(f"Failed to build {app} because of {e}")
             sys.exit(-1)
 
 
