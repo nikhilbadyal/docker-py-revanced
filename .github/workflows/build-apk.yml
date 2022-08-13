@@ -33,9 +33,8 @@ jobs:
         run: |
           echo "${{ secrets.ENVS }}" >> .env
 
-      - name: Build APK
+      - name: Build Revanced APKs
         run: |
-          cat .env &&
           docker-compose up
 
       - name: Upload Build Artifact(youtube)
