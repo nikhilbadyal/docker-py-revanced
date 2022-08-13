@@ -37,7 +37,7 @@ jobs:
         run: |
           docker-compose up
 
-      - name: Upload Build Artifact(youtube)
+      - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.10.0
         with:
           artifacts: "apks/*-output.apk"
