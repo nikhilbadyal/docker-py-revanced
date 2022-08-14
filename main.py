@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 import sys
 from atexit import register
@@ -91,7 +92,7 @@ class Downloader:
         logger.debug(f"Downloaded {app} apk from apkmirror")
 
     @classmethod
-    def apkmirror_reddit_twitter(cls, app: str) -> None:
+    def apkmirror_reddit_twitter(cls, app: str) -> str:
         logger.debug(f"Trying to download {app} apk from apkmirror in rt")
         if app == "reddit":
             page = f"{apk_mirror}/apk/redditinc/reddit/"
@@ -104,11 +105,16 @@ class Downloader:
         main_page = parser.css_first(".appRowVariantTag>.accent_color").attributes[
             "href"
         ]
+        int_version = re.search(r"\d", main_page).start()
+        extra_release = main_page.rfind("release") - 1
+        version = main_page[int_version:extra_release]
+        version = version.replace("-", ".")
         main_page = f"{apk_mirror}{main_page}"
         parser = LexborHTMLParser(session.get(main_page).text)
         download_page = cls.get_download_page(parser, main_page)
         cls.extract_download_link(download_page, app)
         logger.debug(f"Downloaded {app} apk from apkmirror in rt")
+        return version
 
     @classmethod
     def repository(cls, name: str) -> None:
@@ -212,7 +218,7 @@ class ArgParser:
         cls._PATCHES.extend(["-e", name])
 
     @classmethod
-    def run(cls, app: str, is_experimental: bool = False) -> None:
+    def run(cls, app: str, version: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
         args = [
             "-jar",
@@ -224,7 +230,7 @@ class ArgParser:
             "-m",
             "integrations.apk",
             "-o",
-            f"{app}-output.apk",
+            f"Re{app}-{version}-output.apk",
         ]
         if is_experimental:
             logger.debug("Using experimental features")
@@ -310,13 +316,13 @@ def main() -> None:
                 version = env_version
 
             if app == "reddit" or app == "twitter":
-                downloader.apkmirror_reddit_twitter(app)
+                version = downloader.apkmirror_reddit_twitter(app)
             else:
                 downloader.apkmirror(app, version)
             get_patches()
             # downloader.report()
             logger.debug(f"Download completed {app}")
-            arg_parser.run(app=app, is_experimental=is_experimental)
+            arg_parser.run(app=app, version=version, is_experimental=is_experimental)
         except Exception as e:
             logger.exception(f"Failed to build {app} because of {e}")
             sys.exit(-1)
