@@ -16,4 +16,4 @@ jobs:
           update_release_body: true
           github_token: ${{ secrets.GH_TOKEN }}
           files: |
-            "apks/*-output.apk"
+            "*-output.apk"
