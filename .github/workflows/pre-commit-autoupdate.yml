@@ -26,10 +26,7 @@ jobs:
       - name: Install pre-commit
         run: pip install pre-commit
 
-      - name: Autoupdate template
-        run: pre-commit autoupdate
-
-      - name: Autoupdate generated projects
+      - name: Updated Hooks
         run: pre-commit autoupdate
 
       - name: Create Pull Request
