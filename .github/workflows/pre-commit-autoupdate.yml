@@ -37,7 +37,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           branch: update/pre-commit-autoupdate
-          title: Update pre-commit hooks
-          commit-message: updated pre-commit hooks
-          body: Update versions of tools in pre-commit configs to latest version
-          labels: pre-commit
+          title: ⬆️Update pre-commit hooks
+          commit-message: ⬆️updated pre-commit hooks
+          body: ✨Update versions of tools in pre-commit configs to latest version
+          labels: pre-commit✨
