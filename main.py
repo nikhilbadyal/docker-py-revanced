@@ -243,7 +243,7 @@ class ArgParser:
         if is_experimental:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        if app == "reddit":
+        if app in ("reddit", "tiktok"):
             args.append("-r")
             args.remove("-m")
             args.remove("integrations.apk")
