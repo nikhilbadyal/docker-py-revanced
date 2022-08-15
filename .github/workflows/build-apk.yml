@@ -37,9 +37,14 @@ jobs:
         run: |
           docker-compose up
 
+      - name: Get Date
+        id: get-date
+        run: |
+          echo ::set-output name=date::$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")
+
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.10.0
         with:
           artifacts: "apks/*-output.apk"
           token: ${{ secrets.GH_TOKEN }}
-          tag: Latest-${{ github.run_id }}-${{ github.run_attempt }}
+          tag: Build-${{ steps.get-date.outputs.date }}
