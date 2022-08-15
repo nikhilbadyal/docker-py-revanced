@@ -241,13 +241,13 @@ class ArgParser:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
         args = [
             "-jar",
-            "cli.jar",
+            "revanced-cli.jar",
             "-a",
             app + ".apk",
             "-b",
-            "patches.jar",
+            "revanced-patches.jar",
             "-m",
-            "integrations.apk",
+            "revanced-integrations.apk",
             "-o",
             f"Re{app}-{version}-output.apk",
         ]
@@ -257,7 +257,7 @@ class ArgParser:
         if app in ("reddit", "tiktok"):
             args.append("-r")
             args.remove("-m")
-            args.remove("integrations.apk")
+            args.remove("revanced-integrations.apk")
 
         args[1::2] = map(lambda i: temp_folder.joinpath(i), args[1::2])
 
@@ -305,9 +305,9 @@ def pre_requisite():
 def main() -> None:
     patches = pre_requisite()
     downloader = Downloader
-    downloader.repository("cli")
-    downloader.repository("integrations")
-    downloader.repository("patches")
+    downloader.repository("revanced-cli")
+    downloader.repository("revanced-integrations")
+    downloader.repository("revanced-patches")
     downloader.repository("VancedMicroG", "TeamVanced")
 
     def get_patches() -> None:
