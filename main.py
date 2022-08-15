@@ -18,8 +18,13 @@ from tqdm import tqdm
 temp_folder = Path("apks")
 session = Session()
 session.headers["User-Agent"] = "anything"
-apps = ["youtube", "youtube-music", "twitter", "reddit"]
+apps = ["youtube", "youtube-music", "twitter", "reddit", "tiktok"]
 apk_mirror = "https://www.apkmirror.com"
+apk_mirror_urls = {
+    "reddit": f"{apk_mirror}/apk/redditinc/reddit/",
+    "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
+    "tiktok": f"{apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
+}
 
 
 class Downloader:
@@ -94,11 +99,8 @@ class Downloader:
     @classmethod
     def apkmirror_reddit_twitter(cls, app: str) -> str:
         logger.debug(f"Trying to download {app} apk from apkmirror in rt")
-        if app == "reddit":
-            page = f"{apk_mirror}/apk/redditinc/reddit/"
-        elif app == "twitter":
-            page = f"{apk_mirror}/apk/twitter-inc/twitter/"
-        else:
+        page = apk_mirror_urls.get(app)
+        if not page:
             logger.debug("Invalid app")
             sys.exit(1)
         parser = LexborHTMLParser(session.get(page).text)
@@ -164,7 +166,7 @@ class Patches:
 
             available_patches.extend(app_patches[2:])
 
-        youtube, music, twitter, reddit = [], [], [], []
+        youtube, music, twitter, reddit, tiktok = [], [], [], [], []
         for n, d, a, v in available_patches:
             patch = {"name": n, "description": d, "app": a, "version": v}
             if "twitter" in a:
@@ -175,14 +177,18 @@ class Patches:
                 music.append(patch)
             elif "youtube" in a:
                 youtube.append(patch)
+            elif "trill" in a:
+                tiktok.append(patch)
         self._yt = youtube
         self._ytm = music
         self._twitter = twitter
         self._reddit = reddit
+        self._tiktok = tiktok
         logger.debug(f"Total patches in youtube are {len(youtube)}")
         logger.debug(f"Total patches in youtube-music are {len(music)}")
         logger.debug(f"Total patches in twitter are {len(twitter)}")
         logger.debug(f"Total patches in reddit are {len(reddit)}")
+        logger.debug(f"Total patches in tiktok are {len(tiktok)}")
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
@@ -194,6 +200,8 @@ class Patches:
             patches = self._ytm
         elif "youtube" == app:
             patches = self._yt
+        elif "tiktok" == app:
+            patches = self._tiktok
         else:
             logger.debug("Invalid app name")
             sys.exit(-1)
@@ -235,7 +243,7 @@ class ArgParser:
         if is_experimental:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        if app == "reddit":
+        if app in ("reddit", "tiktok"):
             args.append("-r")
             args.remove("-m")
             args.remove("integrations.apk")
@@ -315,10 +323,10 @@ def main() -> None:
                     is_experimental = True
                 version = env_version
 
-            if app == "reddit" or app == "twitter":
-                version = downloader.apkmirror_reddit_twitter(app)
-            else:
+            if "youtube" in app:
                 downloader.apkmirror(app, version)
+            else:
+                version = downloader.apkmirror_reddit_twitter(app)
             get_patches()
             # downloader.report()
             logger.debug(f"Download completed {app}")
