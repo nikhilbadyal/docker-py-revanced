@@ -39,14 +39,15 @@ class Downloader:
         start = perf_counter()
         resp = session.get(url, stream=True)
         total = int(resp.headers.get("content-length", 0))
-        with temp_folder.joinpath(file_name).open("wb") as dl_file, tqdm(
+        bar = tqdm(
             desc=file_name,
             total=total,
             unit="iB",
             unit_scale=True,
             unit_divisor=1024,
             colour="green",
-        ) as bar:
+        )
+        with temp_folder.joinpath(file_name).open("wb") as dl_file, bar:
             for chunk in resp.iter_content(cls._CHUNK_SIZE):
                 size = dl_file.write(chunk)
                 bar.update(size)
@@ -297,7 +298,6 @@ def main() -> None:
     downloader.repository("cli")
     downloader.repository("integrations")
     downloader.repository("patches")
-    # downloader.report()
 
     def get_patches() -> None:
         logger.debug(f"Excluding patches for app {app}")
