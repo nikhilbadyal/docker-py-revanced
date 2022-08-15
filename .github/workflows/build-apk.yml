@@ -8,8 +8,8 @@ on:
     branches:
       - main
       - new-apk*
-    paths:
-      - '!*.md'
+#    paths:
+#      - '!*.md'
 #      - requirements.txt
 #      - entrypoint
 #      - Dockerfile
