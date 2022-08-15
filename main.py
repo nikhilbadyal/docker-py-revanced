@@ -20,6 +20,7 @@ session = Session()
 session.headers["User-Agent"] = "anything"
 apps = ["youtube", "youtube-music", "twitter", "reddit", "tiktok", "warnwetter"]
 apk_mirror = "https://www.apkmirror.com"
+github = "https://www.github.com"
 apk_mirror_urls = {
     "reddit": f"{apk_mirror}/apk/redditinc/reddit/",
     "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
@@ -121,17 +122,19 @@ class Downloader:
         return version
 
     @classmethod
-    def repository(cls, name: str) -> None:
+    def repository(
+        cls,
+        name: str,
+        owner: str = "revanced",
+    ) -> None:
         logger.debug(f"Trying to download {name} from github")
-        resp = session.get(
-            f"https://github.com/revanced/revanced-{name}/releases/latest"
-        )
+        resp = session.get(f"{github}/{owner}/{name}/releases/latest")
         parser = LexborHTMLParser(resp.text)
         url = parser.css("li.Box-row > div:nth-child(1) > a:nth-child(2)")[:-2][
             -1
         ].attributes["href"]
         extension = url.rfind(".")
-        cls._download("https://github.com" + url, name + url[extension:])
+        cls._download(github + url, name + url[extension:])
 
     @classmethod
     def report(cls) -> None:
@@ -305,6 +308,7 @@ def main() -> None:
     downloader.repository("cli")
     downloader.repository("integrations")
     downloader.repository("patches")
+    downloader.repository("VancedMicroG", "TeamVanced")
 
     def get_patches() -> None:
         logger.debug(f"Excluding patches for app {app}")
