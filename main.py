@@ -18,12 +18,13 @@ from tqdm import tqdm
 temp_folder = Path("apks")
 session = Session()
 session.headers["User-Agent"] = "anything"
-apps = ["youtube", "youtube-music", "twitter", "reddit", "tiktok"]
+apps = ["youtube", "youtube-music", "twitter", "reddit", "tiktok", "warnwetter"]
 apk_mirror = "https://www.apkmirror.com"
 apk_mirror_urls = {
     "reddit": f"{apk_mirror}/apk/redditinc/reddit/",
     "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
     "tiktok": f"{apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
+    "warnwetter": f"{apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
 }
 
 
@@ -167,7 +168,7 @@ class Patches:
 
             available_patches.extend(app_patches[2:])
 
-        youtube, music, twitter, reddit, tiktok = [], [], [], [], []
+        youtube, music, twitter, reddit, tiktok, warnwetter = [], [], [], [], [], []
         for n, d, a, v in available_patches:
             patch = {"name": n, "description": d, "app": a, "version": v}
             if "twitter" in a:
@@ -180,16 +181,20 @@ class Patches:
                 youtube.append(patch)
             elif "trill" in a:
                 tiktok.append(patch)
+            elif "warnwetter" in a:
+                warnwetter.append(patch)
         self._yt = youtube
         self._ytm = music
         self._twitter = twitter
         self._reddit = reddit
         self._tiktok = tiktok
+        self._warnwetter = warnwetter
         logger.debug(f"Total patches in youtube are {len(youtube)}")
         logger.debug(f"Total patches in youtube-music are {len(music)}")
         logger.debug(f"Total patches in twitter are {len(twitter)}")
         logger.debug(f"Total patches in reddit are {len(reddit)}")
         logger.debug(f"Total patches in tiktok are {len(tiktok)}")
+        logger.debug(f"Total patches in warnwetter are {len(warnwetter)}")
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
@@ -203,6 +208,8 @@ class Patches:
             patches = self._yt
         elif "tiktok" == app:
             patches = self._tiktok
+        elif "warnwetter" == app:
+            patches = self._warnwetter
         else:
             logger.debug("Invalid app name")
             sys.exit(-1)
