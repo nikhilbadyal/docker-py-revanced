@@ -2,6 +2,7 @@ name: VirusTotal Scan
 
 on:
   release:
+    types: [published]
   workflow_dispatch: # to trigger manually
 
 jobs:
