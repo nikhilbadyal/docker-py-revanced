@@ -46,7 +46,7 @@ jobs:
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.10.0
         with:
-          artifacts: "apks/*-output.apk"
+          artifacts: "apks/*-output.apk,apks/VancedMicroG.apk"
           token: ${{ secrets.GH_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}
           artifactErrorsFailBuild: true
