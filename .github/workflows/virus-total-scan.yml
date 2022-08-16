@@ -1,9 +1,10 @@
 name: VirusTotal Scan
 
 on:
-  push:
-    tags:
-      - 'Build*'
+  workflow_run:
+    workflows: [ "Build Revanced APK" ]
+    types:
+      - completed
   workflow_dispatch: # to trigger manually
 
 jobs:

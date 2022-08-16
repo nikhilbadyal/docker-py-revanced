@@ -51,3 +51,6 @@ jobs:
           tag: Build-${{ steps.get-date.outputs.date }}
           artifactErrorsFailBuild: true
           generateReleaseNotes: true
+      - name: Sleep for 30 seconds
+        run: |
+          sleep 10
