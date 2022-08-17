@@ -25,6 +25,7 @@ jobs:
   build-apk:
     name: APK Build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
       - name: Check out Git repository
