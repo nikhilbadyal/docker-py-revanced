@@ -7,7 +7,7 @@ from queue import PriorityQueue
 from shutil import rmtree
 from subprocess import PIPE, Popen
 from time import perf_counter
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 from environs import Env
 from loguru import logger
@@ -21,7 +21,7 @@ session = Session()
 session.headers["User-Agent"] = "anything"
 supported_apps = [
     "youtube",
-    "youtube-music",
+    "youtube_music",
     "twitter",
     "reddit",
     "tiktok",
@@ -36,6 +36,15 @@ apk_mirror_urls = {
     "tiktok": f"{apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
     "warnwetter": f"{apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
     "youtube": f"{apk_mirror}/apk/google-inc/youtube/",
+    "youtube_music": f"{apk_mirror}/apk/google-inc/youtube-music/",
+}
+apk_mirror_version_urls = {
+    "reddit": f"{apk_mirror_urls.get('reddit')}reddit",
+    "twitter": f"{apk_mirror_urls.get('twitter')}twitter",
+    "tiktok": f"{apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
+    "warnwetter": f"{apk_mirror_urls.get('warnwetter')}warnwetter",
+    "youtube": f"{apk_mirror_urls.get('youtube')}youtube",
+    "youtube_music": f"{apk_mirror_urls.get('youtube_music')}youtube-music",
 }
 
 
@@ -68,7 +77,7 @@ class Downloader:
 
     @classmethod
     def extract_download_link(cls, page: str, app: str):
-        logger.debug(f"Extracting download link from {page}")
+        logger.debug(f"Extracting download link from\n{page}")
         parser = LexborHTMLParser(session.get(page).text)
 
         resp = session.get(
@@ -80,7 +89,7 @@ class Downloader:
             "p.notes:nth-child(3) > span:nth-child(1) > a:nth-child(1)"
         ).attributes["href"]
         cls._download(apk_mirror + href, f"{app}.apk")
-        logger.debug(f"Finished Extracting and download link from {page}")
+        logger.debug("Finished Extracting link and downloading")
 
     @classmethod
     def get_download_page(cls, parser, main_page):
@@ -101,11 +110,9 @@ class Downloader:
 
     @classmethod
     def apkmirror_specific_version(cls, app: str, version: str) -> None:
-        version = "-".join(
-            v.zfill(2 if i else 0) for i, v in enumerate(version.split("."))
-        )
-        logger.debug(f"Trying to download {app},version {version}")
-        main_page = f"{apk_mirror}/apk/google-inc/{app}/{app}-{version}-release/"
+        logger.debug(f"Trying to download {app},specific version {version}")
+        version = version.replace(".", "-")
+        main_page = f"{apk_mirror_version_urls.get(app)}-{version}-release/"
         parser = LexborHTMLParser(session.get(main_page).text)
         download_page = cls.get_download_page(parser, main_page)
         cls.extract_download_link(download_page, app)
@@ -217,7 +224,7 @@ class Patches:
             patches = self._twitter
         elif "reddit" == app:
             patches = self._reddit
-        elif "youtube-music" == app:
+        elif "youtube_music" == app:
             patches = self._ytm
         elif "youtube" == app:
             patches = self._yt
@@ -229,11 +236,11 @@ class Patches:
             logger.debug("Invalid app name")
             sys.exit(-1)
         version = ""
-        if app in ("youtube", "youtube-music"):
+        if app in ("youtube", "youtube_music"):
             version = next(i["version"] for i in patches if i["version"] != "all")
-            logger.debug("Version for app is  %s" % version)
+            logger.debug(f"Recommended Version for patching {app} is {version}")
         else:
-            logger.debug("Empty version because it's not youtube or youtube-music")
+            logger.debug("No recommended version.")
         return patches, version
 
 
@@ -333,30 +340,32 @@ def main() -> None:
             ) if i in selected_patches else arg_parser.exclude(v["name"])
         logger.debug(f"Excluded patches for app {app}")
 
+    def get_patches_version() -> Any:
+        experiment = False
+        total_patches, recommended_version = patches.get(app=app)
+        env_version = env.str(f"{app}_VERSION".upper(), None)
+        if env_version:
+            logger.debug(f"Picked {app} version {env_version} from env.")
+            if env_version == "latest" or env_version > recommended_version:
+                experiment = True
+            recommended_version = env_version
+        return total_patches, recommended_version, experiment
+
     for app in apps:
         try:
             is_experimental = False
             arg_parser = ArgParser
             logger.debug("Trying to build %s" % app)
-            app_patches, version = patches.get(app=app)
-            env_version = env.str(f"{app}_VERSION".upper(), None)
-            if env_version:
-                logger.debug(f"Picked {app} version {env_version} from env.")
-                if env_version == "latest" or env_version > version:
-                    is_experimental = True
-                version = env_version
-
-            if "youtube" in app and version != "latest":
+            app_patches, version, is_experimental = get_patches_version()
+            if version and version != "latest":
                 downloader.apkmirror_specific_version(app, version)
             else:
                 version = downloader.apkmirror_latest_version(app)
             get_patches()
-            # downloader.report()
             logger.debug(f"Download completed {app}")
             arg_parser.run(app=app, version=version, is_experimental=is_experimental)
         except Exception as e:
             logger.exception(f"Failed to build {app} because of {e}")
-            sys.exit(-1)
 
 
 if __name__ == "__main__":
