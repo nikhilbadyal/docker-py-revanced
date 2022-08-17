@@ -1,4 +1,3 @@
-import os
 import re
 import subprocess
 import sys
@@ -36,6 +35,7 @@ apk_mirror_urls = {
     "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
     "tiktok": f"{apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
     "warnwetter": f"{apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
+    "youtube": f"{apk_mirror}/apk/google-inc/youtube/",
 }
 
 
@@ -92,26 +92,28 @@ class Downloader:
                 sub_url = parser.css_first(".accent_color").attributes["href"]
                 break
         if sub_url == "":
-            logger.exception(f"Unable to find any apk on apkmirror on {main_page}")
+            logger.exception(
+                f"Unable to find any apk on apkmirror_specific_version on {main_page}"
+            )
             sys.exit(-1)
         download_url = apk_mirror + sub_url
         return download_url
 
     @classmethod
-    def apkmirror(cls, app: str, version: str) -> None:
+    def apkmirror_specific_version(cls, app: str, version: str) -> None:
         version = "-".join(
             v.zfill(2 if i else 0) for i, v in enumerate(version.split("."))
         )
-        logger.debug(f"Trying to download {app} version {version} apk from apkmirror")
+        logger.debug(f"Trying to download {app},version {version}")
         main_page = f"{apk_mirror}/apk/google-inc/{app}/{app}-{version}-release/"
         parser = LexborHTMLParser(session.get(main_page).text)
         download_page = cls.get_download_page(parser, main_page)
         cls.extract_download_link(download_page, app)
-        logger.debug(f"Downloaded {app} apk from apkmirror")
+        logger.debug(f"Downloaded {app} apk from apkmirror_specific_version")
 
     @classmethod
-    def apkmirror_reddit_twitter(cls, app: str) -> str:
-        logger.debug(f"Trying to download {app} apk from apkmirror in rt")
+    def apkmirror_latest_version(cls, app: str) -> str:
+        logger.debug(f"Trying to download {app}'s latest version from apkmirror")
         page = apk_mirror_urls.get(app)
         if not page:
             logger.debug("Invalid app")
@@ -128,7 +130,7 @@ class Downloader:
         parser = LexborHTMLParser(session.get(main_page).text)
         download_page = cls.get_download_page(parser, main_page)
         cls.extract_download_link(download_page, app)
-        logger.debug(f"Downloaded {app} apk from apkmirror in rt")
+        logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
         return version
 
     @classmethod
@@ -337,17 +339,17 @@ def main() -> None:
             arg_parser = ArgParser
             logger.debug("Trying to build %s" % app)
             app_patches, version = patches.get(app=app)
-            if os.getenv(f"{app}_VERSION".upper()):
-                env_version = os.getenv(f"{app}_VERSION".upper())
-                logger.debug(f"Picked {app} version {version} from env.")
-                if env_version > version:
+            env_version = env.str(f"{app}_VERSION".upper(), None)
+            if env_version:
+                logger.debug(f"Picked {app} version {env_version} from env.")
+                if env_version == "latest" or env_version > version:
                     is_experimental = True
                 version = env_version
 
-            if "youtube" in app:
-                downloader.apkmirror(app, version)
+            if "youtube" in app and version != "latest":
+                downloader.apkmirror_specific_version(app, version)
             else:
-                version = downloader.apkmirror_reddit_twitter(app)
+                version = downloader.apkmirror_latest_version(app)
             get_patches()
             # downloader.report()
             logger.debug(f"Download completed {app}")
