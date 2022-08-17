@@ -10,15 +10,25 @@ from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import Dict, List, Tuple
 
+from environs import Env
 from loguru import logger
 from requests import Session
 from selectolax.lexbor import LexborHTMLParser
 from tqdm import tqdm
 
+env = Env()
 temp_folder = Path("apks")
 session = Session()
 session.headers["User-Agent"] = "anything"
-apps = ["youtube", "youtube-music", "twitter", "reddit", "tiktok", "warnwetter"]
+supported_apps = [
+    "youtube",
+    "youtube-music",
+    "twitter",
+    "reddit",
+    "tiktok",
+    "warnwetter",
+]
+apps = env.list("PATCH_APPS", supported_apps)
 apk_mirror = "https://www.apkmirror.com"
 github = "https://www.github.com"
 apk_mirror_urls = {
