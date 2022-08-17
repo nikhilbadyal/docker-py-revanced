@@ -4,18 +4,6 @@ env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 on:
-  push:
-    branches:
-      - main
-      - new-apk*
-#    paths:
-#      - '!*.md'
-#      - requirements.txt
-#      - entrypoint
-#      - Dockerfile
-#      - '*.yml'
-#      - .env
-  workflow_call:
   workflow_dispatch:
 
 concurrency:
