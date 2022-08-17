@@ -362,7 +362,7 @@ def main() -> None:
             else:
                 version = downloader.apkmirror_latest_version(app)
             get_patches()
-            logger.debug(f"Download completed {app}")
+            logger.debug(f"Downloaded {app}")
             arg_parser.run(app=app, version=version, is_experimental=is_experimental)
         except Exception as e:
             logger.exception(f"Failed to build {app} because of {e}")
