@@ -54,5 +54,10 @@ By default script build the version as recommended by revanced team.
     ```dotenv
     PATCH_APPS=youtube,twitter,reddit
     ```
+4. If you don't want to use default keystore. You can provide your own by placing it 
+   inside `apks` folder. And adding the name of file in `environment`
+   ```dotenv
+    KEYSTORE_FILE_NAME=revanced.keystore
+    ```
 ### Note
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.

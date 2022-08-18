@@ -28,6 +28,7 @@ supported_apps = [
     "warnwetter",
 ]
 apps = env.list("PATCH_APPS", supported_apps)
+keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
 apk_mirror = "https://www.apkmirror.com"
 github = "https://www.github.com"
 apk_mirror_urls = {
@@ -269,6 +270,8 @@ class ArgParser:
             "revanced-integrations.apk",
             "-o",
             f"Re{app}-{version}-output.apk",
+            "--keystore",
+            keystore_name,
         ]
         if is_experimental:
             logger.debug("Using experimental features")
