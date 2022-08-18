@@ -28,6 +28,24 @@ You can use any of the following methods to build
       ```python
        python main.py
       ```
+- In GitHub  
+   1. Fork the project. Add following secrets to the repo
+      1. _GH_TOKEN_ (**required**) - Github token so that it can upload to github after building.
+      2. _VT_API_KEY_ (required , only if you want Virus total scan) - So that it can send 
+        apks for VirusTotal Scan.
+      3. _ENVS_ (optional) - If you want cook specific apps/versions
+          ```dotenv
+          PATCH_APPS=youtube,twitter,reddit
+          YOUTUBE_VERSION=latest
+          YOUTUBE_MUSIC_VERSION=latest
+          TWITTER_VERSION=latest
+          REDDIT_VERSION=latest
+          TIKTOK_VERSION=latest
+          WARNWETTER_VERSION=latest
+         ```
+         Should look something like this in GitHub
+         ![img.png](img.png)
+   2. Go to actions tab. Select `Build Revanced APK`.Click on `Run Workflow`.
 ## Note
 By default script build the version as recommended by revanced team.
 1. If you want to a specific version . Add the version in `environment` like
