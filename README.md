@@ -30,7 +30,7 @@ You can use any of the following methods to build
       ```
 ## Note
 By default script build the version as recommended by revanced team.
-1. If you want to a specific version . Add the version in .env file like
+1. If you want to a specific version . Add the version in `environment` like
     ```dotenv
     YOUTUBE_VERSION=17.31.36
     YOUTUBE_MUSIC_VERSION=X.X.X
@@ -40,7 +40,7 @@ By default script build the version as recommended by revanced team.
     WARNWETTER_VERSION=X.X.X
     ```
 2. If you want to a `latest` version, whatever latest is available(including beta) .
-   Add the version in .env file like
+   Add `latest` in `environment` file like
     ```dotenv
     YOUTUBE_VERSION=latest
     YOUTUBE_MUSIC_VERSION=latest
@@ -50,7 +50,8 @@ By default script build the version as recommended by revanced team.
     WARNWETTER_VERSION=latest
     ```
 3. By default it will build all build app supported by revanced team. If you don't
-   want to waste time and build only few apps. Add following environment variable.
+   want to waste time and build only few apps. Add following(the apps you want to 
+   build) `environment`.
     ```dotenv
     PATCH_APPS=youtube,twitter,reddit
     ```
@@ -59,5 +60,5 @@ By default script build the version as recommended by revanced team.
    ```dotenv
     KEYSTORE_FILE_NAME=revanced.keystore
     ```
-### Note
+   
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
