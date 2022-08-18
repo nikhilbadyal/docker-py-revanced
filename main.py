@@ -204,7 +204,7 @@ class Patches:
                 youtube.append(patch)
             elif "trill" in a:
                 tiktok.append(patch)
-            elif "warnwetter" in a:
+            elif "warnapp" in a:
                 warnwetter.append(patch)
         self._yt = youtube
         self._ytm = music
