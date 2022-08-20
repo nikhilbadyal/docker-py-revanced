@@ -1,0 +1,21 @@
+name: Telegram Upload
+
+on:
+  workflow_run:
+    workflows: [ "Build Revanced APK" ]
+    types:
+      - completed
+  workflow_dispatch: # to trigger manually
+
+jobs:
+  virustotal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload to Telegram
+        uses: nikhilbadyal/ghaction-telegram@main
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          telegram_api_id: ${{ secrets.TELEGRAM_API_ID }}
+          telegram_api_hash: ${{ secrets.TELEGRAM_API_HASH }}
+          telegram_bot_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          telegram_chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
