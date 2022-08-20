@@ -8,7 +8,7 @@ on:
   workflow_dispatch: # to trigger manually
 
 jobs:
-  virustotal:
+  tg-upload:
     runs-on: ubuntu-latest
     steps:
       - name: Upload to Telegram
