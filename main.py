@@ -110,7 +110,7 @@ class Downloader:
         return download_url
 
     @classmethod
-    def apkmirror_specific_version(cls, app: str, version: str) -> None:
+    def apkmirror_specific_version(cls, app: str, version: str) -> str:
         logger.debug(f"Trying to download {app},specific version {version}")
         version = version.replace(".", "-")
         main_page = f"{apk_mirror_version_urls.get(app)}-{version}-release/"
@@ -118,6 +118,7 @@ class Downloader:
         download_page = cls.get_download_page(parser, main_page)
         cls.extract_download_link(download_page, app)
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version")
+        return version
 
     @classmethod
     def apkmirror_latest_version(cls, app: str) -> str:
@@ -337,6 +338,15 @@ def download_revanced(downloader: Type[Downloader]) -> None:
     downloader.repository("VancedMicroG", "TeamVanced")
 
 
+def download_from_apkmirror(
+    version: str, app: str, downloader: Type[Downloader]
+) -> str:
+    if version and version != "latest":
+        return downloader.apkmirror_specific_version(app, version)
+    else:
+        return downloader.apkmirror_latest_version(app)
+
+
 def main() -> None:
     patches = pre_requisite()
     downloader = Downloader
@@ -372,10 +382,7 @@ def main() -> None:
             arg_parser = ArgParser
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = get_patches_version()
-            if version and version != "latest":
-                downloader.apkmirror_specific_version(app, version)
-            else:
-                version = downloader.apkmirror_latest_version(app)
+            download_from_apkmirror(version, app, downloader)
             get_patches()
             logger.debug(f"Downloaded {app}")
             arg_parser.run(app=app, version=version, is_experimental=is_experimental)
