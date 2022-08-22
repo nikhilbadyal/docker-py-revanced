@@ -264,6 +264,10 @@ class ArgParser:
         return cls._EXCLUDED
 
     @classmethod
+    def reset_excluded_patches(cls) -> None:
+        cls._EXCLUDED = []
+
+    @classmethod
     def run(cls, app: str, version: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
         args = [
@@ -364,6 +368,7 @@ def main() -> None:
             logger.debug(f"Excluded patches {excluded} for {app}")
         else:
             logger.debug(f"No excluded patches for {app}")
+        arg_parser.reset_excluded_patches()
 
     def get_patches_version() -> Any:
         experiment = False
