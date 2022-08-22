@@ -49,7 +49,7 @@ apk_mirror_version_urls = {
 }
 
 
-class Downloader:
+class Downloader(object):
     _CHUNK_SIZE = 2**21 * 5
     _QUEUE = PriorityQueue()
     _QUEUE_LENGTH = 0
@@ -172,7 +172,7 @@ class Downloader:
                 break
 
 
-class Patches:
+class Patches(object):
     def __init__(self) -> None:
         logger.debug("fetching all patches")
         resp = session.get(
@@ -246,29 +246,22 @@ class Patches:
         return patches, version
 
 
-class ArgParser:
-    _PATCHES = []
-    _EXCLUDED = []
+class ArgParser(object):
+    def __init__(self):
+        self._PATCHES = []
+        self._EXCLUDED = []
 
-    @classmethod
-    def include(cls, name: str) -> None:
-        cls._PATCHES.extend(["-i", name])
+    def include(self, name: str) -> None:
+        self._PATCHES.extend(["-i", name])
 
-    @classmethod
-    def exclude(cls, name: str) -> None:
-        cls._PATCHES.extend(["-e", name])
-        cls._EXCLUDED.append(name)
+    def exclude(self, name: str) -> None:
+        self._PATCHES.extend(["-e", name])
+        self._EXCLUDED.append(name)
 
-    @classmethod
-    def get_excluded_patches(cls) -> List[Any]:
-        return cls._EXCLUDED
+    def get_excluded_patches(self) -> List[Any]:
+        return self._EXCLUDED
 
-    @classmethod
-    def reset_excluded_patches(cls) -> None:
-        cls._EXCLUDED = []
-
-    @classmethod
-    def run(cls, app: str, version: str, is_experimental: bool = False) -> None:
+    def run(self, app: str, version: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
         args = [
             "-jar",
@@ -294,8 +287,8 @@ class ArgParser:
         if app in ("reddit", "tiktok"):
             args.append("-r")
 
-        if cls._PATCHES:
-            args.extend(cls._PATCHES)
+        if self._PATCHES:
+            args.extend(self._PATCHES)
 
         start = perf_counter()
         process = Popen(["java", *args], stdout=PIPE)
@@ -368,7 +361,6 @@ def main() -> None:
             logger.debug(f"Excluded patches {excluded} for {app}")
         else:
             logger.debug(f"No excluded patches for {app}")
-        arg_parser.reset_excluded_patches()
 
     def get_patches_version() -> Any:
         experiment = False
@@ -384,7 +376,7 @@ def main() -> None:
     for app in apps:
         try:
             is_experimental = False
-            arg_parser = ArgParser
+            arg_parser = ArgParser()
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = get_patches_version()
             download_from_apkmirror(version, app, downloader)
