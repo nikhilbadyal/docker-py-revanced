@@ -7,7 +7,7 @@ from queue import PriorityQueue
 from shutil import rmtree
 from subprocess import PIPE, Popen
 from time import perf_counter
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Type
 
 from environs import Env
 from loguru import logger
@@ -247,6 +247,7 @@ class Patches:
 
 class ArgParser:
     _PATCHES = []
+    _EXCLUDED = []
 
     @classmethod
     def include(cls, name: str) -> None:
@@ -255,6 +256,11 @@ class ArgParser:
     @classmethod
     def exclude(cls, name: str) -> None:
         cls._PATCHES.extend(["-e", name])
+        cls._EXCLUDED.append(name)
+
+    @classmethod
+    def get_excluded_patches(cls) -> List[Any]:
+        return cls._EXCLUDED
 
     @classmethod
     def run(cls, app: str, version: str, is_experimental: bool = False) -> None:
@@ -324,24 +330,30 @@ def pre_requisite():
     return patches
 
 
-def main() -> None:
-    patches = pre_requisite()
-    downloader = Downloader
+def download_revanced(downloader: Type[Downloader]) -> None:
     downloader.repository("revanced-cli")
     downloader.repository("revanced-integrations")
     downloader.repository("revanced-patches")
     downloader.repository("VancedMicroG", "TeamVanced")
 
+
+def main() -> None:
+    patches = pre_requisite()
+    downloader = Downloader
+    download_revanced(downloader)
+
     def get_patches() -> None:
         logger.debug(f"Excluding patches for app {app}")
-        selected_patches = list(range(0, len(app_patches)))
-        if app == "youtube":
-            selected_patches.remove(9)
-        for i, v in enumerate(app_patches):
-            arg_parser.include(
-                v["name"]
-            ) if i in selected_patches else arg_parser.exclude(v["name"])
-        logger.debug(f"Excluded patches for app {app}")
+        excluded_patches = env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
+        for patch in app_patches:
+            arg_parser.include(patch["name"]) if patch[
+                "name"
+            ] not in excluded_patches else arg_parser.exclude(patch["name"])
+        excluded = arg_parser.get_excluded_patches()
+        if excluded:
+            logger.debug(f"Excluded patches {excluded} for {app}")
+        else:
+            logger.debug(f"No excluded patches for {app}")
 
     def get_patches_version() -> Any:
         experiment = False

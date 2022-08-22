@@ -28,10 +28,10 @@ You can use any of the following methods to build
       ```python
        python main.py
       ```
-- In GitHub  
+- In GitHub
    1. Fork the project. Add following secrets to the repo
       1. _GH_TOKEN_ (**required**) - Github token so that it can upload to github after building.
-      2. _VT_API_KEY_ (required , only if you want Virus total scan) - So that it can send 
+      2. _VT_API_KEY_ (required , only if you want Virus total scan) - So that it can send
         apks for VirusTotal Scan.
       3. _ENVS_ (optional) - If you want cook specific apps/versions
           ```dotenv
@@ -67,16 +67,21 @@ By default script build the version as recommended by revanced team.
     TIKTOK_VERSION=latest
     WARNWETTER_VERSION=latest
     ```
-3. By default it will build all build app supported by revanced team. If you don't
-   want to waste time and build only few apps. Add following(the apps you want to 
+3. By default, it will build all build app supported by revanced team. If you don't
+   want to waste time and build only few apps. Add following(the apps you want to
    build) `environment`.
     ```dotenv
     PATCH_APPS=youtube,twitter,reddit
     ```
-4. If you don't want to use default keystore. You can provide your own by placing it 
+4. If you don't want to use default keystore. You can provide your own by placing it
    inside `apks` folder. And adding the name of file in `environment`
    ```dotenv
     KEYSTORE_FILE_NAME=revanced.keystore
     ```
-   
+5. If you want to exclude any patch. Set comma seperated environment variable like
+   ```dotenv
+    EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
+    EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
+    ```
+
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
