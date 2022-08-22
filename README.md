@@ -1,6 +1,6 @@
-# Docker Py ReVanced
+# Docker-Py-ReVanced
 
-This little utility will help you in building all revanced apps.
+This little utility will help you in building all Revanced apps.
 
 ## Build
 
@@ -77,7 +77,7 @@ You can use any of the following methods to build
 
 ## Note
 
-By default, script build the version as recommended by revanced team.
+By default, script build the version as recommended by Revanced team.
 
 1. If you want to a specific version . Add the version in `environment` like
    ```dotenv
@@ -98,7 +98,7 @@ By default, script build the version as recommended by revanced team.
    TIKTOK_VERSION=latest
    WARNWETTER_VERSION=latest
    ```
-3. By default, it will build all build app supported by revanced team. If you don't
+3. By default, it will build all build app supported by Revanced team. If you don't
    want to waste time and build only few apps. Add following(the apps you want to
    build) `environment`.
    ```dotenv
@@ -109,7 +109,7 @@ By default, script build the version as recommended by revanced team.
    ```dotenv
     KEYSTORE_FILE_NAME=revanced.keystore
    ```
-5. If you want to exclude any patch. Set comma seperated environment variable like
+5. If you want to exclude any patch. Set comma separated environment variable like
    ```dotenv
     EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
