@@ -274,7 +274,7 @@ class ArgParser(object):
             "-m",
             "revanced-integrations.apk",
             "-o",
-            f"Re{app}-{version}-output.apk",
+            f"Re-{app}-{version}-output.apk",
             "--keystore",
             keystore_name,
         ]
@@ -379,15 +379,16 @@ def main() -> None:
             recommended_version = env_version
         return total_patches, recommended_version, experiment
 
+    logger.info(f"Will Patch only {apps}")
     for app in apps:
         try:
             is_experimental = False
             arg_parser = ArgParser()
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = get_patches_version()
-            download_from_apkmirror(version, app, downloader)
+            version = download_from_apkmirror(version, app, downloader)
             get_patches()
-            logger.debug(f"Downloaded {app}")
+            logger.debug(f"Downloaded {app}, version {version}")
             arg_parser.run(app=app, version=version, is_experimental=is_experimental)
         except Exception as e:
             logger.exception(f"Failed to build {app} because of {e}")
