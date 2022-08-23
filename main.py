@@ -2,6 +2,7 @@ import re
 import subprocess
 import sys
 from atexit import register
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from queue import PriorityQueue
 from shutil import rmtree
@@ -145,8 +146,8 @@ class Downloader(object):
     @classmethod
     def repository(
         cls,
+        owner: str,
         name: str,
-        owner: str = "revanced",
     ) -> None:
         logger.debug(f"Trying to download {name} from github")
         resp = session.get(f"{github}/{owner}/{name}/releases/latest")
@@ -329,10 +330,15 @@ def pre_requisite():
 
 
 def download_revanced(downloader: Type[Downloader]) -> None:
-    downloader.repository("revanced-cli")
-    downloader.repository("revanced-integrations")
-    downloader.repository("revanced-patches")
-    downloader.repository("VancedMicroG", "TeamVanced")
+    assets = (
+        ("revanced", "revanced-cli"),
+        ("revanced", "revanced-integrations"),
+        ("revanced", "revanced-patches"),
+        ("TeamVanced", "VancedMicroG"),
+    )
+    with ThreadPoolExecutor() as executor:
+        executor.map(lambda repo: downloader.repository(*repo), assets)
+    logger.info("Downloaded revanced microG ,cli, integrations and patches.")
 
 
 def download_from_apkmirror(
