@@ -334,7 +334,7 @@ def download_revanced(downloader: Type[Downloader]) -> None:
         ("revanced", "revanced-cli"),
         ("revanced", "revanced-integrations"),
         ("revanced", "revanced-patches"),
-        ("TeamVanced", "VancedMicroG"),
+        ("inotia00", "VancedMicroG"),
     )
     with ThreadPoolExecutor() as executor:
         executor.map(lambda repo: downloader.repository(*repo), assets)
