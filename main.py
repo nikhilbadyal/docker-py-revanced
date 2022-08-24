@@ -24,27 +24,18 @@ supported_apps = [
     "youtube",
     "youtube_music",
     "twitter",
-    "reddit",
-    "tiktok",
-    "warnwetter",
 ]
 apps = env.list("PATCH_APPS", supported_apps)
 keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
 apk_mirror = "https://www.apkmirror.com"
 github = "https://www.github.com"
 apk_mirror_urls = {
-    "reddit": f"{apk_mirror}/apk/redditinc/reddit/",
     "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
-    "tiktok": f"{apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
-    "warnwetter": f"{apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
     "youtube": f"{apk_mirror}/apk/google-inc/youtube/",
     "youtube_music": f"{apk_mirror}/apk/google-inc/youtube-music/",
 }
 apk_mirror_version_urls = {
-    "reddit": f"{apk_mirror_urls.get('reddit')}reddit",
     "twitter": f"{apk_mirror_urls.get('twitter')}twitter",
-    "tiktok": f"{apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
-    "warnwetter": f"{apk_mirror_urls.get('warnwetter')}warnwetter",
     "youtube": f"{apk_mirror_urls.get('youtube')}youtube",
     "youtube_music": f"{apk_mirror_urls.get('youtube_music')}youtube-music",
 }
