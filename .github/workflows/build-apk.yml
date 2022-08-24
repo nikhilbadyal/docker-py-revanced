@@ -30,7 +30,7 @@ jobs:
       - name: Get Date
         id: get-date
         run: |
-          echo ::set-output name=date::$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")
+          echo ::set-output name=date::$(TZ='Europe/Paris' date +"%Y.%m.%d-%H.%M.%S")
 
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.10.0
