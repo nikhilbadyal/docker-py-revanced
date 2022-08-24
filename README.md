@@ -60,11 +60,11 @@ By default, script builds the version as recommended by Revanced team.
    - warnwetter
 2. If you want to build a specific version . Add `version` in `environment` in the
    format
-   ```
+   ```ini
    <APPNAME>_VERSION=<VERSION>
    ```
    Example:
-   ```
+   ```ini
    YOUTUBE_VERSION=17.31.36
    YOUTUBE_MUSIC_VERSION=X.X.X
    TWITTER_VERSION=X.X.X
@@ -78,11 +78,11 @@ By default, script builds the version as recommended by Revanced team.
    - [twitter]
 3. If you want to a `latest` version, whatever latest is available (including beta) .
    Add `latest` in `environment` in the format
-   ```
+   ```ini
    <APPNAME>_VERSION=latest
    ```
    Example:
-   ```
+   ```ini
    YOUTUBE_VERSION=latest
    YOUTUBE_MUSIC_VERSION=latest
    TWITTER_VERSION=latest
@@ -94,25 +94,25 @@ By default, script builds the version as recommended by Revanced team.
    don't
    want to waste time and build only few apps. Add the apps you want to build in
    `environment` in the format
-   ```
+   ```ini
    PATCH_APPS=<REVANCED_APPS_NAME>
    ```
    Example:
-   ```
+   ```ini
    PATCH_APPS=youtube,twitter
    ```
 5. If you don't want to use default keystore. You can provide your own by placing it
    inside `apks` folder. And adding the name of `keystore-file` in `environment` like
-   ```
+   ```ini
     KEYSTORE_FILE_NAME=revanced.keystore
    ```
 6. If you want to exclude any patch. Set comma separated patch in `environment` in
    the format
-   ```
+   ```ini
    EXCLUDE_PATCH_<REVANCED_APPS_NAME>=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
    ```
    Example:
-   ```
+   ```ini
     EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
    ```
