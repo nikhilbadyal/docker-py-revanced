@@ -382,7 +382,7 @@ def main() -> None:
     logger.info(f"Will Patch only {apps}")
     for app in apps:
         try:
-            is_experimental = False
+            is_experimental = True
             arg_parser = ArgParser()
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = get_patches_version()
