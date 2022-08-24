@@ -116,6 +116,7 @@ By default, script builds the version as recommended by Revanced team.
     EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
    ```
+   Patches list available for all supported apps are [here](https://github.com/revanced/revanced-patches/tree/main).
 7. By default, the `--experimental` flag is used to allow patching new but untested apps releases.
     There is two ways to force the script only patches the apps releases supported and tested by ReVanced.
     1. Create a new **`ENVS`** and use `<APPNAME>_VERSION=<VERSION>`
