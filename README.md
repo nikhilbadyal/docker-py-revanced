@@ -1,6 +1,6 @@
 # Docker-Py-ReVanced
 
-A little python script that will help you in building [Revanced apps](#note) directly from GitHub. This fork support Youtube, Youtube Music, twitter, reddit, tiktok and WARNWETTER. The [original script] documentation is not as detailed as this one for newbies. So read the following.
+A little python script that will help you in building [Revanced apps](#note) directly from GitHub. This fork support Youtube, Youtube Music, twitter, reddit, tiktok and WARNWETTER. The [original script] documentation is not as detailed as this one for newbies. So read the following. This fork has cleaned some unuseful actions like post to **telegram** and check APK with **Virus Total** api.
 
 ## Build
 
@@ -10,7 +10,6 @@ A little python script that will help you in building [Revanced apps](#note) dir
 2. Add following **_repository secrets_** 
     - _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
        after building.
-    - _VT_API_KEY_ (optional) - required only if you want Virus total scan.
     - _ENVS_ (optional) - required only if you want to cook specific apps/versions.
 
     <details>
@@ -77,7 +76,7 @@ By default, script builds the version as recommended by Revanced team.
    - [youtube]
    - [youtube music]
    - [twitter]
-3. If you want to a `latest` version, whatever latest is available(including beta) .
+3. If you want to a `latest` version, whatever latest is available (including beta) .
    Add `latest` in `environment` in the format
    ```
    <APPNAME>_VERSION=latest
