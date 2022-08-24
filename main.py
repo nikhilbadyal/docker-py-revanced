@@ -262,7 +262,7 @@ class ArgParser(object):
     def get_excluded_patches(self) -> List[Any]:
         return self._EXCLUDED
 
-    def run(self, app: str, version: str, is_experimental: bool = False) -> None:
+    def run(self, app: str, version: str, is_experimental: bool = True) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
         args = [
             "-jar",
