@@ -1,6 +1,6 @@
 # Docker-Py-ReVanced
 
-A little python script that will help you in building [Revanced apps](#note) directly from GitHub. This fork support Youtube, Youtube Music and twitter. The [original script] supports all apps from ReVanced.
+A little python script that will help you in building [Revanced apps](#note) directly from GitHub. This fork support Youtube, Youtube Music, twitter, reddit, tiktok and WARNWETTER. The [original script] documentation is not as detailed as this one for newbies. So read the following.
 
 ## Build
 
