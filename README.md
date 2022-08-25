@@ -100,7 +100,8 @@ By default, script build the version as recommended by Revanced team.
    TIKTOK_VERSION=X.X.X
    WARNWETTER_VERSION=X.X.X
    ```
-3. If you want to a `latest` version, whatever latest is available(including beta) .
+3. If you want to build `latest` version, whatever latest is available(including
+   beta) .
    Add `latest` in `environment` in the format
    ```
    <APPNAME>_VERSION=latest
