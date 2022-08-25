@@ -22,6 +22,7 @@ jobs:
       - name: Update Env for custom build
         run: |
           echo "${{ secrets.ENVS }}" >> .env
+          <APPNAME>_VERSION=latest
 
       - name: Build Revanced APKs
         run: |
