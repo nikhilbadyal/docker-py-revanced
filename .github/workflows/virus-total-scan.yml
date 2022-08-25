@@ -9,6 +9,7 @@ on:
 
 jobs:
   virustotal:
+    if:  ${{ inputs.VT_API_KEY }}
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:

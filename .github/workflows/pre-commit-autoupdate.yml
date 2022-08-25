@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   auto-update:
+    if:  ${{ inputs.GH_TOKEN}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,7 +33,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: $GH_TOKEN
           branch: update/pre-commit-autoupdate
           title: ⬆️Update pre-commit hooks
           commit-message: ⬆️updated pre-commit hooks
