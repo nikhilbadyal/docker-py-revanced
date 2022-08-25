@@ -6,10 +6,12 @@ A little python script that will help you in building [Revanced apps](#note) dir
 
 ### 🚀 In GitHub (Recommended)
 
-1. Fork the project.
+1. Fork the project
+![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
+
 2. Add following **_repository secrets_** 
     - _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub and create release
-       after building. See how to [below](#generate-token).
+       after building. See how to generate token [here](#generate-token).
     - _ENVS_ (optional but I recommand to custom as below) - required only if you want to cook specific apps/versions.
 
     <details>
