@@ -10,7 +10,7 @@ A little python script that will help you in building [Revanced apps](#note) dir
 2. Add following **_repository secrets_** 
     - _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub and create release
        after building. See how to [below](#generate-token).
-    - _ENVS_ (optional) - required only if you want to cook specific apps/versions.
+    - _ENVS_ (optional but I recommand to custom as below) - required only if you want to cook specific apps/versions.
 
     <details>
       <summary>🛈 How to</summary>
@@ -20,11 +20,11 @@ A little python script that will help you in building [Revanced apps](#note) dir
         ![step_2]
 
       - **`ENVS`** secret might look like this
-        (You should copy your **`ENVS`** content somewhere before saving because secret var can not be edited or copied after. You’ll have to delete and recreate if you want change your **`ENVS`** settings.)
+        (You should copy your **`ENVS`** content somewhere before saving because secret var can not be edited or copied after. You’ll have to click update to recreate from blank if you want change your **`ENVS`** settings.)
 
         ```ini
         PATCH_APPS=youtube,twitter
-        EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-cast-button,hide-autoplay-button,premium-heading,disable-fullscreen-panels,old-quality-layout,tablet-mini-player,always-autorepeat,enable-debugging,hide-infocard-suggestions
+        EXCLUDE_PATCH_YOUTUBE=hide-cast-button,hide-autoplay-button,premium-heading,disable-fullscreen-panels,old-quality-layout,tablet-mini-player,always-autorepeat,enable-debugging,hide-infocard-suggestions
         EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
         YOUTUBE_VERSION=17.32.39
         YOUTUBE_MUSIC_VERSION=latest
