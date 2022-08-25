@@ -10,19 +10,24 @@ You can use any of the following methods to build.
 <summary>🚀In GitHub(Recommended)</summary>
 
 1. Fork the project.
+![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
 2. Add following secrets to the repo.
     1. _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
        after building.
     2. _VT_API_KEY_ (optional) - required only if you want Virus total scan.
     3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
         <details>
-          <summary>Samples</summary>
+          <summary>Example</summary>
 
-          - **`GitHub Secrets`** might look like this
-           ![img.png](img.png)
+          - Go to the repo settings and then to actions->secret
+            ![step_1]
+          - Add Repository secret
+            ![step_2]
+          - **`GitHub Secrets`** might look like this(With VT_SCAN)
+           ![secrets]
 
-          - **`ENVS`** secret might look like this
-            ```
+          - After adding secrets, **`ENVS`** secret might look like this
+            ```ini
             PATCH_APPS=youtube_music,twitter
             EXCLUDE_PATCH_YOUTUBE=custom-branding
             EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
@@ -37,7 +42,23 @@ You can use any of the following methods to build.
        </details>
 
 3. Go to actions tab. Select `Build Revanced APK`.Click on `Run Workflow`.
+   - It can take a few minute to start. Just be patient.
 
+    <details>
+      <summary>📖Example</summary>
+
+      - Go to actions tab
+        ![action_0]
+      - Check the status of build, It should look green.
+        ![action_1]
+      - Check if logs if something fails.
+        ![action_2]
+        ![action_3]
+
+    </details>
+
+4. If the building process is successful, you’ll get your APKs in the releases
+    - ![apks]
 </details>
 
 <details>
@@ -88,11 +109,11 @@ By default, script build the version as recommended by Revanced team.
    6. warnwetter
 2. If you want to build a specific version . Add `version` in `environment` in the
    format
-   ```
+   ```ini
    <APPNAME>_VERSION=<VERSION>
    ```
    Example:
-   ```
+   ```ini
    YOUTUBE_VERSION=17.31.36
    YOUTUBE_MUSIC_VERSION=X.X.X
    TWITTER_VERSION=X.X.X
@@ -103,11 +124,11 @@ By default, script build the version as recommended by Revanced team.
 3. If you want to build `latest` version, whatever latest is available(including
    beta) .
    Add `latest` in `environment` in the format
-   ```
+   ```ini
    <APPNAME>_VERSION=latest
    ```
    Example:
-   ```
+   ```ini
    YOUTUBE_VERSION=latest
    YOUTUBE_MUSIC_VERSION=latest
    TWITTER_VERSION=latest
@@ -119,27 +140,45 @@ By default, script build the version as recommended by Revanced team.
    don't
    want to waste time and build only few apps. Add the apps you want to build in
    `environment` in the format
-   ```
+   ```ini
    PATCH_APPS=<REVANCED_APPS_NAME>
    ```
    Example:
-   ```
+   ```ini
    PATCH_APPS=youtube,twitter,reddit
    ```
 5. If you don't want to use default keystore. You can provide your own by placing it
    inside `apks` folder. And adding the name of `keystore-file` in `environment` like
-   ```
+   ```dotenv
     KEYSTORE_FILE_NAME=revanced.keystore
    ```
 6. If you want to exclude any patch. Set comma separated patch in `environment` in
    the format
-   ```
+   ```ini
    EXCLUDE_PATCH_<REVANCED_APPS_NAME>=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
    ```
    Example:
-   ```
+   ```dotenv
     EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
    ```
+
+### Generate Token
+1. Go to your account developer [settings](https://github.com/settings/tokens).
+   Click on generate new token.
+  ![token 1]
+2. Give a nice name. and grant following permissions
+![token 2]
+
+[secrets]: https://i.imgur.com/083Bjpg.png
+[token 1]: https://i.imgur.com/grofl9E.png
+[token 2]: https://user-images.githubusercontent.com/22337329/186550702-69c5fb77-32c3-4689-bb5c-3a213daa5e19.png
+[step_1]: https://i.imgur.com/Inj82KK.png
+[step_2]: https://user-images.githubusercontent.com/22337329/186521861-42786e8d-5db4-43ef-9676-2f7e7c0eddc4.png
+[action_0]: https://i.imgur.com/M1XdjZC.png
+[action_1]: https://user-images.githubusercontent.com/22337329/186533319-0aebf294-9bac-4859-b4e1-1b4c87d39f48.png
+[action_2]: https://user-images.githubusercontent.com/22337329/186533358-e27e30bc-0d16-4f56-a335-0387c481dbf8.png
+[action_3]: https://user-images.githubusercontent.com/22337329/186533417-15477a2c-28c3-4e39-9f3d-c4e18202d000.png
+[apks]: https://i.imgur.com/S5d7qAO.png
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
