@@ -8,8 +8,8 @@ A little python script that will help you in building [Revanced apps](#note) dir
 
 1. Fork the project.
 2. Add following **_repository secrets_** 
-    - _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
-       after building.
+    - _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub and create release
+       after building. See how to [below](#generate-token).
     - _ENVS_ (optional) - required only if you want to cook specific apps/versions.
 
     <details>
@@ -122,9 +122,19 @@ By default, script builds the version as recommended by Revanced team.
     1. Create a new **`ENVS`** and use `<APPNAME>_VERSION=<VERSION>`
     2. Edit the `main.py` file line 376 to change `is_experimental = True` to `is_experimental = False`
     
+### Generate Token
+1. Go to your account setting → developper settings (at the bottom of the page)
+2. Give it a meaningful name
+![token 1]
+3. Grant those permissions and valid
+![token 2]
+    
+[Back to top](#build)
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
 
+[token 1]: https://user-images.githubusercontent.com/22337329/186550710-a84bad0d-0ab5-46e0-a245-7bc648fa5541.png
+[token 2]: https://user-images.githubusercontent.com/22337329/186550702-69c5fb77-32c3-4689-bb5c-3a213daa5e19.png
 [step_1]: https://user-images.githubusercontent.com/22337329/186522183-1fe9088c-2d63-45fe-ba6f-baa49cdfd989.png
 [step_2]: https://user-images.githubusercontent.com/22337329/186521861-42786e8d-5db4-43ef-9676-2f7e7c0eddc4.png
 [action_1]: https://user-images.githubusercontent.com/22337329/186533319-0aebf294-9bac-4859-b4e1-1b4c87d39f48.png
