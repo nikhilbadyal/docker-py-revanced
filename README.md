@@ -13,39 +13,39 @@ You can use any of the following methods to build.
 ![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
 2. Add following secrets to the repo.
     1. _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
-       after building.
+       after building. Click [here](#generate-token) to learn how to get that..
     2. _VT_API_KEY_ (optional) - required only if you want Virus total scan.
     3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
-        <details>
-          <summary>Example</summary>
+    <details>
+      <summary>🚶Detailed step by step guide</summary>
 
-          - Go to the repo settings and then to actions->secret
-            ![step_1]
-          - Add Repository secret
-            ![step_2]
-          - **`GitHub Secrets`** might look like this(With VT_SCAN)
-           ![secrets]
+      - Go to the repo settings and then to actions->secret
+        ![step_1]
+      - Add Repository secret
+        ![step_2]
+      - **`GitHub Secrets`** might look like this(With VT_SCAN)
+       ![secrets]
 
-          - After adding secrets, **`ENVS`** secret might look like this
-            ```ini
-            PATCH_APPS=youtube_music,twitter
-            EXCLUDE_PATCH_YOUTUBE=custom-branding
-            EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
-            YOUTUBE_VERSION=67.68.69
-            YOUTUBE_MUSIC_VERSION=latest
-            TWITTER_VERSION=0.2.2
-            REDDIT_VERSION=latest
-            TIKTOK_VERSION=latest
-            WARNWETTER_VERSION=latest
-            ```
+      - After adding secrets, **`ENVS`** secret might look like this
+        ```ini
+        PATCH_APPS=youtube_music,twitter
+        EXCLUDE_PATCH_YOUTUBE=custom-branding
+        EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
+        YOUTUBE_VERSION=67.68.69
+        YOUTUBE_MUSIC_VERSION=latest
+        TWITTER_VERSION=0.2.2
+        REDDIT_VERSION=latest
+        TIKTOK_VERSION=latest
+        WARNWETTER_VERSION=latest
+        ```
 
-       </details>
+   </details>
 
 3. Go to actions tab. Select `Build Revanced APK`.Click on `Run Workflow`.
-   - It can take a few minute to start. Just be patient.
+   1. It can take a few minute to start. Just be patient.
 
     <details>
-      <summary>📖Example</summary>
+      <summary>🚶Detailed step by step guide</summary>
 
       - Go to actions tab
         ![action_0]
@@ -59,6 +59,7 @@ You can use any of the following methods to build.
 
 4. If the building process is successful, you’ll get your APKs in the releases
     - ![apks]
+5. Click on **`Build-<SomeRandomDate>`** and download the apk file.
 </details>
 
 <details>
@@ -162,7 +163,7 @@ By default, script build the version as recommended by Revanced team.
     EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
    ```
-
+7. Remember to download the **_Microg_**. Otherwise you will not be able to open youtube.
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens).
    Click on generate new token.
