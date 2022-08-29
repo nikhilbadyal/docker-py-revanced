@@ -5,11 +5,11 @@ on:
 
 jobs:
   tg-upload:
-    if:  ${{ inputs.TELEGRAM_API_ID }}
     timeout-minutes: 10
     runs-on: ubuntu-latest
     steps:
       - name: Upload to Telegram
+        if: ${{ env.HAVE_TELEGRAM_API_ID == 'true' }}
         uses: nikhilbadyal/ghaction-telegram@main
         with:
           github_token: ${{ secrets.GH_TOKEN }}
@@ -17,3 +17,5 @@ jobs:
           telegram_api_hash: ${{ secrets.TELEGRAM_API_HASH }}
           telegram_bot_token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           telegram_chat_id: ${{ secrets.TELEGRAM_CHAT_ID }}
+env:
+  HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}

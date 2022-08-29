@@ -13,24 +13,28 @@ permissions:
 
 jobs:
   auto-update:
-    if:  ${{ inputs.GH_TOKEN}}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        if: ${{ env.HAVE_GH_TOKEN == 'true' }}
         uses: actions/checkout@v3
 
       - name: Setup Python
+        if: ${{ env.HAVE_GH_TOKEN == 'true' }}
         uses: actions/setup-python@v4.2.0
         with:
           python-version: '3.x'
 
       - name: Install pre-commit
+        if: ${{ env.HAVE_GH_TOKEN == 'true' }}
         run: pip install pre-commit
 
       - name: Updated Hooks
+        if: ${{ env.HAVE_GH_TOKEN == 'true' }}
         run: pre-commit autoupdate
 
       - name: Create Pull Request
+        if: ${{ env.HAVE_GH_TOKEN == 'true' }}
         uses: peter-evans/create-pull-request@v4
         with:
           token: $GH_TOKEN
@@ -39,3 +43,5 @@ jobs:
           commit-message: ⬆️updated pre-commit hooks
           body: ✨Update versions of tools in pre-commit configs to latest version
           labels: pre-commit✨
+env:
+  HAVE_GH_TOKEN: ${{ secrets.GH_TOKEN != '' }}
