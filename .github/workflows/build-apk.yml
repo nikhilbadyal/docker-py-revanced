@@ -37,6 +37,8 @@ jobs:
         with:
           keep_latest: 0
           delete_tag_pattern: Build*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.10.0
