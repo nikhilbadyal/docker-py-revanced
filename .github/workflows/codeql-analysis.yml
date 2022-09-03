@@ -16,6 +16,7 @@ on:
 
 jobs:
   analyze:
+    if: github.repository == 'nikhilbadyal/docker-py-revanced'
     name: Analyze
     runs-on: ubuntu-latest
     permissions:
