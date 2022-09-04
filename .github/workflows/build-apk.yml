@@ -32,6 +32,12 @@ jobs:
         run: |
           echo ::set-output name=date::$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")
 
+      - name: Delete Older Releases
+        uses: nikhilbadyal/ghaction-rm-releases@main
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          release_pattern: 'Build*'
+
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.10.0
         with:
