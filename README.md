@@ -13,7 +13,7 @@ You can use any of the following methods to build.
 ![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
 2. Add following secrets to the repo.
     1. _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
-       after building. Click [here](#generate-token) to learn how to get that..
+       after building. Click [here](#generate-token) to learn how to get that.
     2. _VT_API_KEY_ (optional) - required only if you want Virus total scan.
     3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
     <details>
@@ -51,7 +51,7 @@ You can use any of the following methods to build.
         ![action_0]
       - Check the status of build, It should look green.
         ![action_1]
-      - Check if logs if something fails.
+      - Check logs if something fails.
         ![action_2]
         ![action_3]
 
@@ -163,7 +163,7 @@ By default, script build the version as recommended by Revanced team.
     EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
    ```
-7. Remember to download the **_Microg_**. Otherwise you will not be able to open youtube.
+7. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens).
    Click on generate new token.
