@@ -183,3 +183,8 @@ By default, script build the version as recommended by Revanced team.
 [apks]: https://i.imgur.com/S5d7qAO.png
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
+
+
+### Infrastructure model
+
+![Infrastructure model](.infragenie/infrastructure_model.png)
