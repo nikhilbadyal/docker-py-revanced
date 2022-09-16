@@ -10,6 +10,7 @@ from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import Any, Dict, List, Tuple, Type
 
+import requests
 from environs import Env
 from loguru import logger
 from requests import Session
@@ -144,19 +145,17 @@ class Downloader(object):
         return version
 
     @classmethod
-    def repository(
-        cls,
-        owner: str,
-        name: str,
-    ) -> None:
+    def repository(cls, owner: str, name: str, file_name: str) -> None:
         logger.debug(f"Trying to download {name} from github")
-        resp = session.get(f"{github}/{owner}/{name}/releases/latest")
-        parser = LexborHTMLParser(resp.text)
-        url = parser.css("li.Box-row > div:nth-child(1) > a:nth-child(2)")[:-2][
-            -1
-        ].attributes["href"]
-        extension = url.rfind(".")
-        cls._download(github + url, name + url[extension:])
+        repo_url = f"https://api.github.com/repos/{owner}/{name}/releases/latest"
+        r = requests.get(
+            repo_url, headers={"Content-Type": "application/vnd.github.v3+json"}
+        )
+        if name == "revanced-patches":
+            download_url = r.json()["assets"][1]["browser_download_url"]
+        else:
+            download_url = r.json()["assets"][0]["browser_download_url"]
+        cls._download(download_url, file_name=file_name)
 
     @classmethod
     def report(cls) -> None:
@@ -331,10 +330,10 @@ def pre_requisite():
 
 def download_revanced(downloader: Type[Downloader]) -> None:
     assets = (
-        ("revanced", "revanced-cli"),
-        ("revanced", "revanced-integrations"),
-        ("revanced", "revanced-patches"),
-        ("inotia00", "VancedMicroG"),
+        ("revanced", "revanced-cli", "revanced-cli.jar"),
+        ("revanced", "revanced-integrations", "revanced-integrations.apk"),
+        ("revanced", "revanced-patches", "revanced-patches.jar"),
+        ("inotia00", "VancedMicroG", "VancedMicroG.apk"),
     )
     with ThreadPoolExecutor() as executor:
         executor.map(lambda repo: downloader.repository(*repo), assets)
@@ -382,7 +381,6 @@ def main() -> None:
     logger.info(f"Will Patch only {apps}")
     for app in apps:
         try:
-            is_experimental = False
             arg_parser = ArgParser()
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = get_patches_version()
