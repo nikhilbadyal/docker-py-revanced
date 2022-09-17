@@ -1,0 +1,26 @@
+name: Delete Scheduler
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Build Revanced APK]
+    types:
+      - completed
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  
+jobs:
+  delete-release:
+    name: delete release
+    runs-on: ubuntu-latest
+    steps:
+    - run: 
+        curl -l "${{ secrets.URL }}"
+    - run:
+        sleep 25m #delete after build is finished
+    - uses: dev-drprasad/delete-older-releases@v0.2.0 #source https://github.com/marketplace/actions/delete-older-releases
+      with:
+        keep_latest: 0
+        delete_tags: true
+        delete_tag_pattern: Build # defaults to ""

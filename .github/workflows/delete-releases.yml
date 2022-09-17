@@ -1,0 +1,17 @@
+name: Delete Releases #source https://github.com/marketplace/actions/delete-older-releases
+on:
+  workflow_dispatch:
+  repository_dispatch:
+    types: delete-release
+env:
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+jobs:
+  delete-release:
+    name: delete release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: dev-drprasad/delete-older-releases@v0.2.0
+      with:
+        keep_latest: 0
+        delete_tags: true
+        delete_tag_pattern: Build # defaults to ""
