@@ -12,11 +12,11 @@
 name: "CodeQL"
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   analyze:
+    if: github.repository == 'nikhilbadyal/docker-py-revanced'
     name: Analyze
     runs-on: ubuntu-latest
     permissions:

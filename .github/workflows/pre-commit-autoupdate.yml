@@ -13,6 +13,7 @@ permissions:
 
 jobs:
   auto-update:
+    if: github.repository == 'nikhilbadyal/docker-py-revanced'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
