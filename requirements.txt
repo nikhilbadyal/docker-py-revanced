@@ -1,5 +1,5 @@
 requests==2.28.1
-selectolax==0.3.8
+selectolax==0.3.11
 tqdm==4.64.1
 pre-commit==2.20.0
 loguru==0.6.0
