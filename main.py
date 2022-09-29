@@ -263,15 +263,22 @@ class ArgParser(object):
 
     def run(self, app: str, version: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
+        cli = "revanced-cli.jar"
+        patches = "revanced-patches.jar"
+        integrations = "revanced-integrations.apk"
+        if app in ("youtube", "youtube_music"):
+            cli = f"inotia00-{cli}"
+            patches = f"inotia00-{patches}"
+            integrations = f"inotia00-{integrations}"
         args = [
             "-jar",
-            "revanced-cli.jar",
+            cli,
             "-a",
             app + ".apk",
             "-b",
-            "revanced-patches.jar",
+            patches,
             "-m",
-            "revanced-integrations.apk",
+            integrations,
             "-o",
             f"Re-{app}-{version}-output.apk",
             "--keystore",
@@ -329,6 +336,9 @@ def download_revanced(downloader: Type[Downloader]) -> None:
         ("revanced", "revanced-integrations", "revanced-integrations.apk"),
         ("revanced", "revanced-patches", "revanced-patches.jar"),
         ("inotia00", "VancedMicroG", "VancedMicroG.apk"),
+        ("inotia00", "revanced-cli", "inotia00-revanced-cli.jar"),
+        ("inotia00", "revanced-integrations", "inotia00-revanced-integrations.apk"),
+        ("inotia00", "revanced-patches", "inotia00-revanced-patches.jar"),
     )
     with ThreadPoolExecutor() as executor:
         executor.map(lambda repo: downloader.repository(*repo), assets)
