@@ -280,9 +280,6 @@ class ArgParser(object):
         if is_experimental:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        if app in ["reddit"]:
-            args.remove("-m")
-            args.remove("revanced-integrations.apk")
         args[1::2] = map(lambda i: temp_folder.joinpath(i), args[1::2])
 
         if self._PATCHES:
