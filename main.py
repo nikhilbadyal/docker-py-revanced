@@ -284,8 +284,6 @@ class ArgParser(object):
             args.remove("-m")
             args.remove("revanced-integrations.apk")
         args[1::2] = map(lambda i: temp_folder.joinpath(i), args[1::2])
-        if app in ("reddit", "tiktok"):
-            args.append("-r")
 
         if self._PATCHES:
             args.extend(self._PATCHES)
