@@ -183,6 +183,12 @@ class Patches(object):
             lines = app.splitlines()
 
             app_name = lines[0][1:-1]
+            if app_name in [
+                "com.google.android.apps.youtube.music",
+                "com.google.android.youtube",
+                "com.vanced.android.youtube",
+            ]:
+                continue
             app_patches = []
             for line in lines:
                 patch = line.split("|")[1:-1]
@@ -199,14 +205,34 @@ class Patches(object):
                 twitter.append(patch)
             elif "reddit" in a:
                 reddit.append(patch)
-            elif "music" in a:
-                music.append(patch)
-            elif "youtube" in a:
-                youtube.append(patch)
             elif "trill" in a:
                 tiktok.append(patch)
             elif "warnapp" in a:
                 warnwetter.append(patch)
+
+        resp = session.get(
+            "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/README.md"
+        )
+        for app in resp.text.split("### 📦 ")[1:]:
+            lines = app.splitlines()
+
+            app_name = lines[0][1:-1]
+            app_patches = []
+            for line in lines:
+                patch = line.split("|")[1:-1]
+                if len(patch) == 3:
+                    (n, d, v), a = [i.replace("`", "").strip() for i in patch], app_name
+                    app_patches.append((n, d, a, v))
+
+            available_patches.extend(app_patches[2:])
+
+        for n, d, a, v in available_patches:
+            patch = {"name": n, "description": d, "app": a, "version": v}
+            if "music" in a:
+                music.append(patch)
+            elif "youtube" in a:
+                youtube.append(patch)
+
         self._yt = youtube
         self._ytm = music
         self._twitter = twitter
