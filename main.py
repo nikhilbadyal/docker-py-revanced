@@ -176,93 +176,76 @@ class Patches(object):
     def __init__(self) -> None:
         logger.debug("fetching all patches")
         resp = session.get(
-            "https://raw.githubusercontent.com/revanced/revanced-patches/main/README.md"
+            "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
         )
-        available_patches = []
-        for app in resp.text.split("### 📦 ")[1:]:
-            lines = app.splitlines()
+        patches = resp.json()
 
-            app_name = lines[0][1:-1]
-            if app_name in [
-                "com.google.android.apps.youtube.music",
-                "com.google.android.youtube",
-                "com.vanced.android.youtube",
+        revanced_app_ids = {
+            "com.reddit.frontpage": ("reddit", "_reddit"),
+            "com.ss.android.ugc.trill": ("tiktok", "_tiktok"),
+            "com.twitter.android": ("twitter", "_twitter"),
+            "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
+        }
+
+        for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
+            setattr(self, app_name, [])
+
+        for patch in patches:
+            for compatible_package, version in [
+                (x["name"], x["versions"]) for x in patch["compatiblePackages"]
             ]:
-                continue
-            app_patches = []
-            for line in lines:
-                patch = line.split("|")[1:-1]
-                if len(patch) == 3:
-                    (n, d, v), a = [i.replace("`", "").strip() for i in patch], app_name
-                    app_patches.append((n, d, a, v))
+                if compatible_package in revanced_app_ids:
+                    app_name = revanced_app_ids[compatible_package][1]
+                    p = {x: patch[x] for x in ["name", "description"]}
+                    p["app"] = compatible_package
+                    p["version"] = version[-1] if version else "all"
+                    getattr(self, app_name).append(p)
 
-            available_patches.extend(app_patches[2:])
-
-        youtube, music, twitter, reddit, tiktok, warnwetter = [], [], [], [], [], []
-        for n, d, a, v in available_patches:
-            patch = {"name": n, "description": d, "app": a, "version": v}
-            if "twitter" in a:
-                twitter.append(patch)
-            elif "reddit" in a:
-                reddit.append(patch)
-            elif "trill" in a:
-                tiktok.append(patch)
-            elif "warnapp" in a:
-                warnwetter.append(patch)
-
-        resp = session.get(
-            "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/README.md"
+        resp_extended = session.get(
+            "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
         )
-        for app in resp.text.split("### 📦 ")[1:]:
-            lines = app.splitlines()
+        extended_patches = resp_extended.json()
+        revanced_extended_app_ids = {
+            "com.google.android.youtube": ("youtube", "_yt"),
+            "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
+        }
+        for app_name in (
+            revanced_extended_app_ids[x][1] for x in revanced_extended_app_ids
+        ):
+            setattr(self, app_name, [])
 
-            app_name = lines[0][1:-1]
-            app_patches = []
-            for line in lines:
-                patch = line.split("|")[1:-1]
-                if len(patch) == 3:
-                    (n, d, v), a = [i.replace("`", "").strip() for i in patch], app_name
-                    app_patches.append((n, d, a, v))
+        for patch in extended_patches:
+            for compatible_package, version in [
+                (x["name"], x["versions"]) for x in patch["compatiblePackages"]
+            ]:
+                if compatible_package in revanced_extended_app_ids:
+                    app_name = revanced_extended_app_ids[compatible_package][1]
+                    p = {x: patch[x] for x in ["name", "description"]}
+                    p["app"] = compatible_package
+                    p["version"] = version[-1] if version else "all"
+                    getattr(self, app_name).append(p)
 
-            available_patches.extend(app_patches[2:])
-
-        for n, d, a, v in available_patches:
-            patch = {"name": n, "description": d, "app": a, "version": v}
-            if "music" in a:
-                music.append(patch)
-            elif "youtube" in a:
-                youtube.append(patch)
-
-        self._yt = youtube
-        self._ytm = music
-        self._twitter = twitter
-        self._reddit = reddit
-        self._tiktok = tiktok
-        self._warnwetter = warnwetter
-        logger.debug(f"Total patches in youtube are {len(youtube)}")
-        logger.debug(f"Total patches in youtube-music are {len(music)}")
-        logger.debug(f"Total patches in twitter are {len(twitter)}")
-        logger.debug(f"Total patches in reddit are {len(reddit)}")
-        logger.debug(f"Total patches in tiktok are {len(tiktok)}")
-        logger.debug(f"Total patches in warnwetter are {len(warnwetter)}")
+        for app_name, app_id in revanced_extended_app_ids.values():
+            n_patches = len(getattr(self, app_id))
+            logger.debug(f"Total patches in {app_name} are {n_patches}")
+        for app_name, app_id in revanced_app_ids.values():
+            n_patches = len(getattr(self, app_id))
+            logger.debug(f"Total patches in {app_name} are {n_patches}")
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
-        if "twitter" == app:
-            patches = self._twitter
-        elif "reddit" == app:
-            patches = self._reddit
-        elif "youtube_music" == app:
-            patches = self._ytm
-        elif "youtube" == app:
-            patches = self._yt
-        elif "tiktok" == app:
-            patches = self._tiktok
-        elif "warnwetter" == app:
-            patches = self._warnwetter
-        else:
+        app_names = {
+            "reddit": "_reddit",
+            "tiktok": "_tiktok",
+            "twitter": "_twitter",
+            "warnwetter": "_warnwetter",
+            "youtube": "_yt",
+            "youtube_music": "_ytm",
+        }
+        if not (app_name := app_names.get(app)):
             logger.debug("Invalid app name")
             sys.exit(-1)
+        patches = getattr(self, app_name)
         version = ""
         if app in ("youtube", "youtube_music"):
             version = next(i["version"] for i in patches if i["version"] != "all")
