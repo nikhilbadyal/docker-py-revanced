@@ -247,15 +247,18 @@ class ArgParser(object):
 
     def run(self, app: str, version: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
+        cli = "revanced-cli.jar"
+        patches = "revanced-patches.jar"
+        integrations = "revanced-integrations.apk"
         args = [
             "-jar",
-            "revanced-cli.jar",
+            cli,
             "-a",
             app + ".apk",
             "-b",
-            "revanced-patches.jar",
+            patches,
             "-m",
-            "revanced-integrations.apk",
+            integrations,
             "-o",
             f"Re-{app}-{version}-output.apk",
             "--keystore",
