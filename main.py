@@ -180,7 +180,7 @@ class Patches(object):
         )
         patches = resp.json()
 
-        app_ids = {
+        revanced_app_ids = {
             "com.google.android.youtube": ("youtube", "_yt"),
             "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
             "com.reddit.frontpage": ("reddit", "_reddit"),
@@ -189,21 +189,21 @@ class Patches(object):
             "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
         }
 
-        for app_name in (app_ids[x][1] for x in app_ids):
+        for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
             setattr(self, app_name, [])
 
         for patch in patches:
             for compatible_package, version in [
                 (x["name"], x["versions"]) for x in patch["compatiblePackages"]
             ]:
-                if compatible_package in app_ids:
-                    app_name = app_ids[compatible_package][1]
+                if compatible_package in revanced_app_ids:
+                    app_name = revanced_app_ids[compatible_package][1]
                     p = {x: patch[x] for x in ["name", "description"]}
                     p["app"] = compatible_package
                     p["version"] = version[-1] if version else "all"
                     getattr(self, app_name).append(p)
 
-        for app_name, app_id in app_ids.values():
+        for app_name, app_id in revanced_app_ids.values():
             n_patches = len(getattr(self, app_id))
             logger.debug(f"Total patches in {app_name} are {n_patches}")
 
