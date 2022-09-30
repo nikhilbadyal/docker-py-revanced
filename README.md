@@ -1,7 +1,10 @@
 # Docker-Py-ReVanced
 
-A little python script that will help you in building [Revanced apps.](#note)
+A little python script that will help you in building Revanced and Revanced-Extended [apps](#note)
 
+I prefer [Revanced Extended](https://github.com/inotia00/revanced-patches/tree/revanced-extended) more
+(for YouTube & YouTube Music) hence the builds(YT&YTM) in this repo are from
+Revanced Extended.
 ## Build
 
 You can use any of the following methods to build.
@@ -164,6 +167,15 @@ By default, script build the version as recommended by Revanced team.
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
    ```
 7. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
+8. If you want to disable use Revanced-Extended for YouTube and YouTube Music. Add the following adding
+   in `environment` like
+   ```dotenv
+    BUILD_EXTENDED=False
+   ```
+   or enable it with
+   ```dotenv
+    BUILD_EXTENDED=True
+   ```
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens).
    Click on generate new token.
