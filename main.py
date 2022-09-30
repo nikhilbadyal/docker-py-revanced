@@ -30,9 +30,19 @@ supported_apps = [
     "warnwetter",
 ]
 apps = env.list("PATCH_APPS", supported_apps)
+build_extended = env.bool("BUILD_EXTENDED", False)
+extended_apps = ["youtube", "youtube_music"]
 keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
 apk_mirror = "https://www.apkmirror.com"
 github = "https://www.github.com"
+normal_cli_jar = "revanced-cli.jar"
+normal_patches_jar = "revanced-patches.jar"
+normal_integrations_apk = "revanced-integrations.apk"
+cli_jar = f"inotia00-{normal_cli_jar}" if build_extended else normal_cli_jar
+patches_jar = f"inotia00-{normal_patches_jar}" if build_extended else normal_patches_jar
+integrations_apk = (
+    f"inotia00-{normal_integrations_apk}" if build_extended else normal_integrations_apk
+)
 apk_mirror_urls = {
     "reddit": f"{apk_mirror}/apk/redditinc/reddit/",
     "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
@@ -201,9 +211,12 @@ class Patches(object):
                     p["version"] = version[-1] if version else "all"
                     getattr(self, app_name).append(p)
 
-        resp_extended = session.get(
-            "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
-        )
+        if build_extended:
+            url = "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
+        else:
+            url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
+
+        resp_extended = session.get(url)
         extended_patches = resp_extended.json()
         revanced_extended_app_ids = {
             "com.google.android.youtube": ("youtube", "_yt"),
@@ -272,13 +285,13 @@ class ArgParser(object):
 
     def run(self, app: str, version: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
-        cli = "revanced-cli.jar"
-        patches = "revanced-patches.jar"
-        integrations = "revanced-integrations.apk"
-        if app in ("youtube", "youtube_music"):
-            cli = f"inotia00-{cli}"
-            patches = f"inotia00-{patches}"
-            integrations = f"inotia00-{integrations}"
+        cli = normal_cli_jar
+        patches = normal_patches_jar
+        integrations = normal_integrations_apk
+        if build_extended and app in extended_apps:
+            cli = cli_jar
+            patches = patches_jar
+            integrations = integrations_apk
         args = [
             "-jar",
             cli,
@@ -341,14 +354,17 @@ def pre_requisite():
 
 def download_revanced(downloader: Type[Downloader]) -> None:
     assets = (
-        ("revanced", "revanced-cli", "revanced-cli.jar"),
-        ("revanced", "revanced-integrations", "revanced-integrations.apk"),
-        ("revanced", "revanced-patches", "revanced-patches.jar"),
+        ("revanced", "revanced-cli", normal_cli_jar),
+        ("revanced", "revanced-integrations", normal_integrations_apk),
+        ("revanced", "revanced-patches", normal_patches_jar),
         ("inotia00", "VancedMicroG", "VancedMicroG.apk"),
-        ("inotia00", "revanced-cli", "inotia00-revanced-cli.jar"),
-        ("inotia00", "revanced-integrations", "inotia00-revanced-integrations.apk"),
-        ("inotia00", "revanced-patches", "inotia00-revanced-patches.jar"),
     )
+    if build_extended:
+        assets += (
+            ("inotia00", "revanced-cli", cli_jar),
+            ("inotia00", "revanced-integrations", integrations_apk),
+            ("inotia00", "revanced-patches", patches_jar),
+        )
     with ThreadPoolExecutor() as executor:
         executor.map(lambda repo: downloader.repository(*repo), assets)
     logger.info("Downloaded revanced microG ,cli, integrations and patches.")
@@ -370,7 +386,10 @@ def main() -> None:
 
     def get_patches() -> None:
         logger.debug(f"Excluding patches for app {app}")
-        excluded_patches = env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
+        if build_extended and app in extended_apps:
+            excluded_patches = env.list(f"EXCLUDE_PATCH_{app}_EXTENDED".upper(), [])
+        else:
+            excluded_patches = env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
         for patch in app_patches:
             arg_parser.include(patch["name"]) if patch[
                 "name"
