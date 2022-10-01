@@ -28,6 +28,7 @@ supported_apps = [
     "reddit",
     "tiktok",
     "warnwetter",
+    "spotify",
 ]
 apps = env.list("PATCH_APPS", supported_apps)
 build_extended = env.bool("BUILD_EXTENDED", False)
@@ -59,6 +60,7 @@ apk_mirror_version_urls = {
     "youtube": f"{apk_mirror_urls.get('youtube')}youtube",
     "youtube_music": f"{apk_mirror_urls.get('youtube_music')}youtube-music",
 }
+upto_down = ["spotify"]
 
 
 class Downloader(object):
@@ -120,6 +122,17 @@ class Downloader(object):
             sys.exit(-1)
         download_url = apk_mirror + sub_url
         return download_url
+
+    @classmethod
+    def upto_down_downloader(cls, app: str) -> str:
+        page = "https://spotify.en.uptodown.com/android/download"
+        parser = LexborHTMLParser(session.get(page).text)
+        main_page = parser.css_first("#detail-download-button")
+        download_url = main_page.attributes["data-url"]
+        app_version = parser.css_first(".version").text()
+        cls._download(download_url, "spotify.apk")
+        logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
+        return app_version
 
     @classmethod
     def apkmirror_specific_version(cls, app: str, version: str) -> str:
@@ -195,6 +208,7 @@ class Patches(object):
             "com.ss.android.ugc.trill": ("tiktok", "_tiktok"),
             "com.twitter.android": ("twitter", "_twitter"),
             "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
+            "com.spotify.music": ("spotify", "_spotify"),
         }
 
         for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
@@ -254,6 +268,7 @@ class Patches(object):
             "warnwetter": "_warnwetter",
             "youtube": "_yt",
             "youtube_music": "_ytm",
+            "spotify": "_spotify",
         }
         if not (app_name := app_names.get(app)):
             logger.debug("Invalid app name")
@@ -370,6 +385,10 @@ def download_revanced(downloader: Type[Downloader]) -> None:
     logger.info("Downloaded revanced microG ,cli, integrations and patches.")
 
 
+def upto_down_downloader(app: str, downloader: Type[Downloader]) -> str:
+    return downloader.upto_down_downloader(app)
+
+
 def download_from_apkmirror(
     version: str, app: str, downloader: Type[Downloader]
 ) -> str:
@@ -377,6 +396,13 @@ def download_from_apkmirror(
         return downloader.apkmirror_specific_version(app, version)
     else:
         return downloader.apkmirror_latest_version(app)
+
+
+def download_apk_to_patch(version: str, app: str, downloader: Type[Downloader]) -> str:
+    if app in upto_down:
+        return upto_down_downloader(app, downloader)
+    else:
+        return download_from_apkmirror(version, app, downloader)
 
 
 def main() -> None:
@@ -417,7 +443,7 @@ def main() -> None:
             arg_parser = ArgParser()
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = get_patches_version()
-            version = download_from_apkmirror(version, app, downloader)
+            version = download_apk_to_patch(version, app, downloader)
             get_patches()
             logger.debug(f"Downloaded {app}, version {version}")
             arg_parser.run(app=app, version=version, is_experimental=is_experimental)
