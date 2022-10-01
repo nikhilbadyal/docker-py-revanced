@@ -11,4 +11,4 @@ jobs:
   linter:
     uses: ./.github/workflows/linter.yml
   build-apk:
-    uses: ./.github/workflows/build-apk.yml
+    uses: ./.github/workflows/build-apk-artifact.yml
