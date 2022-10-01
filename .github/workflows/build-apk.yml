@@ -5,6 +5,7 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
 on:
   workflow_dispatch:
+  workflow_call:
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
