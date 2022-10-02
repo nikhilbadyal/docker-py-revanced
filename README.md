@@ -25,7 +25,7 @@ You can use any of the following methods to build.
     3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
     <details>
       <summary>🚶Detailed step by step guide</summary>
-
+      ### Guide 
       - Go to the repo settings and then to actions->secret
         ![step_1]
       - Add Repository secret
@@ -181,17 +181,20 @@ By default, script build the version as recommended by Revanced team.
    ```dotenv
     BUILD_EXTENDED=True
    ```
-9. For Telegram Upload. You need 4 pieces of configuration
-   1. API_ID - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)
-   2. API_HASH - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)
-   3. BOT_TOKEN - Telegram provides BOT_TOKEN.It works as sender. Learn how to [get](https://core.telegram.org/bots#6-botfather)
-   4. CHAT_ID - Provide receiver telegram id.It works as receiver. Learn how to [get](https://gist.github.com/mraaroncruz/e76d19f7d61d59419002db54030ebe35)
+9. For Telegram Upload. 
+   1. Setup a telegram channel  send a message to it and forward the message to this telegram [bot](https://t.me/username_to_id_bot)
+   2. Copy id and save it to   ``` TELEGRAM_CHAT_ID ``` and paste it [to](#guide)
 
-   Note - Create one channel where files will be published. Add the bot to the channel(from step 3)
+         ![chat id]
+   3. TELEGRAM_BOT_TOKEN - Telegram provides BOT_TOKEN.It works as sender. Learn how to [get](https://core.telegram.org/bots#6-botfather)
+   4. TELEGRAM_API_ID  - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)
+   5. TELEGRAM_API_HASH - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)
+   
+
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens).
    Click on generate new token.
-  ![token 1]
+     ![token 1]
 2. Give a nice name. and grant following permissions
 ![token 2]
 
@@ -205,5 +208,5 @@ By default, script build the version as recommended by Revanced team.
 [action_2]: https://user-images.githubusercontent.com/22337329/186533358-e27e30bc-0d16-4f56-a335-0387c481dbf8.png
 [action_3]: https://user-images.githubusercontent.com/22337329/186533417-15477a2c-28c3-4e39-9f3d-c4e18202d000.png
 [apks]: https://i.imgur.com/S5d7qAO.png
-
+[chat id]: https://i.imgur.com/22UiaWs.png
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
