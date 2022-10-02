@@ -1,16 +1,14 @@
-name: Run Checks for PR
-# Enable Buildkit and let compose use it to speed up image building
+name: PR Checks
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 on:
-  workflow_dispatch:
   pull_request:
     paths-ignore:
       - '*.md'
 
 jobs:
-  linter:
+  linter-pr-check:
     uses: ./.github/workflows/linter.yml
-  build-apk:
+  build-apk-pr-check:
     uses: ./.github/workflows/build-apk-artifact.yml

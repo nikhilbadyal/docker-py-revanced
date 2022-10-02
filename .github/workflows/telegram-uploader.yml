@@ -1,7 +1,7 @@
 name: Telegram Upload
 
 on:
-  workflow_dispatch: # to trigger manually
+  workflow_dispatch:
 
 jobs:
   tg-upload:

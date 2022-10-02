@@ -5,7 +5,7 @@ on:
     workflows: [ "Build Revanced APK" ]
     types:
       - completed
-  workflow_dispatch: # to trigger manually
+  workflow_dispatch:
 
 jobs:
   virustotal:
