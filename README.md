@@ -181,33 +181,28 @@ By default, script build the version as recommended by Revanced team.
    ```dotenv
     BUILD_EXTENDED=True
    ```
-9. For Telegram Upload. 
-   1. Setup a telegram channel  send a message to it and forward the message to this telegram [bot](https://t.me/username_to_id_bot)
-   2. Copy ```id``` and save it to   ``` TELEGRAM_CHAT_ID ``` 
-
-         ![chat id]
-   3. ```TELEGRAM_BOT_TOKEN``` - Telegram provides BOT_TOKEN. It works as sender. open [bot](https://t.me/BotFather) and create one copy api key 
-     
-      ![bot api]  
-   4. ```TELEGRAM_API_ID```  - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps) 
-    
+9. For Telegram Upload.
+   1. Set up a telegram channel, send a message to it and forward the message to
+      this telegram [bot](https://t.me/username_to_id_bot)
+   2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
+      ![chat id]
+   3. `TELEGRAM_BOT_TOKEN` - Telegram provides BOT_TOKEN. It works as sender. Open [bot](https://t.me/BotFather) and
+       create one copy api key<br>
+      ![bot api]
+   4. `TELEGRAM_API_ID`  - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)<br>
      ![tg api]
+   5. `TELEGRAM_API_HASH` - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)<br>
+     ![tg api hash]
+   6. After Everything done successfully the actions secrets of the repository will look something like<br>
+      <img src="https://i.imgur.com/dzC1KFa.png" width="400">
 
-   5. ```TELEGRAM_API_HASH``` - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps) 
-
-    ![tg api hash]
-## After Everything done successfully the actions secrets of the repository will look something like 
-![git secret]
 ### Generate Token
-1. Go to your account developer [settings](https://github.com/settings/tokens).
-   Click on generate new token.
-  ![token 1]
-2. Give a nice name. and grant following permissions
-![token 2]
+1. Go to your account developer [settings](https://github.com/settings/tokens). Click on generate new token.<br>
+   <img src="https://i.imgur.com/grofl9E.png" height="150">
+2. Give a nice name. and grant following permissions<br>
+   <img src="https://user-images.githubusercontent.com/22337329/186550702-69c5fb77-32c3-4689-bb5c-3a213daa5e19.png" width="400" height="450">
 
 [secrets]: https://i.imgur.com/083Bjpg.png
-[token 1]: https://i.imgur.com/grofl9E.png
-[token 2]: https://user-images.githubusercontent.com/22337329/186550702-69c5fb77-32c3-4689-bb5c-3a213daa5e19.png
 [step_1]: https://i.imgur.com/Inj82KK.png
 [step_2]: https://user-images.githubusercontent.com/22337329/186521861-42786e8d-5db4-43ef-9676-2f7e7c0eddc4.png
 [action_0]: https://i.imgur.com/M1XdjZC.png
@@ -219,6 +214,5 @@ By default, script build the version as recommended by Revanced team.
 [bot api]: https://i.imgur.com/A6JCyK2.png
 [tg api]: https://i.imgur.com/eha3nnb.png
 [tg api hash]: https://i.imgur.com/7n5k1mp.png
-[git secret]: https://i.imgur.com/dzC1KFa.png
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
