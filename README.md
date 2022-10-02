@@ -17,53 +17,17 @@ You can use any of the following methods to build.
 <summary>🚀In GitHub(Recommended)</summary>
 
 1. Fork the project.
-![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
+
+   ![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
 2. Add following secrets to the repo.
     1. _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
        after building. Click [here](#generate-token) to learn how to get that.
     2. _VT_API_KEY_ (optional) - required only if you want Virus total scan.
     3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
-    <details>
-      <summary>🚶Detailed step by step guide</summary>
-      - Go to the repo settings and then to actions->secret
-        ![step_1]
-
-      - Add Repository secret
-        ![step_2]
-        
-      - **`GitHub Secrets`** might look like this(With VT_SCAN)
-       ![secrets]
-
-      - After adding secrets, **`ENVS`** secret might look like this
-        ```ini
-        PATCH_APPS=youtube_music,twitter
-        EXCLUDE_PATCH_YOUTUBE=custom-branding
-        EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
-        YOUTUBE_VERSION=67.68.69
-        YOUTUBE_MUSIC_VERSION=latest
-        TWITTER_VERSION=0.2.2
-        REDDIT_VERSION=latest
-        TIKTOK_VERSION=latest
-        WARNWETTER_VERSION=latest
-        ```
-
-   </details>
-
+   
 3. Go to actions tab. Select `Build Revanced APK`.Click on `Run Workflow`.
    1. It can take a few minute to start. Just be patient.
-
-    <details>
-      <summary>🚶Detailed step by step guide</summary>
-
-      - Go to actions tab
-        ![action_0]
-      - Check the status of build, It should look green.
-        ![action_1]
-      - Check logs if something fails.
-        ![action_2]
-        ![action_3]
-
-    </details>
+    🚶Detailed step by step [guide](#guide)
 
 4. If the building process is successful, you’ll get your APKs in the releases
     - ![apks]
@@ -184,14 +148,35 @@ By default, script build the version as recommended by Revanced team.
    ```
 9. For Telegram Upload. 
    1. Setup a telegram channel  send a message to it and forward the message to this telegram [bot](https://t.me/username_to_id_bot)
-   2. Copy ```id``` and save it to   ``` TELEGRAM_CHAT_ID ``` and paste it [to](#guide)
+   2. Copy ```id``` and save it to   ``` TELEGRAM_CHAT_ID ``` and paste it [like](#guide)
 
          ![chat id]
-   3. TELEGRAM_BOT_TOKEN - Telegram provides BOT_TOKEN.It works as sender. Learn how to [get](https://core.telegram.org/bots#6-botfather)
-   4. TELEGRAM_API_ID  - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)
-   5. TELEGRAM_API_HASH - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)
-   
-
+   3. ```TELEGRAM_BOT_TOKEN``` - Telegram provides BOT_TOKEN.It works as sender. Learn how to [get](https://core.telegram.org/bots#6-botfather) create and paste it [like](#guide) .
+   4. ```TELEGRAM_API_ID```  - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps) create and paste it [like](#guide) .
+   5. ```TELEGRAM_API_HASH``` - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps) create and paste it [like](#guide) .
+### Guide
+## 🚶Detailed step by step guide
+      
+ - Go to the repo settings and then to actions->secret
+       ![step_1]
+      - Add Repository secret
+        ![step_2]
+ - **`GitHub Secrets`** might look like this(With VT_SCAN)
+       ![secrets]
+---
+ - After adding secrets, **`ENVS`** secret might look like this
+   ```ini
+   PATCH_APPS=youtube_music,twitter
+   EXCLUDE_PATCH_YOUTUBE=custom-branding
+   EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
+   YOUTUBE_VERSION=67.68.69
+   YOUTUBE_MUSIC_VERSION=latest
+   TWITTER_VERSION=0.2.2
+   REDDIT_VERSION=latest
+   TIKTOK_VERSION=latest
+   WARNWETTER_VERSION=latest
+   ```
+---
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens).
    Click on generate new token.
