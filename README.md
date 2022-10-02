@@ -159,7 +159,7 @@ By default, script build the version as recommended by Revanced team.
       
  - Go to the repo settings and then to actions->secret
        ![step_1]
-      - Add Repository secret
+- Add Repository secret
         ![step_2]
  - **`GitHub Secrets`** might look like this(With VT_SCAN)
        ![secrets]
