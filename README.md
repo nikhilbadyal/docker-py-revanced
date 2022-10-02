@@ -181,13 +181,23 @@ By default, script build the version as recommended by Revanced team.
    ```dotenv
     BUILD_EXTENDED=True
    ```
-9. For Telegram Upload. You need 4 pieces of configuration
-   1. API_ID - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)
-   2. API_HASH - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)
-   3. BOT_TOKEN - Telegram provides BOT_TOKEN.It works as sender. Learn how to [get](https://core.telegram.org/bots#6-botfather)
-   4. CHAT_ID - Provide receiver telegram id.It works as receiver. Learn how to [get](https://gist.github.com/mraaroncruz/e76d19f7d61d59419002db54030ebe35)
+9. For Telegram Upload. 
+   1. Setup a telegram channel  send a message to it and forward the message to this telegram [bot](https://t.me/username_to_id_bot)
+   2. Copy ```id``` and save it to   ``` TELEGRAM_CHAT_ID ``` 
 
-   Note - Create one channel where files will be published. Add the bot to the channel(from step 3)
+         ![chat id]
+   3. ```TELEGRAM_BOT_TOKEN``` - Telegram provides BOT_TOKEN. It works as sender. open [bot](https://t.me/BotFather) and create one copy api key 
+     
+      ![bot api]  
+   4. ```TELEGRAM_API_ID```  - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps) 
+    
+     ![tg api]
+
+   5. ```TELEGRAM_API_HASH``` - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps) 
+
+    ![tg api hash]
+## After Everything done successfully the actions secrets of the repository will look something like 
+![git secret]
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens).
    Click on generate new token.
@@ -205,5 +215,10 @@ By default, script build the version as recommended by Revanced team.
 [action_2]: https://user-images.githubusercontent.com/22337329/186533358-e27e30bc-0d16-4f56-a335-0387c481dbf8.png
 [action_3]: https://user-images.githubusercontent.com/22337329/186533417-15477a2c-28c3-4e39-9f3d-c4e18202d000.png
 [apks]: https://i.imgur.com/S5d7qAO.png
+[chat id]: https://i.imgur.com/22UiaWs.png
+[bot api]: https://i.imgur.com/A6JCyK2.png
+[tg api]: https://i.imgur.com/eha3nnb.png
+[tg api hash]: https://i.imgur.com/7n5k1mp.png
+[git secret]: https://i.imgur.com/dzC1KFa.png
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
