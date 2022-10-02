@@ -6,6 +6,8 @@ env:
 on:
   workflow_dispatch:
   pull_request:
+    paths-ignore:
+      - '*.md'
 
 jobs:
   linter:
