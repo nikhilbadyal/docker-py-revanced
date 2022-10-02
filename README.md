@@ -25,11 +25,12 @@ You can use any of the following methods to build.
     3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
     <details>
       <summary>🚶Detailed step by step guide</summary>
-      ### Guide 
       - Go to the repo settings and then to actions->secret
         ![step_1]
+
       - Add Repository secret
         ![step_2]
+        
       - **`GitHub Secrets`** might look like this(With VT_SCAN)
        ![secrets]
 
@@ -183,7 +184,7 @@ By default, script build the version as recommended by Revanced team.
    ```
 9. For Telegram Upload. 
    1. Setup a telegram channel  send a message to it and forward the message to this telegram [bot](https://t.me/username_to_id_bot)
-   2. Copy id and save it to   ``` TELEGRAM_CHAT_ID ``` and paste it [to](#guide)
+   2. Copy ```id``` and save it to   ``` TELEGRAM_CHAT_ID ``` and paste it [to](#guide)
 
          ![chat id]
    3. TELEGRAM_BOT_TOKEN - Telegram provides BOT_TOKEN.It works as sender. Learn how to [get](https://core.telegram.org/bots#6-botfather)
