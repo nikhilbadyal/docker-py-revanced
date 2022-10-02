@@ -15,6 +15,7 @@ concurrency:
 
 jobs:
   linter:
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
