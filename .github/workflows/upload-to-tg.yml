@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Upload to Telegram
         if: ${{ env.HAVE_TELEGRAM_API_ID == 'true' }}
-        uses: nikhilbadyal/ghaction-tg-uploader@main
+        uses: nikhilbadyal/ghaction-telegram-uploader@main
         with:
           API_ID: ${{ secrets.TELEGRAM_API_ID }}
           API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
