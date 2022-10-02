@@ -177,6 +177,13 @@ By default, script build the version as recommended by Revanced team.
    ```dotenv
     BUILD_EXTENDED=True
    ```
+9. For Telegram Upload. You need 4 pieces of configuration
+   1. API_ID - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)
+   2. API_HASH - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)
+   3. BOT_TOKEN - Telegram provides BOT_TOKEN.It works as sender. Learn how to [get](https://core.telegram.org/bots#6-botfather)
+   4. CHAT_ID - Provide receiver telegram id.It works as receiver. Learn how to [get](https://gist.github.com/mraaroncruz/e76d19f7d61d59419002db54030ebe35)
+
+   Note - Create one channel where files will be published. Add the bot to the channel(from step 3)
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens).
    Click on generate new token.
