@@ -1,4 +1,4 @@
-name: Build Revanced APK
+name: Build Revanced APK for PR
 # Enable Buildkit and let compose use it to speed up image building
 env:
   DOCKER_BUILDKIT: 1
@@ -31,22 +31,13 @@ jobs:
       - name: Get Date
         id: get-date
         run: |
-          echo ::set-output name=date::$(TZ='Europe/Paris' date +"%Y.%m.%d-%H.%M.%S")
-
-      - name: Delete Older Releases
-        uses: nikhilbadyal/ghaction-rm-releases@v0.0.2
-        with:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          RELEASE_PATTERN: 'Build*'
+          echo ::set-output name=date::$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")
 
       - name: Upload Build Artifact
-        uses: ncipollo/release-action@v1.10.0
+        uses: actions/upload-artifact@v3
         with:
-          artifacts: "apks/*-output.apk,apks/VancedMicroG.apk"
-          token: ${{ secrets.GH_TOKEN }}
-          tag: Build-${{ steps.get-date.outputs.date }}
-          artifactErrorsFailBuild: true
-          generateReleaseNotes: true
-      - name: Sleep for 10 seconds
-        run: |
-          sleep 10
+          name: Build APKs
+          path: |
+            apks/*-output.apk
+            apks/VancedMicroG.apk"
+          if-no-files-found: error

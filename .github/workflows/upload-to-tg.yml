@@ -1,0 +1,20 @@
+name: Telegram Upload
+
+on:
+  workflow_dispatch: # to trigger manually
+
+jobs:
+  tg-upload:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload to Telegram
+        if: ${{ env.HAVE_TELEGRAM_API_ID == 'true' }}
+        uses: nikhilbadyal/ghaction-tg-uploader@main
+        with:
+          API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+env:
+  HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}

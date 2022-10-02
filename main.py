@@ -28,11 +28,22 @@ supported_apps = [
     "reddit",
     "tiktok",
     "warnwetter",
+    "spotify",
 ]
 apps = env.list("PATCH_APPS", supported_apps)
+build_extended = env.bool("BUILD_EXTENDED", False)
+extended_apps = ["youtube", "youtube_music"]
 keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
 apk_mirror = "https://www.apkmirror.com"
 github = "https://www.github.com"
+normal_cli_jar = "revanced-cli.jar"
+normal_patches_jar = "revanced-patches.jar"
+normal_integrations_apk = "revanced-integrations.apk"
+cli_jar = f"inotia00-{normal_cli_jar}" if build_extended else normal_cli_jar
+patches_jar = f"inotia00-{normal_patches_jar}" if build_extended else normal_patches_jar
+integrations_apk = (
+    f"inotia00-{normal_integrations_apk}" if build_extended else normal_integrations_apk
+)
 apk_mirror_urls = {
     "reddit": f"{apk_mirror}/apk/redditinc/reddit/",
     "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
@@ -49,6 +60,7 @@ apk_mirror_version_urls = {
     "youtube": f"{apk_mirror_urls.get('youtube')}youtube",
     "youtube_music": f"{apk_mirror_urls.get('youtube_music')}youtube-music",
 }
+upto_down = ["spotify"]
 
 
 class Downloader(object):
@@ -110,6 +122,17 @@ class Downloader(object):
             sys.exit(-1)
         download_url = apk_mirror + sub_url
         return download_url
+
+    @classmethod
+    def upto_down_downloader(cls, app: str) -> str:
+        page = "https://spotify.en.uptodown.com/android/download"
+        parser = LexborHTMLParser(session.get(page).text)
+        main_page = parser.css_first("#detail-download-button")
+        download_url = main_page.attributes["data-url"]
+        app_version = parser.css_first(".version").text()
+        cls._download(download_url, "spotify.apk")
+        logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
+        return app_version
 
     @classmethod
     def apkmirror_specific_version(cls, app: str, version: str) -> str:
@@ -176,67 +199,81 @@ class Patches(object):
     def __init__(self) -> None:
         logger.debug("fetching all patches")
         resp = session.get(
-            "https://raw.githubusercontent.com/revanced/revanced-patches/main/README.md"
+            "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
         )
-        available_patches = []
-        for app in resp.text.split("### 📦 ")[1:]:
-            lines = app.splitlines()
+        patches = resp.json()
 
-            app_name = lines[0][1:-1]
-            app_patches = []
-            for line in lines:
-                patch = line.split("|")[1:-1]
-                if len(patch) == 3:
-                    (n, d, v), a = [i.replace("`", "").strip() for i in patch], app_name
-                    app_patches.append((n, d, a, v))
+        revanced_app_ids = {
+            "com.reddit.frontpage": ("reddit", "_reddit"),
+            "com.ss.android.ugc.trill": ("tiktok", "_tiktok"),
+            "com.twitter.android": ("twitter", "_twitter"),
+            "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
+            "com.spotify.music": ("spotify", "_spotify"),
+        }
 
-            available_patches.extend(app_patches[2:])
+        for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
+            setattr(self, app_name, [])
 
-        youtube, music, twitter, reddit, tiktok, warnwetter = [], [], [], [], [], []
-        for n, d, a, v in available_patches:
-            patch = {"name": n, "description": d, "app": a, "version": v}
-            if "twitter" in a:
-                twitter.append(patch)
-            elif "reddit" in a:
-                reddit.append(patch)
-            elif "music" in a:
-                music.append(patch)
-            elif "youtube" in a:
-                youtube.append(patch)
-            elif "trill" in a:
-                tiktok.append(patch)
-            elif "warnapp" in a:
-                warnwetter.append(patch)
-        self._yt = youtube
-        self._ytm = music
-        self._twitter = twitter
-        self._reddit = reddit
-        self._tiktok = tiktok
-        self._warnwetter = warnwetter
-        logger.debug(f"Total patches in youtube are {len(youtube)}")
-        logger.debug(f"Total patches in youtube-music are {len(music)}")
-        logger.debug(f"Total patches in twitter are {len(twitter)}")
-        logger.debug(f"Total patches in reddit are {len(reddit)}")
-        logger.debug(f"Total patches in tiktok are {len(tiktok)}")
-        logger.debug(f"Total patches in warnwetter are {len(warnwetter)}")
+        for patch in patches:
+            for compatible_package, version in [
+                (x["name"], x["versions"]) for x in patch["compatiblePackages"]
+            ]:
+                if compatible_package in revanced_app_ids:
+                    app_name = revanced_app_ids[compatible_package][1]
+                    p = {x: patch[x] for x in ["name", "description"]}
+                    p["app"] = compatible_package
+                    p["version"] = version[-1] if version else "all"
+                    getattr(self, app_name).append(p)
+
+        if build_extended:
+            url = "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
+        else:
+            url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
+
+        resp_extended = session.get(url)
+        extended_patches = resp_extended.json()
+        revanced_extended_app_ids = {
+            "com.google.android.youtube": ("youtube", "_yt"),
+            "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
+        }
+        for app_name in (
+            revanced_extended_app_ids[x][1] for x in revanced_extended_app_ids
+        ):
+            setattr(self, app_name, [])
+
+        for patch in extended_patches:
+            for compatible_package, version in [
+                (x["name"], x["versions"]) for x in patch["compatiblePackages"]
+            ]:
+                if compatible_package in revanced_extended_app_ids:
+                    app_name = revanced_extended_app_ids[compatible_package][1]
+                    p = {x: patch[x] for x in ["name", "description"]}
+                    p["app"] = compatible_package
+                    p["version"] = version[-1] if version else "all"
+                    getattr(self, app_name).append(p)
+
+        for app_name, app_id in revanced_extended_app_ids.values():
+            n_patches = len(getattr(self, app_id))
+            logger.debug(f"Total patches in {app_name} are {n_patches}")
+        for app_name, app_id in revanced_app_ids.values():
+            n_patches = len(getattr(self, app_id))
+            logger.debug(f"Total patches in {app_name} are {n_patches}")
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
-        if "twitter" == app:
-            patches = self._twitter
-        elif "reddit" == app:
-            patches = self._reddit
-        elif "youtube_music" == app:
-            patches = self._ytm
-        elif "youtube" == app:
-            patches = self._yt
-        elif "tiktok" == app:
-            patches = self._tiktok
-        elif "warnwetter" == app:
-            patches = self._warnwetter
-        else:
+        app_names = {
+            "reddit": "_reddit",
+            "tiktok": "_tiktok",
+            "twitter": "_twitter",
+            "warnwetter": "_warnwetter",
+            "youtube": "_yt",
+            "youtube_music": "_ytm",
+            "spotify": "_spotify",
+        }
+        if not (app_name := app_names.get(app)):
             logger.debug("Invalid app name")
             sys.exit(-1)
+        patches = getattr(self, app_name)
         version = ""
         if app in ("youtube", "youtube_music"):
             version = next(i["version"] for i in patches if i["version"] != "all")
@@ -263,15 +300,22 @@ class ArgParser(object):
 
     def run(self, app: str, version: str, is_experimental: bool = False) -> None:
         logger.debug(f"Sending request to revanced cli for building {app} revanced")
+        cli = normal_cli_jar
+        patches = normal_patches_jar
+        integrations = normal_integrations_apk
+        if build_extended and app in extended_apps:
+            cli = cli_jar
+            patches = patches_jar
+            integrations = integrations_apk
         args = [
             "-jar",
-            "revanced-cli.jar",
+            cli,
             "-a",
             app + ".apk",
             "-b",
-            "revanced-patches.jar",
+            patches,
             "-m",
-            "revanced-integrations.apk",
+            integrations,
             "-o",
             f"Re-{app}-{version}-output.apk",
             "--keystore",
@@ -280,12 +324,7 @@ class ArgParser(object):
         if is_experimental:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        if app in ("reddit", "tiktok"):
-            args.remove("-m")
-            args.remove("revanced-integrations.apk")
         args[1::2] = map(lambda i: temp_folder.joinpath(i), args[1::2])
-        if app in ("reddit", "tiktok"):
-            args.append("-r")
 
         if self._PATCHES:
             args.extend(self._PATCHES)
@@ -330,14 +369,24 @@ def pre_requisite():
 
 def download_revanced(downloader: Type[Downloader]) -> None:
     assets = (
-        ("revanced", "revanced-cli", "revanced-cli.jar"),
-        ("revanced", "revanced-integrations", "revanced-integrations.apk"),
-        ("revanced", "revanced-patches", "revanced-patches.jar"),
+        ("revanced", "revanced-cli", normal_cli_jar),
+        ("revanced", "revanced-integrations", normal_integrations_apk),
+        ("revanced", "revanced-patches", normal_patches_jar),
         ("inotia00", "VancedMicroG", "VancedMicroG.apk"),
     )
+    if build_extended:
+        assets += (
+            ("inotia00", "revanced-cli", cli_jar),
+            ("inotia00", "revanced-integrations", integrations_apk),
+            ("inotia00", "revanced-patches", patches_jar),
+        )
     with ThreadPoolExecutor() as executor:
         executor.map(lambda repo: downloader.repository(*repo), assets)
     logger.info("Downloaded revanced microG ,cli, integrations and patches.")
+
+
+def upto_down_downloader(app: str, downloader: Type[Downloader]) -> str:
+    return downloader.upto_down_downloader(app)
 
 
 def download_from_apkmirror(
@@ -349,6 +398,13 @@ def download_from_apkmirror(
         return downloader.apkmirror_latest_version(app)
 
 
+def download_apk_to_patch(version: str, app: str, downloader: Type[Downloader]) -> str:
+    if app in upto_down:
+        return upto_down_downloader(app, downloader)
+    else:
+        return download_from_apkmirror(version, app, downloader)
+
+
 def main() -> None:
     patches = pre_requisite()
     downloader = Downloader
@@ -356,7 +412,10 @@ def main() -> None:
 
     def get_patches() -> None:
         logger.debug(f"Excluding patches for app {app}")
-        excluded_patches = env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
+        if build_extended and app in extended_apps:
+            excluded_patches = env.list(f"EXCLUDE_PATCH_{app}_EXTENDED".upper(), [])
+        else:
+            excluded_patches = env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
         for patch in app_patches:
             arg_parser.include(patch["name"]) if patch[
                 "name"
@@ -384,7 +443,7 @@ def main() -> None:
             arg_parser = ArgParser()
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = get_patches_version()
-            version = download_from_apkmirror(version, app, downloader)
+            version = download_apk_to_patch(version, app, downloader)
             get_patches()
             logger.debug(f"Downloaded {app}, version {version}")
             arg_parser.run(app=app, version=version, is_experimental=is_experimental)
