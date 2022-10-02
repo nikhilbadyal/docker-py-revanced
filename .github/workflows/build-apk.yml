@@ -3,6 +3,7 @@ name: Build Revanced APK
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
+  HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}
 on:
   workflow_dispatch:
   workflow_call:
@@ -50,3 +51,12 @@ jobs:
       - name: Sleep for 10 seconds
         run: |
           sleep 10
+
+      - name: Upload to Telegram
+        if: ${{ env.HAVE_TELEGRAM_API_ID == 'true' }}
+        uses: nikhilbadyal/ghaction-telegram-uploader@main
+        with:
+          API_ID: ${{ secrets.TELEGRAM_API_ID }}
+          API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+          BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
