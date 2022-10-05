@@ -1,14 +1,19 @@
+import sys
+from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import Any, List
 
+from environs import Env
 from loguru import logger
+
+from src.patches import Patches
 
 
 class Parser(object):
-    def __init__(self, patcher, env, temp_folder):
-        self._PATCHES = []
-        self._EXCLUDED = []
+    def __init__(self, patcher: Patches, env: Env, temp_folder: Path) -> None:
+        self._PATCHES: List[str] = []
+        self._EXCLUDED: List[str] = []
         self.patcher = patcher
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
         self.build_extended = env.bool("BUILD_EXTENDED", False)
@@ -77,7 +82,11 @@ class Parser(object):
 
         start = perf_counter()
         process = Popen(["java", *args], stdout=PIPE)
-        for line in process.stdout:
+        output = process.stdout
+        if not output:
+            logger.error("Failed to send request for patching.")
+            sys.exit(-1)
+        for line in output:
             logger.debug(line.decode(), flush=True, end="")
         process.wait()
         logger.info(

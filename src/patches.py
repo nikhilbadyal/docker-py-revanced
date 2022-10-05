@@ -2,6 +2,7 @@ import subprocess
 import sys
 from typing import Any, Dict, List, Tuple
 
+from environs import Env
 from loguru import logger
 from requests import Session
 
@@ -11,8 +12,10 @@ from src.utils import supported_apps
 class Patches(object):
     def check_java(self) -> None:
         logger.debug("Checking if java is available")
-        jd = subprocess.check_output(["java", "-version"], stderr=subprocess.STDOUT)
-        jd = str(jd)[1:-1]
+        jd = subprocess.check_output(
+            ["java", "-version"], stderr=subprocess.STDOUT
+        ).decode("utf-8")
+        jd = jd[1:-1]
         if "Runtime Environment" not in jd:
             logger.debug("Java Must be installed")
             exit(-1)
@@ -21,7 +24,7 @@ class Patches(object):
             exit(-1)
         logger.debug("Cool!! Java is available")
 
-    def fetch_patches(self):
+    def fetch_patches(self) -> None:
         session = Session()
 
         logger.debug("fetching all patches")
@@ -85,13 +88,13 @@ class Patches(object):
             n_patches = len(getattr(self, app_id))
             logger.debug(f"Total patches in {app_name} are {n_patches}")
 
-    def __init__(self, env) -> None:
+    def __init__(self, env: Env) -> None:
         self.env = env
         self.apps = env.list("PATCH_APPS", supported_apps)
         self.build_extended = env.bool("BUILD_EXTENDED", False)
         self.check_java()
         self.fetch_patches()
-        self.extended_apps = ["youtube", "youtube_music"]
+        self.extended_apps: List[str] = ["youtube", "youtube_music"]
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
@@ -116,7 +119,9 @@ class Patches(object):
             logger.debug("No recommended version.")
         return patches, version
 
-    def include_and_exclude_patches(self, app, arg_parser, app_patches) -> None:
+    def include_and_exclude_patches(
+        self, app: str, arg_parser: Any, app_patches: List[Any]
+    ) -> None:
         logger.debug(f"Excluding patches for app {app}")
         if self.build_extended and app in self.extended_apps:
             excluded_patches = self.env.list(
@@ -134,7 +139,7 @@ class Patches(object):
         else:
             logger.debug(f"No excluded patches for {app}")
 
-    def get_app_configs(self, app) -> Any:
+    def get_app_configs(self, app: str) -> Any:
         experiment = False
         total_patches, recommended_version = self.get(app=app)
         env_version = self.env.str(f"{app}_VERSION".upper(), None)

@@ -20,7 +20,7 @@ def main() -> None:
         try:
             logger.info("Trying to build %s" % app)
             app_all_patches, version, is_experimental = patcher.get_app_configs(app)
-            version = downloader.download_apk_to_patch(version, app, patcher)
+            version = downloader.download_apk_to_patch(version, app)
             patcher.include_and_exclude_patches(app, parser, app_all_patches)
             logger.info(f"Downloaded {app}, version {version}")
             parser.patch_app(app=app, version=version, is_experimental=is_experimental)
