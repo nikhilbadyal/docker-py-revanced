@@ -143,7 +143,11 @@ class Downloader(object):
         main_page = parser.css_first(".appRowVariantTag>.accent_color").attributes[
             "href"
         ]
-        int_version = re.search(r"\d", main_page).start()
+        match = re.search(r"\d", main_page)
+        if not match:
+            logger.error("Cannot find app main page")
+            sys.exit(-1)
+        int_version = match.start()
         extra_release = main_page.rfind("release") - 1
         version = main_page[int_version:extra_release]
         version = version.replace("-", ".")
@@ -167,19 +171,19 @@ class Downloader(object):
         self._download(download_url, file_name=file_name)
 
     def download_revanced(self) -> None:
-        assets = (
-            ("revanced", "revanced-cli", self.normal_cli_jar),
-            ("revanced", "revanced-integrations", self.normal_integrations_apk),
-            ("revanced", "revanced-patches", self.normal_patches_jar),
-            ("inotia00", "VancedMicroG", "VancedMicroG.apk"),
-        )
+        assets = [
+            ["revanced", "revanced-cli", self.normal_cli_jar],
+            ["revanced", "revanced-integrations", self.normal_integrations_apk],
+            ["revanced", "revanced-patches", self.normal_patches_jar],
+            ["inotia00", "VancedMicroG", "VancedMicroG.apk"],
+        ]
         if self.build_extended:
-            assets += (
-                ("inotia00", "revanced-cli", self.cli_jar),
-                ("inotia00", "revanced-integrations", self.integrations_apk),
-                ("inotia00", "revanced-patches", self.patches_jar),
-            )
-        with ThreadPoolExecutor() as executor:
+            assets += [
+                ["inotia00", "revanced-cli", self.cli_jar],
+                ["inotia00", "revanced-integrations", self.integrations_apk],
+                ["inotia00", "revanced-patches", self.patches_jar],
+            ]
+        with ThreadPoolExecutor(7) as executor:
             executor.map(lambda repo: self.repository(*repo), assets)
         logger.info("Downloaded revanced microG ,cli, integrations and patches.")
 

@@ -11,8 +11,10 @@ from src.utils import supported_apps
 class Patches(object):
     def check_java(self) -> None:
         logger.debug("Checking if java is available")
-        jd = subprocess.check_output(["java", "-version"], stderr=subprocess.STDOUT)
-        jd = str(jd)[1:-1]
+        jd = subprocess.check_output(
+            ["java", "-version"], stderr=subprocess.STDOUT
+        ).decode("utf-8")
+        jd = jd[1:-1]
         if "Runtime Environment" not in jd:
             logger.debug("Java Must be installed")
             exit(-1)
@@ -91,7 +93,7 @@ class Patches(object):
         self.build_extended = env.bool("BUILD_EXTENDED", False)
         self.check_java()
         self.fetch_patches()
-        self.extended_apps = ["youtube", "youtube_music"]
+        self.extended_apps: List[str] = ["youtube", "youtube_music"]
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)

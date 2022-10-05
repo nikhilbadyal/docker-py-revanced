@@ -47,6 +47,12 @@ repos:
       - id: flake8
         args: [ "--config=setup.cfg" ]
 
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.971
+    hooks:
+      - id: mypy
+        additional_dependencies: [ types-requests ]
+
 
 
 # sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
