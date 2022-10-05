@@ -91,6 +91,7 @@ class Patches(object):
         self.build_extended = env.bool("BUILD_EXTENDED", False)
         self.check_java()
         self.fetch_patches()
+        self.extended_apps = ["youtube", "youtube_music"]
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
