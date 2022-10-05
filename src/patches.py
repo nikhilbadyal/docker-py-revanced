@@ -6,7 +6,6 @@ from environs import Env
 from loguru import logger
 from requests import Session
 
-from src.parser import Parser
 from src.utils import supported_apps
 
 
@@ -121,7 +120,7 @@ class Patches(object):
         return patches, version
 
     def include_and_exclude_patches(
-        self, app: str, arg_parser: Parser, app_patches: List[Any]
+        self, app: str, arg_parser: Any, app_patches: List[Any]
     ) -> None:
         logger.debug(f"Excluding patches for app {app}")
         if self.build_extended and app in self.extended_apps:
