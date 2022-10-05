@@ -22,7 +22,7 @@ def main() -> None:
             logger.debug("Trying to build %s" % app)
             app_patches, version, is_experimental = patches.get_patches_version(app)
             version = downloader.download_apk_to_patch(version, app)
-            patches.get_patches(app, arg_parser)
+            patches.get_patches(app, arg_parser, app_patches)
             logger.debug(f"Downloaded {app}, version {version}")
             arg_parser.run(app=app, version=version, is_experimental=is_experimental)
         except Exception as e:

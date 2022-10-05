@@ -121,7 +121,7 @@ class Patches(object):
             logger.debug("No recommended version.")
         return patches, version
 
-    def get_patches(self, app, arg_parser) -> None:
+    def get_patches(self, app, arg_parser, app_patches) -> None:
         logger.debug(f"Excluding patches for app {app}")
         if self.build_extended and app in self.extended_apps:
             excluded_patches = self.env.list(
@@ -129,7 +129,7 @@ class Patches(object):
             )
         else:
             excluded_patches = self.env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
-        for patch in self.app_patches:
+        for patch in app_patches:
             arg_parser.include(patch["name"]) if patch[
                 "name"
             ] not in excluded_patches else arg_parser.exclude(patch["name"])
