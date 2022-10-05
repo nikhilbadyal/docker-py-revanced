@@ -7,69 +7,65 @@ from time import perf_counter
 from typing import Tuple
 
 import requests
-from environs import Env
 from loguru import logger
 from requests import Session
 from selectolax.lexbor import LexborHTMLParser
 from tqdm import tqdm
 
-env = Env()
-temp_folder = Path("apks")
-session = Session()
-session.headers["User-Agent"] = "anything"
-supported_apps = [
-    "youtube",
-    "youtube_music",
-    "twitter",
-    "reddit",
-    "tiktok",
-    "warnwetter",
-    "spotify",
-]
-apps = env.list("PATCH_APPS", supported_apps)
-build_extended = env.bool("BUILD_EXTENDED", False)
-extended_apps = ["youtube", "youtube_music"]
-keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
-apk_mirror = "https://www.apkmirror.com"
-github = "https://www.github.com"
-normal_cli_jar = "revanced-cli.jar"
-normal_patches_jar = "revanced-patches.jar"
-normal_integrations_apk = "revanced-integrations.apk"
-cli_jar = f"inotia00-{normal_cli_jar}" if build_extended else normal_cli_jar
-patches_jar = f"inotia00-{normal_patches_jar}" if build_extended else normal_patches_jar
-integrations_apk = (
-    f"inotia00-{normal_integrations_apk}" if build_extended else normal_integrations_apk
-)
-apk_mirror_urls = {
-    "reddit": f"{apk_mirror}/apk/redditinc/reddit/",
-    "twitter": f"{apk_mirror}/apk/twitter-inc/twitter/",
-    "tiktok": f"{apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
-    "warnwetter": f"{apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
-    "youtube": f"{apk_mirror}/apk/google-inc/youtube/",
-    "youtube_music": f"{apk_mirror}/apk/google-inc/youtube-music/",
-}
-apk_mirror_version_urls = {
-    "reddit": f"{apk_mirror_urls.get('reddit')}reddit",
-    "twitter": f"{apk_mirror_urls.get('twitter')}twitter",
-    "tiktok": f"{apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
-    "warnwetter": f"{apk_mirror_urls.get('warnwetter')}warnwetter",
-    "youtube": f"{apk_mirror_urls.get('youtube')}youtube",
-    "youtube_music": f"{apk_mirror_urls.get('youtube_music')}youtube-music",
-}
-upto_down = ["spotify"]
-
 
 class Downloader(object):
-    def __init__(self):
+    def __init__(self, env):
         self._CHUNK_SIZE = 2**21 * 5
         self._QUEUE: PriorityQueue[Tuple] = PriorityQueue()
         self._QUEUE_LENGTH = 0
+        self.temp_folder = Path("apks")
+
+        self.session = Session()
+        self.session.headers["User-Agent"] = "anything"
+        self.build_extended = env.bool("BUILD_EXTENDED", False)
+        self.apk_mirror = "https://www.apkmirror.com"
+        self.normal_cli_jar = "revanced-cli.jar"
+        self.normal_patches_jar = "revanced-patches.jar"
+        self.normal_integrations_apk = "revanced-integrations.apk"
+        self.cli_jar = (
+            f"inotia00-{self.normal_cli_jar}"
+            if self.build_extended
+            else self.normal_cli_jar
+        )
+        self.patches_jar = (
+            f"inotia00-{self.normal_patches_jar}"
+            if self.build_extended
+            else self.normal_patches_jar
+        )
+        self.integrations_apk = (
+            f"inotia00-{self.normal_integrations_apk}"
+            if self.build_extended
+            else self.normal_integrations_apk
+        )
+        self.apk_mirror_urls = {
+            "reddit": f"{self.apk_mirror}/apk/redditinc/reddit/",
+            "twitter": f"{self.apk_mirror}/apk/twitter-inc/twitter/",
+            "tiktok": f"{self.apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
+            "warnwetter": f"{self.apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
+            "youtube": f"{self.apk_mirror}/apk/google-inc/youtube/",
+            "youtube_music": f"{self.apk_mirror}/apk/google-inc/youtube-music/",
+        }
+        self.apk_mirror_version_urls = {
+            "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
+            "twitter": f"{self.apk_mirror_urls.get('twitter')}twitter",
+            "tiktok": f"{self.apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
+            "warnwetter": f"{self.apk_mirror_urls.get('warnwetter')}warnwetter",
+            "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
+            "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
+        }
+        self.upto_down = ["spotify"]
+        self.download_revanced()
 
     def _download(self, url: str, file_name: str) -> None:
         logger.debug(f"Trying to download {file_name} from {url}")
         self._QUEUE_LENGTH += 1
         start = perf_counter()
-        resp = session.get(url, stream=True)
+        resp = self.session.get(url, stream=True)
         total = int(resp.headers.get("content-length", 0))
         bar = tqdm(
             desc=file_name,
@@ -79,7 +75,7 @@ class Downloader(object):
             unit_divisor=1024,
             colour="green",
         )
-        with temp_folder.joinpath(file_name).open("wb") as dl_file, bar:
+        with self.temp_folder.joinpath(file_name).open("wb") as dl_file, bar:
             for chunk in resp.iter_content(self._CHUNK_SIZE):
                 size = dl_file.write(chunk)
                 bar.update(size)
@@ -88,17 +84,17 @@ class Downloader(object):
 
     def extract_download_link(self, page: str, app: str):
         logger.debug(f"Extracting download link from\n{page}")
-        parser = LexborHTMLParser(session.get(page).text)
+        parser = LexborHTMLParser(self.session.get(page).text)
 
-        resp = session.get(
-            apk_mirror + parser.css_first("a.accent_bg").attributes["href"]
+        resp = self.session.get(
+            self.apk_mirror + parser.css_first("a.accent_bg").attributes["href"]
         )
         parser = LexborHTMLParser(resp.text)
 
         href = parser.css_first(
             "p.notes:nth-child(3) > span:nth-child(1) > a:nth-child(1)"
         ).attributes["href"]
-        self._download(apk_mirror + href, f"{app}.apk")
+        self._download(self.apk_mirror + href, f"{app}.apk")
         logger.debug("Finished Extracting link and downloading")
 
     def get_download_page(self, parser, main_page):
@@ -114,12 +110,12 @@ class Downloader(object):
                 f"Unable to find any apk on apkmirror_specific_version on {main_page}"
             )
             sys.exit(-1)
-        download_url = apk_mirror + sub_url
+        download_url = self.apk_mirror + sub_url
         return download_url
 
     def __upto_down_downloader(self, app: str) -> str:
         page = "https://spotify.en.uptodown.com/android/download"
-        parser = LexborHTMLParser(session.get(page).text)
+        parser = LexborHTMLParser(self.session.get(page).text)
         main_page = parser.css_first("#detail-download-button")
         download_url = main_page.attributes["data-url"]
         app_version = parser.css_first(".version").text()
@@ -127,11 +123,11 @@ class Downloader(object):
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
         return app_version
 
-    def apkmirror_specific_version(self, app: str, version: str) -> str:
+    def apkmirror_specific_version(self, app: str, version: str, patcher) -> str:
         logger.debug(f"Trying to download {app},specific version {version}")
         version = version.replace(".", "-")
-        main_page = f"{apk_mirror_version_urls.get(app)}-{version}-release/"
-        parser = LexborHTMLParser(session.get(main_page).text)
+        main_page = f"{self.apk_mirror_version_urls.get(app)}-{version}-release/"
+        parser = LexborHTMLParser(self.session.get(main_page).text)
         download_page = self.get_download_page(parser, main_page)
         self.extract_download_link(download_page, app)
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version")
@@ -139,11 +135,11 @@ class Downloader(object):
 
     def apkmirror_latest_version(self, app: str) -> str:
         logger.debug(f"Trying to download {app}'s latest version from apkmirror")
-        page = apk_mirror_urls.get(app)
+        page = self.apk_mirror_urls.get(app)
         if not page:
             logger.debug("Invalid app")
             sys.exit(1)
-        parser = LexborHTMLParser(session.get(page).text)
+        parser = LexborHTMLParser(self.session.get(page).text)
         main_page = parser.css_first(".appRowVariantTag>.accent_color").attributes[
             "href"
         ]
@@ -151,8 +147,8 @@ class Downloader(object):
         extra_release = main_page.rfind("release") - 1
         version = main_page[int_version:extra_release]
         version = version.replace("-", ".")
-        main_page = f"{apk_mirror}{main_page}"
-        parser = LexborHTMLParser(session.get(main_page).text)
+        main_page = f"{self.apk_mirror}{main_page}"
+        parser = LexborHTMLParser(self.session.get(main_page).text)
         download_page = self.get_download_page(parser, main_page)
         self.extract_download_link(download_page, app)
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
@@ -172,16 +168,16 @@ class Downloader(object):
 
     def download_revanced(self) -> None:
         assets = (
-            ("revanced", "revanced-cli", normal_cli_jar),
-            ("revanced", "revanced-integrations", normal_integrations_apk),
-            ("revanced", "revanced-patches", normal_patches_jar),
+            ("revanced", "revanced-cli", self.normal_cli_jar),
+            ("revanced", "revanced-integrations", self.normal_integrations_apk),
+            ("revanced", "revanced-patches", self.normal_patches_jar),
             ("inotia00", "VancedMicroG", "VancedMicroG.apk"),
         )
-        if build_extended:
+        if self.build_extended:
             assets += (
-                ("inotia00", "revanced-cli", cli_jar),
-                ("inotia00", "revanced-integrations", integrations_apk),
-                ("inotia00", "revanced-patches", patches_jar),
+                ("inotia00", "revanced-cli", self.cli_jar),
+                ("inotia00", "revanced-integrations", self.integrations_apk),
+                ("inotia00", "revanced-patches", self.patches_jar),
             )
         with ThreadPoolExecutor() as executor:
             executor.map(lambda repo: self.repository(*repo), assets)
@@ -190,14 +186,14 @@ class Downloader(object):
     def upto_down_downloader(self, app: str) -> str:
         return self.__upto_down_downloader(app)
 
-    def download_from_apkmirror(self, version: str, app: str) -> str:
+    def download_from_apkmirror(self, version: str, app: str, patches) -> str:
         if version and version != "latest":
-            return self.apkmirror_specific_version(app, version)
+            return self.apkmirror_specific_version(app, version, patches)
         else:
             return self.apkmirror_latest_version(app)
 
-    def download_apk_to_patch(self, version: str, app: str) -> str:
-        if app in upto_down:
+    def download_apk_to_patch(self, version: str, app: str, patches) -> str:
+        if app in self.upto_down:
             return self.upto_down_downloader(app)
         else:
-            return self.download_from_apkmirror(version, app)
+            return self.download_from_apkmirror(version, app, patches)

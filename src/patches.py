@@ -5,16 +5,7 @@ from typing import Any, Dict, List, Tuple
 from loguru import logger
 from requests import Session
 
-supported_apps = [
-    "youtube",
-    "youtube_music",
-    "twitter",
-    "reddit",
-    "tiktok",
-    "warnwetter",
-    "spotify",
-]
-session = Session()
+from src.utils import supported_apps
 
 
 class Patches(object):
@@ -30,13 +21,9 @@ class Patches(object):
             exit(-1)
         logger.debug("Cool!! Java is available")
 
-    def __init__(self, env) -> None:
-        self.env = env
+    def fetch_patches(self):
+        session = Session()
 
-        self.apps = env.list("PATCH_APPS", supported_apps)
-        self.build_extended = env.bool("BUILD_EXTENDED", False)
-
-        self.check_java()
         logger.debug("fetching all patches")
         resp = session.get(
             "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
@@ -98,6 +85,13 @@ class Patches(object):
             n_patches = len(getattr(self, app_id))
             logger.debug(f"Total patches in {app_name} are {n_patches}")
 
+    def __init__(self, env) -> None:
+        self.env = env
+        self.apps = env.list("PATCH_APPS", supported_apps)
+        self.build_extended = env.bool("BUILD_EXTENDED", False)
+        self.check_java()
+        self.fetch_patches()
+
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
         app_names = {
@@ -121,7 +115,7 @@ class Patches(object):
             logger.debug("No recommended version.")
         return patches, version
 
-    def get_patches(self, app, arg_parser, app_patches) -> None:
+    def include_and_exclude_patches(self, app, arg_parser, app_patches) -> None:
         logger.debug(f"Excluding patches for app {app}")
         if self.build_extended and app in self.extended_apps:
             excluded_patches = self.env.list(
@@ -139,7 +133,7 @@ class Patches(object):
         else:
             logger.debug(f"No excluded patches for {app}")
 
-    def get_patches_version(self, app) -> Any:
+    def get_app_configs(self, app) -> Any:
         experiment = False
         total_patches, recommended_version = self.get(app=app)
         env_version = self.env.str(f"{app}_VERSION".upper(), None)
