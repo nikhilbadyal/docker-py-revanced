@@ -13,7 +13,7 @@ def main() -> None:
 
     patcher = Patches(env)
     downloader = Downloader(env)
-    parser = Parser(patcher, env)
+    parser = Parser(patcher, env, downloader.temp_folder)
 
     logger.info(f"Will Patch only {patcher.apps}")
     for app in patcher.apps:

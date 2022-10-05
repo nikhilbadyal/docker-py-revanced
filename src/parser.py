@@ -4,11 +4,9 @@ from typing import Any, List
 
 from loguru import logger
 
-from src.downloader import temp_folder
-
 
 class Parser(object):
-    def __init__(self, patcher, env):
+    def __init__(self, patcher, env, temp_folder):
         self._PATCHES = []
         self._EXCLUDED = []
         self.patcher = patcher
@@ -34,6 +32,7 @@ class Parser(object):
             if self.build_extended
             else self.normal_integrations_apk
         )
+        self.temp_folder = temp_folder
 
     def include(self, name: str) -> None:
         self._PATCHES.extend(["-i", name])
@@ -71,7 +70,7 @@ class Parser(object):
         if is_experimental:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        args[1::2] = map(lambda i: temp_folder.joinpath(i), args[1::2])
+        args[1::2] = map(lambda i: self.temp_folder.joinpath(i), args[1::2])
 
         if self._PATCHES:
             args.extend(self._PATCHES)
