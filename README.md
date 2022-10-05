@@ -115,7 +115,7 @@ By default, script build the version as recommended by Revanced team.
    4. reddit
    5. tiktok
    6. warnwetter
-   7. Spotify
+   7. spotify
 2. If you want to build a specific version . Add `version` in `environment` in the
    format
    ```ini
