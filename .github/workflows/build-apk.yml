@@ -39,7 +39,7 @@ jobs:
           RELEASE_PATTERN: 'Build*'
 
       - name: Upload Build Artifact
-        uses: ncipollo/release-action@v1.11.0
+        uses: ncipollo/release-action@v1.11.1
         with:
           artifacts: "apks/*-output.apk,apks/VancedMicroG.apk"
           token: ${{ secrets.GH_TOKEN }}
