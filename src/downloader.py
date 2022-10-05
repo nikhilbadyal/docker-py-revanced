@@ -4,9 +4,10 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from queue import PriorityQueue
 from time import perf_counter
-from typing import Tuple
+from typing import Any, Tuple
 
 import requests
+from environs import Env
 from loguru import logger
 from requests import Session
 from selectolax.lexbor import LexborHTMLParser
@@ -14,9 +15,9 @@ from tqdm import tqdm
 
 
 class Downloader(object):
-    def __init__(self, env):
+    def __init__(self, env: Env):
         self._CHUNK_SIZE = 2**21 * 5
-        self._QUEUE: PriorityQueue[Tuple] = PriorityQueue()
+        self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
         self.temp_folder = Path("apks")
 
@@ -82,7 +83,7 @@ class Downloader(object):
         self._QUEUE.put((perf_counter() - start, file_name))
         logger.debug(f"Downloaded {file_name}")
 
-    def extract_download_link(self, page: str, app: str):
+    def extract_download_link(self, page: str, app: str) -> None:
         logger.debug(f"Extracting download link from\n{page}")
         parser = LexborHTMLParser(self.session.get(page).text)
 
@@ -97,7 +98,7 @@ class Downloader(object):
         self._download(self.apk_mirror + href, f"{app}.apk")
         logger.debug("Finished Extracting link and downloading")
 
-    def get_download_page(self, parser, main_page):
+    def get_download_page(self, parser: LexborHTMLParser, main_page: str) -> str:
         apm = parser.css(".apkm-badge")
         sub_url = ""
         for is_apm in apm:
@@ -113,7 +114,7 @@ class Downloader(object):
         download_url = self.apk_mirror + sub_url
         return download_url
 
-    def __upto_down_downloader(self, app: str) -> str:
+    def __upto_down_downloader(self, app: str) -> Any:
         page = "https://spotify.en.uptodown.com/android/download"
         parser = LexborHTMLParser(self.session.get(page).text)
         main_page = parser.css_first("#detail-download-button")
@@ -123,7 +124,7 @@ class Downloader(object):
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
         return app_version
 
-    def apkmirror_specific_version(self, app: str, version: str, patcher) -> str:
+    def apkmirror_specific_version(self, app: str, version: str) -> str:
         logger.debug(f"Trying to download {app},specific version {version}")
         version = version.replace(".", "-")
         main_page = f"{self.apk_mirror_version_urls.get(app)}-{version}-release/"
@@ -133,7 +134,7 @@ class Downloader(object):
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version")
         return version
 
-    def apkmirror_latest_version(self, app: str) -> str:
+    def apkmirror_latest_version(self, app: str) -> Any:
         logger.debug(f"Trying to download {app}'s latest version from apkmirror")
         page = self.apk_mirror_urls.get(app)
         if not page:
@@ -187,17 +188,17 @@ class Downloader(object):
             executor.map(lambda repo: self.repository(*repo), assets)
         logger.info("Downloaded revanced microG ,cli, integrations and patches.")
 
-    def upto_down_downloader(self, app: str) -> str:
+    def upto_down_downloader(self, app: str) -> Any:
         return self.__upto_down_downloader(app)
 
-    def download_from_apkmirror(self, version: str, app: str, patches) -> str:
+    def download_from_apkmirror(self, version: str, app: str) -> Any:
         if version and version != "latest":
-            return self.apkmirror_specific_version(app, version, patches)
+            return self.apkmirror_specific_version(app, version)
         else:
             return self.apkmirror_latest_version(app)
 
-    def download_apk_to_patch(self, version: str, app: str, patches) -> str:
+    def download_apk_to_patch(self, version: str, app: str) -> Any:
         if app in self.upto_down:
             return self.upto_down_downloader(app)
         else:
-            return self.download_from_apkmirror(version, app, patches)
+            return self.download_from_apkmirror(version, app)

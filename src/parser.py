@@ -1,13 +1,17 @@
 import sys
+from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import Any, List
 
+from environs import Env
 from loguru import logger
+
+from src.patches import Patches
 
 
 class Parser(object):
-    def __init__(self, patcher, env, temp_folder) -> None:
+    def __init__(self, patcher: Patches, env: Env, temp_folder: Path) -> None:
         self._PATCHES: List[str] = []
         self._EXCLUDED: List[str] = []
         self.patcher = patcher

@@ -51,6 +51,8 @@ repos:
     rev: v0.971
     hooks:
       - id: mypy
+        args:
+          - '--strict'
         additional_dependencies: [ types-requests ]
 
 
