@@ -5,6 +5,8 @@ from typing import Any, List
 from environs import Env
 from loguru import logger
 
+from src.downloader import temp_folder
+
 env = Env()
 
 
@@ -86,7 +88,7 @@ class ArgParser(object):
         if is_experimental:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        args[1::2] = map(lambda i: self.patcher.temp_folder.joinpath(i), args[1::2])
+        args[1::2] = map(lambda i: temp_folder.joinpath(i), args[1::2])
 
         if self._PATCHES:
             args.extend(self._PATCHES)
