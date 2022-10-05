@@ -120,7 +120,7 @@ class Patches(object):
         return patches, version
 
     def include_and_exclude_patches(
-        self, app: str, arg_parser: Any, app_patches: List[Any]
+        self, app: str, arg_parser: Any, app_patches: List[Dict[str, str]]
     ) -> None:
         logger.debug(f"Excluding patches for app {app}")
         if self.build_extended and app in self.extended_apps:
@@ -139,7 +139,7 @@ class Patches(object):
         else:
             logger.debug(f"No excluded patches for {app}")
 
-    def get_app_configs(self, app: str) -> Any:
+    def get_app_configs(self, app: str) -> Tuple[List[Dict[str, str]], str, bool]:
         experiment = False
         total_patches, recommended_version = self.get(app=app)
         env_version = self.env.str(f"{app}_VERSION".upper(), None)

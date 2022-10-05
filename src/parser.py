@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
-from typing import Any, List
+from typing import List
 
 from environs import Env
 from loguru import logger
@@ -46,7 +46,7 @@ class Parser(object):
         self._PATCHES.extend(["-e", name])
         self._EXCLUDED.append(name)
 
-    def get_excluded_patches(self) -> List[Any]:
+    def get_excluded_patches(self) -> List[str]:
         return self._EXCLUDED
 
     def patch_app(self, app: str, version: str, is_experimental: bool = False) -> None:

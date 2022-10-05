@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from queue import PriorityQueue
 from time import perf_counter
-from typing import Any, Tuple
+from typing import Tuple
 
 import requests
 from environs import Env
@@ -114,12 +114,12 @@ class Downloader(object):
         download_url = self.apk_mirror + sub_url
         return download_url
 
-    def __upto_down_downloader(self, app: str) -> Any:
+    def __upto_down_downloader(self, app: str) -> str:
         page = "https://spotify.en.uptodown.com/android/download"
         parser = LexborHTMLParser(self.session.get(page).text)
         main_page = parser.css_first("#detail-download-button")
         download_url = main_page.attributes["data-url"]
-        app_version = parser.css_first(".version").text()
+        app_version: str = parser.css_first(".version").text()
         self._download(download_url, "spotify.apk")
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
         return app_version
@@ -134,7 +134,7 @@ class Downloader(object):
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version")
         return version
 
-    def apkmirror_latest_version(self, app: str) -> Any:
+    def apkmirror_latest_version(self, app: str) -> str:
         logger.debug(f"Trying to download {app}'s latest version from apkmirror")
         page = self.apk_mirror_urls.get(app)
         if not page:
@@ -150,7 +150,7 @@ class Downloader(object):
             sys.exit(-1)
         int_version = match.start()
         extra_release = main_page.rfind("release") - 1
-        version = main_page[int_version:extra_release]
+        version: str = main_page[int_version:extra_release]
         version = version.replace("-", ".")
         main_page = f"{self.apk_mirror}{main_page}"
         parser = LexborHTMLParser(self.session.get(main_page).text)
@@ -188,16 +188,16 @@ class Downloader(object):
             executor.map(lambda repo: self.repository(*repo), assets)
         logger.info("Downloaded revanced microG ,cli, integrations and patches.")
 
-    def upto_down_downloader(self, app: str) -> Any:
+    def upto_down_downloader(self, app: str) -> str:
         return self.__upto_down_downloader(app)
 
-    def download_from_apkmirror(self, version: str, app: str) -> Any:
+    def download_from_apkmirror(self, version: str, app: str) -> str:
         if version and version != "latest":
             return self.apkmirror_specific_version(app, version)
         else:
             return self.apkmirror_latest_version(app)
 
-    def download_apk_to_patch(self, version: str, app: str) -> Any:
+    def download_apk_to_patch(self, version: str, app: str) -> str:
         if app in self.upto_down:
             return self.upto_down_downloader(app)
         else:
