@@ -2,11 +2,10 @@ import subprocess
 import sys
 from typing import Any, Dict, List, Tuple
 
-from environs import Env
 from loguru import logger
 from requests import Session
 
-from src.utils import supported_apps
+from src.config import RevancedConfig
 
 
 class Patches(object):
@@ -54,7 +53,7 @@ class Patches(object):
                     p["app"] = compatible_package
                     p["version"] = version[-1] if version else "all"
                     getattr(self, app_name).append(p)
-        if self.build_extended:
+        if self.config.build_extended:
             url = "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
         else:
             url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
@@ -88,13 +87,10 @@ class Patches(object):
             n_patches = len(getattr(self, app_id))
             logger.debug(f"Total patches in {app_name} are {n_patches}")
 
-    def __init__(self, env: Env) -> None:
-        self.env = env
-        self.apps = env.list("PATCH_APPS", supported_apps)
-        self.build_extended = env.bool("BUILD_EXTENDED", False)
+    def __init__(self, config: RevancedConfig) -> None:
+        self.config = config
         self.check_java()
         self.fetch_patches()
-        self.extended_apps: List[str] = ["youtube", "youtube_music"]
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         logger.debug("Getting patches for %s" % app)
@@ -123,12 +119,12 @@ class Patches(object):
         self, app: str, arg_parser: Any, app_patches: List[Dict[str, str]]
     ) -> None:
         logger.debug(f"Excluding patches for app {app}")
-        if self.build_extended and app in self.extended_apps:
-            excluded_patches = self.env.list(
+        if self.config.build_extended and app in self.config.extended_apps:
+            excluded_patches = self.config.env.list(
                 f"EXCLUDE_PATCH_{app}_EXTENDED".upper(), []
             )
         else:
-            excluded_patches = self.env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
+            excluded_patches = self.config.env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
         for patch in app_patches:
             arg_parser.include(patch["name"]) if patch[
                 "name"
@@ -142,7 +138,7 @@ class Patches(object):
     def get_app_configs(self, app: str) -> Tuple[List[Dict[str, str]], str, bool]:
         experiment = False
         total_patches, recommended_version = self.get(app=app)
-        env_version = self.env.str(f"{app}_VERSION".upper(), None)
+        env_version = self.config.env.str(f"{app}_VERSION".upper(), None)
         if env_version:
             logger.debug(f"Picked {app} version {env_version} from env.")
             if env_version == "latest" or env_version > recommended_version:

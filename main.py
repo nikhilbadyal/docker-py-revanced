@@ -3,6 +3,7 @@ import sys
 from environs import Env
 from loguru import logger
 
+from src.config import RevancedConfig
 from src.downloader import Downloader
 from src.parser import Parser
 from src.patches import Patches
@@ -10,13 +11,14 @@ from src.patches import Patches
 
 def main() -> None:
     env = Env()
+    config = RevancedConfig(env)
 
-    patcher = Patches(env)
-    downloader = Downloader(env)
-    parser = Parser(patcher, env, downloader.temp_folder)
+    patcher = Patches(config)
+    downloader = Downloader(config)
+    parser = Parser(patcher, config)
 
-    logger.info(f"Will Patch only {patcher.apps}")
-    for app in patcher.apps:
+    logger.info(f"Will Patch only {patcher.config.apps}")
+    for app in patcher.config.apps:
         try:
             logger.info("Trying to build %s" % app)
             app_all_patches, version, is_experimental = patcher.get_app_configs(app)
