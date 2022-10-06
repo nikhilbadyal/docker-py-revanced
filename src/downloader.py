@@ -18,8 +18,8 @@ class Downloader(object):
         self._CHUNK_SIZE = 2**21 * 5
         self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
-        self.download_revanced()
         self.config = config
+        self.download_revanced()
 
     def _download(self, url: str, file_name: str) -> None:
         logger.debug(f"Trying to download {file_name} from {url}")
