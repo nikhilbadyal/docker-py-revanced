@@ -115,7 +115,7 @@ By default, script build the version as recommended by Revanced team.
    4. reddit
    5. tiktok
    6. warnwetter
-   7. Spotify
+   7. spotify
 2. If you want to build a specific version . Add `version` in `environment` in the
    format
    ```ini
@@ -129,6 +129,7 @@ By default, script build the version as recommended by Revanced team.
    REDDIT_VERSION=X.X.X
    TIKTOK_VERSION=X.X.X
    WARNWETTER_VERSION=X.X.X
+   SPOTIFY_VERSION=X.X.X
    ```
 3. If you want to build `latest` version, whatever latest is available(including
    beta) .
@@ -144,6 +145,7 @@ By default, script build the version as recommended by Revanced team.
    REDDIT_VERSION=latest
    TIKTOK_VERSION=latest
    WARNWETTER_VERSION=latest
+   SPOTIFY_VERSION=latest
    ```
 4. By default, it will build [all](#note) build app supported by Revanced team. If you
    don't
