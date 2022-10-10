@@ -58,3 +58,4 @@ jobs:
           API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          STICKER_ID: ${{ secrets.STICKER_ID }}
