@@ -1,3 +1,4 @@
+"""Revanced Patches."""
 import subprocess
 import sys
 from typing import Any, Dict, List, Tuple
@@ -9,7 +10,11 @@ from src.config import RevancedConfig
 
 
 class Patches(object):
-    def check_java(self) -> None:
+    """Revanced Patches."""
+
+    @staticmethod
+    def check_java() -> None:
+        """Check if Java17 is installed."""
         logger.debug("Checking if java is available")
         jd = subprocess.check_output(
             ["java", "-version"], stderr=subprocess.STDOUT
@@ -23,7 +28,9 @@ class Patches(object):
             exit(-1)
         logger.debug("Cool!! Java is available")
 
+    # noinspection DuplicatedCode
     def fetch_patches(self) -> None:
+        """Function to fetch all patches."""
         session = Session()
 
         logger.debug("fetching all patches")
@@ -93,6 +100,11 @@ class Patches(object):
         self.fetch_patches()
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
+        """Get all patches for the given app.
+
+        :param app: Name of the application
+        :return: Patches
+        """
         logger.debug("Getting patches for %s" % app)
         app_names = {
             "reddit": "_reddit",
@@ -118,6 +130,12 @@ class Patches(object):
     def include_and_exclude_patches(
         self, app: str, arg_parser: Any, app_patches: List[Dict[str, str]]
     ) -> None:
+        """Include and exclude patches for a given app.
+
+        :param app: Name of the app
+        :param arg_parser: Parser Obj
+        :param app_patches: All the patches of a given app
+        """
         logger.debug(f"Excluding patches for app {app}")
         if self.config.build_extended and app in self.config.extended_apps:
             excluded_patches = self.config.env.list(
@@ -136,6 +154,11 @@ class Patches(object):
             logger.debug(f"No excluded patches for {app}")
 
     def get_app_configs(self, app: str) -> Tuple[List[Dict[str, str]], str, bool]:
+        """Get Configurations for a given app.
+
+        :param app: Name of the application
+        :return: All Patches , Its version and whether it is experimental
+        """
         experiment = False
         total_patches, recommended_version = self.get(app=app)
         env_version = self.config.env.str(f"{app}_VERSION".upper(), None)

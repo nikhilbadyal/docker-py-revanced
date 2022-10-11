@@ -1,3 +1,4 @@
+"""Utilities."""
 supported_apps = [
     "youtube",
     "youtube_music",

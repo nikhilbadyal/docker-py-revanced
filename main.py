@@ -1,3 +1,4 @@
+"""Entry point."""
 import sys
 
 from environs import Env
@@ -10,6 +11,7 @@ from src.patches import Patches
 
 
 def main() -> None:
+    """Entry point."""
     env = Env()
     config = RevancedConfig(env)
 
