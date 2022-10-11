@@ -1,3 +1,4 @@
+"""Revanced Configurations."""
 from pathlib import Path
 from typing import List
 
@@ -8,6 +9,8 @@ from src.utils import supported_apps
 
 
 class RevancedConfig:
+    """Revanced Configurations."""
+
     def __init__(self, env: Env) -> None:
         self.env = env
         self.temp_folder = Path("apks")

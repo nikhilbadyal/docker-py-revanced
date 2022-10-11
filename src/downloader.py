@@ -1,3 +1,4 @@
+"""Downloader Class."""
 import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -14,6 +15,8 @@ from src.config import RevancedConfig
 
 
 class Downloader(object):
+    """Files downloader."""
+
     def __init__(self, config: RevancedConfig):
         self._CHUNK_SIZE = 2**21 * 5
         self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
@@ -43,6 +46,11 @@ class Downloader(object):
         logger.debug(f"Downloaded {file_name}")
 
     def extract_download_link(self, page: str, app: str) -> None:
+        """Function to extract the download link from apkmirror html page.
+
+        :param page: Url of the page
+        :param app: Name of the app
+        """
         logger.debug(f"Extracting download link from\n{page}")
         parser = LexborHTMLParser(self.config.session.get(page).text)
 
@@ -58,6 +66,12 @@ class Downloader(object):
         logger.debug("Finished Extracting link and downloading")
 
     def get_download_page(self, parser: LexborHTMLParser, main_page: str) -> str:
+        """Function to get the download page in apk_mirror.
+
+        :param parser: Parser
+        :param main_page: Main Download Page in APK mirror(Index)
+        :return:
+        """
         apm = parser.css(".apkm-badge")
         sub_url = ""
         for is_apm in apm:
@@ -84,6 +98,12 @@ class Downloader(object):
         return app_version
 
     def apkmirror_specific_version(self, app: str, version: str) -> str:
+        """Function to download the specified version of app from  apkmirror.
+
+        :param app: Name of the application
+        :param version: Version of the application to download
+        :return: Version of downloaded apk
+        """
         logger.debug(f"Trying to download {app},specific version {version}")
         version = version.replace(".", "-")
         main_page = f"{self.config.apk_mirror_version_urls.get(app)}-{version}-release/"
@@ -94,6 +114,12 @@ class Downloader(object):
         return version
 
     def apkmirror_latest_version(self, app: str) -> str:
+        """Function to download whatever the latest version of app from
+        apkmirror.
+
+        :param app: Name of the application
+        :return: Version of downloaded apk
+        """
         logger.debug(f"Trying to download {app}'s latest version from apkmirror")
         page = self.config.apk_mirror_urls.get(app)
         if not page:
@@ -119,6 +145,12 @@ class Downloader(object):
         return version
 
     def repository(self, owner: str, name: str, file_name: str) -> None:
+        """Function to download files from GitHub repositories.
+
+        :param owner: github user/organization
+        :param name: name of the repository
+        :param file_name: name of the file after downloading
+        """
         logger.debug(f"Trying to download {name} from github")
         repo_url = f"https://api.github.com/repos/{owner}/{name}/releases/latest"
         r = requests.get(
@@ -131,6 +163,7 @@ class Downloader(object):
         self._download(download_url, file_name=file_name)
 
     def download_revanced(self) -> None:
+        """Download Revanced and Extended Patches, Integration and CLI."""
         assets = [
             ["revanced", "revanced-cli", self.config.normal_cli_jar],
             ["revanced", "revanced-integrations", self.config.normal_integrations_apk],
@@ -148,15 +181,32 @@ class Downloader(object):
         logger.info("Downloaded revanced microG ,cli, integrations and patches.")
 
     def upto_down_downloader(self, app: str) -> str:
+        """Function to download from UptoDown.
+
+        :param app: Name of the application
+        :return: Version of downloaded APK
+        """
         return self.__upto_down_downloader(app)
 
     def download_from_apkmirror(self, version: str, app: str) -> str:
+        """Function to download from apkmirror.
+
+        :param version: version to download
+        :param app: App to download
+        :return: Version of downloaded APK
+        """
         if version and version != "latest":
             return self.apkmirror_specific_version(app, version)
         else:
             return self.apkmirror_latest_version(app)
 
     def download_apk_to_patch(self, version: str, app: str) -> str:
+        """Public function to download apk to patch.
+
+        :param version: version to download
+        :param app: App to download
+        :return: Version of apk
+        """
         if app in self.config.upto_down:
             return self.upto_down_downloader(app)
         else:
