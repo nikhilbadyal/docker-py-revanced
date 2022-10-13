@@ -11,4 +11,4 @@ jobs:
   linter-pr-check:
     uses: ./.github/workflows/linter.yml
   build-apk-pr-check:
-    uses: ./.github/workflows/build-apk-artifact.yml
+    uses: ./.github/workflows/build-artifact.yml

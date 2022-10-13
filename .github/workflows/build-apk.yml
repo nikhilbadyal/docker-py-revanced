@@ -1,4 +1,4 @@
-name: Build Revanced APK
+name: Build & Release
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
@@ -22,30 +22,9 @@ concurrency:
   cancel-in-progress: true
 jobs:
   build-apk:
-    name: APK Build
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v3
-
-      - name: Update Env for custom build
-        run: |
-          echo "${{ secrets.ENVS }}" >> .env
-
-      - name: Build Revanced APKs
-        run: |
-          docker-compose up
-
-      - name: Upload Build APKS
-        uses: actions/upload-artifact@v3
-        with:
-          name: Built-APKs
-          path: |
-            apks/*-output.apk
-            apks/VancedMicroG.apk"
-          if-no-files-found: error
+    uses: ./.github/workflows/build-artifact.yml
+    secrets:
+      ENVS: ${{ secrets.ENVS }}
 
   upload-to-github:
     name: GitHub Upload
