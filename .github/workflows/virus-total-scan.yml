@@ -1,11 +1,13 @@
 name: VirusTotal Scan
 
 on:
-  workflow_run:
-    workflows: [ "Build Revanced APK" ]
-    types:
-      - completed
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      VT_API_KEY:
+        required: true
+      GH_TOKEN:
+        required: true
 
 jobs:
   virustotal:
