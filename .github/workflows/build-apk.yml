@@ -5,6 +5,12 @@ env:
   HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}
 on:
   workflow_dispatch:
+    inputs:
+      SKIP_GITHUB_UPLOAD:
+        description: 'Should upload to GitHub'
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -41,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: build-apk
+    if: ${{ inputs.SKIP_GITHUB_UPLOAD }}
 
     steps:
       - name: Download Already Built APKs
