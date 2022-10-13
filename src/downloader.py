@@ -168,7 +168,7 @@ class Downloader(object):
             ["revanced", "revanced-cli", self.config.normal_cli_jar],
             ["revanced", "revanced-integrations", self.config.normal_integrations_apk],
             ["revanced", "revanced-patches", self.config.normal_patches_jar],
-            ["inotia00", "VancedMicroG", "VancedMicroG.apk"],
+            ["inotia00", "VancedMicroG", "VancedMicroG-output.apk"],
         ]
         if self.config.build_extended:
             assets += [
