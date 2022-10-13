@@ -18,7 +18,7 @@ class Downloader(object):
     """Files downloader."""
 
     def __init__(self, config: RevancedConfig):
-        self._CHUNK_SIZE = 2**21 * 5
+        self._CHUNK_SIZE = 10485760
         self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
         self.config = config
@@ -168,13 +168,16 @@ class Downloader(object):
             ["revanced", "revanced-cli", self.config.normal_cli_jar],
             ["revanced", "revanced-integrations", self.config.normal_integrations_apk],
             ["revanced", "revanced-patches", self.config.normal_patches_jar],
-            ["inotia00", "VancedMicroG", "VancedMicroG-output.apk"],
         ]
         if self.config.build_extended:
             assets += [
                 ["inotia00", "revanced-cli", self.config.cli_jar],
                 ["inotia00", "revanced-integrations", self.config.integrations_apk],
                 ["inotia00", "revanced-patches", self.config.patches_jar],
+            ]
+        if "youtube" in self.config.apps or "youtube_music" in self.config.apps:
+            assets += [
+                ["inotia00", "VancedMicroG", "VancedMicroG-output.apk"],
             ]
         with ThreadPoolExecutor(7) as executor:
             executor.map(lambda repo: self.repository(*repo), assets)
