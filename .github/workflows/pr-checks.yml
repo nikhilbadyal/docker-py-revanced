@@ -13,4 +13,5 @@ jobs:
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
     secrets:
-      ENVS: ""
+      ENVS: |
+        PATCH_APPS=youtube

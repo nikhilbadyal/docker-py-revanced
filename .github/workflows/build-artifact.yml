@@ -20,7 +20,7 @@ jobs:
 
       - name: Update Env for custom build
         run: |
-          echo "${{ secrets.ENVS }}" > .env
+          echo "${{ secrets.ENVS }}" >> .env
 
       - name: Build Revanced APKs
         run: |

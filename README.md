@@ -6,68 +6,51 @@ Note - I prefer [Revanced Extended](https://github.com/inotia00/revanced-patches
 (for YouTube & YouTube Music) hence the YouTube and YouTube Music builds in this repo are from
 Revanced Extended.
 
-## Pre-Build APKs
-You can get pre-build apks [here](https://t.me/revanced_apkss)
+## Pre-Built APKs
+You can get pre-built apks [here](https://t.me/revanced_apkss)
 
 ## Build Yourself
 
 You can use any of the following methods to build.
 
-<details>
-<summary>🚀In GitHub(Recommended)</summary>
+- 🚀In GitHub (**_`Recommended`_**)
+   1. Fork the project.
+   ![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
+   2. Add following secrets to the repo.
+       1. _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
+          after building. Click [here](#generate-token) to learn how to get that.
+       2. _VT_API_KEY_ (optional) - required only if you want Virus total scan.
+       3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
+       <details>
+         <summary>🚶Detailed step by step guide</summary>
 
-1. Fork the project.
-![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
-2. Add following secrets to the repo.
-    1. _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
-       after building. Click [here](#generate-token) to learn how to get that.
-    2. _VT_API_KEY_ (optional) - required only if you want Virus total scan.
-    3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
-    <details>
-      <summary>🚶Detailed step by step guide</summary>
+         - Go to the repo settings and then to actions->secret
+           ![step_1]
+         - Add Repository secret
+           ![step_2]
 
-      - Go to the repo settings and then to actions->secret
-        ![step_1]
-      - Add Repository secret
-        ![step_2]
-      - **`GitHub Secrets`** might look like this(With VT_SCAN)
-       ![secrets]
+      </details>
 
-      - After adding secrets, **`ENVS`** secret might look like this
-        ```ini
-        PATCH_APPS=youtube_music,twitter
-        EXCLUDE_PATCH_YOUTUBE=custom-branding
-        EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
-        YOUTUBE_VERSION=67.68.69
-        YOUTUBE_MUSIC_VERSION=latest
-        TWITTER_VERSION=0.2.2
-        REDDIT_VERSION=latest
-        TIKTOK_VERSION=latest
-        WARNWETTER_VERSION=latest
-        ```
+   3. Go to actions tab. Select `Build Revanced APK`.Click on `Run Workflow`.
+      1. It can take a few minute to start. Just be patient.
 
-   </details>
+       <details>
+         <summary>🚶Detailed step by step guide</summary>
 
-3. Go to actions tab. Select `Build Revanced APK`.Click on `Run Workflow`.
-   1. It can take a few minute to start. Just be patient.
+         - Go to actions tab
+           ![action_0]
+         - Check the status of build, It should look green.
+           ![action_1]
+         - Check logs if something fails.
+           ![action_2]
+           ![action_3]
 
-    <details>
-      <summary>🚶Detailed step by step guide</summary>
+       </details>
 
-      - Go to actions tab
-        ![action_0]
-      - Check the status of build, It should look green.
-        ![action_1]
-      - Check logs if something fails.
-        ![action_2]
-        ![action_3]
+   4. If the building process is successful, you’ll get your APKs in the releases
+       - ![apks]
+   5. Click on **`Build-<SomeRandomDate>`** and download the apk file.
 
-    </details>
-
-4. If the building process is successful, you’ll get your APKs in the releases
-    - ![apks]
-5. Click on **`Build-<SomeRandomDate>`** and download the apk file.
-</details>
 
 <details>
 <summary>🐳With Docker</summary>
@@ -104,7 +87,7 @@ You can use any of the following methods to build.
 </details>
 
 
-### Note
+### Note (Pay attention to 3,4)
 
 By default, script build the version as recommended by Revanced team.
 
@@ -116,8 +99,38 @@ By default, script build the version as recommended by Revanced team.
    5. tiktok
    6. warnwetter
    7. spotify
-2. If you want to build a specific version . Add `version` in `environment` in the
-   format
+
+2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
+3. By default, it will build [all](#note) build app supported by Revanced team. If you
+   don't
+   want to waste time and build only few apps. Add the apps you want to build in `.env` file or in `ENVS` in
+   `GitHub secrets` in the format
+   ```ini
+   PATCH_APPS=<REVANCED_APPS_NAME>
+   ```
+   Example:
+   ```ini
+   PATCH_APPS=youtube,twitter,reddit
+   ```
+4. If you want to exclude any patch. Set comma separated patch in `.env` file or in `ENVS` in `GitHub secrets`
+   (Recommended) in
+   the format
+   ```ini
+   EXCLUDE_PATCH_<REVANCED_APPS_NAME>=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
+   ```
+   Example:
+   ```dotenv
+    EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
+    EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
+   ```
+   If you are using `Revanced Extended.` Add `_EXTENDED` in exclude options.
+   Example:
+   ```dotenv
+    EXCLUDE_PATCH_YOUTUBE_EXTENDED=custom-branding-red,custom-branding-blue,materialyou
+    EXCLUDE_PATCH_YOUTUBE_MUSIC_EXTENDED=custom-branding-music
+   ```
+5. If you want to build a specific version . Add `version` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended)
+   in the format
    ```ini
    <APPNAME>_VERSION=<VERSION>
    ```
@@ -131,9 +144,9 @@ By default, script build the version as recommended by Revanced team.
    WARNWETTER_VERSION=X.X.X
    SPOTIFY_VERSION=X.X.X
    ```
-3. If you want to build `latest` version, whatever latest is available(including
+6. If you want to build `latest` version, whatever latest is available(including
    beta) .
-   Add `latest` in `environment` in the format
+   Add `latest` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
    ```ini
    <APPNAME>_VERSION=latest
    ```
@@ -147,39 +160,19 @@ By default, script build the version as recommended by Revanced team.
    WARNWETTER_VERSION=latest
    SPOTIFY_VERSION=latest
    ```
-4. By default, it will build [all](#note) build app supported by Revanced team. If you
-   don't
-   want to waste time and build only few apps. Add the apps you want to build in
-   `environment` in the format
-   ```ini
-   PATCH_APPS=<REVANCED_APPS_NAME>
-   ```
-   Example:
-   ```ini
-   PATCH_APPS=youtube,twitter,reddit
-   ```
-5. If you don't want to use default keystore. You can provide your own by placing it
-   inside `apks` folder. And adding the name of `keystore-file` in `environment` like
+
+7. If you don't want to use default keystore. You can provide your own by placing it
+   inside `apks` folder. And adding the name of `keystore-file` in `.env` file or in `ENVS` in `GitHub secrets`
+   (Recommended) in the format
    ```dotenv
     KEYSTORE_FILE_NAME=revanced.keystore
    ```
-6. If you want to exclude any patch. Set comma separated patch in `environment` in
-   the format
-   ```ini
-   EXCLUDE_PATCH_<REVANCED_APPS_NAME>=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
-   ```
-   Example:
+8. If you want to use Revanced-Extended for YouTube and YouTube Music. Add the following adding
+   in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
    ```dotenv
-    EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
-    EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
+    BUILD_EXTENDED=True
    ```
-7. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
-8. If you want to disable use Revanced-Extended for YouTube and YouTube Music. Add the following adding
-   in `environment` like
-   ```dotenv
-    BUILD_EXTENDED=False
-   ```
-   or enable it with
+   or disable it with (default)
    ```dotenv
     BUILD_EXTENDED=True
    ```
@@ -197,6 +190,11 @@ By default, script build the version as recommended by Revanced team.
      ![tg api hash]
    6. After Everything done successfully the actions secrets of the repository will look something like<br>
       <img src="https://i.imgur.com/dzC1KFa.png" width="400">
+10. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
+    fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
+    once. Add it in `GitHub secrets` or you can ignore `.env` file and always use `GitHub secrets` because to modify
+    `.env` you need to modify the repo. Edit it and make a commit.
+11. Sample Envs ![envs]
 
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens). Click on generate new token.<br>
@@ -216,5 +214,6 @@ By default, script build the version as recommended by Revanced team.
 [bot api]: https://i.imgur.com/A6JCyK2.png
 [tg api]: https://i.imgur.com/eha3nnb.png
 [tg api hash]: https://i.imgur.com/7n5k1mp.png
+[envs]: https://i.imgur.com/ajSE5nA.png
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
