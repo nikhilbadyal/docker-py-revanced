@@ -17,7 +17,8 @@ on:
 
 jobs:
   tg-upload:
-    timeout-minutes: 10
+    name: Telegram Upload
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - name: Upload to Telegram
