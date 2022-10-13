@@ -12,3 +12,6 @@ jobs:
     uses: ./.github/workflows/linter.yml
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
+    secrets:
+      ENVS: ""
+

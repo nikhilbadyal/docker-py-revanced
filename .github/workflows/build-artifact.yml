@@ -16,18 +16,18 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
 
       - name: Update Env for custom build
         run: |
-          echo "${{ secrets.ENVS }}" >> .env
+          echo "${{ secrets.ENVS }}" > .env
 
       - name: Build Revanced APKs
         run: |
           docker-compose up
 
       - name: Upload Build APKS
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: Built-APKs
           path: |
