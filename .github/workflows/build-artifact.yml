@@ -1,4 +1,4 @@
-name: Build Revanced APK
+name: Build & Upload
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
@@ -8,9 +8,6 @@ on:
       ENVS:
         required: false
 
-concurrency:
-  group: ${{ github.head_ref || github.run_id }}
-  cancel-in-progress: true
 jobs:
   build-apk:
     name: APK Build

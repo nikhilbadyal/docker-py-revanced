@@ -1,4 +1,4 @@
-name: Build Revanced APK
+name: Build & Release
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
