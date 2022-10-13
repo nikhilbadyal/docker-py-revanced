@@ -127,14 +127,15 @@ class Patches(object):
             logger.debug("No recommended version.")
         return patches, version
 
-    def include_and_exclude_patches(
-        self, app: str, arg_parser: Any, app_patches: List[Dict[str, str]]
+    # noinspection IncorrectFormatting
+    def include_exclude_patch(
+        self, app: str, parser: Any, patches: List[Dict[str, str]]
     ) -> None:
         """Include and exclude patches for a given app.
 
         :param app: Name of the app
-        :param arg_parser: Parser Obj
-        :param app_patches: All the patches of a given app
+        :param parser: Parser Obj
+        :param patches: All the patches of a given app
         """
         logger.debug(f"Excluding patches for app {app}")
         if self.config.build_extended and app in self.config.extended_apps:
@@ -143,11 +144,11 @@ class Patches(object):
             )
         else:
             excluded_patches = self.config.env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
-        for patch in app_patches:
-            arg_parser.include(patch["name"]) if patch[
+        for patch in patches:
+            parser.include(patch["name"]) if patch[
                 "name"
-            ] not in excluded_patches else arg_parser.exclude(patch["name"])
-        excluded = arg_parser.get_excluded_patches()
+            ] not in excluded_patches else parser.exclude(patch["name"])
+        excluded = parser.get_excluded_patches()
         if excluded:
             logger.debug(f"Excluded patches {excluded} for {app}")
         else:
