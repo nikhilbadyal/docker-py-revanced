@@ -1,0 +1,43 @@
+name: Telegram Custom Upload
+
+on:
+  workflow_dispatch:
+    inputs:
+      API_ID:
+        description: 'Telegram API ID'
+        required: true
+        type: number
+      API_HASH:
+        description: 'Telegram API HASH'
+        required: true
+        type: string
+      BOT_TOKEN:
+        description: 'Bot Token(Sender)'
+        required: true
+        type: string
+      CHAT_ID:
+        description: 'Chat ID(Receiver)'
+        required: true
+        type: number
+      STICKER_ID:
+        description: 'Sticker to Send'
+        required: false
+        default: 'CAACAgUAAxkBAAEY3d5jRDs4sojYzahDxU7wvl7_e1yRhwACuAYAApqD2VV9UCzjLNawRCoE'
+        type: string
+
+jobs:
+  tg-upload:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Upload to Telegram
+        if: ${{ env.HAVE_TELEGRAM_API_ID == 'true' }}
+        uses: nikhilbadyal/ghaction-telegram-uploader@main
+        with:
+          API_ID: ${{ inputs.API_ID }}
+          API_HASH: ${{ inputs.API_HASH }}
+          BOT_TOKEN: ${{ inputs.BOT_TOKEN }}
+          CHAT_ID: ${{ inputs.CHAT_ID }}
+          STICKER_ID: ${{ inputs.STICKER_ID }}
+env:
+  HAVE_TELEGRAM_API_ID: ${{ inputs.API_ID != '' }}
