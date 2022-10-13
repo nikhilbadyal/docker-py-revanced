@@ -2,6 +2,18 @@ name: Telegram Upload
 
 on:
   workflow_dispatch:
+  workflow_call:
+    secrets:
+      TELEGRAM_API_ID:
+        required: true
+      TELEGRAM_API_HASH:
+        required: true
+      TELEGRAM_BOT_TOKEN:
+        required: true
+      TELEGRAM_CHAT_ID:
+        required: true
+      STICKER_ID:
+        required: true
 
 jobs:
   tg-upload:
