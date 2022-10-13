@@ -1,18 +1,21 @@
-name: Build Artifacts PR
+name: Build Revanced APK
 env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 on:
   workflow_call:
+    secrets:
+      ENVS:
+        required: false
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
-  build-apk-pr:
+  build-apk:
     name: APK Build
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     steps:
       - name: Check out Git repository
@@ -26,15 +29,10 @@ jobs:
         run: |
           docker-compose up
 
-      - name: Get Date
-        id: get-date
-        run: |
-          echo ::set-output name=date::$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")
-
-      - name: Upload Build Artifact
+      - name: Upload Build APKS
         uses: actions/upload-artifact@v3
         with:
-          name: Build APKs
+          name: Built-APKs
           path: |
             apks/*-output.apk
             apks/VancedMicroG.apk"
