@@ -81,7 +81,7 @@ jobs:
     name: Telegram Upload
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    needs: [ build-apk,upload-to-github ]
+    needs: [ build-apk ]
 
     steps:
       - name: Upload to Telegram
