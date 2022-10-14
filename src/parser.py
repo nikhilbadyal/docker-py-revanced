@@ -54,7 +54,7 @@ class Parser(object):
         :return: List of excluded patches
         """
         patch_index = self._PATCHES.index(name)
-        if self._PATCHES[patch_index - 1] == "e":
+        if self._PATCHES[patch_index - 1] == "-e":
             self._PATCHES[patch_index - 1] = "-i"
         else:
             self._PATCHES[patch_index - 1] = "-e"
