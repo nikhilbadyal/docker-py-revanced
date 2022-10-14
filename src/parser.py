@@ -41,6 +41,24 @@ class Parser(object):
         """
         return self._EXCLUDED
 
+    def get_all_patches(self) -> List[str]:
+        """
+        Getter to get all excluded patches
+        :return: List of excluded patches
+        """
+        return self._PATCHES
+
+    def invert_patch(self, name: str) -> None:
+        """
+        Getter to get all excluded patches
+        :return: List of excluded patches
+        """
+        patch_index = self._PATCHES.index(name)
+        if self._PATCHES[patch_index - 1] == "e":
+            self._PATCHES[patch_index - 1] = "-i"
+        else:
+            self._PATCHES[patch_index - 1] = "-e"
+
     def patch_app(self, app: str, version: str, is_experimental: bool = False) -> None:
         """Revanced APP Patcher.
 
