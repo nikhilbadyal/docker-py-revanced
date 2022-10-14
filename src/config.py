@@ -56,3 +56,4 @@ class RevancedConfig:
             "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
             "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
         }
+        self.build_og_nd_branding_youtube = env.bool("BUILD_OG_BRANDING_YOUTUBE", False)
