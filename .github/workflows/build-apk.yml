@@ -16,6 +16,11 @@ on:
         required: false
         type: boolean
         default: false
+      CLEANUP:
+        description: 'Cleanup GitHub'
+        required: false
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -79,3 +84,16 @@ jobs:
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       STICKER_ID: ${{ secrets.STICKER_ID }}
       CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
+
+  cleanup:
+    name: GitHub Cleanup
+    if: ${{ inputs.CLEANUP }}
+    needs: [ upload-to-telegram ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Delete Older Releases
+        uses: nikhilbadyal/ghaction-rm-releases@v0.0.2
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          RELEASE_PATTERN: '*'
