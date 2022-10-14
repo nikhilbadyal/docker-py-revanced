@@ -89,11 +89,6 @@ jobs:
     name: GitHub Cleanup
     if: ${{ inputs.CLEANUP }}
     needs: [ upload-to-telegram ]
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Delete Older Releases
-        uses: nikhilbadyal/ghaction-rm-releases@v0.0.2
-        with:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          RELEASE_PATTERN: '*'
+    uses: ./.github/workflows/github-cleanup.yml
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
