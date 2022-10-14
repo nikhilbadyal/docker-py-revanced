@@ -24,6 +24,10 @@ on:
         required: false
         default: 'CAACAgUAAxkBAAEY3d5jRDs4sojYzahDxU7wvl7_e1yRhwACuAYAApqD2VV9UCzjLNawRCoE'
         type: string
+      CHANGELOG_GITHUB_REPOSITORY:
+        description: 'Repo to Fetch Changelog'
+        required: false
+        type: string
 
 jobs:
   tg-upload:
@@ -34,3 +38,4 @@ jobs:
       TELEGRAM_BOT_TOKEN: ${{ inputs.BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ inputs.CHAT_ID }}
       STICKER_ID: ${{ inputs.STICKER_ID }}
+      CHANGELOG_GITHUB_REPOSITORY: ${{ inputs.CHANGELOG_GITHUB_REPOSITORY }}

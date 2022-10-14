@@ -14,6 +14,8 @@ on:
         required: true
       STICKER_ID:
         required: true
+      CHANGELOG_GITHUB_REPOSITORY:
+        required: false
 
 jobs:
   tg-upload:
@@ -30,5 +32,6 @@ jobs:
           BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           STICKER_ID: ${{ secrets.STICKER_ID }}
+          CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
 env:
   HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}
