@@ -3,6 +3,7 @@ env:
   DOCKER_BUILDKIT: 1
   COMPOSE_DOCKER_CLI_BUILD: 1
 on:
+  workflow_dispatch:
   workflow_call:
     secrets:
       ENVS:
