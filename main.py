@@ -41,9 +41,7 @@ def main() -> None:
         output = "-custom-icon-" if was_og_build else ""
         app = "youtube"
         _, version, is_experimental = patcher.get_app_configs(app)
-        logger.info(parser.get_all_patches())
         parser.invert_patch(branding_patch)
-        logger.info(parser.get_all_patches())
         parser.patch_app(
             app=app,
             version=version,
