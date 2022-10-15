@@ -8,7 +8,7 @@ on:
         required: true
 
 jobs:
-  github-cleanup:
+  release-cleanup:
     name: GitHub Cleanup
     timeout-minutes: 5
     runs-on: ubuntu-latest
@@ -18,9 +18,8 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           RELEASE_PATTERN: '[\s\S]*'
-
-      - name: Delete Workflow Runs
-        uses: nikhilbadyal/ghactions/.github/workflows/github-workflow-cleaner.yml@main
-        with:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
+  workflow-cleanup:
+    uses: nikhilbadyal/ghactions/.github/workflows/github-workflow-cleaner.yml@main
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GITHUB_REPOSITORY: ${{ github.repository }}
