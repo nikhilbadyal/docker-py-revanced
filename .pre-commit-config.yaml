@@ -55,11 +55,3 @@ repos:
         args:
           - '--strict'
         additional_dependencies: [ types-requests ]
-
-
-
-# sets up .pre-commit-ci.yaml to ensure pre-commit dependencies stay up to date
-ci:
-  autoupdate_schedule: weekly
-  skip: [ ]
-  submodules: false
