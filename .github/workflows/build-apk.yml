@@ -86,7 +86,7 @@ jobs:
   upload-to-telegram:
     needs: [ build-apk ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: ${{ inputs.TELEGRAM_UPLOAD }}
+    if: ${{ inputs.TELEGRAM_UPLOAD }} && ${{ inputs.GITHUB_UPLOAD }}
     secrets:
       TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
