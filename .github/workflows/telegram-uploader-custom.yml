@@ -31,7 +31,7 @@ on:
 
 jobs:
   tg-upload:
-    uses: ./.github/workflows/telegram-uploader.yml
+    uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
     secrets:
       TELEGRAM_API_ID: ${{ inputs.API_ID }}
       TELEGRAM_API_HASH: ${{ inputs.API_HASH }}

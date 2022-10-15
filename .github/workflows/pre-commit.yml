@@ -10,30 +10,9 @@ permissions:
 
 jobs:
   auto-update:
-    timeout-minutes: 5
+    uses: nikhilbadyal/ghactions/.github/workflows/python-precommit-updater.yml@main
     if: github.repository == 'nikhilbadyal/docker-py-revanced'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3.1.0
-
-      - name: Setup Python
-        uses: actions/setup-python@v4.3.0
-        with:
-          python-version: '3.x'
-
-      - name: Install pre-commit
-        run: pip install pre-commit
-
-      - name: Updated Hooks
-        run: pre-commit autoupdate
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4.1.3
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          branch: update/pre-commit-autoupdate
-          title: ⬆️Update pre-commit hooks
-          commit-message: ⬆️updated pre-commit hooks
-          body: ✨Update versions of tools in pre-commit configs to latest version
-          labels: pre-commit✨
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+    with:
+      PYTHON_VERSION: '3.10'

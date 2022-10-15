@@ -9,7 +9,9 @@ on:
 
 jobs:
   linter-pr-check:
-    uses: ./.github/workflows/linter.yml
+    uses: nikhilbadyal/ghactions/.github/workflows/python-linter.yml@main
+    with:
+      PYTHON_VERSION: '3.10'
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
     secrets:

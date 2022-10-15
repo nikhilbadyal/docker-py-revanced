@@ -18,3 +18,9 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           RELEASE_PATTERN: '[\s\S]*'
+
+      - name: Delete Workflow Runs
+        uses: nikhilbadyal/ghactions/.github/workflows/github-workflow-cleaner.yml@main
+        with:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
