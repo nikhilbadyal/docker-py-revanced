@@ -35,7 +35,7 @@ def main() -> None:
         all_patches = parser.get_all_patches()
         branding_patch = "custom-branding"
         if config.build_extended:
-            branding_patch = "custom-branding-blue"
+            branding_patch = "custom-branding-icon-blue"
         branding_index = all_patches.index(branding_patch)
         was_og_build = True if all_patches[branding_index - 1] == "-e" else False
         output = "-custom-icon-" if was_og_build else ""
