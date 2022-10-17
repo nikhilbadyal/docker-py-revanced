@@ -11,4 +11,3 @@ services:
       - .env
     volumes:
       - .:/app:z
-    command: /entrypoint
