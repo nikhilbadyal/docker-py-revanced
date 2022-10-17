@@ -25,39 +25,42 @@ class RevancedConfig:
         self.normal_cli_jar = "revanced-cli.jar"
         self.normal_patches_jar = "revanced-patches.jar"
         self.normal_integrations_apk = "revanced-integrations.apk"
-        self.cli_jar = (
-            f"inotia00-{self.normal_cli_jar}"
-            if self.build_extended
-            else self.normal_cli_jar
-        )
-        self.patches_jar = (
-            f"inotia00-{self.normal_patches_jar}"
-            if self.build_extended
-            else self.normal_patches_jar
-        )
-        self.integrations_apk = (
-            f"inotia00-{self.normal_integrations_apk}"
-            if self.build_extended
-            else self.normal_integrations_apk
-        )
+        self.cli_jar = (f"inotia00-{self.normal_cli_jar}"
+                        if self.build_extended else self.normal_cli_jar)
+        self.patches_jar = (f"inotia00-{self.normal_patches_jar}" if
+                            self.build_extended else self.normal_patches_jar)
+        self.integrations_apk = (f"inotia00-{self.normal_integrations_apk}"
+                                 if self.build_extended else
+                                 self.normal_integrations_apk)
         self.apk_mirror_urls = {
             "reddit": f"{self.apk_mirror}/apk/redditinc/reddit/",
             "twitter": f"{self.apk_mirror}/apk/twitter-inc/twitter/",
-            "tiktok": f"{self.apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
-            "warnwetter": f"{self.apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
+            "tiktok":
+            f"{self.apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
+            "warnwetter":
+            f"{self.apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
             "youtube": f"{self.apk_mirror}/apk/google-inc/youtube/",
-            "youtube_music": f"{self.apk_mirror}/apk/google-inc/youtube-music/",
+            "youtube_music":
+            f"{self.apk_mirror}/apk/google-inc/youtube-music/",
         }
         self.apk_mirror_version_urls = {
-            "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
-            "twitter": f"{self.apk_mirror_urls.get('twitter')}twitter",
-            "tiktok": f"{self.apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
-            "warnwetter": f"{self.apk_mirror_urls.get('warnwetter')}warnwetter",
-            "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
-            "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
+            "reddit":
+            f"{self.apk_mirror_urls.get('reddit')}reddit",
+            "twitter":
+            f"{self.apk_mirror_urls.get('twitter')}twitter",
+            "tiktok":
+            f"{self.apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
+            "warnwetter":
+            f"{self.apk_mirror_urls.get('warnwetter')}warnwetter",
+            "youtube":
+            f"{self.apk_mirror_urls.get('youtube')}youtube",
+            "youtube_music":
+            f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
         }
-        self.build_og_nd_branding_youtube = env.bool("BUILD_OG_BRANDING_YOUTUBE", False)
+        self.build_og_nd_branding_youtube = env.bool(
+            "BUILD_OG_BRANDING_YOUTUBE", False)
         self.branding_patch = env.str(
             "BRANDING_PATCH",
-            "custom-branding-icon-blue" if self.build_extended else "custom-branding",
+            "custom-branding-icon-blue"
+            if self.build_extended else "custom-branding",
         )
