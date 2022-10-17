@@ -53,15 +53,58 @@ You can use any of the following methods to build.
 
 
 <details>
-<summary>🐳With Docker</summary>
+<summary>🐳With Docker Compose</summary>
 
-1.  Install Docker
-2.  Run script with
+1. Install Docker(Skip if already installed)
+   ```bash
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sh get-docker.sh
+   ```
+2. Grant Permissions with(Skip if already there)
+   ```bash
+    sudo usermod -a -G docker ec2-user
+    sudo usermod -a -G docker $USER
+    sudo chmod 777 /var/run/docker.sock
+    ````
+3. Install Docker compose(Skip if already installed or using **_`Docker Desktop`_**)
+    ```bash
+    curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    ```
+4. Clone the repo
+   ```bash
+   git clone https://github.com/nikhilbadyal/docker-py-revanced
+   ```
+5. cd to the cloned repo
+   ```bash
+   cd docker-py-revanced
+   ```
+6. Run script with
     ```shell
     docker-compose up
     ```
 
 </details>
+
+<details>
+<summary>🐳With Docker</summary>
+
+1. Install Docker(Skip if already installed)
+   ```bash
+   curl -fsSL https://get.docker.com -o get-docker.sh
+   sh get-docker.sh
+   ```
+2.  Run script with
+    ```shell
+    docker run \
+    -v "$(pwd)"/apks:/app/apks/  \
+    -e PATCH_APPS=youtube \
+    nikhilbadyal/revanced_builder
+    ```
+    You can pass below envs with `-e` flag.
+
+</details>
+
 
 <details>
 <summary>🫠Without Docker</summary>
