@@ -33,15 +33,12 @@ def main() -> None:
     if config.build_og_nd_branding_youtube:
         logger.info("Rebuilding youtube")
         all_patches = parser.get_all_patches()
-        branding_patch = "custom-branding"
-        if config.build_extended:
-            branding_patch = "custom-branding-icon-blue"
-        branding_index = all_patches.index(branding_patch)
+        branding_index = all_patches.index(config.branding_patch)
         was_og_build = True if all_patches[branding_index - 1] == "-e" else False
-        output = "-custom-icon-" if was_og_build else ""
+        output = "-custom-icon-" if was_og_build else "-original-icon-"
         app = "youtube"
         _, version, is_experimental = patcher.get_app_configs(app)
-        parser.invert_patch(branding_patch)
+        parser.invert_patch(config.branding_patch)
         parser.patch_app(
             app=app,
             version=version,
