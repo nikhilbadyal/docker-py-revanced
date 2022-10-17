@@ -194,7 +194,19 @@ By default, script build the version as recommended by Revanced team.
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets` or you can ignore `.env` file and always use `GitHub secrets` because to modify
     `.env` you need to modify the repo. Edit it and make a commit.
-11. Sample Envs ![envs]
+11. If you want to build youtube with `original icon` and `custom branding icon` both. Add `BUILD_OG_BRANDING_YOUTUBE`
+    in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
+   ```dotenv
+    BUILD_OG_BRANDING_YOUTUBE=True
+   ```
+
+    You can also specify the branding patch to use for custom icon build. This can be done with by adding
+    `BRANDING_PATCH` in `ENVS` in `GitHub secrets` (Recommended) in the format
+    ```dotenv
+    BRANDING_PATCH=custom-branding-icon-blue
+   ```
+
+12. Sample Envs ![envs]
 
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens). Click on generate new token.<br>
