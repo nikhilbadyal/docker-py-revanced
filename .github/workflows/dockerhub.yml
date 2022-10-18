@@ -14,3 +14,8 @@ jobs:
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  cleanup:
+    name: GitHub Cleanup
+    uses: ./.github/workflows/github-cleanup.yml
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
