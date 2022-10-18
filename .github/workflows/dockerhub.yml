@@ -1,0 +1,13 @@
+name: Push to DockerHub
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+jobs:
+  dockerhub-push:
+    uses: nikhilbadyal/ghactions/.github/workflows/dockerhub-push.yml@main
+    if: github.repository == 'nikhilbadyal/docker-py-revanced'
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
