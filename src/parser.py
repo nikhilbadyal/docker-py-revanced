@@ -103,6 +103,7 @@ class Parser(object):
 
         if self._PATCHES:
             args.extend(self._PATCHES)
+        if self.config.build_extended and self.config.build_arm64_v8a_only:
             args.append("--rip-lib")
             args.append("armeabi-v7a")
             args.append("--rip-lib")
