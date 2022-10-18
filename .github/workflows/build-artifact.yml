@@ -8,6 +8,11 @@ on:
     secrets:
       ENVS:
         required: false
+    inputs:
+      FILES_TO_EXPECT:
+        type: string
+        required: false
+        default: -1
 
 jobs:
   build-apk:
@@ -28,10 +33,11 @@ jobs:
           docker-compose up
 
       - name: Upload Build APKS
-        uses: actions/upload-artifact@v3.1.0
+        uses: nikhilbadyal/upload-artifact@count-check
         with:
           name: Built-APKs
           path: |
             apks/*-output.apk
             apks/VancedMicroG.apk"
           if-no-files-found: error
+          files-to-expect: ${{ inputs.FILES_TO_EXPECT }}

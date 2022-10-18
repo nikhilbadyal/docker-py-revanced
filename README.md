@@ -249,8 +249,13 @@ By default, script build the version as recommended by Revanced team.
     ```dotenv
      BRANDING_PATCH=custom-branding-icon-blue
     ```
-
-12. Sample Envs ![envs]
+12. You can build only for `arm64-v8a` devices in order to get smaller apk files.This can be done with by adding
+    `BUILD_ARM64_V8A_ONLY` in `ENVS` in `GitHub secrets` (Recommended) in the format.
+    ```dotenv
+     BUILD_ARM64_V8A_ONLY=True
+    ```
+    Make sure you are using `revanced-extended` as `revanced` doesn't support this.
+13. Sample Envs ![envs]
 
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens). Click on generate new token.<br>

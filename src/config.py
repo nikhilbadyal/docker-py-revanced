@@ -61,3 +61,4 @@ class RevancedConfig:
             "BRANDING_PATCH",
             "custom-branding-icon-blue" if self.build_extended else "custom-branding",
         )
+        self.build_arm64_v8a_only = env.bool("BUILD_ARM64_V8A_ONLY", False)
