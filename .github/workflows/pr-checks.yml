@@ -14,6 +14,8 @@ jobs:
       PYTHON_VERSION: '3.10'
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
+    with:
+      FILES_TO_EXPECT: 2
     secrets:
       ENVS: |
         PATCH_APPS=youtube
