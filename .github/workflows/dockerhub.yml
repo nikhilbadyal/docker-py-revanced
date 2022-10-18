@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - 'main'
+    paths:
+      - '**.py'
+      - 'README.md'
 jobs:
   dockerhub-push:
     uses: nikhilbadyal/ghactions/.github/workflows/dockerhub-push.yml@main

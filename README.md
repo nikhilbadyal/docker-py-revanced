@@ -68,7 +68,8 @@ You can use any of the following methods to build.
     ````
 3. Install Docker compose(Skip if already installed or using **_`Docker Desktop`_**)
     ```bash
-    curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" \
+    -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
     ```
 4. Clone the repo
@@ -130,8 +131,8 @@ You can use any of the following methods to build.
 </details>
 
 
-### Note (Pay attention to 3,4)
-
+### Note
+(Pay attention to 3,4)<br>
 By default, script build the version as recommended by Revanced team.
 
 1. Supported values for **_<REVANCED_APPS_NAME>_** are :
@@ -239,15 +240,15 @@ By default, script build the version as recommended by Revanced team.
     `.env` you need to modify the repo. Edit it and make a commit.
 11. If you want to build youtube with `original icon` and `custom branding icon` both. Add `BUILD_OG_BRANDING_YOUTUBE`
     in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
-   ```dotenv
-    BUILD_OG_BRANDING_YOUTUBE=True
-   ```
+    ```dotenv
+     BUILD_OG_BRANDING_YOUTUBE=True
+    ```
 
     You can also specify the branding patch to use for custom icon build. This can be done with by adding
     `BRANDING_PATCH` in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```dotenv
-    BRANDING_PATCH=custom-branding-icon-blue
-   ```
+     BRANDING_PATCH=custom-branding-icon-blue
+    ```
 
 12. Sample Envs ![envs]
 
