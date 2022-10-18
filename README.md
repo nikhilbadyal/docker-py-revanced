@@ -97,10 +97,7 @@ You can use any of the following methods to build.
    ```
 2.  Run script with
     ```shell
-    docker run \
-    -v "$(pwd)"/apks:/app/apks/  \
-    -e PATCH_APPS=youtube \
-    nikhilbadyal/revanced_builder
+    docker run -v "$(pwd)"/apks:/app/apks/  nikhilbadyal/docker-py-revanced
     ```
     You can pass below envs with `-e` flag.
 
