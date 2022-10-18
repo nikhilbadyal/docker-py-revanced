@@ -165,7 +165,7 @@ class Downloader(object):
     def download_revanced(self) -> None:
         """Download Revanced and Extended Patches, Integration and CLI."""
         assets = [
-            ["revanced", "revanced-cli", self.config.normal_cli_jar],
+            ["j-hc", "revanced-cli", self.config.normal_cli_jar],
             ["revanced", "revanced-integrations", self.config.normal_integrations_apk],
             ["revanced", "revanced-patches", self.config.normal_patches_jar],
         ]
