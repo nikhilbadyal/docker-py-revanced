@@ -105,6 +105,10 @@ class Parser(object):
             args.extend(self._PATCHES)
             args.append("--rip-lib")
             args.append("armeabi-v7a")
+            args.append("--rip-lib")
+            args.append("x86")
+            args.append("--rip-lib")
+            args.append("x86_64")
 
         start = perf_counter()
         process = Popen(["java", *args], stdout=PIPE)
