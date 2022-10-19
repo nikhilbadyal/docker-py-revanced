@@ -235,7 +235,7 @@ By default, script build the version as recommended by Revanced team.
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets` or you can ignore `.env` file and always use `GitHub secrets` because to modify
     `.env` you need to modify the repo. Edit it and make a commit.
-11. If you want to build youtube with `original icon` and `custom branding icon` both. Add `BUILD_OG_BRANDING_YOUTUBE`
+11. If you want to build YouTube with `original icon` and `custom branding icon` both. Add `BUILD_OG_BRANDING_YOUTUBE`
     in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```dotenv
      BUILD_OG_BRANDING_YOUTUBE=True
@@ -246,11 +246,12 @@ By default, script build the version as recommended by Revanced team.
     ```dotenv
      BRANDING_PATCH=custom-branding-icon-blue
     ```
-12. You can build only for `arm64-v8a` devices in order to get smaller apk files.This can be done with by adding
-    `BUILD_ARM64_V8A_ONLY` in `ENVS` in `GitHub secrets` (Recommended) in the format.
+12. You can build only for a particular arch in order to get smaller apk files.This can be done with by adding comma
+    separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the format.
     ```dotenv
-     BUILD_ARM64_V8A_ONLY=True
+     ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
     ```
+    Possible values for `ARCHS_TO_BUILD` are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
     Make sure you are using `revanced-extended` as `revanced` doesn't support this.
 13. Sample Envs ![envs]
 

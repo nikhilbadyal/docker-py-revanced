@@ -8,6 +8,7 @@ from loguru import logger
 
 from src.config import RevancedConfig
 from src.patches import Patches
+from src.utils import possible_archs
 
 
 class Parser(object):
@@ -103,13 +104,11 @@ class Parser(object):
 
         if self._PATCHES:
             args.extend(self._PATCHES)
-        if self.config.build_extended and self.config.build_arm64_v8a_only:
-            args.append("--rip-lib")
-            args.append("armeabi-v7a")
-            args.append("--rip-lib")
-            args.append("x86")
-            args.append("--rip-lib")
-            args.append("x86_64")
+        if self.config.build_extended and len(self.config.archs_to_build) > 0:
+            excluded = set(possible_archs) - set(self.config.archs_to_build)
+            for arch in excluded:
+                args.append("--rip-lib")
+                args.append(arch)
 
         start = perf_counter()
         process = Popen(["java", *args], stdout=PIPE)
