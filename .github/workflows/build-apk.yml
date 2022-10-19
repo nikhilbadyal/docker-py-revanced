@@ -95,6 +95,20 @@ jobs:
       STICKER_ID: ${{ secrets.STICKER_ID }}
       CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
 
+  upload-to-telegram-root:
+    needs: [ build-apk ]
+    uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
+    if: ${{ inputs.TELEGRAM_UPLOAD }} && ${{ inputs.GITHUB_UPLOAD }}
+    secrets:
+      TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
+      TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      STICKER_ID: ${{ secrets.STICKER_ID }}
+      CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
+      DOWNLOAD_GITHUB_REPOSITORY: ${{ secrets.DOWNLOAD_GITHUB_REPOSITORY }}
+      ASSETS_PATTERN: ${{ secrets.ASSETS_PATTERN }}
+
 
   cleanup:
     name: GitHub Cleanup
