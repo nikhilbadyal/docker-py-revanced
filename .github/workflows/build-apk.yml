@@ -94,11 +94,12 @@ jobs:
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       STICKER_ID: ${{ secrets.STICKER_ID }}
       CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
+      SEND_STICKER: ${{ secrets.SEND_STICKER }}
 
   upload-to-telegram-root:
-    needs: [ build-apk ]
+    needs: [ build-apk , upload-to-telegram]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: ${{ inputs.TELEGRAM_UPLOAD }} && ${{ inputs.GITHUB_UPLOAD }}
+    if: ${{ inputs.TELEGRAM_UPLOAD }} && ${{ inputs.GITHUB_UPLOAD }} && github.repository == 'nikhilbadyal/docker-py-revanced'
     secrets:
       TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
@@ -108,6 +109,8 @@ jobs:
       CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
       DOWNLOAD_GITHUB_REPOSITORY: ${{ secrets.DOWNLOAD_GITHUB_REPOSITORY }}
       ASSETS_PATTERN: ${{ secrets.ASSETS_PATTERN }}
+      SEND_MESSAGE: ${{ secrets.SEND_MESSAGE }}
+      MESSAGE: ${{ secrets.MESSAGE }}
 
 
   cleanup:
