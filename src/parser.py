@@ -104,7 +104,11 @@ class Parser(object):
 
         if self._PATCHES:
             args.extend(self._PATCHES)
-        if self.config.build_extended and len(self.config.archs_to_build) > 0:
+        if (
+            self.config.build_extended
+            and len(self.config.archs_to_build) > 0
+            and app in self.config.extended_apps
+        ):
             excluded = set(possible_archs) - set(self.config.archs_to_build)
             for arch in excluded:
                 args.append("--rip-lib")
