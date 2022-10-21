@@ -17,5 +17,7 @@ jobs:
   cleanup:
     name: GitHub Cleanup
     uses: nikhilbadyal/ghactions/.github/workflows/github-cleanup.yml@main
+    with:
+      PLATFORMS: linux/amd64
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
