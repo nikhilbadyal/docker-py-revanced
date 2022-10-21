@@ -97,7 +97,7 @@ jobs:
       SEND_STICKER: ${{ secrets.SEND_STICKER }}
 
   upload-to-telegram-root:
-    needs: [ build-apk , upload-to-telegram]
+    needs: [ build-apk , upload-to-telegram ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
     if: ${{ inputs.TELEGRAM_UPLOAD }} && ${{ inputs.GITHUB_UPLOAD }} && github.repository == 'nikhilbadyal/docker-py-revanced'
     secrets:
@@ -117,6 +117,6 @@ jobs:
     name: GitHub Cleanup
     if: ${{ inputs.CLEANUP }}
     needs: [ upload-to-telegram ]
-    uses: ./.github/workflows/github-cleanup.yml
+    uses: nikhilbadyal/ghactions/.github/workflows/github-cleanup.yml@main
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}

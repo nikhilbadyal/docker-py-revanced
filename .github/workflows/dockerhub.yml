@@ -16,6 +16,6 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
   cleanup:
     name: GitHub Cleanup
-    uses: ./.github/workflows/github-cleanup.yml
+    uses: nikhilbadyal/ghactions/.github/workflows/github-cleanup.yml@main
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
