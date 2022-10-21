@@ -51,10 +51,10 @@ jobs:
       - name: Get Date
         id: get-date
         run: |
-          echo ::set-output name=date::$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")
+          echo "date=$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
 
       - name: Delete Older Releases
-        uses: nikhilbadyal/ghaction-rm-releases@v0.0.2
+        uses: nikhilbadyal/ghaction-rm-releases@v0.0.1
         with:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           RELEASE_PATTERN: 'Build*'
