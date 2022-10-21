@@ -117,6 +117,6 @@ jobs:
     name: GitHub Cleanup
     if: ${{ inputs.CLEANUP }}
     needs: [ upload-to-telegram ]
-    uses: nikhilbadyal/ghactions/.github/workflows/github-cleanup.yml@main
+    uses: ./.github/workflows/github-cleanup.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
