@@ -84,9 +84,9 @@ jobs:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
   upload-to-telegram:
-    needs: [ build-apk ]
+    needs: [ upload-to-github ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: ${{ inputs.TELEGRAM_UPLOAD }} && ${{ inputs.GITHUB_UPLOAD }}
+    if: ${{ inputs.TELEGRAM_UPLOAD }}
     secrets:
       TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
@@ -97,9 +97,9 @@ jobs:
       SEND_STICKER: ${{ secrets.SEND_STICKER }}
 
   upload-to-telegram-root:
-    needs: [ build-apk , upload-to-telegram ]
+    needs: [ upload-to-telegram ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: ${{ inputs.TELEGRAM_UPLOAD }} && ${{ inputs.GITHUB_UPLOAD }} && github.repository == 'nikhilbadyal/docker-py-revanced'
+    if: github.repository == 'nikhilbadyal/docker-py-revanced'
     secrets:
       TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
