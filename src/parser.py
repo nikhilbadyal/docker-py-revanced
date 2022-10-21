@@ -107,7 +107,7 @@ class Parser(object):
         if (
             self.config.build_extended
             and len(self.config.archs_to_build) > 0
-            and app in self.config.extended_apps
+            and app in self.config.rip_libs_apps
         ):
             excluded = set(possible_archs) - set(self.config.archs_to_build)
             for arch in excluded:
