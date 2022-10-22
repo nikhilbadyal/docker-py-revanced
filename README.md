@@ -15,12 +15,8 @@ You can use any of the following methods to build.
 
 - 🚀In GitHub (**_`Recommended`_**)
    1. Fork the project.
-   ![image](https://user-images.githubusercontent.com/22337329/186554644-7d4c2172-c0dd-4ea6-9ec1-08e9b567a5e3.png)
-   2. Add following secrets to the repo.
-       1. _GH_TOKEN_ (**required**) - GitHub token so that it can upload to GitHub
-          after building. Click [here](#generate-token) to learn how to get that.
-       2. _VT_API_KEY_ (optional) - required only if you want Virus total scan.
-       3. _ENVS_ (optional) - required only if you want to cook specific apps/versions.
+   ![fork]
+   2. Add `ENVS` (**optional**) secret to the repo. Required only if you want to cook specific apps/versions.
        <details>
          <summary>🚶Detailed step by step guide</summary>
 
@@ -31,8 +27,7 @@ You can use any of the following methods to build.
 
       </details>
 
-   3. Go to actions tab. Select `Build Revanced APK`.Click on `Run Workflow`.
-      1. It can take a few minute to start. Just be patient.
+   3. Go to actions tab. Select `Build & Release`.Click on `Run Workflow`.
 
        <details>
          <summary>🚶Detailed step by step guide</summary>
@@ -40,16 +35,11 @@ You can use any of the following methods to build.
          - Go to actions tab
            ![action_0]
          - Check the status of build, It should look green.
-           ![action_1]
-         - Check logs if something fails.
-           ![action_2]
-           ![action_3]
+           ![build_wait]
 
        </details>
 
-   4. If the building process is successful, you’ll get your APKs in the releases
-       - ![apks]
-   5. Click on **`Build-<SomeRandomDate>`** and download the apk file.
+   4. If the building process is successful, you’ll get your APKs in the ![apks]
 
 
 <details>
@@ -253,21 +243,21 @@ By default, script build the version as recommended by Revanced team.
     ```
     Possible values for `ARCHS_TO_BUILD` are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
     Make sure you are using `revanced-extended` as `revanced` doesn't support this.
-13. Sample Envs ![envs]
+13. You can scan your build apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
+14. Sample Envs ![envs]
 
 ### Generate Token
 1. Go to your account developer [settings](https://github.com/settings/tokens). Click on generate new token.<br>
    <img src="https://i.imgur.com/grofl9E.png" height="150">
 2. Give a nice name. and grant following permissions<br>
-   <img src="https://user-images.githubusercontent.com/22337329/186550702-69c5fb77-32c3-4689-bb5c-3a213daa5e19.png" width="400" height="450">
+   <img src="https://i.imgur.com/Msrk8QP.png" width="400" height="450">
 
+[fork]: https://i.imgur.com/R5HdByI.png
 [secrets]: https://i.imgur.com/083Bjpg.png
 [step_1]: https://i.imgur.com/Inj82KK.png
-[step_2]: https://user-images.githubusercontent.com/22337329/186521861-42786e8d-5db4-43ef-9676-2f7e7c0eddc4.png
-[action_0]: https://i.imgur.com/M1XdjZC.png
-[action_1]: https://user-images.githubusercontent.com/22337329/186533319-0aebf294-9bac-4859-b4e1-1b4c87d39f48.png
-[action_2]: https://user-images.githubusercontent.com/22337329/186533358-e27e30bc-0d16-4f56-a335-0387c481dbf8.png
-[action_3]: https://user-images.githubusercontent.com/22337329/186533417-15477a2c-28c3-4e39-9f3d-c4e18202d000.png
+[step_2]: https://i.imgur.com/V2Wfx3J.png
+[action_0]: https://i.imgur.com/XSCvzav.png
+[build_wait]: https://i.imgur.com/CsJt9W1.png
 [apks]: https://i.imgur.com/S5d7qAO.png
 [chat id]: https://i.imgur.com/22UiaWs.png
 [bot api]: https://i.imgur.com/A6JCyK2.png
