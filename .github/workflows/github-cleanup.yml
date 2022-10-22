@@ -12,4 +12,4 @@ jobs:
     name: GitHub Cleanup
     uses: nikhilbadyal/ghactions/.github/workflows/github-cleanup.yml@main
     secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -13,6 +13,6 @@ jobs:
     uses: nikhilbadyal/ghactions/.github/workflows/python-precommit-updater.yml@main
     if: github.repository == 'nikhilbadyal/docker-py-revanced'
     secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
       PYTHON_VERSION: '3.10'
