@@ -215,7 +215,7 @@ By default, script build the version as recommended by Revanced team.
    ```
    or disable it with (default)
    ```dotenv
-    BUILD_EXTENDED=True
+    BUILD_EXTENDED=False
    ```
 9. For Telegram Upload.
    1. Set up a telegram channel, send a message to it and forward the message to
