@@ -95,6 +95,7 @@ jobs:
       STICKER_ID: ${{ secrets.STICKER_ID }}
       CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
       SEND_STICKER: ${{ secrets.SEND_STICKER }}
+      MESSAGE: ${{ secrets.MESSAGE_NON_ROOT }}
 
   upload-to-telegram-root:
     needs: [ upload-to-telegram ]
@@ -110,7 +111,7 @@ jobs:
       DOWNLOAD_GITHUB_REPOSITORY: ${{ secrets.DOWNLOAD_GITHUB_REPOSITORY }}
       ASSETS_PATTERN: ${{ secrets.ASSETS_PATTERN }}
       SEND_MESSAGE: ${{ secrets.SEND_MESSAGE }}
-      MESSAGE: ${{ secrets.MESSAGE }}
+      MESSAGE: ${{ secrets.MESSAGE_ROOT }}
 
 
   cleanup:
