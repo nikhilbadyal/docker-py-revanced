@@ -246,12 +246,6 @@ By default, script build the version as recommended by Revanced team.
 13. You can scan your build apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
 14. Sample Envs ![envs]
 
-### Generate Token
-1. Go to your account developer [settings](https://github.com/settings/tokens). Click on generate new token.<br>
-   <img src="https://i.imgur.com/grofl9E.png" height="150">
-2. Give a nice name. and grant following permissions<br>
-   <img src="https://i.imgur.com/Msrk8QP.png" width="400" height="450">
-
 [fork]: https://i.imgur.com/R5HdByI.png
 [secrets]: https://i.imgur.com/083Bjpg.png
 [step_1]: https://i.imgur.com/Inj82KK.png
