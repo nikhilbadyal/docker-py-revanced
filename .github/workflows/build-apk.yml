@@ -30,7 +30,7 @@ on:
         description: 'Update Changelog'
         type: boolean
         required: false
-        default: false
+        default: true
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -59,6 +59,7 @@ jobs:
         id: get-date
         run: |
           echo "date=$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
+          curl https://github.com/nikhilbadyal/docker-py-revanced/blob/changelogs/changelog.md > changelog.md
 
       - name: Delete Older Releases
         uses: nikhilbadyal/ghaction-rm-releases@v0.0.1
@@ -73,7 +74,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}
           artifactErrorsFailBuild: true
-          bodyFile: changelog.md
+          generateReleaseNotes: true
 
       - name: Sleep for 10 seconds
         run: |

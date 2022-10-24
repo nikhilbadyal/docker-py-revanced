@@ -58,5 +58,5 @@ jobs:
           branch: changelogs
           skip_checkout: true
           file_pattern: changelog.md
-          commit_message: New Build
+          commit_message: 🚀New Build
           push_options: '--force'
