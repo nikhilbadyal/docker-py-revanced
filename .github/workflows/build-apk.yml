@@ -66,7 +66,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}
           artifactErrorsFailBuild: true
-          generateReleaseNotes: true
+          bodyFile: changelog.md
       - name: Sleep for 10 seconds
         run: |
           sleep 10
