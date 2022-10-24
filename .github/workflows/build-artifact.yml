@@ -4,6 +4,11 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
 on:
   workflow_dispatch:
+    inputs:
+      FILES_TO_EXPECT:
+        type: string
+        required: false
+        default: '-1'
   workflow_call:
     secrets:
       ENVS:
@@ -12,7 +17,11 @@ on:
       FILES_TO_EXPECT:
         type: string
         required: false
-        default: -1
+        default: '-1'
+      COMMIT_CHANGELOG:
+        type: boolean
+        required: false
+        default: false
 
 jobs:
   build-apk:
@@ -41,3 +50,13 @@ jobs:
             apks/VancedMicroG.apk"
           if-no-files-found: error
           files-to-expect: ${{ inputs.FILES_TO_EXPECT }}
+
+      - name: Commit Update file
+        if: ${{ inputs.COMMIT_CHANGELOG }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: changelogs
+          skip_checkout: true
+          file_pattern: changelog.md
+          commit_message: New Build
+          push_options: '--force'

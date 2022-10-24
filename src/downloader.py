@@ -1,4 +1,5 @@
 """Downloader Class."""
+import os
 import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -12,6 +13,7 @@ from selectolax.lexbor import LexborHTMLParser
 from tqdm import tqdm
 
 from src.config import RevancedConfig
+from src.utils import update_changelog
 
 
 class Downloader(object):
@@ -160,10 +162,14 @@ class Downloader(object):
             download_url = r.json()["assets"][1]["browser_download_url"]
         else:
             download_url = r.json()["assets"][0]["browser_download_url"]
+        update_changelog(f"{owner}/{name}", r.json())
         self._download(download_url, file_name=file_name)
 
     def download_revanced(self) -> None:
         """Download Revanced and Extended Patches, Integration and CLI."""
+        if os.path.exists("changelog.md"):
+            logger.debug("Deleting old changelog.md")
+            os.remove("changelog.md")
         assets = [
             ["revanced", "revanced-cli", self.config.normal_cli_jar],
             ["revanced", "revanced-integrations", self.config.normal_integrations_apk],

@@ -26,6 +26,11 @@ on:
         required: false
         type: boolean
         default: false
+      COMMIT_CHANGELOG:
+        description: 'Update Changelog'
+        type: boolean
+        required: false
+        default: false
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -33,6 +38,8 @@ concurrency:
 jobs:
   build-apk:
     uses: ./.github/workflows/build-artifact.yml
+    with:
+      COMMIT_CHANGELOG: ${{ inputs.COMMIT_CHANGELOG }}
     secrets:
       ENVS: ${{ secrets.ENVS }}
 
@@ -66,7 +73,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}
           artifactErrorsFailBuild: true
-          generateReleaseNotes: true
+          bodyFile: changelog.md
+
       - name: Sleep for 10 seconds
         run: |
           sleep 10
