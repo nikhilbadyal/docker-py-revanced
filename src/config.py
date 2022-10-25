@@ -5,7 +5,7 @@ from typing import List
 from environs import Env
 from requests import Session
 
-from src.utils import supported_apps
+from src.utils import default_build
 
 
 class RevancedConfig:
@@ -20,7 +20,7 @@ class RevancedConfig:
         self.apk_mirror = "https://www.apkmirror.com"
         self.upto_down = ["spotify"]
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
-        self.apps = env.list("PATCH_APPS", supported_apps)
+        self.apps = env.list("PATCH_APPS", default_build)
         self.extended_apps: List[str] = ["youtube", "youtube_music"]
         self.rip_libs_apps: List[str] = ["youtube"]
         self.normal_cli_jar = "revanced-cli.jar"
