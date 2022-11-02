@@ -7,27 +7,27 @@ on:
   workflow_dispatch:
     inputs:
       GITHUB_UPLOAD:
-        description: 'Upload to GitHub'
+        description: "Upload to GitHub"
         required: false
         type: boolean
         default: true
       TELEGRAM_UPLOAD:
-        description: 'Upload to Telegram'
+        description: "Upload to Telegram"
         required: false
         type: boolean
         default: false
       VIRUSTOTAL_SCAN:
-        description: 'Scan apks with VirusTotal'
+        description: "Scan apks with VirusTotal"
         required: false
         type: boolean
         default: false
       CLEANUP:
-        description: 'Clear GitHub(Useful if Telegram upload is enabled)'
+        description: "Clear GitHub(Useful if Telegram upload is enabled)"
         required: false
         type: boolean
         default: false
       COMMIT_CHANGELOG:
-        description: 'Update Changelog'
+        description: "Update Changelog"
         type: boolean
         required: false
         default: true
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     needs: build-apk
-    if: ${{ inputs.GITHUB_UPLOAD }}
+    if: inputs.GITHUB_UPLOAD
 
     steps:
       - name: Download Already Built APKs
@@ -65,7 +65,7 @@ jobs:
         uses: nikhilbadyal/ghaction-rm-releases@v0.0.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_PATTERN: 'Build*'
+          RELEASE_PATTERN: "Build*"
 
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.11.1
@@ -81,21 +81,21 @@ jobs:
           sleep 10
 
   virustotal-scan:
-    needs: [ upload-to-github ]
+    needs: [upload-to-github]
     uses: nikhilbadyal/ghactions/.github/workflows/virustotal-scan.yml@main
     with:
       FILES: |
         .apk$
       request_rate: 4
-    if: ${{ inputs.VIRUSTOTAL_SCAN }}
+    if: inputs.VIRUSTOTAL_SCAN
     secrets:
       VT_API_KEY: ${{ secrets.VT_API_KEY }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   upload-to-telegram:
-    needs: [ upload-to-github ]
+    needs: [upload-to-github]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: ${{ inputs.TELEGRAM_UPLOAD }}
+    if: inputs.TELEGRAM_UPLOAD
     secrets:
       TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
@@ -107,7 +107,7 @@ jobs:
       MESSAGE: ${{ secrets.MESSAGE_NON_ROOT }}
 
   upload-to-telegram-root:
-    needs: [ upload-to-telegram ]
+    needs: [upload-to-telegram]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
     if: github.repository == 'nikhilbadyal/docker-py-revanced'
     secrets:
@@ -122,11 +122,10 @@ jobs:
       SEND_MESSAGE: ${{ secrets.SEND_MESSAGE }}
       MESSAGE: ${{ secrets.MESSAGE_ROOT }}
 
-
   cleanup:
     name: GitHub Cleanup
-    if: ${{ inputs.CLEANUP }}
-    needs: [ upload-to-telegram ]
+    if: inputs.CLEANUP
+    needs: [upload-to-telegram]
     uses: ./.github/workflows/github-cleanup.yml
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
