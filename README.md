@@ -15,32 +15,34 @@ You can get pre-built apks [here](https://t.me/revanced_apkss)
 You can use any of the following methods to build.
 
 - 🚀In GitHub (**_`Recommended`_**)
-    1. Fork the project.
-       ![fork]
+
+    1. Fork the project.<br>
+       <img src="https://i.imgur.com/R5HdByI.png" width="400" style="left"><br>
     2. Add `ENVS` (**optional**) secret to the repo. Required only if you want to cook specific apps/versions.
         <details>
           <summary>🚶Detailed step by step guide</summary>
 
-        - Go to the repo settings and then to actions->secret
-          ![step_1]
-        - Add Repository secret
-          ![step_2]
+        - Go to the repo settings and then to actions->secret<br>
+          <img src="https://i.imgur.com/Inj82KK.png" width="600" style="left"><br>
+        - Add Repository secret<br>
+          <img src="https://i.imgur.com/V2Wfx3J.png" width="600" style="left">
 
        </details>
 
     3. Go to actions tab. Select `Build & Release`.Click on `Run Workflow`.
 
-        <details>
-          <summary>🚶Detailed step by step guide</summary>
+       <details>
+         <summary>🚶Detailed step by step guide</summary>
 
-        - Go to actions tab
-          ![action_0]
-        - Check the status of build, It should look green.
-          ![build_wait]
+        - Go to actions tab<br>
+          <img src="https://i.imgur.com/XSCvzav.png" width="600" style="left"><br>
+        - Check the status of build, It should look green.<br>
+          <img src="https://i.imgur.com/CsJt9W1.png" width="600" style="left">
 
-        </details>
+       </details>
 
-    4. If the building process is successful, you’ll get your APKs in the ![apks]
+    4. If the building process is successful, you’ll get your APKs in the <br>
+       <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
 
 <details>
 <summary>🐳With Docker Compose</summary>
@@ -55,13 +57,13 @@ You can use any of the following methods to build.
     sudo usermod -a -G docker ec2-user
     sudo usermod -a -G docker $USER
     sudo chmod 777 /var/run/docker.sock
-    ````
+   ```
 3. Install Docker compose(Skip if already installed or using **_`Docker Desktop`_**)
-    ```bash
-    curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" \
-    -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
-    ```
+   ```bash
+   curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" \
+   -o /usr/local/bin/docker-compose
+   sudo chmod +x /usr/local/bin/docker-compose
+   ```
 4. Clone the repo
    ```bash
    git clone https://github.com/nikhilbadyal/docker-py-revanced
@@ -71,9 +73,9 @@ You can use any of the following methods to build.
    cd docker-py-revanced
    ```
 6. Run script with
-    ```shell
-    docker-compose up
-    ```
+   ```shell
+   docker-compose up
+   ```
 
 </details>
 
@@ -92,7 +94,6 @@ You can use any of the following methods to build.
    You can pass below envs with `-e` flag.
 
 </details>
-
 
 <details>
 <summary>🫠Without Docker</summary>
@@ -123,7 +124,8 @@ You can use any of the following methods to build.
 (Pay attention to 3,4)<br>
 By default, script build the version as recommended by Revanced team.
 
-1. Supported values for **_<REVANCED_APPS_NAME>_** are :
+1. Supported values for **REVANCED_APPS_NAME** are :
+
     1. youtube
     2. youtube_music
     3. twitter
@@ -178,10 +180,13 @@ By default, script build the version as recommended by Revanced team.
 6. If you want to build `latest` version, whatever latest is available(including
    beta) .
    Add `latest` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
+
    ```ini
    <APPNAME>_VERSION=latest
    ```
+
    Example:
+
    ```ini
    YOUTUBE_VERSION=latest
    YOUTUBE_MUSIC_VERSION=latest
@@ -211,14 +216,14 @@ By default, script build the version as recommended by Revanced team.
     1. Set up a telegram channel, send a message to it and forward the message to
        this telegram [bot](https://t.me/username_to_id_bot)
     2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
-       ![chat id]
+       <img src="https://i.imgur.com/22UiaWs.png" width="300" style="left"><br>
     3. `TELEGRAM_BOT_TOKEN` - Telegram provides BOT_TOKEN. It works as sender. Open [bot](https://t.me/BotFather) and
        create one copy api key<br>
-       ![bot api]
-    4. `TELEGRAM_API_ID`  - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)<br>
-       ![tg api]
+       <img src="https://i.imgur.com/A6JCyK2.png" width="300" style="left"><br>
+    4. `TELEGRAM_API_ID` - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)<br>
+       <img src="https://i.imgur.com/eha3nnb.png" width="300" style="left"><br>
     5. `TELEGRAM_API_HASH` - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)<br>
-       ![tg api hash]
+       <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
     6. After Everything done successfully the actions secrets of the repository will look something like<br>
        <img src="https://i.imgur.com/dzC1KFa.png" width="400">
 10. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
@@ -227,15 +232,18 @@ By default, script build the version as recommended by Revanced team.
     `.env` you need to modify the repo. Edit it and make a commit.
 11. If you want to build YouTube with `original icon` and `custom branding icon` both. Add `BUILD_OG_BRANDING_YOUTUBE`
     in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
+
     ```dotenv
      BUILD_OG_BRANDING_YOUTUBE=True
     ```
 
     You can also specify the branding patch to use for custom icon build. This can be done with by adding
     `BRANDING_PATCH` in `ENVS` in `GitHub secrets` (Recommended) in the format
+
     ```dotenv
      BRANDING_PATCH=custom-branding-icon-blue
     ```
+
 12. You can build only for a particular arch in order to get smaller apk files.This can be done with by adding comma
     separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the format.
     ```dotenv
@@ -244,30 +252,7 @@ By default, script build the version as recommended by Revanced team.
     Possible values for `ARCHS_TO_BUILD` are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
     Make sure you are using `revanced-extended` as `revanced` doesn't support this.
 13. You can scan your build apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
-14. Sample Envs ![envs]
-
-[fork]: https://i.imgur.com/R5HdByI.png
-
-[secrets]: https://i.imgur.com/083Bjpg.png
-
-[step_1]: https://i.imgur.com/Inj82KK.png
-
-[step_2]: https://i.imgur.com/V2Wfx3J.png
-
-[action_0]: https://i.imgur.com/XSCvzav.png
-
-[build_wait]: https://i.imgur.com/CsJt9W1.png
-
-[apks]: https://i.imgur.com/S5d7qAO.png
-
-[chat id]: https://i.imgur.com/22UiaWs.png
-
-[bot api]: https://i.imgur.com/A6JCyK2.png
-
-[tg api]: https://i.imgur.com/eha3nnb.png
-
-[tg api hash]: https://i.imgur.com/7n5k1mp.png
-
-[envs]: https://i.imgur.com/ajSE5nA.png
+14. Sample Envs<br>
+    <img src="https://i.imgur.com/ajSE5nA.png" width="600" style="left">
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
