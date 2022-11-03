@@ -52,4 +52,4 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         logger.error("Script halted because of keyboard interrupt.")
-        sys.exit(-1)
+        sys.exit(1)
