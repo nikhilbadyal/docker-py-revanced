@@ -39,7 +39,7 @@ def main() -> None:
                 app="youtube",
                 version=version,
                 is_experimental=is_experimental,
-                output_prefix=alternative_patch,
+                output_prefix="-" + alternative_patch + "-",
             )
 
 
