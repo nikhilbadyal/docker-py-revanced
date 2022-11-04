@@ -57,9 +57,6 @@ class RevancedConfig:
             "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
             "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
         }
-        self.build_og_nd_branding_youtube = env.bool("BUILD_OG_BRANDING_YOUTUBE", False)
-        self.branding_patch = env.str(
-            "BRANDING_PATCH",
-            "custom-branding-icon-blue" if self.build_extended else "custom-branding",
-        )
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
+        self.build_alternative_youtube = env.bool("BUILD_ALTERNATIVE_YOUTUBE", False)
+        self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])

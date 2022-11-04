@@ -30,21 +30,17 @@ def main() -> None:
             parser.patch_app(app=app, version=version, is_experimental=is_experimental)
         except Exception as e:
             logger.exception(f"Failed to build {app} because of {e}")
-    if config.build_og_nd_branding_youtube:
-        logger.info("Rebuilding youtube")
-        all_patches = parser.get_all_patches()
-        branding_index = all_patches.index(config.branding_patch)
-        was_og_build = True if all_patches[branding_index - 1] == "-e" else False
-        output = "-custom-icon-" if was_og_build else "-original-icon-"
-        app = "youtube"
-        _, version, is_experimental = patcher.get_app_configs(app)
-        parser.invert_patch(config.branding_patch)
-        parser.patch_app(
-            app=app,
-            version=version,
-            is_experimental=is_experimental,
-            output_prefix=output,
-        )
+    if config.build_alternative_youtube:
+        for alternative_patch in config.alternative_youtube_patches:
+            logger.info(f"Rebuilding youtube with ${alternative_patch}")
+            _, version, is_experimental = patcher.get_app_configs("youtube")
+            parser.invert_patch(alternative_patch)
+            parser.patch_app(
+                app="youtube",
+                version=version,
+                is_experimental=is_experimental,
+                output_prefix="-" + alternative_patch + "-",
+            )
 
 
 if __name__ == "__main__":
