@@ -58,5 +58,7 @@ class RevancedConfig:
             "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
-        self.build_alternative_youtube = env.bool("BUILD_ALTERNATIVE_YOUTUBE", False)
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
+        self.alternative_youtube_music_patches = env.list(
+            "ALTERNATIVE_YOUTUBE_MUSIC_PATCHES", []
+        )

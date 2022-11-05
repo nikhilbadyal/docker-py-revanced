@@ -30,13 +30,26 @@ def main() -> None:
             parser.patch_app(app=app, version=version, is_experimental=is_experimental)
         except Exception as e:
             logger.exception(f"Failed to build {app} because of {e}")
-    if config.build_alternative_youtube:
+    if len(config.alternative_youtube_patches):
         for alternative_patch in config.alternative_youtube_patches:
-            logger.info(f"Rebuilding youtube with ${alternative_patch}")
+            logger.info(f"Rebuilding youtube with inverted ${alternative_patch} patch.")
             _, version, is_experimental = patcher.get_app_configs("youtube")
             parser.invert_patch(alternative_patch)
             parser.patch_app(
                 app="youtube",
+                version=version,
+                is_experimental=is_experimental,
+                output_prefix="-" + alternative_patch + "-",
+            )
+    if len(config.alternative_youtube_music_patches):
+        for alternative_patch in config.alternative_youtube_music_patches:
+            logger.info(
+                f"Rebuilding youtube music with inverted ${alternative_patch} patch."
+            )
+            _, version, is_experimental = patcher.get_app_configs("youtube_music")
+            parser.invert_patch(alternative_patch)
+            parser.patch_app(
+                app="youtube_music",
                 version=version,
                 is_experimental=is_experimental,
                 output_prefix="-" + alternative_patch + "-",
