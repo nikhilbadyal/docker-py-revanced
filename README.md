@@ -218,33 +218,19 @@ By default, script build the version as recommended by Revanced team.
        <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
     6. After Everything done successfully the actions secrets of the repository will look something like<br>
        <img src="https://i.imgur.com/dzC1KFa.png" width="400">
-10. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
-    fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
-    once. Add it in `GitHub secrets` or you can ignore `.env` file and always use `GitHub secrets` because to modify
-    `.env` you need to modify the repo. Edit it and make a commit.
-11. If you want to build YouTube with `original icon` and `custom branding icon` both. Add `BUILD_OG_BRANDING_YOUTUBE`
-    in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
-
-    ```dotenv
-     BUILD_OG_BRANDING_YOUTUBE=True
-    ```
-
-    You can also specify the branding patch to use for custom icon build. This can be done with by adding
-    `BRANDING_PATCH` in `ENVS` in `GitHub secrets` (Recommended) in the format
-
-    ```dotenv
-     BRANDING_PATCH=custom-branding-icon-blue
-    ```
-
-12. You can build only for a particular arch in order to get smaller apk files.This can be done with by adding comma
+10. You can build only for a particular arch in order to get smaller apk files.This can be done with by adding comma
     separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the format.
     ```dotenv
      ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
     ```
     Possible values for `ARCHS_TO_BUILD` are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
     Make sure you are using `revanced-extended` as `revanced` doesn't support this.
-13. You can scan your build apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
-14. Sample Envs<br>
+11. You can scan your build apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
+12. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
+    fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
+    once. Add it in `GitHub secrets`.<br>
+    Or you can ignore what I said above and always use `GitHub secrets`.
+13. Sample Envs<br>
     <img src="https://i.imgur.com/ajSE5nA.png" width="600" style="left">
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
