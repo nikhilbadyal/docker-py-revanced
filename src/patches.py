@@ -165,7 +165,11 @@ class Patches(object):
         env_version = self.config.env.str(f"{app}_VERSION".upper(), None)
         if env_version:
             logger.debug(f"Picked {app} version {env_version} from env.")
-            if env_version == "latest" or env_version > recommended_version:
+            if (
+                env_version == "latest"
+                or env_version > recommended_version
+                or env_version < recommended_version
+            ):
                 experiment = True
             recommended_version = env_version
         return total_patches, recommended_version, experiment
