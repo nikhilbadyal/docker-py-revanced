@@ -125,6 +125,7 @@ By default, script build the version as recommended by Revanced team.
     5. tiktok
     6. warnwetter
     7. spotify
+    8. nyx-music-player
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.
@@ -167,7 +168,6 @@ By default, script build the version as recommended by Revanced team.
    REDDIT_VERSION=X.X.X
    TIKTOK_VERSION=X.X.X
    WARNWETTER_VERSION=X.X.X
-   SPOTIFY_VERSION=X.X.X
    ```
 6. If you want to build `latest` version, whatever latest is available(including
    beta) .
@@ -186,7 +186,6 @@ By default, script build the version as recommended by Revanced team.
    REDDIT_VERSION=latest
    TIKTOK_VERSION=latest
    WARNWETTER_VERSION=latest
-   SPOTIFY_VERSION=latest
    ```
 
 7. If you don't want to use default keystore. You can provide your own by placing it

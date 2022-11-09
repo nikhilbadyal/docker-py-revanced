@@ -90,13 +90,13 @@ class Downloader(object):
         return download_url
 
     def __upto_down_downloader(self, app: str) -> str:
-        page = "https://spotify.en.uptodown.com/android/download"
+        page = f"https://{app}.en.uptodown.com/android/download"
         parser = LexborHTMLParser(self.config.session.get(page).text)
         main_page = parser.css_first("#detail-download-button")
         download_url = main_page.attributes["data-url"]
         app_version: str = parser.css_first(".version").text()
-        self._download(download_url, "spotify.apk")
-        logger.debug(f"Downloaded {app} apk from apkmirror_specific_version in rt")
+        self._download(download_url, f"{app}.apk")
+        logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
         return app_version
 
     def apkmirror_specific_version(self, app: str, version: str) -> str:
