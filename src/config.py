@@ -18,7 +18,7 @@ class RevancedConfig:
         self.session.headers["User-Agent"] = "anything"
         self.build_extended = env.bool("BUILD_EXTENDED", False)
         self.apk_mirror = "https://www.apkmirror.com"
-        self.upto_down = ["spotify"]
+        self.upto_down = ["spotify", "nyx-music-player"]
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
         self.apps = env.list("PATCH_APPS", default_build)
         self.extended_apps: List[str] = ["youtube", "youtube_music"]

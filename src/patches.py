@@ -45,6 +45,7 @@ class Patches(object):
             "com.twitter.android": ("twitter", "_twitter"),
             "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
             "com.spotify.music": ("spotify", "_spotify"),
+            "com.awedea.nyx": ("nyx-music-player", "_nyx"),
         }
 
         for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
@@ -114,6 +115,7 @@ class Patches(object):
             "youtube": "_yt",
             "youtube_music": "_ytm",
             "spotify": "_spotify",
+            "nyx-music-player": "_nyx",
         }
         if not (app_name := app_names.get(app)):
             logger.debug("Invalid app name")
