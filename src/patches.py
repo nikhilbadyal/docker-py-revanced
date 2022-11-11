@@ -122,11 +122,14 @@ class Patches(object):
             sys.exit(-1)
         patches = getattr(self, app_name)
         version = ""
-        if app in ("youtube", "youtube_music"):
-            version = next(i["version"] for i in patches if i["version"] != "all")
-            logger.debug(f"Recommended Version for patching {app} is {version}")
-        else:
-            logger.debug("No recommended version.")
+        try:
+            if app in ("youtube", "youtube_music"):
+                version = next(i["version"] for i in patches if i["version"] != "all")
+                logger.debug(f"Recommended Version for patching {app} is {version}")
+            else:
+                logger.debug("No recommended version.")
+        except StopIteration:
+            pass  # No recommended version available
         return patches, version
 
     # noinspection IncorrectFormatting
