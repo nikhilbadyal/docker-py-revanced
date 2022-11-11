@@ -31,3 +31,9 @@ def update_changelog(name: str, response: Dict[str, str]) -> None:
     )
     file1.write(change_log)
     file1.close()
+
+
+class AppNotFound(ValueError):
+    """Not a valid Revanced App."""
+
+    pass

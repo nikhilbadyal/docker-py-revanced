@@ -1,6 +1,6 @@
 """Revanced Configurations."""
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from environs import Env
 from requests import Session
@@ -12,6 +12,7 @@ class RevancedConfig:
     """Revanced Configurations."""
 
     def __init__(self, env: Env) -> None:
+        self.app_versions: Dict[str, str] = {}
         self.env = env
         self.temp_folder = Path("apks")
         self.session = Session()

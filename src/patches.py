@@ -1,12 +1,12 @@
 """Revanced Patches."""
 import subprocess
-import sys
 from typing import Any, Dict, List, Tuple
 
 from loguru import logger
 from requests import Session
 
 from src.config import RevancedConfig
+from src.utils import AppNotFound
 
 
 class Patches(object):
@@ -118,8 +118,7 @@ class Patches(object):
             "nyx-music-player": "_nyx",
         }
         if not (app_name := app_names.get(app)):
-            logger.debug("Invalid app name")
-            sys.exit(-1)
+            raise AppNotFound(app_name)
         patches = getattr(self, app_name)
         version = ""
         try:

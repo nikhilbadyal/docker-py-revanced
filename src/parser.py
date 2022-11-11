@@ -49,16 +49,20 @@ class Parser(object):
         """
         return self._PATCHES
 
-    def invert_patch(self, name: str) -> None:
+    def invert_patch(self, name: str) -> bool:
         """
         Getter to get all excluded patches
         :return: List of excluded patches
         """
-        patch_index = self._PATCHES.index(name)
-        if self._PATCHES[patch_index - 1] == "-e":
-            self._PATCHES[patch_index - 1] = "-i"
-        else:
-            self._PATCHES[patch_index - 1] = "-e"
+        try:
+            patch_index = self._PATCHES.index(name)
+            if self._PATCHES[patch_index - 1] == "-e":
+                self._PATCHES[patch_index - 1] = "-i"
+            else:
+                self._PATCHES[patch_index - 1] = "-e"
+            return True
+        except ValueError:
+            return False
 
     # noinspection IncorrectFormatting
     def patch_app(
