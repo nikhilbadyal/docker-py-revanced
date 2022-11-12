@@ -107,6 +107,8 @@ jobs:
       ASSETS_PATTERN: ${{ secrets.ASSETS_PATTERN }}
       SEND_MESSAGE: ${{ secrets.SEND_MESSAGE }}
       MESSAGE: ${{ secrets.MESSAGE_ROOT }}
+      SEND_STICKER: ${{ secrets.SEND_STICKER }}
+
 
   upload-to-telegram:
     needs: [ upload-to-telegram-root ]
@@ -117,9 +119,7 @@ jobs:
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
       TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      STICKER_ID: ${{ secrets.STICKER_ID }}
       CHANGELOG_GITHUB_REPOSITORY: ${{ secrets.CHANGELOG_GITHUB_REPOSITORY }}
-      SEND_STICKER: ${{ secrets.SEND_STICKER }}
       MESSAGE: ${{ secrets.MESSAGE_NON_ROOT }}
 
   cleanup:
