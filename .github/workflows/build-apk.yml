@@ -110,7 +110,7 @@ jobs:
 
 
   upload-to-telegram:
-    needs: [ upload-to-telegram-root ]
+    needs: [ upload-to-github ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
     if: inputs.TELEGRAM_UPLOAD
     secrets:
