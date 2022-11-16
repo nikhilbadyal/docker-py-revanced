@@ -47,6 +47,7 @@ class Patches(object):
             "com.spotify.music": ("spotify", "_spotify"),
             "com.awedea.nyx": ("nyx-music-player", "_nyx"),
             "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
+            "com.ticktick.task": ("ticktik", "_ticktik"),
         }
 
         for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
@@ -118,6 +119,7 @@ class Patches(object):
             "spotify": "_spotify",
             "nyx-music-player": "_nyx",
             "icon-pack-studio": "_iconpackstudio",
+            "ticktik": "_ticktik",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app_name)
