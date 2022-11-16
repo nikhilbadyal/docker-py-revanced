@@ -47,7 +47,7 @@ class Patches(object):
             "com.spotify.music": ("spotify", "_spotify"),
             "com.awedea.nyx": ("nyx-music-player", "_nyx"),
             "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
-            "com.ticktick.task": ("ticktik", "_ticktik"),
+            "com.ticktick.task": ("ticktick", "_ticktik"),
             "tv.twitch.android.app": ("twitch", "_twitch"),
         }
 
@@ -120,11 +120,11 @@ class Patches(object):
             "spotify": "_spotify",
             "nyx-music-player": "_nyx",
             "icon-pack-studio": "_iconpackstudio",
-            "ticktik": "_ticktik",
+            "ticktik": "_ticktick",
             "twitch": "_twitch",
         }
         if not (app_name := app_names.get(app)):
-            raise AppNotFound(app_name)
+            raise AppNotFound(app)
         patches = getattr(self, app_name)
         version = ""
         try:
