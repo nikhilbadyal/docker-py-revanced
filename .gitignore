@@ -4,3 +4,4 @@
 venv
 */__pycache__*
 *.pyc
+/revanced-cache/
