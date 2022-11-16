@@ -48,6 +48,7 @@ class Patches(object):
             "com.awedea.nyx": ("nyx-music-player", "_nyx"),
             "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
             "com.ticktick.task": ("ticktik", "_ticktik"),
+            "tv.twitch.android.app": ("twitch", "_twitch"),
         }
 
         for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
@@ -120,6 +121,7 @@ class Patches(object):
             "nyx-music-player": "_nyx",
             "icon-pack-studio": "_iconpackstudio",
             "ticktik": "_ticktik",
+            "twitch": "_twitch",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app_name)

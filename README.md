@@ -128,6 +128,7 @@ By default, script build the version as recommended by Revanced team.
     8. nyx-music-player
     9. icon-pack-studio
     10. ticktick
+    11. twitch
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.
