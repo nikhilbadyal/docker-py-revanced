@@ -126,6 +126,7 @@ By default, script build the version as recommended by Revanced team.
     6. warnwetter
     7. spotify
     8. nyx-music-player
+    9. icon-pack-studio
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.

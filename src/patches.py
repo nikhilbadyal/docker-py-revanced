@@ -46,6 +46,7 @@ class Patches(object):
             "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
             "com.spotify.music": ("spotify", "_spotify"),
             "com.awedea.nyx": ("nyx-music-player", "_nyx"),
+            "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
         }
 
         for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
@@ -116,6 +117,7 @@ class Patches(object):
             "youtube_music": "_ytm",
             "spotify": "_spotify",
             "nyx-music-player": "_nyx",
+            "icon-pack-studio": "_iconpackstudio",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app_name)
