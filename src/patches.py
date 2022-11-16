@@ -47,7 +47,7 @@ class Patches(object):
             "com.spotify.music": ("spotify", "_spotify"),
             "com.awedea.nyx": ("nyx-music-player", "_nyx"),
             "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
-            "com.ticktick.task": ("ticktick", "_ticktik"),
+            "com.ticktick.task": ("ticktick", "_ticktick"),
             "tv.twitch.android.app": ("twitch", "_twitch"),
         }
 
@@ -120,7 +120,7 @@ class Patches(object):
             "spotify": "_spotify",
             "nyx-music-player": "_nyx",
             "icon-pack-studio": "_iconpackstudio",
-            "ticktik": "_ticktick",
+            "ticktick": "_ticktick",
             "twitch": "_twitch",
         }
         if not (app_name := app_names.get(app)):

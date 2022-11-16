@@ -58,7 +58,7 @@ class RevancedConfig:
             "warnwetter": f"{self.apk_mirror_urls.get('warnwetter')}warnwetter",
             "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
             "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
-            "ticktick": f"{self.apk_mirror_urls.get('ticktik')}ticktick-to-do-list-with-reminder-day-planner",
+            "ticktick": f"{self.apk_mirror_urls.get('ticktick')}ticktick-to-do-list-with-reminder-day-planner",
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
