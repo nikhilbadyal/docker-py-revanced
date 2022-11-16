@@ -2,13 +2,7 @@ version: '3.9'
 
 services:
   revanced:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: revanced-builder
+    image: nikhilbadyal/docker-py-revanced
     container_name: revanced-builder
-    platform: linux/amd64
     env_file:
       - .env
-    volumes:
-      - .:/app:z
