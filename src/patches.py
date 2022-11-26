@@ -24,6 +24,7 @@ class Patches(object):
         "tv.twitch.android.app": ("twitch", "_twitch"),
         "com.garzotto.pflotsh.ecmwf_a": ("pflotsh-ecmwf", "_pflotsh"),
         "com.myprog.hexedit": ("hex-editor", "_hexeditor"),
+        "org.citra.citra_emu": ("citra", "_citra"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -130,6 +131,7 @@ class Patches(object):
             "twitch": "_twitch",
             "pflotsh-ecmwf": "_pflotsh",
             "hex-editor": "_hexeditor",
+            "citra": "_citra",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
