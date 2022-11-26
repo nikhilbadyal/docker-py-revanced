@@ -52,6 +52,7 @@ class RevancedConfig:
             "youtube_music": f"{self.apk_mirror}/apk/google-inc/youtube-music/",
             "ticktick": f"{self.apk_mirror}/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/",
             "citra": f"{self.apk_mirror}/apk/citra-emulator/citra-emulator/",
+            "crunchyroll": f"{self.apk_mirror}/apk/ellation-inc/crunchyroll/",
         }
         self.apk_mirror_version_urls = {
             "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
@@ -61,7 +62,8 @@ class RevancedConfig:
             "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
             "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
             "ticktick": f"{self.apk_mirror_urls.get('ticktick')}ticktick-to-do-list-with-reminder-day-planner",
-            "citra": f"{self.apk_mirror_urls.get('ticktick')}citra-emulator",
+            "citra": f"{self.apk_mirror_urls.get('citra')}citra-emulator",
+            "crunchyroll": f"{self.apk_mirror_urls.get('crunchyroll')}crunchyroll",
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])

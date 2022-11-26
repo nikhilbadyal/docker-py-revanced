@@ -25,6 +25,7 @@ class Patches(object):
         "com.garzotto.pflotsh.ecmwf_a": ("pflotsh-ecmwf", "_pflotsh"),
         "com.myprog.hexedit": ("hex-editor", "_hexeditor"),
         "org.citra.citra_emu": ("citra", "_citra"),
+        "com.crunchyroll.crunchyroid": ("citra", "_crunchyroll"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -132,6 +133,7 @@ class Patches(object):
             "pflotsh-ecmwf": "_pflotsh",
             "hex-editor": "_hexeditor",
             "citra": "_citra",
+            "crunchyroll": "_crunchyroll",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
