@@ -17,7 +17,7 @@ def main() -> None:
     config = RevancedConfig(env)
 
     patcher = Patches(config)
-    downloader = Downloader(config)
+    downloader = Downloader(patcher, config)
     parser = Parser(patcher, config)
 
     logger.info(f"Will Patch only {patcher.config.apps}")

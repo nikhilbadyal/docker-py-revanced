@@ -12,6 +12,23 @@ from src.utils import AppNotFound
 class Patches(object):
     """Revanced Patches."""
 
+    revanced_app_ids = {
+        "com.reddit.frontpage": ("reddit", "_reddit"),
+        "com.ss.android.ugc.trill": ("tiktok", "_tiktok"),
+        "com.twitter.android": ("twitter", "_twitter"),
+        "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
+        "com.spotify.music": ("spotify", "_spotify"),
+        "com.awedea.nyx": ("nyx-music-player", "_nyx"),
+        "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
+        "com.ticktick.task": ("ticktick", "_ticktick"),
+        "tv.twitch.android.app": ("twitch", "_twitch"),
+        "com.garzotto.pflotsh.ecmwf_a": ("pflotsh-ecmwf", "_pflotsh"),
+    }
+    revanced_extended_app_ids = {
+        "com.google.android.youtube": ("youtube", "_yt"),
+        "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
+    }
+
     @staticmethod
     def check_java() -> None:
         """Check if Java17 is installed."""
@@ -43,27 +60,15 @@ class Patches(object):
         )
         patches = resp.json()
 
-        revanced_app_ids = {
-            "com.reddit.frontpage": ("reddit", "_reddit"),
-            "com.ss.android.ugc.trill": ("tiktok", "_tiktok"),
-            "com.twitter.android": ("twitter", "_twitter"),
-            "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
-            "com.spotify.music": ("spotify", "_spotify"),
-            "com.awedea.nyx": ("nyx-music-player", "_nyx"),
-            "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
-            "com.ticktick.task": ("ticktick", "_ticktick"),
-            "tv.twitch.android.app": ("twitch", "_twitch"),
-        }
-
-        for app_name in (revanced_app_ids[x][1] for x in revanced_app_ids):
+        for app_name in (self.revanced_app_ids[x][1] for x in self.revanced_app_ids):
             setattr(self, app_name, [])
 
         for patch in patches:
             for compatible_package, version in [
                 (x["name"], x["versions"]) for x in patch["compatiblePackages"]
             ]:
-                if compatible_package in revanced_app_ids:
-                    app_name = revanced_app_ids[compatible_package][1]
+                if compatible_package in self.revanced_app_ids:
+                    app_name = self.revanced_app_ids[compatible_package][1]
                     p = {x: patch[x] for x in ["name", "description"]}
                     p["app"] = compatible_package
                     p["version"] = version[-1] if version else "all"
@@ -75,12 +80,8 @@ class Patches(object):
 
         resp_extended = session.get(url)
         extended_patches = resp_extended.json()
-        revanced_extended_app_ids = {
-            "com.google.android.youtube": ("youtube", "_yt"),
-            "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
-        }
         for app_name in (
-            revanced_extended_app_ids[x][1] for x in revanced_extended_app_ids
+            self.revanced_extended_app_ids[x][1] for x in self.revanced_extended_app_ids
         ):
             setattr(self, app_name, [])
 
@@ -88,17 +89,17 @@ class Patches(object):
             for compatible_package, version in [
                 (x["name"], x["versions"]) for x in patch["compatiblePackages"]
             ]:
-                if compatible_package in revanced_extended_app_ids:
-                    app_name = revanced_extended_app_ids[compatible_package][1]
+                if compatible_package in self.revanced_extended_app_ids:
+                    app_name = self.revanced_extended_app_ids[compatible_package][1]
                     p = {x: patch[x] for x in ["name", "description"]}
                     p["app"] = compatible_package
                     p["version"] = version[-1] if version else "all"
                     getattr(self, app_name).append(p)
 
-        for app_name, app_id in revanced_extended_app_ids.values():
+        for app_name, app_id in self.revanced_extended_app_ids.values():
             n_patches = len(getattr(self, app_id))
             logger.debug(f"Total patches in {app_name} are {n_patches}")
-        for app_name, app_id in revanced_app_ids.values():
+        for app_name, app_id in self.revanced_app_ids.values():
             n_patches = len(getattr(self, app_id))
             logger.debug(f"Total patches in {app_name} are {n_patches}")
 
@@ -126,6 +127,7 @@ class Patches(object):
             "icon-pack-studio": "_iconpackstudio",
             "ticktick": "_ticktick",
             "twitch": "_twitch",
+            "pflotsh-ecmwf": "_pflotsh",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)

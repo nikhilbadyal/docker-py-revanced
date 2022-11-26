@@ -13,18 +13,20 @@ from selectolax.lexbor import LexborHTMLParser
 from tqdm import tqdm
 
 from src.config import RevancedConfig
-from src.utils import update_changelog
+from src.patches import Patches
+from src.utils import AppNotFound, update_changelog
 
 
 class Downloader(object):
     """Files downloader."""
 
-    def __init__(self, config: RevancedConfig):
+    def __init__(self, patcher: Patches, config: RevancedConfig):
         self._CHUNK_SIZE = 10485760
         self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
         self.config = config
         self.download_revanced()
+        self.patcher = patcher
 
     def _download(self, url: str, file_name: str) -> None:
         logger.debug(f"Trying to download {file_name} from {url}")
@@ -98,6 +100,19 @@ class Downloader(object):
         self._download(download_url, f"{app}.apk")
         logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
         return app_version
+
+    def __apk_pure_downloader(self, app: str) -> str:
+        package_name = None
+        for package, app_tuple in self.patcher.revanced_app_ids.items():
+            if app_tuple[0] == app:
+                package_name = package
+        if not package_name:
+            logger.info("Unable to download from apkpure")
+            raise AppNotFound()
+        download_url = f"https://d.apkpure.com/b/APK/{package_name}?version=latest"
+        self._download(download_url, f"{app}.apk")
+        logger.debug(f"Downloaded {app} apk from apk_pure_downloader in rt")
+        return "latest"
 
     def apkmirror_specific_version(self, app: str, version: str) -> str:
         """Function to download the specified version of app from  apkmirror.
@@ -197,6 +212,14 @@ class Downloader(object):
         """
         return self.__upto_down_downloader(app)
 
+    def apk_pure_downloader(self, app: str) -> str:
+        """Function to download from Apk Pure.
+
+        :param app: Name of the application
+        :return: Version of downloaded APK
+        """
+        return self.__apk_pure_downloader(app)
+
     def download_from_apkmirror(self, version: str, app: str) -> str:
         """Function to download from apkmirror.
 
@@ -218,5 +241,7 @@ class Downloader(object):
         """
         if app in self.config.upto_down:
             return self.upto_down_downloader(app)
+        elif app in self.config.apk_pure:
+            return self.apk_pure_downloader(app)
         else:
             return self.download_from_apkmirror(version, app)
