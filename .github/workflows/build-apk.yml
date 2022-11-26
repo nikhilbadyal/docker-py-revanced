@@ -11,8 +11,13 @@ on:
         required: false
         type: boolean
         default: true
-      TELEGRAM_UPLOAD:
-        description: "Upload to Telegram"
+      TELEGRAM_NO_ROOT_UPLOAD:
+        description: "Upload Non Rooted APKs to Telegram"
+        required: false
+        type: boolean
+        default: false
+      TELEGRAM_ROOT_UPLOAD:
+        description: "Upload Mgaisk Module from nikhilbadyal/revanced-magisk-module to Telegram"
         required: false
         type: boolean
         default: false
@@ -94,7 +99,7 @@ jobs:
   upload-to-telegram:
     needs: [ upload-to-github ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: inputs.TELEGRAM_UPLOAD
+    if: inputs.TELEGRAM_NO_ROOT_UPLOAD
     secrets:
       TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
@@ -108,7 +113,7 @@ jobs:
   upload-to-telegram-root:
     needs: [ upload-to-telegram ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: github.repository == 'nikhilbadyal/docker-py-revanced'
+    if: inputs.TELEGRAM_ROOT_UPLOAD
     secrets:
       TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
       TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
