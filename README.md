@@ -120,23 +120,23 @@ By default, script build the version as recommended by Revanced team.
 
 1. Supported values for **REVANCED_APPS_NAME** are :
 
-    1. youtube
-    2. youtube_music
-    3. twitter
-    4. reddit
-    5. tiktok
-    6. warnwetter
-    7. spotify
-    8. nyx-music-player
-    9. icon-pack-studio
-    10. ticktick
-    11. twitch
-    12. pflotsh-ecmwf
-    13. hex-editor
-    14. citra
-    15. crunchyroll
-    16. windy
-    17. my-expenses
+    1. [youtube](https://www.apkmirror.com/apk/google-inc/youtube/)
+    2. [youtube_music](https://www.apkmirror.com/apk/google-inc/youtube-music/)
+    3. [twitter](https://www.apkmirror.com/apk/twitter-inc/twitter/)
+    4. [reddit](https://www.apkmirror.com/apk/redditinc/reddit/)
+    5. [tiktok](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
+    6. [warnwetter](https://www.apkmirror.com/apk/deutscher-wetterdienst/warnwetter/)
+    7. [spotify](https://spotify.en.uptodown.com/android)
+    8. [nyx-music-player](https://nyx-music-player.en.uptodown.com/android)
+    9. [icon-pack-studio](https://icon-pack-studio.en.uptodown.com/android)
+    10. [ticktick](https://www.apkmirror.com/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/)
+    11. [twitch](https://twitch.en.uptodown.com/android)
+    12. [pflotsh-ecmwf](https://m.apkpure.com/pflotsh-ecmwf/com.garzotto.pflotsh.ecmwf_a)
+    13. [hex-editor](https://m.apkpure.com/hex-editor/com.myprog.hexedit)
+    14. [citra](https://www.apkmirror.com/apk/citra-emulator/citra-emulator/)
+    15. [crunchyroll](https://www.apkmirror.com/apk/ellation-inc/crunchyroll/)
+    16. [windy](https://windy.en.uptodown.com/android)
+    17. [my-expenses](https://my-expenses.en.uptodown.com/android)
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.
