@@ -7,6 +7,11 @@ on:
     paths:
       - '**.py'
       - 'README.md'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dockerhub-push:
     uses: nikhilbadyal/ghactions/.github/workflows/dockerhub-push.yml@main
