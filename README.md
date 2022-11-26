@@ -16,33 +16,35 @@ You can use any of the following methods to build.
 
 - 🚀In GitHub (**_`Recommended`_**)
 
-    1. Fork the project.<br>
-       <img src="https://i.imgur.com/R5HdByI.png" width="400" style="left"><br>
-    2. Add `ENVS` (**optional**) secret to the repo. Required only if you want to cook specific apps/versions.
+     1. Clik Star to support the project.<br>
+       <img src="https://i.imgur.com/FFyXaWY.png" width="400" style="left"><br>
+     2. Fork the project.<br>
+     <img src="https://i.imgur.com/R5HdByI.png" width="400" style="left"><br>
+     3. Add `ENVS` (**optional**) secret to the repo. Required only if you want to cook specific apps/versions.
+         <details>
+           <summary>🚶Detailed step by step guide</summary>
+
+         - Go to the repo settings and then to actions->secret<br>
+           <img src="https://i.imgur.com/Inj82KK.png" width="600" style="left"><br>
+         - Add Repository secret<br>
+           <img src="https://i.imgur.com/V2Wfx3J.png" width="600" style="left">
+
+        </details>
+
+     4. Go to actions tab. Select `Build & Release`.Click on `Run Workflow`.
+
         <details>
           <summary>🚶Detailed step by step guide</summary>
 
-        - Go to the repo settings and then to actions->secret<br>
-          <img src="https://i.imgur.com/Inj82KK.png" width="600" style="left"><br>
-        - Add Repository secret<br>
-          <img src="https://i.imgur.com/V2Wfx3J.png" width="600" style="left">
+         - Go to actions tab<br>
+           <img src="https://i.imgur.com/XSCvzav.png" width="600" style="left"><br>
+         - Check the status of build, It should look green.<br>
+           <img src="https://i.imgur.com/CsJt9W1.png" width="600" style="left">
 
-       </details>
+        </details>
 
-    3. Go to actions tab. Select `Build & Release`.Click on `Run Workflow`.
-
-       <details>
-         <summary>🚶Detailed step by step guide</summary>
-
-        - Go to actions tab<br>
-          <img src="https://i.imgur.com/XSCvzav.png" width="600" style="left"><br>
-        - Check the status of build, It should look green.<br>
-          <img src="https://i.imgur.com/CsJt9W1.png" width="600" style="left">
-
-       </details>
-
-    4. If the building process is successful, you’ll get your APKs in the <br>
-       <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
+     5. If the building process is successful, you’ll get your APKs in the <br>
+        <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
 
 - 🐳With Docker Compose
   Windows/Mac users simply install Docker Desktop. If using Linux see below
