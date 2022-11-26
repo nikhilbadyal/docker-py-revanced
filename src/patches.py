@@ -23,6 +23,7 @@ class Patches(object):
         "com.ticktick.task": ("ticktick", "_ticktick"),
         "tv.twitch.android.app": ("twitch", "_twitch"),
         "com.garzotto.pflotsh.ecmwf_a": ("pflotsh-ecmwf", "_pflotsh"),
+        "com.myprog.hexedit": ("hex-editor", "_hexeditor"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -128,6 +129,7 @@ class Patches(object):
             "ticktick": "_ticktick",
             "twitch": "_twitch",
             "pflotsh-ecmwf": "_pflotsh",
+            "hex-editor": "_hexeditor",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)

@@ -129,6 +129,8 @@ By default, script build the version as recommended by Revanced team.
     9. icon-pack-studio
     10. ticktick
     11. twitch
+    12. pflotsh-ecmwf
+    13. hex-editor
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.
