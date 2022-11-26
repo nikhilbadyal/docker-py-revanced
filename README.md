@@ -136,6 +136,7 @@ By default, script build the version as recommended by Revanced team.
     14. citra
     15. crunchyroll
     16. windy
+    17. my-expenses
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.
