@@ -15,18 +15,22 @@ class Patches(object):
     @staticmethod
     def check_java() -> None:
         """Check if Java17 is installed."""
-        logger.debug("Checking if java is available")
-        jd = subprocess.check_output(
-            ["java", "-version"], stderr=subprocess.STDOUT
-        ).decode("utf-8")
-        jd = jd[1:-1]
-        if "Runtime Environment" not in jd:
-            logger.debug("Java Must be installed")
-            exit(-1)
-        if "17" not in jd:
+        try:
+            logger.debug("Checking if java is available")
+            jd = subprocess.check_output(
+                ["java", "-version"], stderr=subprocess.STDOUT
+            ).decode("utf-8")
+            jd = jd[1:-1]
+            if "Runtime Environment" not in jd:
+                logger.debug("Java Must be installed")
+                exit(-1)
+            if "17" not in jd:
+                logger.debug("Java 17 Must be installed")
+                exit(-1)
+            logger.debug("Cool!! Java is available")
+        except subprocess.CalledProcessError:
             logger.debug("Java 17 Must be installed")
             exit(-1)
-        logger.debug("Cool!! Java is available")
 
     # noinspection DuplicatedCode
     def fetch_patches(self) -> None:
