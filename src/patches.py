@@ -26,6 +26,7 @@ class Patches(object):
         "com.myprog.hexedit": ("hex-editor", "_hexeditor"),
         "org.citra.citra_emu": ("citra", "_citra"),
         "com.crunchyroll.crunchyroid": ("citra", "_crunchyroll"),
+        "co.windyapp.android": ("windy", "_windy"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -134,6 +135,7 @@ class Patches(object):
             "hex-editor": "_hexeditor",
             "citra": "_citra",
             "crunchyroll": "_crunchyroll",
+            "windy": "_windy",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
