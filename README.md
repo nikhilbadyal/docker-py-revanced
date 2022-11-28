@@ -137,6 +137,7 @@ By default, script build the version as recommended by Revanced team.
     15. [crunchyroll](https://www.apkmirror.com/apk/ellation-inc/crunchyroll/)
     16. [windy](https://windy.en.uptodown.com/android)
     17. [my-expenses](https://my-expenses.en.uptodown.com/android)
+    18. [backdrops](https://backdrops.en.uptodown.com/android)
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.

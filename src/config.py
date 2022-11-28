@@ -26,6 +26,7 @@ class RevancedConfig:
             "twitch",
             "windy",
             "my-expenses",
+            "backdrops",
         ]
         self.apk_pure = ["pflotsh-ecmwf", "hex-editor"]
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")

@@ -28,6 +28,7 @@ class Patches(object):
         "com.crunchyroll.crunchyroid": ("citra", "_crunchyroll"),
         "co.windyapp.android": ("windy", "_windy"),
         "org.totschnig.myexpenses": ("my-expenses", "_expenses"),
+        "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -138,6 +139,7 @@ class Patches(object):
             "crunchyroll": "_crunchyroll",
             "windy": "_windy",
             "my-expenses": "_expenses",
+            "backdrops": "_backdrops",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
