@@ -30,6 +30,7 @@ class RevancedConfig:
             "sleep-as-android",
         ]
         self.apk_pure = ["pflotsh-ecmwf", "hex-editor", "anytracker"]
+        self.apk_sos = ["expensemanager"]
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
         self.apps = env.list("PATCH_APPS", default_build)
         self.extended_apps: List[str] = ["youtube", "youtube_music"]
