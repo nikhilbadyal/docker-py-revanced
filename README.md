@@ -141,6 +141,9 @@ By default, script build the version as recommended by Revanced team.
     19. [sleep-as-android](https://sleep-as-android.en.uptodown.com/android)
     20. [anytracker](https://m.apkpure.com/anytracker-track-anything/com.shervinkoushan.anyTracker)
 
+    <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
+    If you know any better/safe source to download clean. Please raise a PR.
+
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.
    Add the apps you want to build in `.env` file or in `ENVS` in
