@@ -140,6 +140,7 @@ By default, script build the version as recommended by Revanced team.
     18. [backdrops](https://backdrops.en.uptodown.com/android)
     19. [sleep-as-android](https://sleep-as-android.en.uptodown.com/android)
     20. [anytracker](https://m.apkpure.com/anytracker-track-anything/com.shervinkoushan.anyTracker)
+    21. [expensemanager](https://apksos.com/app/com.ithebk.expensemanager)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
