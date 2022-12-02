@@ -29,6 +29,7 @@ class Patches(object):
         "co.windyapp.android": ("windy", "_windy"),
         "org.totschnig.myexpenses": ("my-expenses", "_expenses"),
         "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
+        "com.urbandroid.sleep": ("sleep", "_sleep"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -140,6 +141,7 @@ class Patches(object):
             "windy": "_windy",
             "my-expenses": "_expenses",
             "backdrops": "_backdrops",
+            "sleep": "_sleep",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
