@@ -2,9 +2,9 @@
 
 A little python script that will help you in building Revanced and Revanced-Extended [apps](#note)
 
-Note - I prefer [Revanced Extended](https://github.com/inotia00/revanced-patches/tree/revanced-extended) more
+Note - ~~I prefer [Revanced Extended](https://github.com/inotia00/revanced-patches/tree/revanced-extended) more
 (for YouTube & YouTube Music) hence the YouTube and YouTube Music builds in this repo are from
-Revanced Extended.
+Revanced Extended.~~
 
 ## Pre-Built APKs
 
