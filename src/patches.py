@@ -30,6 +30,7 @@ class Patches(object):
         "org.totschnig.myexpenses": ("my-expenses", "_expenses"),
         "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
         "com.urbandroid.sleep": ("sleep", "_sleep"),
+        "com.shervinkoushan.anyTracker": ("anytracker", "_anytracker"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -142,6 +143,7 @@ class Patches(object):
             "my-expenses": "_expenses",
             "backdrops": "_backdrops",
             "sleep": "_sleep",
+            "anytracker": "_anytracker",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)

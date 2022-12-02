@@ -139,6 +139,7 @@ By default, script build the version as recommended by Revanced team.
     17. [my-expenses](https://my-expenses.en.uptodown.com/android)
     18. [backdrops](https://backdrops.en.uptodown.com/android)
     19. [sleep-as-android](https://sleep-as-android.en.uptodown.com/android)
+    20. [anytracker](https://m.apkpure.com/anytracker-track-anything/com.shervinkoushan.anyTracker)
 
 2. Remember to download the **_Microg_**. Otherwise, you will not be able to open YouTube.
 3. By default, it will build only `youtube`. To build other apps supported by revanced team.
