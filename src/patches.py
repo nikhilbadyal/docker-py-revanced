@@ -22,7 +22,6 @@ class Patches(object):
         "ginlemon.iconpackstudio": ("icon-pack-studio", "_iconpackstudio"),
         "com.ticktick.task": ("ticktick", "_ticktick"),
         "tv.twitch.android.app": ("twitch", "_twitch"),
-        "com.garzotto.pflotsh.ecmwf_a": ("pflotsh-ecmwf", "_pflotsh"),
         "com.myprog.hexedit": ("hex-editor", "_hexeditor"),
         "org.citra.citra_emu": ("citra", "_citra"),
         "com.crunchyroll.crunchyroid": ("citra", "_crunchyroll"),
@@ -30,7 +29,6 @@ class Patches(object):
         "org.totschnig.myexpenses": ("my-expenses", "_expenses"),
         "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
         "com.urbandroid.sleep": ("sleep", "_sleep"),
-        "com.shervinkoushan.anyTracker": ("anytracker", "_anytracker"),
         "com.ithebk.expensemanager": ("expensemanager", "_expensemanager"),
     }
     revanced_extended_app_ids = {
@@ -136,7 +134,6 @@ class Patches(object):
             "icon-pack-studio": "_iconpackstudio",
             "ticktick": "_ticktick",
             "twitch": "_twitch",
-            "pflotsh-ecmwf": "_pflotsh",
             "hex-editor": "_hexeditor",
             "citra": "_citra",
             "crunchyroll": "_crunchyroll",
@@ -144,7 +141,6 @@ class Patches(object):
             "my-expenses": "_expenses",
             "backdrops": "_backdrops",
             "sleep": "_sleep",
-            "anytracker": "_anytracker",
             "expensemanager": "_expensemanager",
         }
         if not (app_name := app_names.get(app)):
