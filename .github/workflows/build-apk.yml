@@ -73,7 +73,7 @@ jobs:
           RELEASE_PATTERN: "Build*"
 
       - name: Upload Build Artifact
-        uses: ncipollo/release-action@v1.11.2
+        uses: ncipollo/release-action@v1.12.0
         with:
           artifacts: "*-output.apk"
           token: ${{ secrets.GITHUB_TOKEN }}
