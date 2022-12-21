@@ -22,9 +22,6 @@ class RevancedConfig:
         self.upto_down = [
             "spotify",
             "nyx-music-player",
-            "icon-pack-studio",
-            "twitch",
-            "windy",
             "my-expenses",
             "backdrops",
             "sleep-as-android",
@@ -63,6 +60,9 @@ class RevancedConfig:
             "ticktick": f"{self.apk_mirror}/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/",
             "citra": f"{self.apk_mirror}/apk/citra-emulator/citra-emulator/",
             "crunchyroll": f"{self.apk_mirror}/apk/ellation-inc/crunchyroll/",
+            "icon_pack_studio": f"{self.apk_mirror}/apk/smart-launcher-team/icon-pack-studio/",
+            "twitch": f"{self.apk_mirror}/apk/twitch-interactive-inc/twitch/",
+            "windy": f"{self.apk_mirror}/apk/windy-weather-world-inc/windy-wind-weather-forecast/",
         }
         self.apk_mirror_version_urls = {
             "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
@@ -74,6 +74,9 @@ class RevancedConfig:
             "ticktick": f"{self.apk_mirror_urls.get('ticktick')}ticktick-to-do-list-with-reminder-day-planner",
             "citra": f"{self.apk_mirror_urls.get('citra')}citra-emulator",
             "crunchyroll": f"{self.apk_mirror_urls.get('crunchyroll')}crunchyroll",
+            "icon_pack_studio": f"{self.apk_mirror_urls.get('icon_pack_studio')}icon-pack-studio",
+            "twitch": f"{self.apk_mirror_urls.get('twitch')}twitch",
+            "windy": f"{self.apk_mirror_urls.get('windy')}windy-wind-weather-forecast",
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
