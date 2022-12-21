@@ -9,7 +9,7 @@ all_builds = [
     "youtube_music",
     "twitter",
     "reddit",
-    "tiktok",
+    # "tiktok", # Commented because of out of memory issues
     "warnwetter",
     "spotify",
     "nyx-music-player",
