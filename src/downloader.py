@@ -166,9 +166,13 @@ class Downloader(object):
             logger.debug("Invalid app")
             sys.exit(1)
         parser = LexborHTMLParser(self.config.session.get(page).text)
-        main_page = parser.css_first(".appRowVariantTag>.accent_color").attributes[
-            "href"
-        ]
+        try:
+            main_page = parser.css_first(".appRowVariantTag>.accent_color").attributes[
+                "href"
+            ]
+        except AttributeError:
+            # Handles a case when variants are not available
+            main_page = parser.css_first(".downloadLink").attributes["href"]
         match = re.search(r"\d", main_page)
         if not match:
             logger.error("Cannot find app main page")
