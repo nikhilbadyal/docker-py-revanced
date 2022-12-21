@@ -64,6 +64,12 @@ class Parser(object):
         except ValueError:
             return False
 
+    def exclude_all_patches(self) -> None:
+        """Exclude all patches to Speed up CI."""
+        for idx, item in enumerate(self._PATCHES):
+            if item == "-i":
+                self._PATCHES[idx] = "-e"
+
     # noinspection IncorrectFormatting
     def patch_app(
         self,
@@ -107,7 +113,8 @@ class Parser(object):
             logger.debug("Using experimental features")
             args.append("--experimental")
         args[1::2] = map(lambda i: self.config.temp_folder.joinpath(i), args[1::2])
-
+        if self.config.ci_test:
+            self.exclude_all_patches()
         if self._PATCHES:
             args.extend(self._PATCHES)
         if (

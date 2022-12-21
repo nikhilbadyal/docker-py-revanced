@@ -15,7 +15,8 @@ jobs:
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
     with:
-      FILES_TO_EXPECT: 3
+      FILES_TO_EXPECT: 16
     secrets:
       ENVS: |
-        PATCH_APPS=youtube_music,twitter
+        CI_TEST=True
+        ES_JAVA_OPTS: '-Xms4g -Xmx4g'
