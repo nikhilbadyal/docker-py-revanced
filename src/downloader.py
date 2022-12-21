@@ -79,7 +79,12 @@ class Downloader(object):
         apm = parser.css(".apkm-badge")
         sub_url = ""
         for is_apm in apm:
-            if "APK" in is_apm.text():
+            parent_text = is_apm.parent.parent.text()
+            if "APK" in is_apm.text() and (
+                "arm64-v8a" in parent_text
+                or "universal" in parent_text
+                or "noarch" in parent_text
+            ):
                 parser = is_apm.parent
                 sub_url = parser.css_first(".accent_color").attributes["href"]
                 break
