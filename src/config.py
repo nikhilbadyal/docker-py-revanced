@@ -5,7 +5,7 @@ from typing import Dict, List
 from environs import Env
 from requests import Session
 
-from src.utils import default_build
+from src.utils import all_builds, default_build
 
 
 class RevancedConfig:
@@ -28,7 +28,10 @@ class RevancedConfig:
         self.apk_pure = ["hex-editor"]
         self.apk_sos = ["expensemanager"]
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
-        self.apps = env.list("PATCH_APPS", default_build)
+        self.ci_test = env.bool("CI_TEST", False)
+        self.apps = env.list(
+            "PATCH_APPS", all_builds if self.ci_test else default_build
+        )
         self.extended_apps: List[str] = ["youtube", "youtube_music"]
         self.rip_libs_apps: List[str] = ["youtube"]
         self.normal_cli_jar = "revanced-cli.jar"
