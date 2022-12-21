@@ -245,7 +245,21 @@ By default, script build the version as recommended by Revanced team.
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets`.<br>
     Or you can ignore what I said above and always use `GitHub secrets`.
-13. Sample Envs<br>
+13. If APKMirror or other apk source is blocked in your region or script somehow is unable to download from apkmirror.
+    You can download apk manually from any source. Place them in `/apks` directory and provide environment variable
+    in `.env` file or in `ENVS` in `GitHub secrets`(Recommended) in the format.
+    ```dotenv
+     EXISTING_DOWNLOADED_APKS=<Comma,Seperate,App,Name>
+    ```
+    Example:
+    ```dotenv
+     EXISTING_DOWNLOADED_APKS=youtube,youtube_music
+    ```
+    If you add above. Script will not download the `Youtube` & `youtube music`apk from internet and expects an apk in
+    `/apks` folder.
+
+    Name of the downloaded apk must match with the available app choices found [here.](#note)
+14. Sample Envs<br>
     <img src="https://i.imgur.com/ajSE5nA.png" width="600" style="left">
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.

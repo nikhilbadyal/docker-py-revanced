@@ -272,8 +272,12 @@ class Downloader(object):
 
         :param version: version to download
         :param app: App to download
-        :return: Version of apk
+        :return: Version of apk.
         """
+        if app in self.config.existing_downloaded_apks:
+            logger.debug("Will not download apk from the internet as it already exist.")
+            # Returning Latest as I don't know, which version user provided.
+            return "latest"
         if app in self.config.upto_down:
             return self.upto_down_downloader(app)
         elif app in self.config.apk_pure:

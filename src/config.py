@@ -83,3 +83,4 @@ class RevancedConfig:
         self.alternative_youtube_music_patches = env.list(
             "ALTERNATIVE_YOUTUBE_MUSIC_PATCHES", []
         )
+        self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
