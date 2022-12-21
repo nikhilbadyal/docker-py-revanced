@@ -2,7 +2,26 @@
 from typing import Dict
 
 default_build = [
+    "ticktick",
+]
+all_builds = [
     "youtube",
+    "youtube_music",
+    "twitter",
+    "reddit",
+    "tiktok",
+    "warnwetter",
+    "spotify",
+    "nyx-music-player",
+    "icon_pack_studio",
+    "ticktick",
+    "twitch",
+    "hex-editor",
+    "citra",
+    "windy",
+    "my-expenses",
+    "backdrops",
+    "expensemanager",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 
