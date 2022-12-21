@@ -28,7 +28,6 @@ class Patches(object):
         "co.windyapp.android": ("windy", "_windy"),
         "org.totschnig.myexpenses": ("my-expenses", "_expenses"),
         "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
-        "com.urbandroid.sleep": ("sleep", "_sleep"),
         "com.ithebk.expensemanager": ("expensemanager", "_expensemanager"),
     }
     revanced_extended_app_ids = {
@@ -140,7 +139,6 @@ class Patches(object):
             "windy": "_windy",
             "my-expenses": "_expenses",
             "backdrops": "_backdrops",
-            "sleep": "_sleep",
             "expensemanager": "_expensemanager",
         }
         if not (app_name := app_names.get(app)):
