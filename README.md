@@ -133,11 +133,10 @@ By default, script build the version as recommended by Revanced team.
     11. [twitch](https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/)
     12. [hex-editor](https://m.apkpure.com/hex-editor/com.myprog.hexedit)
     13. [citra](https://www.apkmirror.com/apk/citra-emulator/citra-emulator/)
-    14. [crunchyroll](https://www.apkmirror.com/apk/ellation-inc/crunchyroll/)
-    15. [windy](https://www.apkmirror.com/apk/windy-weather-world-inc/windy-wind-weather-forecast/)
-    16. [my-expenses](https://my-expenses.en.uptodown.com/android)
-    17. [backdrops](https://backdrops.en.uptodown.com/android)
-    18. [expensemanager](https://apksos.com/app/com.ithebk.expensemanager)
+    14. [windy](https://www.apkmirror.com/apk/windy-weather-world-inc/windy-wind-weather-forecast/)
+    15. [my-expenses](https://my-expenses.en.uptodown.com/android)
+    16. [backdrops](https://backdrops.en.uptodown.com/android)
+    17. [expensemanager](https://apksos.com/app/com.ithebk.expensemanager)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
