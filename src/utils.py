@@ -2,7 +2,7 @@
 from typing import Dict
 
 default_build = [
-    "ticktick",
+    "youtube",
 ]
 all_builds = [
     "youtube",
@@ -21,7 +21,6 @@ all_builds = [
     "windy",
     "my-expenses",
     "backdrops",
-    "expensemanager",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 
