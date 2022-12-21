@@ -24,7 +24,6 @@ class RevancedConfig:
             "nyx-music-player",
             "my-expenses",
             "backdrops",
-            "sleep-as-android",
         ]
         self.apk_pure = ["hex-editor"]
         self.apk_sos = ["expensemanager"]
