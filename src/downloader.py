@@ -34,6 +34,7 @@ class Downloader(object):
         start = perf_counter()
         headers = {}
         if self.config.personal_access_token:
+            logger.debug("Using personal access token")
             headers.update(
                 {"Authorization": "token " + self.config.personal_access_token}
             )
@@ -211,6 +212,7 @@ class Downloader(object):
             "Content-Type": "application/vnd.github.v3+json",
         }
         if self.config.personal_access_token:
+            logger.debug("Using personal access token")
             headers.update(
                 {"Authorization": "token " + self.config.personal_access_token}
             )
