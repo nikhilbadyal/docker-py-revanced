@@ -1,6 +1,9 @@
 """Utilities."""
 from typing import Dict
 
+from loguru import logger
+from requests import Response
+
 default_build = [
     "youtube",
 ]
@@ -55,3 +58,10 @@ class AppNotFound(ValueError):
     """Not a valid Revanced App."""
 
     pass
+
+
+def handle_response(response: Response) -> None:
+    """Handle Get Request Response."""
+    response_code = response.status_code
+    if response_code != 200:
+        logger.info(response.text)

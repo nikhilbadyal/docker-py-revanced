@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 from src.config import RevancedConfig
 from src.patches import Patches
-from src.utils import AppNotFound, update_changelog
+from src.utils import AppNotFound, handle_response, update_changelog
 
 
 class Downloader(object):
@@ -32,8 +32,19 @@ class Downloader(object):
         logger.debug(f"Trying to download {file_name} from {url}")
         self._QUEUE_LENGTH += 1
         start = perf_counter()
-        resp = self.config.session.get(url, stream=True)
-        total = int(resp.headers.get("content-length", 0))
+        headers = {}
+        if self.config.personal_access_token and "github" in url:
+            logger.debug("Using personal access token")
+            headers.update(
+                {"Authorization": "token " + self.config.personal_access_token}
+            )
+        response = self.config.session.get(
+            url,
+            stream=True,
+            headers=headers,
+        )
+        handle_response(response)
+        total = int(response.headers.get("content-length", 0))
         bar = tqdm(
             desc=file_name,
             total=total,
@@ -43,7 +54,7 @@ class Downloader(object):
             colour="green",
         )
         with self.config.temp_folder.joinpath(file_name).open("wb") as dl_file, bar:
-            for chunk in resp.iter_content(self._CHUNK_SIZE):
+            for chunk in response.iter_content(self._CHUNK_SIZE):
                 size = dl_file.write(chunk)
                 bar.update(size)
         self._QUEUE.put((perf_counter() - start, file_name))
@@ -176,7 +187,7 @@ class Downloader(object):
         match = re.search(r"\d", main_page)
         if not match:
             logger.error("Cannot find app main page")
-            sys.exit(-1)
+            raise AppNotFound()
         int_version = match.start()
         extra_release = main_page.rfind("release") - 1
         version: str = main_page[int_version:extra_release]
@@ -197,14 +208,21 @@ class Downloader(object):
         """
         logger.debug(f"Trying to download {name} from github")
         repo_url = f"https://api.github.com/repos/{owner}/{name}/releases/latest"
-        r = requests.get(
-            repo_url, headers={"Content-Type": "application/vnd.github.v3+json"}
-        )
+        headers = {
+            "Content-Type": "application/vnd.github.v3+json",
+        }
+        if self.config.personal_access_token:
+            logger.debug("Using personal access token")
+            headers.update(
+                {"Authorization": "token " + self.config.personal_access_token}
+            )
+        response = requests.get(repo_url, headers=headers)
+        handle_response(response)
         if name == "revanced-patches":
-            download_url = r.json()["assets"][1]["browser_download_url"]
+            download_url = response.json()["assets"][1]["browser_download_url"]
         else:
-            download_url = r.json()["assets"][0]["browser_download_url"]
-        update_changelog(f"{owner}/{name}", r.json())
+            download_url = response.json()["assets"][0]["browser_download_url"]
+        update_changelog(f"{owner}/{name}", response.json())
         self._download(download_url, file_name=file_name)
 
     def download_revanced(self) -> None:

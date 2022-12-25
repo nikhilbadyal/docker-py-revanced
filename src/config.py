@@ -84,3 +84,4 @@ class RevancedConfig:
             "ALTERNATIVE_YOUTUBE_MUSIC_PATCHES", []
         )
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
+        self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)

@@ -6,7 +6,7 @@ from loguru import logger
 from requests import Session
 
 from src.config import RevancedConfig
-from src.utils import AppNotFound
+from src.utils import AppNotFound, handle_response
 
 
 class Patches(object):
@@ -60,10 +60,11 @@ class Patches(object):
         session = Session()
 
         logger.debug("fetching all patches")
-        resp = session.get(
+        response = session.get(
             "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
         )
-        patches = resp.json()
+        handle_response(response)
+        patches = response.json()
 
         for app_name in (self.revanced_app_ids[x][1] for x in self.revanced_app_ids):
             setattr(self, app_name, [])
@@ -83,8 +84,9 @@ class Patches(object):
         else:
             url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
 
-        resp_extended = session.get(url)
-        extended_patches = resp_extended.json()
+        response = session.get(url)
+        handle_response(response)
+        extended_patches = response.json()
         for app_name in (
             self.revanced_extended_app_ids[x][1] for x in self.revanced_extended_app_ids
         ):

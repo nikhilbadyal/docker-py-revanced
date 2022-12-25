@@ -20,3 +20,4 @@ jobs:
       ENVS: |
         CI_TEST=True
         ES_JAVA_OPTS: '-Xms4g -Xmx4g'
+        PERSONAL_ACCESS_TOKEN=${{ secrets.GITHUB_TOKEN }}

@@ -260,7 +260,12 @@ By default, script build the version as recommended by Revanced team.
     `/apks` folder.
 
     Name of the downloaded apk must match with the available app choices found [here.](#note)
-14. Sample Envs<br>
+14. If you run script again & again. You might hit GitHub API limit. In that case you can provide your Personal
+    GitHub Access Token in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format -
+    ```dotenv
+     PERSONAL_ACCESS_TOKEN=<PAT>
+    ```
+15. Sample Envs<br>
     <img src="https://i.imgur.com/ajSE5nA.png" width="600" style="left">
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
