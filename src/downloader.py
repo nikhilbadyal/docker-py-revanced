@@ -187,7 +187,7 @@ class Downloader(object):
         match = re.search(r"\d", main_page)
         if not match:
             logger.error("Cannot find app main page")
-            sys.exit(-1)
+            raise AppNotFound()
         int_version = match.start()
         extra_release = main_page.rfind("release") - 1
         version: str = main_page[int_version:extra_release]
