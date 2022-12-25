@@ -33,7 +33,7 @@ class Downloader(object):
         self._QUEUE_LENGTH += 1
         start = perf_counter()
         headers = {}
-        if self.config.personal_access_token:
+        if self.config.personal_access_token and "github" in url:
             logger.debug("Using personal access token")
             headers.update(
                 {"Authorization": "token " + self.config.personal_access_token}
