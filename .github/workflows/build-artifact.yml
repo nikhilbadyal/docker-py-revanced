@@ -48,7 +48,13 @@ jobs:
 
       - name: Build Revanced APKs
         run: |
-          docker-compose up
+          if [ "${{ inputs.DEBUG_ENABLED }}" == "-1" ]; then
+            echo "Normal Build"
+            docker-compose up
+          else
+            echo "Local Build"
+            docker-compose -f docker-compose-local.yml up
+          fi
 
       - name: Upload Build APKS
         uses: nikhilbadyal/upload-artifact@count-check
