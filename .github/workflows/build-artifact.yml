@@ -53,7 +53,7 @@ jobs:
             docker-compose up
           else
             echo "Local Build"
-            docker-compose -f docker-compose-local.yml up
+            docker-compose -f docker-compose-local.yml up --build
           fi
 
       - name: Upload Build APKS
