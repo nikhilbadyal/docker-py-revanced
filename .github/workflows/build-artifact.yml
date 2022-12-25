@@ -48,7 +48,7 @@ jobs:
 
       - name: Build Revanced APKs
         run: |
-          if [ "${{ inputs.DEBUG_ENABLED }}" == "-1" ]; then
+          if [ "${{ inputs.FILES_TO_EXPECT }}" == "-1" ]; then
             echo "Normal Build"
             docker-compose up
           else
