@@ -48,13 +48,7 @@ jobs:
 
       - name: Build Revanced APKs
         run: |
-          if [ "${{ inputs.FILES_TO_EXPECT }}" == "-1" ]; then
-            echo "Normal Build"
-            docker-compose up
-          else
-            echo "Local Build"
-            docker-compose -f docker-compose-local.yml up --build
-          fi
+          docker-compose up --build
 
       - name: Upload Build APKS
         uses: nikhilbadyal/upload-artifact@count-check
