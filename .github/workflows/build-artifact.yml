@@ -22,6 +22,11 @@ on:
         type: boolean
         required: false
         default: false
+      DEBUG_ENABLED:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled.'
+        required: false
+        default: false
 
 jobs:
   build-apk:
@@ -36,6 +41,10 @@ jobs:
       - name: Update Env for custom build
         run: |
           echo "${{ secrets.ENVS }}" >> .env
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.DEBUG_ENABLED }}
 
       - name: Build Revanced APKs
         run: |

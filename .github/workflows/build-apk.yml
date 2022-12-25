@@ -36,6 +36,11 @@ on:
         type: boolean
         required: false
         default: true
+      DEBUG_ENABLED:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled.'
+        required: false
+        default: false
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -45,6 +50,7 @@ jobs:
     uses: ./.github/workflows/build-artifact.yml
     with:
       COMMIT_CHANGELOG: ${{ inputs.COMMIT_CHANGELOG }}
+      DEBUG_ENABLED: ${{ inputs.DEBUG_ENABLED }}
     secrets:
       ENVS: ${{ secrets.ENVS }}
 
