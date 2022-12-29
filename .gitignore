@@ -6,3 +6,4 @@ venv
 *.pyc
 /revanced-cache/
 changelog.md
+.idea
