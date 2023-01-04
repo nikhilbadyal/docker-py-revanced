@@ -28,6 +28,7 @@ class Patches(object):
         "org.totschnig.myexpenses": ("my-expenses", "_expenses"),
         "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
         "com.ithebk.expensemanager": ("expensemanager", "_expensemanager"),
+        "net.dinglisch.android.taskerm": ("tasker", "_tasker"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -140,6 +141,7 @@ class Patches(object):
             "my-expenses": "_expenses",
             "backdrops": "_backdrops",
             "expensemanager": "_expensemanager",
+            "tasker": "_tasker",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
