@@ -2,10 +2,12 @@
 
 A little python script that will help you in building Revanced and Revanced-Extended [apps](#note).
 
+**`Note`** - If you are a root user and want magisk module (Extended). Get them [here](https://github.com/nikhilbadyal/revanced-magisk-module)
+
 This is just a builder for revanced and not a revanced support. Please be understanding and refraining from asking
 about revanced features/bugs. Discuss those on proper relevant forums(on Revanced GitHub , Discord)
 
-Note - I prefer [Revanced Extended](https://github.com/inotia00/revanced-patches/tree/revanced-extended) more
+**`Note`** - I prefer [Revanced Extended](https://github.com/inotia00/revanced-patches/tree/revanced-extended) more
 (for YouTube & YouTube Music) hence the YouTube and YouTube Music builds in this repo are from
 Revanced Extended.
 
