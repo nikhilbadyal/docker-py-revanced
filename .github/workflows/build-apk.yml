@@ -57,7 +57,7 @@ jobs:
   upload-to-github:
     name: GitHub Upload
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     needs: build-apk
     if: inputs.GITHUB_UPLOAD
 
