@@ -54,7 +54,6 @@ def main() -> None:
                 )
     if len(config.alternative_youtube_music_patches) and "youtube_music" in config.apps:
         for alternative_patch in config.alternative_youtube_music_patches:
-
             _, version, is_experimental = patcher.get_app_configs("youtube_music")
             was_inverted = parser.invert_patch(alternative_patch)
             if was_inverted:
