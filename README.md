@@ -270,5 +270,8 @@ By default, script build the version as recommended by Revanced team.
     ```
 15. Sample Envs<br>
     <img src="https://i.imgur.com/ajSE5nA.png" width="600" style="left">
+16. Make your Action has write access. If not click [here](https://github.
+    com/nikhilbadyal/docker-py-revanced/settings/actions). In the bottom give read and write access to Actions.
+    <img src="https://i.imgur.com/STSv2D3.png" width="400">
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
