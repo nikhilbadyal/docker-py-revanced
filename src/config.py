@@ -24,6 +24,7 @@ class RevancedConfig:
             "nyx-music-player",
             "my-expenses",
             "backdrops",
+            "twitch",
         ]
         self.apk_pure = ["hex-editor"]
         self.apk_sos = ["expensemanager"]
