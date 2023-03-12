@@ -1,7 +1,28 @@
-[website]
-websiteURL = "https://t.me/revanced_apkss"
-websiteSummary = "Visit Revanced Builder Channel"
+[patch-options]
+YouTubeAppName = "ReVanced Extended"
+YouTubePackageName = "app.rvx.android.youtube"
+MusicPackageName = "app.rvx.android.apps.youtube.music"
+CustomSpeedArrays = "0.25, 0.5, 0.75, 1.0, 1.1, 1.15, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 3.0, 4.0, 5.0"
+OverlayButtonsIcon = "new"
+darkThemeBackgroundColor = "@android:color/black"
 
-['website-music']
-websiteURL = "https://t.me/revanced_apkss"
-websiteSummary = "Visit Revanced Builder Channel"
+[custom-branding]
+appName = "YouTube ReVanced"
+
+[custom-video-speed]
+granularity = "16"
+min = "0.25"
+max = "5.0"
+
+[debugging]
+debuggable = false
+
+[spotify-theme]
+backgroundColor = "@android:color/black"
+accentColor = "#ff1ed760"
+accentPressedColor = "#ff169c46"
+
+[theme]
+darkThemeBackgroundColor = "@android:color/black"
+lightThemeBackgroundColor = "@android:color/white"
+darkThemeSeekbarColor = "#ffff0000"
