@@ -1,4 +1,4 @@
-### Setup to build:
+### Set up to build:
 * ReVanced Extended YouTube (latest)
 * ReVanced Extended YouTube Music (latest)
 
