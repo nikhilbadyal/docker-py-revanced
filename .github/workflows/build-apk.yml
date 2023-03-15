@@ -71,7 +71,7 @@ jobs:
         run: |
           echo "date=$(TZ='America/Fortaleza' date +"%d.%m.%Y-%H.%M.%S")" >> $GITHUB_OUTPUT
 #          curl https://github.com/nikhilbadyal/docker-py-revanced/blob/changelogs/changelog.md > changelog.md
-#
+
 #      - name: Delete Older Releases
 #        uses: nikhilbadyal/ghaction-rm-releases@v0.0.2
 #        with:
