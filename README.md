@@ -2,7 +2,7 @@
 * ReVanced Extended **YouTube** (supported)
 * ReVanced Extended **YouTube Music** (latest)
 
-...in the **arm64-v8a** architecture.
+...in the **arm64-v8a** and **armeabi-v7a** architecture.
 
 ###### Check [.env](https://github.com/Spacellary/docker-py-revanced/blob/main/.env) for a list of excluded patches and [options.toml](https://github.com/Spacellary/docker-py-revanced/blob/main/apks/options.toml) for patch options.
 ###### Complete and original README can be found [here](https://github.com/Spacellary/docker-py-revanced/blob/main/README-ORIGINAL.md).
