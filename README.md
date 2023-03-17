@@ -1,7 +1,6 @@
 ### Set up to build:
-* ReVanced Extended **YouTube**
+* ReVanced Extended **YouTube** (supported)
 * ReVanced Extended **YouTube Music** (latest)
-* ReVanced **Reddit**
 
 ...in the **arm64-v8a** architecture.
 
