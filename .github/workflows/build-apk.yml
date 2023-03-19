@@ -92,6 +92,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           artifactErrorsFailBuild: true
+          prerelease: ${{ github.event.inputs.prerelease }}
 
       - name: Sleep for 10 seconds
         run: |
