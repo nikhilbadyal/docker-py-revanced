@@ -91,6 +91,8 @@ jobs:
           artifacts: "*-output.apk"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
+          body: |
+            #### Test Body
           artifactErrorsFailBuild: true
           prerelease: ${{ github.event.inputs.prerelease }}
 
