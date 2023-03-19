@@ -6,6 +6,9 @@ CustomSpeedArrays = "0.25, 0.5, 0.75, 1.0, 1.1, 1.15, 1.25, 1.5, 1.75, 2.0, 2.25
 OverlayButtonsIcon = "new"
 darkThemeBackgroundColor = "@android:color/black"
 
+[debugging]
+debuggable = false
+
 #[custom-branding]
 #appName = "YouTube ReVanced"
 
@@ -13,9 +16,6 @@ darkThemeBackgroundColor = "@android:color/black"
 #granularity = "16"
 #min = "0.25"
 #max = "5.0"
-
-[debugging]
-debuggable = false
 
 #[spotify-theme]
 #backgroundColor = "@android:color/black"
