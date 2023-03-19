@@ -85,7 +85,7 @@ jobs:
         with:
           artifacts: "*-output.apk"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Build-${{ steps.get-date.outputs.date }}-revanced-patches-v${{ env.PATCHES_VERSION }}
+          tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           artifactErrorsFailBuild: true
 
       - name: Sleep for 10 seconds
