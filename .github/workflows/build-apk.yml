@@ -11,6 +11,11 @@ on:
         required: false
         type: boolean
         default: true
+      prerelease:
+    description: 'Create as pre-release'
+    required: false
+    default: false
+    type: boolean
       TELEGRAM_NO_ROOT_UPLOAD:
         description: "Upload Non Rooted APKs to Telegram"
         required: false
