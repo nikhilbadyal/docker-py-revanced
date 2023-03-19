@@ -64,7 +64,7 @@ jobs:
     steps:
       - name: Set PATCHES_VERSION
         run: |
-          LATEST_RELEASE=$(curl -s https://api.github.com/repos/OWNER/revanced-patches/releases/latest)
+          LATEST_RELEASE=$(curl -s https://api.github.com/repos/inotia00/revanced-patches/releases/latest)
           PATCHES_VERSION=$(echo $LATEST_RELEASE | jq -r '.tag_name')
           echo "PATCHES_VERSION=$PATCHES_VERSION" >> $GITHUB_ENV
         env:
