@@ -6,23 +6,23 @@ CustomSpeedArrays = "0.25, 0.5, 0.75, 1.0, 1.1, 1.15, 1.25, 1.5, 1.75, 2.0, 2.25
 OverlayButtonsIcon = "new"
 darkThemeBackgroundColor = "@android:color/black"
 
-[custom-branding]
-appName = "YouTube ReVanced"
+#[custom-branding]
+#appName = "YouTube ReVanced"
 
-[custom-video-speed]
-granularity = "16"
-min = "0.25"
-max = "5.0"
+#[custom-video-speed]
+#granularity = "16"
+#min = "0.25"
+#max = "5.0"
 
 [debugging]
 debuggable = false
 
-[spotify-theme]
-backgroundColor = "@android:color/black"
-accentColor = "#ff1ed760"
-accentPressedColor = "#ff169c46"
+#[spotify-theme]
+#backgroundColor = "@android:color/black"
+#accentColor = "#ff1ed760"
+#accentPressedColor = "#ff169c46"
 
-[theme]
-darkThemeBackgroundColor = "@android:color/black"
-lightThemeBackgroundColor = "@android:color/white"
-darkThemeSeekbarColor = "#ffff0000"
+#[theme]
+#darkThemeBackgroundColor = "@android:color/black"
+#lightThemeBackgroundColor = "@android:color/white"
+#darkThemeSeekbarColor = "#ffff0000"
