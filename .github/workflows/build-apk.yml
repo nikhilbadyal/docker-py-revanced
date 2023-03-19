@@ -11,6 +11,11 @@ on:
         required: false
         type: boolean
         default: true
+      prerelease:
+        description: 'Mark as Pre-Release'
+        required: false
+        default: false
+        type: boolean
       TELEGRAM_NO_ROOT_UPLOAD:
         description: "Upload Non Rooted APKs to Telegram"
         required: false
@@ -62,33 +67,37 @@ jobs:
     if: inputs.GITHUB_UPLOAD
 
     steps:
+      - name: Set PATCHES_VERSION
+        run: |
+          LATEST_RELEASE=$(curl -s https://api.github.com/repos/inotia00/revanced-patches/releases/latest)
+          PATCHES_VERSION=$(echo $LATEST_RELEASE | jq -r '.tag_name')
+          echo "PATCHES_VERSION=$PATCHES_VERSION" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Download Already Built APKs
         uses: actions/download-artifact@v3
         with:
           name: Built-APKs
+
       - name: Get Date
         id: get-date
         run: |
           echo "date=$(TZ='America/Fortaleza' date +"%d.%m.%Y-%H.%M.%S")" >> $GITHUB_OUTPUT
-#          curl https://github.com/nikhilbadyal/docker-py-revanced/blob/changelogs/changelog.md > changelog.md
-
-#      - name: Delete Older Releases
-#        uses: nikhilbadyal/ghaction-rm-releases@v0.0.2
-#        with:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          RELEASE_PATTERN: "Build*"
 
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.12.0
         with:
           artifacts: "*-output.apk"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Build-${{ steps.get-date.outputs.date }}
+          tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           artifactErrorsFailBuild: true
+          prerelease: ${{ github.event.inputs.prerelease }}
 
       - name: Sleep for 10 seconds
         run: |
           sleep 10
+
 
   virustotal-scan:
     needs: [ upload-to-github ]
