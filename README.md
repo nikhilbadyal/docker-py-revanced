@@ -8,7 +8,7 @@ Let the 'forkception' begin!
 2. Select the "Build & Release" action.
 3. Click the "Run Workflow" drop-down button and run it.
 
-*It will take about 12 minutes to complete the workflow.*
+*It will take about 13 minutes to complete the workflow.*
 
 4. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
 5. Download your patched applications.
