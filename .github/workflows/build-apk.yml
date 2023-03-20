@@ -94,8 +94,8 @@ jobs:
           body: |
             | Application                         | Version          | Architecture |
             | ----------------------------------- | ---------------- | ------------ |
-            | ReVanced Extended **YouTube**       | Latest Supported | armeabi-v7a, arm64-v8a |
-            | ReVanced Extended YouTube **Music** | Latest Available | armeabi-v7a, arm64-v8a |
+            | ReVanced Extended **YouTube**       | Latest Supported | arm64-v8a, armeabi-v7a |
+            | ReVanced Extended **YouTube Music** | Latest Available | arm64-v8a              |
 
           tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
 
