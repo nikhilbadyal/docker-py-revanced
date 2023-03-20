@@ -90,17 +90,16 @@ jobs:
         with:
           artifacts: "*-output.apk"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
+#         tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           body: |
             #### Build Apps...
-
             • ReVanced Extended YouTube
             (latest supported version)
-
             • ReVanced Extended YouTube Music
             (latest version)
-
             Architectures: arm64-v8a, armeabi-v7a
+
+          tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
 
           artifactErrorsFailBuild: true
           prerelease: ${{ github.event.inputs.prerelease }}
