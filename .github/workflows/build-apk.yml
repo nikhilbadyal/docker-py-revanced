@@ -92,10 +92,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           body: |
-            #### ⚙️ Build Apps...
+            #### Build Apps...
 
-            • ReVanced Extended YouTube (supported)
-            • ReVanced Extended YouTube Music (latest)
+            • ReVanced Extended YouTube
+            (latest supported version)
+
+            • ReVanced Extended YouTube Music
+            (latest version)
 
             Architectures: arm64-v8a, armeabi-v7a
 
