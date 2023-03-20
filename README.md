@@ -8,7 +8,7 @@ Let the 'forkception' begin!
 2. Select the "Build & Release" action.
 3. Click the "Run Workflow" drop-down button and run it.
 
-*It will take about 4 minutes to complete the workflow.*
+*It will take about 12 minutes to complete the workflow.*
 
 4. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
 5. Download your patched applications.
@@ -20,6 +20,8 @@ Let the 'forkception' begin!
 * ReVanced Extended **YouTube Music** (latest) in the...
 
 ...**arm64-v8a** architecture.
+
+**Releases include variations with the other different icons.**
 
 
 ###### Check [.env](https://github.com/Spacellary/docker-py-revanced/blob/main/.env) for a list of excluded patches and [options.toml](https://github.com/Spacellary/docker-py-revanced/blob/main/apks/options.toml) for patch options.
