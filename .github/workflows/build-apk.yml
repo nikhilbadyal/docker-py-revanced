@@ -88,7 +88,7 @@ jobs:
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.12.0
         with:
-          artifacts: "*-output.apk"
+          artifacts: "*-by-Spacellary.apk"
           token: ${{ secrets.GITHUB_TOKEN }}
 #         tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           body: |
@@ -97,7 +97,7 @@ jobs:
             | ReVanced Extended **YouTube**       | custom-brading-afn-red         | Latest Supported | arm64-v8a, armeabi-v7a |
             | ReVanced Extended **YouTube Music** | custom-branding-music-afn-blue | Latest Available | arm64-v8a              |
 
-          tag: ReVanced-Extended-patches-${{ env.PATCHES_VERSION }}-built-on-${{ steps.get-date.outputs.date }}
+          tag: ReVanced-Extended-with-patches-${{ env.PATCHES_VERSION }}-built-on-${{ steps.get-date.outputs.date }}
 
           artifactErrorsFailBuild: true
           prerelease: ${{ github.event.inputs.prerelease }}
