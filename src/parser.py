@@ -103,7 +103,7 @@ class Parser(object):
             "-m",
             integrations,
             "-o",
-            f"Re-{app}-{version}{output_prefix}output.apk",
+            f"Re-{app}-{version}{output_prefix}by-Spacellary.apk",
             "--keystore",
             self.config.keystore_name,
             "--options",
