@@ -92,10 +92,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 #         tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           body: |
-            | Application                         | Version          | Architecture | Default Release Icon                     |
-            | ----------------------------------- | ---------------- | ------------ |------------------------------------------|
-            | ReVanced Extended **YouTube**       | Latest Supported | arm64-v8a, armeabi-v7a | custom-brading-afn-red         |
-            | ReVanced Extended **YouTube Music** | Latest Available | arm64-v8a              | custom-branding-music-afn-blue |
+            | Application                         | Default Icon                   | Version          | Architecture           |
+            | ----------------------------------- |--------------------------------|------------------|------------------------|
+            | ReVanced Extended **YouTube**       | custom-brading-afn-red         | Latest Supported | arm64-v8a, armeabi-v7a |
+            | ReVanced Extended **YouTube Music** | custom-branding-music-afn-blue | Latest Available | arm64-v8a              |
+            | Alternative Icons Available                                                                                      |
 
           tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
 
