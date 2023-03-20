@@ -96,9 +96,8 @@ jobs:
             | ----------------------------------- |--------------------------------|------------------|------------------------|
             | ReVanced Extended **YouTube**       | custom-brading-afn-red         | Latest Supported | arm64-v8a, armeabi-v7a |
             | ReVanced Extended **YouTube Music** | custom-branding-music-afn-blue | Latest Available | arm64-v8a              |
-            | Alternative Icons Available                                                                                      |
 
-          tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
+          tag: ${{ steps.get-date.outputs.date }}-ReVanced-Extended-patches-${{ env.PATCHES_VERSION }}
 
           artifactErrorsFailBuild: true
           prerelease: ${{ github.event.inputs.prerelease }}
