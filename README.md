@@ -1,4 +1,12 @@
-### Set up to build:
+Feel free to fork this fork.
+Let the 'forkception' begin!
+### How to use this fork:
+1. Go to the Actions page
+2. Select the "Build & Release" action
+3. Click the "Run Workflow" button and run it
+4. In about 4 minutes check the Releases page for your built applications
+
+#### Set up to build:
 * ReVanced Extended **YouTube** (supported)
 * ReVanced Extended **YouTube Music** (latest)
 
