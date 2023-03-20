@@ -4,6 +4,8 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
   HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}
 on:
+  issues:
+    types: [opened]
   workflow_dispatch:
     inputs:
       GITHUB_UPLOAD:
@@ -46,8 +48,6 @@ on:
         description: 'Run the build with tmate debugging enabled.'
         required: false
         default: false
-  issues:
-    types:[opened]
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
