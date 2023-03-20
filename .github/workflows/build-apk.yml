@@ -83,7 +83,7 @@ jobs:
       - name: Get Date
         id: get-date
         run: |
-          echo "date=$(TZ='America/Fortaleza' date +"%d.%m.%Y-%H.%M.%S")" >> $GITHUB_OUTPUT
+          echo "date=$(TZ='America/Fortaleza' date +"%d.%m.%Y-at-%H.%M.%S")" >> $GITHUB_OUTPUT
 
       - name: Upload Build Artifact
         uses: ncipollo/release-action@v1.12.0
@@ -97,7 +97,7 @@ jobs:
             | ReVanced Extended **YouTube**       | custom-brading-afn-red         | Latest Supported | arm64-v8a, armeabi-v7a |
             | ReVanced Extended **YouTube Music** | custom-branding-music-afn-blue | Latest Available | arm64-v8a              |
 
-          tag: ${{ steps.get-date.outputs.date }}-ReVanced-Extended-patches-${{ env.PATCHES_VERSION }}
+          tag: ReVanced-Extended-patches-${{ env.PATCHES_VERSION }}-built-on-${{ steps.get-date.outputs.date }}
 
           artifactErrorsFailBuild: true
           prerelease: ${{ github.event.inputs.prerelease }}
