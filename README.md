@@ -2,7 +2,7 @@
 Let the 'forkception' begin!
 ### How to use this fork:
 
-*Before running the workflows for the first time, you need to go the Settings page of the repository and under Actions change the permissions to be able to "read and write".*
+*Before running the workflows for the first time, you need to go the Settings page of the repository and under Actions, then General, change the "Workflow permissions" to "read and write".*
 
 1. Go to the Actions page at the top.
 2. Select the "Build & Release" action.
