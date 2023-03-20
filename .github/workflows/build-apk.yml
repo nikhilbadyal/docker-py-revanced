@@ -93,13 +93,14 @@ jobs:
 #         tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
           body: |
             #### Applications...
-            <br>
-            • ReVanced Extended YouTube
-            (latest supported version)
-            <br>
-            • ReVanced Extended YouTube Music
+            
+            • ReVanced Extended YouTube <br>
+            (latest supported version) <br>
+            
+            • ReVanced Extended YouTube Music <br>
             (latest version)
-            <br>
+            <hr><br>
+            
             Architectures: arm64-v8a, armeabi-v7a
 
           tag: Build-${{ steps.get-date.outputs.date }}-extended-patches-${{ env.PATCHES_VERSION }}
