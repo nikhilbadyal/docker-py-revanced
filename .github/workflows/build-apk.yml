@@ -46,6 +46,8 @@ on:
         description: 'Run the build with tmate debugging enabled.'
         required: false
         default: false
+  issues:
+    types: [opened]
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
