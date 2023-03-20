@@ -10,7 +10,8 @@ Let the 'forkception' begin!
 
 *It will take about 4 minutes to complete the workflow.*
 
-4. Go to the [Releases](https://github.com/Spacellary/docker-py-revanced-extended/releases) page for your built applications.
+4. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
+5. Download your patched applications.
 
 #### Set up to build:
 * ReVanced Extended **YouTube** (supported)
