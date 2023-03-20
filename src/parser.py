@@ -103,7 +103,7 @@ class Parser(object):
             "-m",
             integrations,
             "-o",
-            f"Re-{app}-{version}{output_prefix}by-Spacellary.apk",
+            f"RVX-{app}-{version}{output_prefix}by-Spacellary.apk",
             "--keystore",
             self.config.keystore_name,
             "--options",
