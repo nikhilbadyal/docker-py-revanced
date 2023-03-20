@@ -55,6 +55,7 @@ jobs:
         with:
           name: Built-APKs
           path: |
+            apks/*-by-Spacellary.apk
             apks/*-output.apk
             apks/VancedMicroG.apk"
           if-no-files-found: error
