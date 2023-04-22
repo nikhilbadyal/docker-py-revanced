@@ -243,7 +243,7 @@ class Downloader(object):
             ]
         if "youtube" in self.config.apps or "youtube_music" in self.config.apps:
             assets += [
-                ["inotia00", "VancedMicroG", "VancedMicroG-output.apk"],
+                ["inotia00", "mMicroG", "mMicroG-output.apk"],
             ]
         with ThreadPoolExecutor(7) as executor:
             executor.map(lambda repo: self.repository(*repo), assets)
