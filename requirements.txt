@@ -1,6 +1,6 @@
 environs==9.5.0
 loguru==0.7.0
 pre-commit==3.2.2
-requests==2.28.2
+requests==2.29.0
 selectolax==0.3.12
 tqdm==4.65.0
