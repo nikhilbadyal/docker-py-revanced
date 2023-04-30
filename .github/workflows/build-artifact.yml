@@ -51,14 +51,12 @@ jobs:
           docker-compose up --build
 
       - name: Upload Build APKS
-        uses: nikhilbadyal/upload-artifact@count-check
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: Built-APKs
           path: |
-            apks/*-output.apk
-            apks/VancedMicroG.apk"
+            apks/*-output.apk"
           if-no-files-found: error
-          files-to-expect: ${{ inputs.FILES_TO_EXPECT }}
 
       - name: Commit Update file
         if: ${{ inputs.COMMIT_CHANGELOG }}
