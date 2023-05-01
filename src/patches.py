@@ -29,6 +29,7 @@ class Patches(object):
         "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
         "com.ithebk.expensemanager": ("expensemanager", "_expensemanager"),
         "net.dinglisch.android.taskerm": ("tasker", "_tasker"),
+        "net.binarymode.android.irplus": ("irplus", "_irplus"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -142,6 +143,7 @@ class Patches(object):
             "backdrops": "_backdrops",
             "expensemanager": "_expensemanager",
             "tasker": "_tasker",
+            "irplus": "_irplus",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
@@ -153,8 +155,8 @@ class Patches(object):
                 logger.debug(f"Recommended Version for patching {app} is {version}")
             else:
                 logger.debug("No recommended version.")
-        except StopIteration:
-            pass  # No recommended version available
+        except StopIteration:  # No recommended version available
+            pass
         return patches, version
 
     # noinspection IncorrectFormatting

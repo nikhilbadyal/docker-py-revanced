@@ -25,6 +25,7 @@ class RevancedConfig(object):
             "my-expenses",
             "backdrops",
             "twitch",
+            "irplus",
         ]
         self.apk_pure = ["hex-editor"]
         self.apk_sos = ["expensemanager"]
