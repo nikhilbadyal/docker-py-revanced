@@ -65,6 +65,7 @@ class RevancedConfig(object):
             "twitch": f"{self.apk_mirror}/apk/twitch-interactive-inc/twitch/",
             "windy": f"{self.apk_mirror}/apk/windy-weather-world-inc/windy-wind-weather-forecast/",
             "tasker": f"{self.apk_mirror}/apk/joaomgcd/tasker-crafty-apps-eu/",
+            "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/"
         }
         self.apk_mirror_version_urls = {
             "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
@@ -79,6 +80,7 @@ class RevancedConfig(object):
             "twitch": f"{self.apk_mirror_urls.get('twitch')}twitch",
             "windy": f"{self.apk_mirror_urls.get('windy')}windy-wind-weather-forecast",
             "tasker": f"{self.apk_mirror_urls.get('tasker')}tasker-crafty-apps-eu/",
+            "instagram": f"{self.apk_mirror_urls.get('instagram')}instagram/"
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
