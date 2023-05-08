@@ -42,7 +42,7 @@ repos:
         args: [ --config=setup.cfg ]
 
   - repo: https://github.com/PyCQA/docformatter
-    rev: v1.6.4
+    rev: v1.6.5
     hooks:
       - id: docformatter
         args: [ --in-place ]
