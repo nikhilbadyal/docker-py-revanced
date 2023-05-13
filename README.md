@@ -2,10 +2,6 @@
 ### Fixed! Synced upstream...
 ...should be working properly now.
 
-###### 25/MAR/2023:
-### Building automation...
-...should be working properly now.
-
 ###### 23/MAR/2023:
 ### Builds are now automated!
 Added scheduled action that checks for patch updates, and if an update is found, automatically triggers the workflow that builds and releases the updated applications. It's not completaly perfect yet, but it works mostly fine.
