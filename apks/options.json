@@ -1,0 +1,37 @@
+[ {
+  "patchName" : "custom-branding-microg-name",
+  "options" : [ {
+    "key" : "MicroGAppName",
+    "value" : "MicroG"
+  } ]
+}, {
+  "patchName" : "patch-options",
+  "options" : [ {
+    "key" : "YouTubeAppName",
+    "value" : "ReVanced Extended"
+  }, {
+    "key" : "YouTubePackageName",
+    "value" : "app.rvx.android.youtube"
+  }, {
+    "key" : "MusicAppNameFull",
+    "value" : "ReVanced Music Extended"
+  }, {
+    "key" : "MusicAppNameShort",
+    "value" : "YTM Extended"
+  }, {
+    "key" : "MusicPackageName",
+    "value" : "app.rvx.android.apps.youtube.music"
+  }, {
+    "key" : "CustomDoubleTapLengthArrays",
+    "value" : "3, 5, 10, 15, 20, 30, 60, 120, 180"
+  }, {
+    "key" : "CustomSpeedArrays",
+    "value" : "0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 1.75, 2.0, 2.25, 2.5, 3.0, 5.0"
+  }, {
+    "key" : "darkThemeBackgroundColor",
+    "value" : "@android:color/black"
+  }, {
+    "key" : "resumedProgressBarColor",
+    "value" : "#ffff0000"
+  } ]
+} ]
