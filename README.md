@@ -1,10 +1,11 @@
-###### 05/MAY/2023:
-### Warning...
-Potentially broken and needs to be fixed. Fork upstream.
+###### 13/MAY/2023:
+### Fixed! Synced upstream...
+...should be working properly now.
 
 ###### 25/MAR/2023:
 ### Building automation...
 ...should be working properly now.
+
 ###### 23/MAR/2023:
 ### Builds are now automated!
 Added scheduled action that checks for patch updates, and if an update is found, automatically triggers the workflow that builds and releases the updated applications. It's not completaly perfect yet, but it works mostly fine.
@@ -23,7 +24,7 @@ Let the 'forkception' begin!
 2. Select the "Build & Release" action.
 3. Click the "Run Workflow" drop-down button and run it.
 
-*It will take around 13 minutes to complete the workflow.*
+*It will take around 5 minutes to complete the workflow.*
 
 4. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
 5. Download your patched applications.
