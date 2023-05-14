@@ -19,6 +19,7 @@ Let the 'forkception' begin!
 1. Go to the Actions page at the top.
 2. Select the "Build & Release" action.
 3. Click the "Run Workflow" drop-down button and run it.
+4. Optionally select the "Update Checker" action, and **enable** it. It will periodically check for new patch releases and trigger a new Build & Release when necessary.
 
 *It will take around 5 minutes to complete the workflow.*
 
