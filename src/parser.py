@@ -36,24 +36,18 @@ class Parser(object):
         self._EXCLUDED.append(name)
 
     def get_excluded_patches(self) -> List[str]:
-        """
-        Getter to get all excluded patches
-        :return: List of excluded patches
-        """
+        """Getter to get all excluded patches :return: List of excluded
+        patches."""
         return self._EXCLUDED
 
     def get_all_patches(self) -> List[str]:
-        """
-        Getter to get all excluded patches
-        :return: List of excluded patches
-        """
+        """Getter to get all excluded patches :return: List of excluded
+        patches."""
         return self._PATCHES
 
     def invert_patch(self, name: str) -> bool:
-        """
-        Getter to get all excluded patches
-        :return: List of excluded patches
-        """
+        """Getter to get all excluded patches :return: List of excluded
+        patches."""
         try:
             patch_index = self._PATCHES.index(name)
             if self._PATCHES[patch_index - 1] == "-e":
