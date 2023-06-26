@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v3.5.2
+        uses: actions/checkout@v3.5.3
 
       - name: Update Env for custom build
         run: |
