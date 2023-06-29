@@ -190,7 +190,8 @@ class Patches(object):
         """Get Configurations for a given app.
 
         :param app: Name of the application
-        :return: All Patches , Its version and whether it is experimental
+        :return: All Patches , Its version and whether it is
+            experimental
         """
         experiment = False
         total_patches, recommended_version = self.get(app=app)
