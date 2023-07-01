@@ -30,6 +30,7 @@ class Patches(object):
         "net.dinglisch.android.taskerm": ("tasker", "_tasker"),
         "net.binarymode.android.irplus": ("irplus", "_irplus"),
         "com.vsco.cam": ("vsco", "_vsco"),
+        "com.zombodroid.MemeGenerator": ("meme-generator-free", "_meme-generator-free"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -144,6 +145,7 @@ class Patches(object):
             "tasker": "_tasker",
             "irplus": "_irplus",
             "vsco": "_vsco",
+            "meme-generator-free": "_meme-generator-free",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)

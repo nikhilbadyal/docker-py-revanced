@@ -144,6 +144,7 @@ By default, script build the version as recommended by Revanced team.
     17. [tasker](https://www.apkmirror.com/apk/joaomgcd/tasker-crafty-apps-eu/)
     18. [irplus](https://irplus.en.uptodown.com/android)
     19. [vsco](https://www.apkmirror.com/apk/vsco/vsco-cam/)
+    20. [meme-generator-free](https://meme-generator-free.en.uptodown.com/android)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
