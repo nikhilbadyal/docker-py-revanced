@@ -69,6 +69,7 @@ class RevancedConfig(object):
             "nova_launcher": f"{self.apk_mirror}/apk/teslacoil-software/nova-launcher/",
             "netguard": f"{self.apk_mirror}/apk/marcel-bokhorst/netguard-no-root-firewall/",
             "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
+            "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
         }
         self.apk_mirror_version_urls = {
             "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
@@ -86,6 +87,7 @@ class RevancedConfig(object):
             "nova_launcher": f"{self.apk_mirror_urls.get('nova_launcher')}nova-launcher",
             "netguard": f"{self.apk_mirror_urls.get('netguard')}netguard-no-root-firewall",
             "instagram": f"{self.apk_mirror_urls.get('instagram')}instagram-instagram",
+            "inshorts": f"{self.apk_mirror_urls.get('inshorts')}inshorts-formerly-news-in-shorts",
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
