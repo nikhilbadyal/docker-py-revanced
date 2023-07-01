@@ -73,23 +73,8 @@ class RevancedConfig(object):
             "facebook": f"{self.apk_mirror}/apk/facebook-2/facebook/",
         }
         self.apk_mirror_version_urls = {
-            "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
-            "twitter": f"{self.apk_mirror_urls.get('twitter')}twitter",
-            "tiktok": f"{self.apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
-            "warnwetter": f"{self.apk_mirror_urls.get('warnwetter')}warnwetter",
-            "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
-            "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
-            "ticktick": f"{self.apk_mirror_urls.get('ticktick')}ticktick-to-do-list-with-reminder-day-planner",
-            "icon_pack_studio": f"{self.apk_mirror_urls.get('icon_pack_studio')}icon-pack-studio",
-            "twitch": f"{self.apk_mirror_urls.get('twitch')}twitch",
-            "windy": f"{self.apk_mirror_urls.get('windy')}windy-wind-weather-forecast",
-            "tasker": f"{self.apk_mirror_urls.get('tasker')}tasker-crafty-apps-eu/",
-            "vsco": f"{self.apk_mirror_urls.get('vsco')}vsco-cam",
-            "nova_launcher": f"{self.apk_mirror_urls.get('nova_launcher')}nova-launcher",
-            "netguard": f"{self.apk_mirror_urls.get('netguard')}netguard-no-root-firewall",
-            "instagram": f"{self.apk_mirror_urls.get('instagram')}instagram-instagram",
-            "inshorts": f"{self.apk_mirror_urls.get('inshorts')}inshorts-formerly-news-in-shorts",
-            "facebook": f"{self.apk_mirror_urls.get('facebook')}facebook",
+            key: value + value.split("/")[-2]
+            for key, value in self.apk_mirror_urls.items()
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
