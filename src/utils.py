@@ -20,7 +20,6 @@ all_builds = [
     "ticktick",
     "twitch",
     "hex-editor",
-    "citra",
     "windy",
     "my-expenses",
     "backdrops",
