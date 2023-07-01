@@ -150,6 +150,7 @@ By default, script build the version as recommended by Revanced team.
     23. [instagram](https://www.apkmirror.com/apk/instagram/instagram-instagram/)
     24. [inshorts](https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/)
     25. [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
+    26. [grecorder](https://www.apkmirror.com/apk/google-inc/google-recorder/)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.

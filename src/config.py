@@ -71,6 +71,7 @@ class RevancedConfig(object):
             "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
             "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
             "facebook": f"{self.apk_mirror}/apk/facebook-2/facebook/",
+            "grecorder": f"{self.apk_mirror}/apk/google-inc/google-recorder/",
         }
         self.apk_mirror_version_urls = {
             key: value + value.split("/")[-2]
