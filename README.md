@@ -154,6 +154,7 @@ By default, script build the version as recommended by Revanced team.
     27. [trakt](https://www.apkmirror.com/apk/trakt/trakt/)
     28. [candyvpn](https://www.apkmirror.com/apk/liondev-io/candylink-vpn/)
     29. [sonyheadphone](https://www.apkmirror.com/apk/sony-corporation/sony-headphones-connect/)
+    29. [androidtwelvewidgets](https://m.apkpure.com/android-12-widgets-twelve/com.dci.dev.androidtwelvewidgets)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
