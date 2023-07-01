@@ -152,6 +152,7 @@ By default, script build the version as recommended by Revanced team.
     25. [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
     26. [grecorder](https://www.apkmirror.com/apk/google-inc/google-recorder/)
     27. [trakt](https://www.apkmirror.com/apk/trakt/trakt/)
+    28. [candyvpn](https://www.apkmirror.com/apk/liondev-io/candylink-vpn/)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.

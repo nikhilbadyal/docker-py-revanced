@@ -73,6 +73,7 @@ class RevancedConfig(object):
             "facebook": f"{self.apk_mirror}/apk/facebook-2/facebook/",
             "grecorder": f"{self.apk_mirror}/apk/google-inc/google-recorder/",
             "trakt": f"{self.apk_mirror}/apk/trakt/trakt/",
+            "candyvpn": f"{self.apk_mirror}/apk/liondev-io/candylink-vpn/",
         }
         self.apk_mirror_version_urls = {
             key: value + value.split("/")[-2]
