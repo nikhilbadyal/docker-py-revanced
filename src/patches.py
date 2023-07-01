@@ -40,6 +40,7 @@ class Patches(object):
         "tv.trakt.trakt": "trakt",
         "com.candylink.openvpn": "candyvpn",
         "com.sony.songpal.mdr": "sonyheadphone",
+        "com.dci.dev.androidtwelvewidgets": "androidtwelvewidgets",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()

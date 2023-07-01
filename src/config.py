@@ -28,7 +28,7 @@ class RevancedConfig(object):
             "irplus",
             "meme-generator-free",
         ]
-        self.apk_pure = ["hex-editor"]
+        self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager"]
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
         self.ci_test = env.bool("CI_TEST", False)
