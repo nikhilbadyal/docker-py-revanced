@@ -33,6 +33,7 @@ class Patches(object):
         "com.zombodroid.MemeGenerator": ("meme-generator-free", "_meme-generator-free"),
         "com.teslacoilsw.launcher": ("nova_launcher", "_nova_launcher"),
         "eu.faircode.netguard": ("netguard", "_netguard"),
+        "com.instagram.android": ("instagram", "_instagram"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -150,6 +151,7 @@ class Patches(object):
             "meme-generator-free": "_meme-generator-free",
             "nova_launcher": "_nova_launcher",
             "netguard": "_netguard",
+            "instagram": "_instagram",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
