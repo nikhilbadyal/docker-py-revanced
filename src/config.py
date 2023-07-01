@@ -27,6 +27,7 @@ class RevancedConfig(object):
             "twitch",
             "irplus",
             "meme-generator-free",
+            "yuka",
         ]
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager"]
