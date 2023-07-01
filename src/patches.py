@@ -38,6 +38,7 @@ class Patches(object):
         "com.facebook.orca": "facebook",
         "com.google.android.apps.recorder": "grecorder",
         "tv.trakt.trakt": "trakt",
+        "com.candylink.openvpn": "candyvpn",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()
