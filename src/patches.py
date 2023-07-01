@@ -31,6 +31,7 @@ class Patches(object):
         "net.binarymode.android.irplus": ("irplus", "_irplus"),
         "com.vsco.cam": ("vsco", "_vsco"),
         "com.zombodroid.MemeGenerator": ("meme-generator-free", "_meme-generator-free"),
+        "com.teslacoilsw.launcher": ("nova_launcher", "_nova_launcher"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -146,6 +147,7 @@ class Patches(object):
             "irplus": "_irplus",
             "vsco": "_vsco",
             "meme-generator-free": "_meme-generator-free",
+            "nova_launcher": "_nova_launcher",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)

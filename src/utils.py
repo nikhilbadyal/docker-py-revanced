@@ -27,6 +27,7 @@ all_builds = [
     "tasker",
     "vsco",
     "meme-generator-free",
+    "nova_launcher",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 
