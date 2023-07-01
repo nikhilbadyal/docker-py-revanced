@@ -70,6 +70,7 @@ class RevancedConfig(object):
             "netguard": f"{self.apk_mirror}/apk/marcel-bokhorst/netguard-no-root-firewall/",
             "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
             "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
+            "facebook": f"{self.apk_mirror}/apk/facebook-2/facebook/",
         }
         self.apk_mirror_version_urls = {
             "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
@@ -88,6 +89,7 @@ class RevancedConfig(object):
             "netguard": f"{self.apk_mirror_urls.get('netguard')}netguard-no-root-firewall",
             "instagram": f"{self.apk_mirror_urls.get('instagram')}instagram-instagram",
             "inshorts": f"{self.apk_mirror_urls.get('inshorts')}inshorts-formerly-news-in-shorts",
+            "facebook": f"{self.apk_mirror_urls.get('facebook')}facebook",
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])

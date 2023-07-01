@@ -35,6 +35,7 @@ class Patches(object):
         "eu.faircode.netguard": ("netguard", "_netguard"),
         "com.instagram.android": ("instagram", "_instagram"),
         "com.nis.app": ("inshorts", "_inshorts"),
+        "com.facebook.orca": ("facebook", "_facebook"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -154,6 +155,7 @@ class Patches(object):
             "netguard": "_netguard",
             "instagram": "_instagram",
             "inshorts": "_inshorts",
+            "facebook": "_facebook",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
