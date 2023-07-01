@@ -34,6 +34,7 @@ class Patches(object):
         "com.teslacoilsw.launcher": ("nova_launcher", "_nova_launcher"),
         "eu.faircode.netguard": ("netguard", "_netguard"),
         "com.instagram.android": ("instagram", "_instagram"),
+        "com.nis.app": ("inshorts", "_inshorts"),
     }
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
@@ -152,6 +153,7 @@ class Patches(object):
             "nova_launcher": "_nova_launcher",
             "netguard": "_netguard",
             "instagram": "_instagram",
+            "inshorts": "_inshorts",
         }
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
