@@ -8,6 +8,7 @@ from time import perf_counter
 from typing import Tuple
 
 import requests
+from bs4 import BeautifulSoup
 from loguru import logger
 from selectolax.lexbor import LexborHTMLParser
 from tqdm import tqdm
@@ -107,8 +108,36 @@ class Downloader(object):
         download_url = self.config.apk_mirror + sub_url
         return download_url
 
-    def __upto_down_downloader(self, app: str) -> str:
+    def __upto_down_specific_version(self, app: str, version: str) -> str:
+        """Function to download the specified version of app from  apkmirror.
+
+        :param app: Name of the application
+        :param version: Version of the application to download
+        :return: Version of downloaded apk
+        """
+        logger.debug("downloading specified version of app from uptodown.")
+        url = f"https://{app}.en.uptodown.com/android/versions"
+        html = self.config.session.get(url).text
+        soup = BeautifulSoup(html, "html.parser")
+        versions_list = soup.find("section", {"id": "versions"})
+        download_url = None
+        for version_item in versions_list.find_all("div", {"data-url": True}):
+            extracted_version = version_item.find("span", {"class": "version"}).text
+            if extracted_version == version:
+                download_url = version_item["data-url"]
+                print(f"data-url for version {version}: {download_url}")
+                break
+        if download_url is None:
+            raise AppNotFound(f"Unable to get download url for {app}")
+        self.__upto_down_downloader(download_url, app)
+        logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
+        return version
+
+    def __upto_down_latest_downloader(self, app: str) -> str:
         page = f"https://{app}.en.uptodown.com/android/download"
+        return self.__upto_down_downloader(page, app)
+
+    def __upto_down_downloader(self, page: str, app: str) -> str:
         parser = LexborHTMLParser(self.config.session.get(page).text)
         main_page = parser.css_first("#detail-download-button")
         download_url = main_page.attributes["data-url"]
@@ -249,13 +278,17 @@ class Downloader(object):
             executor.map(lambda repo: self.repository(*repo), assets)
         logger.info("Downloaded revanced microG ,cli, integrations and patches.")
 
-    def upto_down_downloader(self, app: str) -> str:
+    def upto_down_downloader(self, version: str, app: str) -> str:
         """Function to download from UptoDown.
 
+        :param version: version to download
         :param app: Name of the application
         :return: Version of downloaded APK
         """
-        return self.__upto_down_downloader(app)
+        if version and version != "latest":
+            return self.__upto_down_specific_version(app, version)
+        else:
+            return self.__upto_down_latest_downloader(app)
 
     def apk_pure_downloader(self, app: str) -> str:
         """Function to download from Apk Pure.
@@ -297,7 +330,7 @@ class Downloader(object):
             # Returning Latest as I don't know, which version user provided.
             return "latest"
         if app in self.config.upto_down:
-            return self.upto_down_downloader(app)
+            return self.upto_down_downloader(version, app)
         elif app in self.config.apk_pure:
             return self.apk_pure_downloader(app)
         elif app in self.config.apk_sos:

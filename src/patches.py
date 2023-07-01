@@ -148,14 +148,10 @@ class Patches(object):
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
         patches = getattr(self, app_name)
-        version = ""
+        version = "latest"
         try:
-            if app in ("youtube", "youtube_music"):
-                version = next(i["version"] for i in patches if i["version"] != "all")
-                logger.debug(f"Recommended Version for patching {app} is {version}")
-            else:
-                logger.debug("No recommended version.")
-        # No recommended version available
+            version = next(i["version"] for i in patches if i["version"] != "all")
+            logger.debug(f"Recommended Version for patching {app} is {version}")
         except StopIteration:
             pass
         return patches, version

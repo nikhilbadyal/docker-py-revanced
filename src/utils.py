@@ -6,6 +6,7 @@ from requests import Response
 
 default_build = [
     "youtube",
+    "youtube_music",
 ]
 all_builds = [
     "youtube",
