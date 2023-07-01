@@ -26,6 +26,7 @@ class RevancedConfig(object):
             "backdrops",
             "twitch",
             "irplus",
+            "meme-generator-free",
         ]
         self.apk_pure = ["hex-editor"]
         self.apk_sos = ["expensemanager"]
