@@ -28,6 +28,7 @@ all_builds = [
     "vsco",
     "meme-generator-free",
     "nova_launcher",
+    "netguard",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 

@@ -67,6 +67,7 @@ class RevancedConfig(object):
             "tasker": f"{self.apk_mirror}/apk/joaomgcd/tasker-crafty-apps-eu/",
             "vsco": f"{self.apk_mirror}/apk/vsco/vsco-cam/",
             "nova_launcher": f"{self.apk_mirror}/apk/teslacoil-software/nova-launcher/",
+            "netguard": f"{self.apk_mirror}/apk/marcel-bokhorst/netguard-no-root-firewall/",
         }
         self.apk_mirror_version_urls = {
             "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
@@ -82,6 +83,7 @@ class RevancedConfig(object):
             "tasker": f"{self.apk_mirror_urls.get('tasker')}tasker-crafty-apps-eu/",
             "vsco": f"{self.apk_mirror_urls.get('vsco')}vsco-cam",
             "nova_launcher": f"{self.apk_mirror_urls.get('nova_launcher')}nova-launcher",
+            "netguard": f"{self.apk_mirror_urls.get('netguard')}netguard-no-root-firewall",
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
