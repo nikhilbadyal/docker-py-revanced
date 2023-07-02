@@ -41,7 +41,7 @@ class Patches(object):
         "com.candylink.openvpn": "candyvpn",
         "com.sony.songpal.mdr": "sonyheadphone",
         "com.dci.dev.androidtwelvewidgets": "androidtwelvewidgets",
-        "io.yuka.android": "io.yuka.android",
+        "io.yuka.android": "yuka",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()
