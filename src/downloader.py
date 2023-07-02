@@ -30,6 +30,9 @@ class Downloader(object):
         self.patcher = patcher
 
     def _download(self, url: str, file_name: str) -> None:
+        if os.path.exists(self.config.temp_folder.joinpath(file_name)):
+            logger.debug(f"Skipping download of {file_name}. File already exists.")
+            return
         logger.debug(f"Trying to download {file_name} from {url}")
         self._QUEUE_LENGTH += 1
         start = perf_counter()
