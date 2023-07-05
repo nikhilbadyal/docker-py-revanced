@@ -40,7 +40,11 @@ def main() -> None:
             logger.exception(f"Failed to build {app} because of {e}")
     if len(config.alternative_youtube_patches) and "youtube" in config.apps:
         for alternative_patch in config.alternative_youtube_patches:
-            _, version, is_experimental = patcher.get_app_configs("youtube")
+            parser = Parser(patcher, config)
+            app_all_patches, version, is_experimental = patcher.get_app_configs(
+                "youtube"
+            )
+            patcher.include_exclude_patch("youtube", parser, app_all_patches)
             was_inverted = parser.invert_patch(alternative_patch)
             if was_inverted:
                 logger.info(
@@ -58,7 +62,11 @@ def main() -> None:
                 )
     if len(config.alternative_youtube_music_patches) and "youtube_music" in config.apps:
         for alternative_patch in config.alternative_youtube_music_patches:
-            _, version, is_experimental = patcher.get_app_configs("youtube_music")
+            parser = Parser(patcher, config)
+            app_all_patches, version, is_experimental = patcher.get_app_configs(
+                "youtube_music"
+            )
+            patcher.include_exclude_patch("youtube_music", parser, app_all_patches)
             was_inverted = parser.invert_patch(alternative_patch)
             if was_inverted:
                 logger.info(
