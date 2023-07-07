@@ -89,3 +89,4 @@ class RevancedConfig(object):
         )
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
+        self.dry_run = env.bool("DRY_RUN", False)

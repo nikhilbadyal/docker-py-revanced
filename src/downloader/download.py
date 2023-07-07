@@ -25,8 +25,13 @@ class Downloader(object):
         self.patcher = patcher
 
     def _download(self, url: str, file_name: str) -> None:
-        if os.path.exists(self.config.temp_folder.joinpath(file_name)):
-            logger.debug(f"Skipping download of {file_name}. File already exists.")
+        if (
+            os.path.exists(self.config.temp_folder.joinpath(file_name))
+            or self.config.dry_run
+        ):
+            logger.debug(
+                f"Skipping download of {file_name}. File already exists or dry running."
+            )
             return
         logger.info(f"Trying to download {file_name} from {url}")
         self._QUEUE_LENGTH += 1
@@ -86,6 +91,8 @@ class Downloader(object):
         :param version: version to download
         :param app: App to download
         """
+        if self.config.dry_run:
+            return
         if app in self.config.existing_downloaded_apks:
             logger.debug(f"Will not download {app} -v{version} from the internet.")
             return

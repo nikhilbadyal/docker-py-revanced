@@ -1,4 +1,5 @@
 """Revanced Patches."""
+import json
 import subprocess
 from typing import Any, Dict, List, Tuple
 
@@ -79,13 +80,17 @@ class Patches(object):
     def fetch_patches(self) -> None:
         """Function to fetch all patches."""
         session = Session()
-
-        logger.debug("fetching all patches")
-        response = session.get(
-            "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
-        )
-        handle_response(response)
-        patches = response.json()
+        if self.config.dry_run:
+            logger.debug("fetching all patches from local file")
+            with open("patches.json") as f:
+                patches = json.load(f)
+        else:
+            logger.debug("fetching all patches")
+            response = session.get(
+                "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
+            )
+            handle_response(response)
+            patches = response.json()
 
         for app_name in (self.revanced_app_ids[x][1] for x in self.revanced_app_ids):
             setattr(self, app_name, [])
@@ -100,14 +105,16 @@ class Patches(object):
                     p["app"] = compatible_package
                     p["version"] = version[-1] if version else "all"
                     getattr(self, app_name).append(p)
-        if self.config.build_extended:
-            url = "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
+        if self.config.dry_run:
+            extended_patches = patches
         else:
-            url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
-
-        response = session.get(url)
-        handle_response(response)
-        extended_patches = response.json()
+            if self.config.build_extended:
+                url = "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
+            else:
+                url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
+            response = session.get(url)
+            handle_response(response)
+            extended_patches = response.json()
         for app_name in (
             self.revanced_extended_app_ids[x][1] for x in self.revanced_extended_app_ids
         ):
