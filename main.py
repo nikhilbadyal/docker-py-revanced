@@ -18,20 +18,20 @@ def main() -> None:
     config = RevancedConfig(env)
 
     patcher = Patches(config)
-    parser = Parser(patcher, config)
     Downloader(patcher, config).download_revanced()
 
     logger.info(f"Will Patch only {patcher.config.apps}")
     for app in patcher.config.apps:
         try:
             logger.info("Trying to build %s" % app)
+            parser = Parser(patcher, config)
             app_all_patches, version, is_experimental = patcher.get_app_configs(app)
+            patcher.include_exclude_patch(app, parser, app_all_patches)
             downloader = DownloaderFactory.create_downloader(
                 app=app, patcher=patcher, config=config
             )
             downloader.download(version, app)
             config.app_versions[app] = version
-            patcher.include_exclude_patch(app, parser, app_all_patches)
             logger.info(f"Downloaded {app}, version {version}")
             parser.patch_app(app=app, version=version, is_experimental=is_experimental)
         except AppNotFound as e:
