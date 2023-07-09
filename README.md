@@ -21,6 +21,8 @@ Let the 'forkception' begin!
 3. Click the "Run Workflow" drop-down button and run it.
 4. Optionally select the "Update Checker" action, and **enable** it. It will periodically check for new patch releases and trigger a new Build & Release when necessary.
 
+* This requires you to set your PERSONAL_ACCESS_TOKEN secret to trigger builds. Read about how to get a token [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+
 *It will take around 5 minutes to complete the workflow.*
 
 4. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
