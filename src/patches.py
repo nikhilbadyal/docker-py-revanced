@@ -34,6 +34,7 @@ class Patches(object):
     revanced_extended_app_ids = {
         "com.google.android.youtube": ("youtube", "_yt"),
         "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
+        "com.reddit.frontpage": ("reddit", "_reddit"),
     }
 
     @staticmethod
