@@ -1,6 +1,6 @@
-###### 13/MAY/2023:
-### Fixed! Synced upstream...
-...should be working properly now.
+###### 17/JULY/2023:
+### Merged upstream changes...
+### Merged pull requests to add support RVX Reddit.
 
 ###### 23/MAR/2023:
 ### Builds are now automated!
