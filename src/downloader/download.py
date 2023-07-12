@@ -1,17 +1,16 @@
 """Downloader Class."""
 import os
-from concurrent.futures import ThreadPoolExecutor
 from queue import PriorityQueue
 from time import perf_counter
-from typing import Tuple
+from typing import Any, Tuple
 
-import requests
 from loguru import logger
 from tqdm import tqdm
 
 from src.config import RevancedConfig
+from src.downloader.utils import implement_method
 from src.patches import Patches
-from src.utils import handle_response, update_changelog
+from src.utils import handle_response
 
 
 class Downloader(object):
@@ -66,7 +65,7 @@ class Downloader(object):
 
     def extract_download_link(self, page: str, app: str) -> None:
         """Extract download link from web page."""
-        raise NotImplementedError("Please implement the method")
+        raise NotImplementedError(implement_method)
 
     def specific_version(self, app: str, version: str) -> None:
         """Function to download the specified version of app from  apkmirror.
@@ -75,17 +74,17 @@ class Downloader(object):
         :param version: Version of the application to download
         :return: Version of downloaded apk
         """
-        raise NotImplementedError("Please implement the method")
+        raise NotImplementedError(implement_method)
 
-    def latest_version(self, app: str) -> None:
+    def latest_version(self, app: str, **kwargs: Any) -> None:
         """Function to download the latest version of app.
 
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        raise NotImplementedError("Please implement the method")
+        raise NotImplementedError(implement_method)
 
-    def download(self, version: str, app: str) -> None:
+    def download(self, version: str, app: str, **kwargs: Any) -> None:
         """Public function to download apk to patch.
 
         :param version: version to download
@@ -99,59 +98,4 @@ class Downloader(object):
         if version and version != "latest":
             self.specific_version(app, version)
         else:
-            self.latest_version(app)
-
-    def repository(self, owner: str, name: str, file_name: str) -> None:
-        """Function to download files from GitHub repositories.
-
-        :param owner: github user/organization
-        :param name: name of the repository
-        :param file_name: name of the file after downloading
-        """
-        logger.debug(f"Trying to download {name} from github")
-        if self.config.dry_run:
-            logger.debug(
-                f"Skipping download of {file_name}. File already exists or dry running."
-            )
-            return
-        repo_url = f"https://api.github.com/repos/{owner}/{name}/releases/latest"
-        headers = {
-            "Content-Type": "application/vnd.github.v3+json",
-        }
-        if self.config.personal_access_token:
-            logger.debug("Using personal access token")
-            headers.update(
-                {"Authorization": "token " + self.config.personal_access_token}
-            )
-        response = requests.get(repo_url, headers=headers)
-        handle_response(response)
-        if name == "revanced-patches":
-            download_url = response.json()["assets"][1]["browser_download_url"]
-        else:
-            download_url = response.json()["assets"][0]["browser_download_url"]
-        update_changelog(f"{owner}/{name}", response.json())
-        self._download(download_url, file_name=file_name)
-
-    def download_revanced(self) -> None:
-        """Download Revanced and Extended Patches, Integration and CLI."""
-        if os.path.exists("changelog.md") and not self.config.dry_run:
-            logger.debug("Deleting old changelog.md")
-            os.remove("changelog.md")
-        assets = [
-            ["revanced", "revanced-cli", self.config.normal_cli_jar],
-            ["revanced", "revanced-integrations", self.config.normal_integrations_apk],
-            ["revanced", "revanced-patches", self.config.normal_patches_jar],
-        ]
-        if self.config.build_extended:
-            assets += [
-                ["inotia00", "revanced-cli", self.config.cli_jar],
-                ["inotia00", "revanced-integrations", self.config.integrations_apk],
-                ["inotia00", "revanced-patches", self.config.patches_jar],
-            ]
-        if "youtube" in self.config.apps or "youtube_music" in self.config.apps:
-            assets += [
-                ["inotia00", "mMicroG", "mMicroG-output.apk"],
-            ]
-        with ThreadPoolExecutor(7) as executor:
-            executor.map(lambda repo: self.repository(*repo), assets)
-        logger.info("Downloaded revanced microG ,cli, integrations and patches.")
+            self.latest_version(app, **kwargs)

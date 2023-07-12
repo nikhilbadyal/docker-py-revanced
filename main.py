@@ -5,11 +5,11 @@ from environs import Env
 from loguru import logger
 
 from src.config import RevancedConfig
-from src.downloader.download import Downloader
 from src.downloader.factory import DownloaderFactory
+from src.downloader.utils import download_revanced
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import AppNotFound
+from src.utils import AppNotFound, PatcherDownloadFailed
 
 
 def main() -> None:
@@ -18,7 +18,11 @@ def main() -> None:
     config = RevancedConfig(env)
 
     patcher = Patches(config)
-    Downloader(patcher, config).download_revanced()
+    try:
+        download_revanced(config, patcher)
+    except PatcherDownloadFailed as e:
+        logger.error(f"Failed to download {e}")
+        sys.exit(1)
 
     logger.info(f"Will Patch only {patcher.config.apps}")
     for app in patcher.config.apps:

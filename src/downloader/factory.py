@@ -4,6 +4,7 @@ from src.downloader.apkmirror import ApkMirror
 from src.downloader.apkpure import ApkPure
 from src.downloader.apksos import ApkSos
 from src.downloader.download import Downloader
+from src.downloader.github import Github
 from src.downloader.uptodown import UptoDown
 from src.patches import Patches
 
@@ -23,6 +24,8 @@ class DownloaderFactory(object):
         patcher : Patcher
         config : Config
         """
+        if app == "patches":
+            return Github(patcher, config)
         if app in config.apk_pure:
             return ApkPure(patcher, config)
         elif app in config.apk_sos:
