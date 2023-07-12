@@ -1,3 +1,10 @@
+{
+  "patchName" : "Change OAuth client id",
+  "options" : [ {
+    "key" : "client-id",
+    "value" : "Ern7l2Z_AIJktWXF3LGoWg"
+  } ]
+}
 [ {
   "patchName" : "Custom branding Microg name",
   "options" : [ {
