@@ -1,11 +1,11 @@
 [ {
-  "patchName" : "custom-branding-microg-name",
+  "patchName" : "Custom branding Microg name",
   "options" : [ {
     "key" : "MicroGAppName",
     "value" : "MicroG"
   } ]
 }, {
-  "patchName" : "custom-branding-music-name",
+  "patchName" : "Custom branding Music name",
   "options" : [ {
     "key" : "MusicLongName",
     "value" : "ReVanced Music Extended"
@@ -14,19 +14,19 @@
     "value" : "YTM Extended"
   } ]
 }, {
-  "patchName" : "custom-branding-name",
+  "patchName" : "Custom branding YouTube name",
   "options" : [ {
     "key" : "YouTubeAppName",
     "value" : "ReVanced Extended"
   } ]
 }, {
-  "patchName" : "custom-double-tap-length",
+  "patchName" : "Custom double tap length",
   "options" : [ {
     "key" : "DoubleTapLengthArrays",
     "value" : "1, 3, 5, 10, 15, 20, 30, 60, 120, 180"
   } ]
 }, {
-  "patchName" : "custom-package-name",
+  "patchName" : "Custom package name",
   "options" : [ {
     "key" : "YouTubePackageName",
     "value" : "app.rvx.android.youtube"
@@ -35,13 +35,13 @@
     "value" : "app.rvx.android.apps.youtube.music"
   } ]
 }, {
-  "patchName" : "custom-video-speed",
+  "patchName" : "Reddit settings",
   "options" : [ {
-    "key" : "CustomSpeedArrays",
-    "value" : "0.25, 0.5, 0.75, 0.9, 1.0, 1.12, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0"
+    "key" : "RedditSettings",
+    "value" : true
   } ]
 }, {
-  "patchName" : "theme",
+  "patchName" : "Theme",
   "options" : [ {
     "key" : "darkThemeBackgroundColor",
     "value" : "@android:color/black"
