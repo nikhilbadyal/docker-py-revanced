@@ -41,6 +41,12 @@
     "value" : true
   } ]
 }, {
+  "patchName" : "change-oauth-client-id",
+  "options" : [ {
+    "key" : "client-id",
+    "value" : "REDDIT_CLIENT_ID"
+  } ]
+}, {
   "patchName" : "Theme",
   "options" : [ {
     "key" : "darkThemeBackgroundColor",
