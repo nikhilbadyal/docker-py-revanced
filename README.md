@@ -1,5 +1,5 @@
 ###### 17/JULY/2023:
-### Merged upstream changes...
+### Merged upstream changes... EXCLUDE_PATCH list in .env isn't being applied.
 
 ###### 23/MAR/2023:
 ### Builds are now automated!
