@@ -1,63 +1,49 @@
-[
-  {
-    "patchName": "Change OAuth client id",
-    "options": [
-      {
-        "key": "client-id",
-        "value": "Ern7l2Z_AIJktWXF3LGoWg"
-      }
-    ]
-  },
-  {
-    "patchName": "Change package name",
-    "options": [
-      {
-        "key": "packageName",
-        "value": null
-      }
-    ]
-  },
-  {
-    "patchName": "Custom branding",
-    "options": [
-      {
-        "key": "appName",
-        "value": "YouTube ReVanced"
-      },
-      {
-        "key": "iconPath",
-        "value": null
-      }
-    ]
-  },
-  {
-    "patchName": "Spotify theme",
-    "options": [
-      {
-        "key": "backgroundColor",
-        "value": "@android:color/black"
-      },
-      {
-        "key": "accentColor",
-        "value": "#ff1ed760"
-      },
-      {
-        "key": "accentPressedColor",
-        "value": "#ff169c46"
-      }
-    ]
-  },
-  {
-    "patchName": "Theme",
-    "options": [
-      {
-        "key": "darkThemeBackgroundColor",
-        "value": "@android:color/black"
-      },
-      {
-        "key": "lightThemeBackgroundColor",
-        "value": "@android:color/white"
-      }
-    ]
-  }
-]
+[ {
+  "patchName" : "Custom branding Microg name",
+  "options" : [ {
+    "key" : "MicroGAppName",
+    "value" : "MicroG"
+  } ]
+}, {
+  "patchName" : "Custom branding Music name",
+  "options" : [ {
+    "key" : "MusicLongName",
+    "value" : "ReVanced Music Extended"
+  }, {
+    "key" : "MusicShortName",
+    "value" : "YTM Extended"
+  } ]
+}, {
+  "patchName" : "Custom branding YouTube name",
+  "options" : [ {
+    "key" : "YouTubeAppName",
+    "value" : "ReVanced Extended"
+  } ]
+}, {
+  "patchName" : "Custom double tap length",
+  "options" : [ {
+    "key" : "DoubleTapLengthArrays",
+    "value" : "1, 3, 5, 10, 15, 20, 30, 60, 120, 180"
+  } ]
+}, {
+  "patchName" : "Custom package name",
+  "options" : [ {
+    "key" : "YouTubePackageName",
+    "value" : "app.rvx.android.youtube"
+  }, {
+    "key" : "MusicPackageName",
+    "value" : "app.rvx.android.apps.youtube.music"
+  } ]
+}, {
+  "patchName" : "Reddit settings",
+  "options" : [ {
+    "key" : "RedditSettings",
+    "value" : true
+  } ]
+}, {
+  "patchName" : "Theme",
+  "options" : [ {
+    "key" : "darkThemeBackgroundColor",
+    "value" : "@android:color/black"
+  } ]
+} ]
