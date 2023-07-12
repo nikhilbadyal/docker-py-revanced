@@ -35,7 +35,6 @@ class UptoDown(Downloader):
             extracted_version = version_item.find("span", {"class": "version"}).text
             if extracted_version == version:
                 download_url = version_item["data-url"]
-                print(f"data-url for version {version}: {download_url}")
                 break
         if download_url is None:
             raise AppNotFound(f"Unable to get download url for {app}")

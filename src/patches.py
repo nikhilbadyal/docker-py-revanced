@@ -60,17 +60,14 @@ class Patches(object):
     def check_java() -> None:
         """Check if Java17 is installed."""
         try:
-            logger.debug("Checking if java is available")
             jd = subprocess.check_output(
                 ["java", "-version"], stderr=subprocess.STDOUT
             ).decode("utf-8")
             jd = jd[1:-1]
             if "Runtime Environment" not in jd:
-                logger.debug("Java Must be installed")
-                exit(-1)
+                raise subprocess.CalledProcessError(-1, "java -version")
             if "17" not in jd:
-                logger.debug("Java 17 Must be installed")
-                exit(-1)
+                raise subprocess.CalledProcessError(-1, "java -version")
             logger.debug("Cool!! Java is available")
         except subprocess.CalledProcessError:
             logger.debug("Java 17 Must be installed")
@@ -85,10 +82,9 @@ class Patches(object):
             with open("patches.json") as f:
                 patches = json.load(f)
         else:
-            logger.debug("fetching all patches")
-            response = session.get(
-                "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
-            )
+            url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
+            logger.debug(f"fetching all patches from {url}")
+            response = session.get(url)
             handle_response(response)
             patches = response.json()
 
@@ -176,7 +172,6 @@ class Patches(object):
         :param parser: Parser Obj
         :param patches: All the patches of a given app
         """
-        logger.debug(f"Excluding patches for app {app}")
         if self.config.build_extended and app in self.config.extended_apps:
             excluded_patches = self.config.env.list(
                 f"EXCLUDE_PATCH_{app}_EXTENDED".upper(), []

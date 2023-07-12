@@ -109,6 +109,11 @@ class Downloader(object):
         :param file_name: name of the file after downloading
         """
         logger.debug(f"Trying to download {name} from github")
+        if self.config.dry_run:
+            logger.debug(
+                f"Skipping download of {file_name}. File already exists or dry running."
+            )
+            return
         repo_url = f"https://api.github.com/repos/{owner}/{name}/releases/latest"
         headers = {
             "Content-Type": "application/vnd.github.v3+json",
@@ -129,7 +134,7 @@ class Downloader(object):
 
     def download_revanced(self) -> None:
         """Download Revanced and Extended Patches, Integration and CLI."""
-        if os.path.exists("changelog.md"):
+        if os.path.exists("changelog.md") and not self.config.dry_run:
             logger.debug("Deleting old changelog.md")
             os.remove("changelog.md")
         assets = [

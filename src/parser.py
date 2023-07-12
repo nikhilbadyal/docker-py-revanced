@@ -81,7 +81,6 @@ class Parser(object):
         :param is_experimental: Whether to enable experimental support
         :param output_prefix: Prefix to add to the output apks file name
         """
-        logger.debug(f"Sending request to revanced cli for building {app} revanced")
         cli = self.config.normal_cli_jar
         patches = self.config.normal_patches_jar
         integrations = self.config.normal_integrations_apk
@@ -122,6 +121,9 @@ class Parser(object):
                 args.append(arch)
 
         start = perf_counter()
+        logger.debug(
+            f"Sending request to revanced cli for building {app} revanced with args java {args}"
+        )
         process = Popen(["java", *args], stdout=PIPE)
         output = process.stdout
         if not output:
