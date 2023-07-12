@@ -49,6 +49,7 @@ class Parser(object):
         """Getter to get all excluded patches :return: List of excluded
         patches."""
         try:
+            name = name.lower().replace(" ", "-")
             patch_index = self._PATCHES.index(name)
             indices = [i for i in range(len(self._PATCHES)) if self._PATCHES[i] == name]
             for patch_index in indices:

@@ -179,9 +179,12 @@ class Patches(object):
         else:
             excluded_patches = self.config.env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
         for patch in patches:
-            parser.include(patch["name"]) if patch[
-                "name"
-            ] not in excluded_patches else parser.exclude(patch["name"])
+            normalized_patch = patch["name"].lower().replace(" ", "-")
+            parser.include(
+                normalized_patch
+            ) if normalized_patch not in excluded_patches else parser.exclude(
+                normalized_patch
+            )
         excluded = parser.get_excluded_patches()
         if excluded:
             logger.debug(f"Excluded patches {excluded} for {app}")
