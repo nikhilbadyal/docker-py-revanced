@@ -32,6 +32,9 @@ Let the 'forkception' begin!
 * ReVanced Extended **YouTube** (latest supported) in...
 
 ...all available architectures.
+* ReVanced Extended **Reddit** (latest supported) in...
+
+...all available architectures.
 * ReVanced Extended **YouTube Music** (latest) in the...
 
 ...**arm64-v8a** architecture.
