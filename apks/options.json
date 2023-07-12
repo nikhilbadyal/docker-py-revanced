@@ -47,3 +47,67 @@
     "value" : "@android:color/black"
   } ]
 } ]
+
+[
+  {
+    "patchName": "Change OAuth client id",
+    "options": [
+      {
+        "key": "client-id",
+        "value": "Ern7l2Z_AIJktWXF3LGoWg"
+      }
+    ]
+  },
+  {
+    "patchName": "Change package name",
+    "options": [
+      {
+        "key": "packageName",
+        "value": null
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding",
+    "options": [
+      {
+        "key": "appName",
+        "value": "YouTube ReVanced"
+      },
+      {
+        "key": "iconPath",
+        "value": null
+      }
+    ]
+  },
+  {
+    "patchName": "Spotify theme",
+    "options": [
+      {
+        "key": "backgroundColor",
+        "value": "@android:color/black"
+      },
+      {
+        "key": "accentColor",
+        "value": "#ff1ed760"
+      },
+      {
+        "key": "accentPressedColor",
+        "value": "#ff169c46"
+      }
+    ]
+  },
+  {
+    "patchName": "Theme",
+    "options": [
+      {
+        "key": "darkThemeBackgroundColor",
+        "value": "@android:color/black"
+      },
+      {
+        "key": "lightThemeBackgroundColor",
+        "value": "@android:color/white"
+      }
+    ]
+  }
+]
