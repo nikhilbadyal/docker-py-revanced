@@ -1,6 +1,5 @@
 ###### 17/JULY/2023:
 ### Merged upstream changes...
-### Merged pull requests to add support for RVX Reddit.
 
 ###### 23/MAR/2023:
 ### Builds are now automated!
