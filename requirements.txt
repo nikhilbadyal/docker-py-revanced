@@ -1,3 +1,4 @@
+beautifulsoup4==4.12.2
 environs==9.5.0
 loguru==0.7.0
 pre-commit==3.3.3

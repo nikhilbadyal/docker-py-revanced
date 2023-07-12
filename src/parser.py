@@ -50,10 +50,12 @@ class Parser(object):
         patches."""
         try:
             patch_index = self._PATCHES.index(name)
-            if self._PATCHES[patch_index - 1] == "-e":
-                self._PATCHES[patch_index - 1] = "-i"
-            else:
-                self._PATCHES[patch_index - 1] = "-e"
+            indices = [i for i in range(len(self._PATCHES)) if self._PATCHES[i] == name]
+            for patch_index in indices:
+                if self._PATCHES[patch_index - 1] == "-e":
+                    self._PATCHES[patch_index - 1] = "-i"
+                else:
+                    self._PATCHES[patch_index - 1] = "-e"
             return True
         except ValueError:
             return False

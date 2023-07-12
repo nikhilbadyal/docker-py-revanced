@@ -1,4 +1,5 @@
 """Revanced Patches."""
+import json
 import subprocess
 from typing import Any, Dict, List, Tuple
 
@@ -12,28 +13,47 @@ from src.utils import AppNotFound, handle_response
 class Patches(object):
     """Revanced Patches."""
 
+    _revanced_app_ids = {
+        "com.reddit.frontpage": "reddit",
+        "com.ss.android.ugc.trill": "tiktok",
+        "com.twitter.android": "twitter",
+        "de.dwd.warnapp": "warnwetter",
+        "com.spotify.music": "spotify",
+        "com.awedea.nyx": "nyx-music-player",
+        "ginlemon.iconpackstudio": "icon_pack_studio",
+        "com.ticktick.task": "ticktick",
+        "tv.twitch.android.app": "twitch",
+        "com.myprog.hexedit": "hex-editor",
+        "co.windyapp.android": "windy",
+        "org.totschnig.myexpenses": "my-expenses",
+        "com.backdrops.wallpapers": "backdrops",
+        "com.ithebk.expensemanager": "expensemanager",
+        "net.dinglisch.android.taskerm": "tasker",
+        "net.binarymode.android.irplus": "irplus",
+        "com.vsco.cam": "vsco",
+        "com.zombodroid.MemeGenerator": "meme-generator-free",
+        "com.teslacoilsw.launcher": "nova_launcher",
+        "eu.faircode.netguard": "netguard",
+        "com.instagram.android": "instagram",
+        "com.nis.app": "inshorts",
+        "com.facebook.orca": "facebook",
+        "com.google.android.apps.recorder": "grecorder",
+        "tv.trakt.trakt": "trakt",
+        "com.candylink.openvpn": "candyvpn",
+        "com.sony.songpal.mdr": "sonyheadphone",
+        "com.dci.dev.androidtwelvewidgets": "androidtwelvewidgets",
+        "io.yuka.android": "yuka",
+    }
     revanced_app_ids = {
-        "com.reddit.frontpage": ("reddit", "_reddit"),
-        "com.ss.android.ugc.trill": ("tiktok", "_tiktok"),
-        "com.twitter.android": ("twitter", "_twitter"),
-        "de.dwd.warnapp": ("warnwetter", "_warnwetter"),
-        "com.spotify.music": ("spotify", "_spotify"),
-        "com.awedea.nyx": ("nyx-music-player", "_nyx"),
-        "ginlemon.iconpackstudio": ("icon_pack_studio", "_iconpackstudio"),
-        "com.ticktick.task": ("ticktick", "_ticktick"),
-        "tv.twitch.android.app": ("twitch", "_twitch"),
-        "com.myprog.hexedit": ("hex-editor", "_hexeditor"),
-        "org.citra.citra_emu": ("citra", "_citra"),
-        "co.windyapp.android": ("windy", "_windy"),
-        "org.totschnig.myexpenses": ("my-expenses", "_expenses"),
-        "com.backdrops.wallpapers": ("backdrops", "_backdrops"),
-        "com.ithebk.expensemanager": ("expensemanager", "_expensemanager"),
-        "net.dinglisch.android.taskerm": ("tasker", "_tasker"),
-        "net.binarymode.android.irplus": ("irplus", "_irplus"),
+        key: (value, "_" + value) for key, value in _revanced_app_ids.items()
+    }
+    _revanced_extended_app_ids = {
+        "com.google.android.youtube": ("youtube", "_yt"),
+        "com.google.android.apps.youtube.music": ("youtube_music", "_ytm"),
     }
     revanced_extended_app_ids = {
-        "com.google.android.youtube": ("youtube", "_yt"),
-        "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
+        key: (value[0], "_" + value[0])
+        for key, value in _revanced_extended_app_ids.items()
     }
 
     @staticmethod
@@ -60,13 +80,17 @@ class Patches(object):
     def fetch_patches(self) -> None:
         """Function to fetch all patches."""
         session = Session()
-
-        logger.debug("fetching all patches")
-        response = session.get(
-            "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
-        )
-        handle_response(response)
-        patches = response.json()
+        if self.config.dry_run:
+            logger.debug("fetching all patches from local file")
+            with open("patches.json") as f:
+                patches = json.load(f)
+        else:
+            logger.debug("fetching all patches")
+            response = session.get(
+                "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
+            )
+            handle_response(response)
+            patches = response.json()
 
         for app_name in (self.revanced_app_ids[x][1] for x in self.revanced_app_ids):
             setattr(self, app_name, [])
@@ -81,14 +105,16 @@ class Patches(object):
                     p["app"] = compatible_package
                     p["version"] = version[-1] if version else "all"
                     getattr(self, app_name).append(p)
-        if self.config.build_extended:
-            url = "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
+        if self.config.dry_run:
+            extended_patches = patches
         else:
-            url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
-
-        response = session.get(url)
-        handle_response(response)
-        extended_patches = response.json()
+            if self.config.build_extended:
+                url = "https://raw.githubusercontent.com/inotia00/revanced-patches/revanced-extended/patches.json"
+            else:
+                url = "https://raw.githubusercontent.com/revanced/revanced-patches/main/patches.json"
+            response = session.get(url)
+            handle_response(response)
+            extended_patches = response.json()
         for app_name in (
             self.revanced_extended_app_ids[x][1] for x in self.revanced_extended_app_ids
         ):
@@ -124,38 +150,19 @@ class Patches(object):
         :return: Patches
         """
         logger.debug("Getting patches for %s" % app)
-        app_names = {
-            "reddit": "_reddit",
-            "tiktok": "_tiktok",
-            "twitter": "_twitter",
-            "warnwetter": "_warnwetter",
-            "youtube": "_yt",
-            "youtube_music": "_ytm",
-            "spotify": "_spotify",
-            "nyx-music-player": "_nyx",
-            "icon_pack_studio": "_iconpackstudio",
-            "ticktick": "_ticktick",
-            "twitch": "_twitch",
-            "hex-editor": "_hexeditor",
-            "citra": "_citra",
-            "windy": "_windy",
-            "my-expenses": "_expenses",
-            "backdrops": "_backdrops",
-            "expensemanager": "_expensemanager",
-            "tasker": "_tasker",
-            "irplus": "_irplus",
-        }
+        app_names = {value[0]: value[1] for value in self.revanced_app_ids.values()}
+        app_names.update(
+            {value[0]: value[1] for value in self.revanced_extended_app_ids.values()}
+        )
+
         if not (app_name := app_names.get(app)):
             raise AppNotFound(app)
         patches = getattr(self, app_name)
-        version = ""
+        version = "latest"
         try:
-            if app in ("youtube", "youtube_music"):
-                version = next(i["version"] for i in patches if i["version"] != "all")
-                logger.debug(f"Recommended Version for patching {app} is {version}")
-            else:
-                logger.debug("No recommended version.")
-        except StopIteration:  # No recommended version available
+            version = next(i["version"] for i in patches if i["version"] != "all")
+            logger.debug(f"Recommended Version for patching {app} is {version}")
+        except StopIteration:
             pass
         return patches, version
 
