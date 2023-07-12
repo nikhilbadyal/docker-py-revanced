@@ -26,9 +26,12 @@ class RevancedConfig(object):
             "backdrops",
             "twitch",
             "irplus",
+            "meme-generator-free",
+            "yuka",
+            "facebook",
         ]
-        self.apk_pure = ["hex-editor"]
-        self.apk_sos = ["expensemanager"]
+        self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
+        self.apk_sos = ["expensemanager", "candyvpn"]
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
         self.ci_test = env.bool("CI_TEST", False)
         self.apps = env.list("PATCH_APPS", default_build)
@@ -60,25 +63,24 @@ class RevancedConfig(object):
             "youtube": f"{self.apk_mirror}/apk/google-inc/youtube/",
             "youtube_music": f"{self.apk_mirror}/apk/google-inc/youtube-music/",
             "ticktick": f"{self.apk_mirror}/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/",
-            "citra": f"{self.apk_mirror}/apk/citra-emulator/citra-emulator/",
             "icon_pack_studio": f"{self.apk_mirror}/apk/smart-launcher-team/icon-pack-studio/",
             "twitch": f"{self.apk_mirror}/apk/twitch-interactive-inc/twitch/",
             "windy": f"{self.apk_mirror}/apk/windy-weather-world-inc/windy-wind-weather-forecast/",
             "tasker": f"{self.apk_mirror}/apk/joaomgcd/tasker-crafty-apps-eu/",
+            "vsco": f"{self.apk_mirror}/apk/vsco/vsco-cam/",
+            "nova_launcher": f"{self.apk_mirror}/apk/teslacoil-software/nova-launcher/",
+            "netguard": f"{self.apk_mirror}/apk/marcel-bokhorst/netguard-no-root-firewall/",
+            "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
+            "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
+            "facebook": f"{self.apk_mirror}/apk/facebook-2/facebook/",
+            "grecorder": f"{self.apk_mirror}/apk/google-inc/google-recorder/",
+            "trakt": f"{self.apk_mirror}/apk/trakt/trakt/",
+            "candyvpn": f"{self.apk_mirror}/apk/liondev-io/candylink-vpn/",
+            "sonyheadphone": f"{self.apk_mirror}/apk/sony-corporation/sony-headphones-connect/",
         }
         self.apk_mirror_version_urls = {
-            "reddit": f"{self.apk_mirror_urls.get('reddit')}reddit",
-            "twitter": f"{self.apk_mirror_urls.get('twitter')}twitter",
-            "tiktok": f"{self.apk_mirror_urls.get('tiktok')}tik-tok-including-musical-ly",
-            "warnwetter": f"{self.apk_mirror_urls.get('warnwetter')}warnwetter",
-            "youtube": f"{self.apk_mirror_urls.get('youtube')}youtube",
-            "youtube_music": f"{self.apk_mirror_urls.get('youtube_music')}youtube-music",
-            "ticktick": f"{self.apk_mirror_urls.get('ticktick')}ticktick-to-do-list-with-reminder-day-planner",
-            "citra": f"{self.apk_mirror_urls.get('citra')}citra-emulator",
-            "icon_pack_studio": f"{self.apk_mirror_urls.get('icon_pack_studio')}icon-pack-studio",
-            "twitch": f"{self.apk_mirror_urls.get('twitch')}twitch",
-            "windy": f"{self.apk_mirror_urls.get('windy')}windy-wind-weather-forecast",
-            "tasker": f"{self.apk_mirror_urls.get('tasker')}tasker-crafty-apps-eu/",
+            key: value + value.split("/")[-2]
+            for key, value in self.apk_mirror_urls.items()
         }
         self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
@@ -87,3 +89,4 @@ class RevancedConfig(object):
         )
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
+        self.dry_run = env.bool("DRY_RUN", False)
