@@ -1,5 +1,6 @@
 ###### 17/JULY/2023:
-### Merged upstream changes... EXCLUDE_PATCH list in .env isn't being applied.
+### Merged upstream changes.
+### Added support for RVX Reddit.
 
 ###### 23/MAR/2023:
 ### Builds are now automated!
