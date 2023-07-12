@@ -5,7 +5,7 @@
     "value" : "MicroG"
   } ]
 }, {
-  "patchName" : "change-oauth-client-id",
+  "patchName" : "Change OAuth client id",
   "options" : [ {
     "key" : "client-id",
     "value" : "Ern7l2Z_AIJktWXF3LGoWg"
