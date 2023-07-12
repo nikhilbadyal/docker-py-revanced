@@ -5,6 +5,12 @@
     "value" : "MicroG"
   } ]
 }, {
+  "patchName" : "change-oauth-client-id",
+  "options" : [ {
+    "key" : "client-id",
+    "value" : "Ern7l2Z_AIJktWXF3LGoWg"
+  } ]
+}, {
   "patchName" : "Custom branding Music name",
   "options" : [ {
     "key" : "MusicLongName",
@@ -39,12 +45,6 @@
   "options" : [ {
     "key" : "RedditSettings",
     "value" : true
-  } ]
-}, {
-  "patchName" : "change-oauth-client-id",
-  "options" : [ {
-    "key" : "client-id",
-    "value" : "Ern7l2Z_AIJktWXF3LGoWg"
   } ]
 }, {
   "patchName" : "Theme",
