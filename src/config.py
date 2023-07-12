@@ -35,7 +35,7 @@ class RevancedConfig(object):
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
         self.ci_test = env.bool("CI_TEST", False)
         self.apps = env.list("PATCH_APPS", default_build)
-        self.extended_apps: List[str] = ["youtube", "youtube_music"]
+        self.extended_apps: List[str] = ["youtube", "youtube_music", "reddit"]
         self.rip_libs_apps: List[str] = ["youtube"]
         self.normal_cli_jar = "revanced-cli.jar"
         self.normal_patches_jar = "revanced-patches.jar"
