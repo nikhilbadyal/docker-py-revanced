@@ -49,7 +49,7 @@ jobs:
       - name: Build Revanced APKs
         run: |
           docker-compose up --build
-          
+
       - name: Handle Invalid Characters in file names
         run: |
           sudo apt install rename
