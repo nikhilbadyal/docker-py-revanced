@@ -52,8 +52,9 @@ class Patches(object):
         "com.google.android.apps.youtube.music": ("youtube_music", "_ytm"),
     }
     revanced_extended_app_ids = {
-        key: (value[0], "_" + value[0])
-        for key, value in _revanced_extended_app_ids.items()
+        "com.google.android.youtube": ("youtube", "_yt"),
+        "com.google.android.apps.youtube.music": ("youtube-music", "_ytm"),
+        "com.reddit.frontpage": ("reddit", "_reddit"),
     }
 
     @staticmethod
