@@ -80,6 +80,7 @@ class RevancedConfig(object):
             "sonyheadphone": f"{self.apk_mirror}/apk/sony-corporation/sony-headphones-connect/",
             "relay": f"{self.apk_mirror}/apk/dbrady/relay-for-reddit-2/",
             "boost": f"{self.apk_mirror}/apk/ruben-mayayo/boost-for-reddit/",
+            "rif ": f"{self.apk_mirror}/apk/talklittle/reddit-is-fun/",
         }
         self.apk_mirror_version_urls = {
             key: value + value.split("/")[-2]

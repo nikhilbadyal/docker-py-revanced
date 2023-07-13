@@ -45,6 +45,7 @@ class Patches(object):
         "io.yuka.android": "yuka",
         "free.reddit.news": "relay",
         "com.rubenmayayo.reddit": "boost",
+        "com.andrewshu.android.reddit": "rif",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()
