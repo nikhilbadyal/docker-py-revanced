@@ -1,5 +1,6 @@
 """Downloader Class."""
 import re
+from typing import Any
 
 from loguru import logger
 from selectolax.lexbor import LexborHTMLParser
@@ -76,7 +77,7 @@ class ApkMirror(Downloader):
         self.extract_download_link(download_page, app)
         logger.debug(f"Downloaded {app} apk from apkmirror_specific_version")
 
-    def latest_version(self, app: str) -> None:
+    def latest_version(self, app: str, **kwargs: Any) -> None:
         """Function to download whatever the latest version of app from
         apkmirror.
 

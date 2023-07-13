@@ -1,5 +1,5 @@
 """APK Pure Downloader Class."""
-
+from typing import Any
 
 from loguru import logger
 
@@ -10,7 +10,7 @@ from src.utils import AppNotFound
 class ApkPure(Downloader):
     """Files downloader."""
 
-    def latest_version(self, app: str) -> None:
+    def latest_version(self, app: str, **kwargs: Any) -> None:
         """Function to download whatever the latest version of app from
         apkmirror.
 
