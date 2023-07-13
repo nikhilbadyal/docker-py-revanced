@@ -43,6 +43,7 @@ class Patches(object):
         "com.sony.songpal.mdr": "sonyheadphone",
         "com.dci.dev.androidtwelvewidgets": "androidtwelvewidgets",
         "io.yuka.android": "yuka",
+        "free.reddit.news": "relay",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()
