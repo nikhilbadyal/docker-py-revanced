@@ -156,6 +156,13 @@ By default, script build the version as recommended by Revanced team.
     29. [sonyheadphone](https://www.apkmirror.com/apk/sony-corporation/sony-headphones-connect/)
     30. [androidtwelvewidgets](https://m.apkpure.com/android-12-widgets-twelve/com.dci.dev.androidtwelvewidgets)
     31. [yuka](https://yuka.en.uptodown.com/android)
+    32. [relay](https://www.apkmirror.com/apk/dbrady/relay-for-reddit-2/)
+    33. [boost](https://www.apkmirror.com/apk/ruben-mayayo/boost-for-reddit/)
+    34. [rif](https://www.apkmirror.com/apk/talklittle/reddit-is-fun/)
+    35. [sync](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
+    36. [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
+    37. [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
+    38. [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
@@ -286,5 +293,7 @@ By default, script build the version as recommended by Revanced team.
 16. Make your Action has write access. If not click [here](https://github.
     com/nikhilbadyal/docker-py-revanced/settings/actions). In the bottom give read and write access to Actions.
     <img src="https://i.imgur.com/STSv2D3.png" width="400">
+17. If you want to patch reddit apps using your own Client ID. You can provide your Client ID
+    as secret `REDDIT_CLIENT_ID` in `GitHub secrets`.
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
