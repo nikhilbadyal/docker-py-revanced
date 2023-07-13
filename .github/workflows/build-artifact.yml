@@ -84,6 +84,11 @@ jobs:
         run: |
           docker-compose up --build
 
+      - name: Handle Invalid Characters in file names
+        run: |
+          sudo apt install rename
+          rename 's/[":<>|*?\r\n]/-/g' apks/*-output.apk
+
       - name: Upload Build APKS
         uses: actions/upload-artifact@v3.1.2
         with:
