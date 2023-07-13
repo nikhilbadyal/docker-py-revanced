@@ -162,6 +162,7 @@ By default, script build the version as recommended by Revanced team.
     35. [sync](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
     36. [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
     37. [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
+    38. [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
