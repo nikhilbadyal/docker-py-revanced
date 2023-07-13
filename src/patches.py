@@ -49,6 +49,7 @@ class Patches(object):
         "com.laurencedawson.reddit_sync": "sync",
         "ml.docilealligator.infinityforreddit": "infinity",
         "me.ccrama.redditslide": "slide",
+        "com.onelouder.baconreader": "bacon",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()
