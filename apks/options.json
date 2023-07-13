@@ -1,0 +1,134 @@
+[
+  {
+    "patchName": "Change OAuth client id",
+    "options": [
+      {
+        "key": "client-id",
+        "value": null
+      }
+    ]
+  },
+  {
+    "patchName": "Change package name",
+    "options": [
+      {
+        "key": "packageName",
+        "value": null
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding",
+    "options": [
+      {
+        "key": "appName",
+        "value": "YouTube ReVanced"
+      },
+      {
+        "key": "iconPath",
+        "value": null
+      }
+    ]
+  },
+  {
+    "patchName": "Spotify theme",
+    "options": [
+      {
+        "key": "backgroundColor",
+        "value": "@android:color/black"
+      },
+      {
+        "key": "accentColor",
+        "value": "#ff1ed760"
+      },
+      {
+        "key": "accentPressedColor",
+        "value": "#ff169c46"
+      }
+    ]
+  },
+  {
+    "patchName": "Theme",
+    "options": [
+      {
+        "key": "darkThemeBackgroundColor",
+        "value": "@android:color/black"
+      },
+      {
+        "key": "lightThemeBackgroundColor",
+        "value": "@android:color/white"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding Microg name",
+    "options": [
+      {
+        "key": "MicroGAppName",
+        "value": "MicroG"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding Music name",
+    "options": [
+      {
+        "key": "MusicLongName",
+        "value": "ReVanced Music Extended"
+      },
+      {
+        "key": "MusicShortName",
+        "value": "YTM Extended"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding YouTube name",
+    "options": [
+      {
+        "key": "YouTubeAppName",
+        "value": "ReVanced Extended"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom double tap length",
+    "options": [
+      {
+        "key": "DoubleTapLengthArrays",
+        "value": "3, 5, 10, 15, 20, 30, 60, 120, 180"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom package name",
+    "options": [
+      {
+        "key": "YouTubePackageName",
+        "value": "app.rvx.android.youtube"
+      },
+      {
+        "key": "MusicPackageName",
+        "value": "app.rvx.android.apps.youtube.music"
+      }
+    ]
+  },
+  {
+    "patchName": "Reddit settings",
+    "options": [
+      {
+        "key": "RedditSettings",
+        "value": true
+      }
+    ]
+  },
+  {
+    "patchName": "Custom Video Speed",
+    "options": [
+      {
+        "key": "CustomSpeedArrays",
+        "value": "0.25, 0.5, 0.75, 0.9, 1.0, 1.12, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0"
+      }
+    ]
+  }
+]

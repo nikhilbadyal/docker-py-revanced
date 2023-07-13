@@ -40,6 +40,7 @@ class RevancedConfig(object):
         self.normal_cli_jar = "revanced-cli.jar"
         self.normal_patches_jar = "revanced-patches.jar"
         self.normal_integrations_apk = "revanced-integrations.apk"
+        self.normal_options_json = "options.json"
         self.cli_jar = (
             f"inotia00-{self.normal_cli_jar}"
             if self.build_extended
