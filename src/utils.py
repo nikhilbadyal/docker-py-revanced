@@ -43,6 +43,12 @@ class AppNotFound(ValueError):
     pass
 
 
+class PatcherDownloadFailed(Exception):
+    """Not a valid Revanced App."""
+
+    pass
+
+
 def handle_response(response: Response) -> None:
     """Handle Get Request Response."""
     response_code = response.status_code
