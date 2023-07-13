@@ -53,6 +53,7 @@ jobs:
       DEBUG_ENABLED: ${{ inputs.DEBUG_ENABLED }}
     secrets:
       ENVS: ${{ secrets.ENVS }}
+      REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
 
   upload-to-github:
     name: GitHub Upload

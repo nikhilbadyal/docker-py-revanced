@@ -1,4 +1,5 @@
 """APK SOS Downloader Class."""
+from typing import Any
 
 from loguru import logger
 from selectolax.lexbor import LexborHTMLParser
@@ -24,7 +25,7 @@ class ApkSos(Downloader):
         self._download(download_url, f"{app}.apk")
         logger.debug(f"Downloaded {app} apk from apk_combo_downloader in rt")
 
-    def latest_version(self, app: str) -> None:
+    def latest_version(self, app: str, **kwargs: Any) -> None:
         """Function to download whatever the latest version of app from
         apkmirror.
 
