@@ -158,6 +158,7 @@ By default, script build the version as recommended by Revanced team.
     31. [yuka](https://yuka.en.uptodown.com/android)
     32. [relay](https://www.apkmirror.com/apk/dbrady/relay-for-reddit-2/)
     33. [boost](https://www.apkmirror.com/apk/ruben-mayayo/boost-for-reddit/)
+    34. [rif](https://www.apkmirror.com/apk/talklittle/reddit-is-fun/)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
