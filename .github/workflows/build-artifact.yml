@@ -13,6 +13,8 @@ on:
     secrets:
       ENVS:
         required: false
+      REDDIT_CLIENT_ID:
+        required: false
     inputs:
       FILES_TO_EXPECT:
         type: string
@@ -41,6 +43,38 @@ jobs:
       - name: Update Env for custom build
         run: |
           echo "${{ secrets.ENVS }}" >> .env
+
+
+      - name: Inject Reddit Client ID
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+        if: env.REDDIT_CLIENT_ID != null
+        run: |
+          client_id="${REDDIT_CLIENT_ID}"
+          path="apks/options.json"
+          json_data=$(cat "${path}")
+
+          new_object='{
+          "patchName": "Change OAuth client id",
+          "options": [
+            {
+              "key": "client-id",
+              "value": "'${client_id}'"
+            }
+          ]
+          }'
+          # Check if an object with the patchName "Change OAuth client id" already exists
+          existing_object_index=$(echo "${json_data}" | jq 'map(.patchName) | index("Change OAuth client id")')
+          echo "${existing_object_index}"
+          if [[ ${existing_object_index} != "null" ]]; then
+            echo "Patch entry already exists. Overriding client ID in it."
+            updated_json=$(echo "${json_data}" | jq ".[${existing_object_index}].options[0].value = \"${client_id}\"")
+          else
+            echo "Patch entry doesn't exists. Adding new entry."
+            updated_json=$(echo "${json_data}" | jq ". += [${new_object}]")
+          fi
+          echo "${updated_json}" > "${path}"
+
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3

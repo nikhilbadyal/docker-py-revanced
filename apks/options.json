@@ -1,0 +1,38 @@
+[
+  {
+    "patchName": "Change OAuth client id",
+    "options": [
+      {
+        "key": "client-id",
+        "value": null
+      }
+    ]
+  },
+  {
+    "patchName": "Custom double tap length",
+    "options": [
+      {
+        "key": "DoubleTapLengthArrays",
+        "value": "3, 5, 10, 15, 20, 30, 60, 120, 180"
+      }
+    ]
+  },
+  {
+    "patchName": "Reddit settings",
+    "options": [
+      {
+        "key": "RedditSettings",
+        "value": true
+      }
+    ]
+  },
+  {
+    "patchName": "Custom Video Speed",
+    "options": [
+      {
+        "key": "CustomSpeedArrays",
+        "value": "0.25, 0.5, 0.75, 0.9, 1.0, 1.12, 1.25, 1.5, 1.75, 2.0, 2.5, 3.0, 4.0, 5.0"
+      }
+    ]
+  }
+]
