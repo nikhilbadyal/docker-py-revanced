@@ -48,6 +48,7 @@ class Patches(object):
         "com.andrewshu.android.reddit": "rif",
         "com.laurencedawson.reddit_sync": "sync",
         "ml.docilealligator.infinityforreddit": "infinity",
+        "me.ccrama.redditslide": "slide",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()

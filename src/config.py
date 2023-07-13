@@ -83,6 +83,7 @@ class RevancedConfig(object):
             "rif ": f"{self.apk_mirror}/apk/talklittle/reddit-is-fun/",
             "sync ": f"{self.apk_mirror}/apk/red-apps-ltd/sync-for-reddit/",
             "infinity ": f"{self.apk_mirror}/apk/docile-alligator/infinity-for-reddit/",
+            "slide ": f"{self.apk_mirror}/apk/haptic-apps/slide-for-reddit/",
         }
         self.apk_mirror_version_urls = {
             key: value + value.split("/")[-2]
