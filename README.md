@@ -286,5 +286,7 @@ By default, script build the version as recommended by Revanced team.
 16. Make your Action has write access. If not click [here](https://github.
     com/nikhilbadyal/docker-py-revanced/settings/actions). In the bottom give read and write access to Actions.
     <img src="https://i.imgur.com/STSv2D3.png" width="400">
+17. If you want to patch reddit apps using your own Client ID. You can provide your Client ID
+    as secret `REDDIT_CLIENT_ID` in `GitHub secrets`.
 
 Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
