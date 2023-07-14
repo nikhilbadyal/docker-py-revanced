@@ -8,7 +8,7 @@ from loguru import logger
 
 from src.config import RevancedConfig
 from src.patches import Patches
-from src.utils import possible_archs
+from src.utils import possible_archs, slugify
 
 
 class Parser(object):
@@ -100,7 +100,7 @@ class Parser(object):
             "-m",
             integrations,
             "-o",
-            f"Re-{app}-{version}{output_prefix}output.apk",
+            f"Re-{app}-{slugify(version)}{output_prefix}output.apk",
             "--keystore",
             self.config.keystore_name,
             "--options",
