@@ -4,7 +4,7 @@ A little python script that will help you in building Revanced and Revanced-Exte
 
 **`Note`** - If you are a root user and want magisk module (Extended). Get them [here](https://github.com/nikhilbadyal/revanced-magisk-module)
 
-This is just a builder for revanced and not a revanced support. Please be understanding and refraining from asking
+This is just a builder for revanced and not a revanced support. Please be understanding and refrain from asking
 about revanced features/bugs. Discuss those on proper relevant forums(on Revanced GitHub , Discord)
 
 **`Note`** - I prefer [Revanced Extended](https://github.com/inotia00/revanced-patches/tree/revanced-extended) more
@@ -21,7 +21,7 @@ You can use any of the following methods to build.
 
 - 🚀In GitHub (**_`Recommended`_**)
 
-     1. Clik Star to support the project.<br>
+     1. Click Star to support the project.<br>
        <img src="https://i.imgur.com/FFyXaWY.png" width="400" style="left"><br>
      2. Fork the project.<br>
      <img src="https://i.imgur.com/R5HdByI.png" width="400" style="left"><br>
@@ -48,7 +48,7 @@ You can use any of the following methods to build.
 
         </details>
 
-     5. If the building process is successful, you’ll get your APKs in the <br>
+     5. If the building process is successful, you’ll get your APKs in the<br>
         <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
 
 - 🐳With Docker Compose
@@ -94,7 +94,7 @@ You can use any of the following methods to build.
        ```shell
        docker run -v "$(pwd)"/apks:/app/apks/  nikhilbadyal/docker-py-revanced
        ```
-       You can pass below envs(See notes) with `-e` flag or use `--env-file`
+       You can pass the below environment variables (See notes) with the `-e` flag or use the `--env-file`
        [flag](https://docs.docker.com/engine/reference/commandline/run/#options).
 
 - 🫠Without Docker
@@ -264,7 +264,7 @@ By default, script build the version as recommended by Revanced team.
     ```
     Possible values for `ARCHS_TO_BUILD` are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
     Make sure you are using `revanced-extended` as `revanced` doesn't support this.
-11. You can scan your build apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
+11. You can scan your built apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
 12. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets`.<br>
@@ -290,8 +290,9 @@ By default, script build the version as recommended by Revanced team.
     ```
 15. Sample Envs<br>
     <img src="https://i.imgur.com/ajSE5nA.png" width="600" style="left">
-16. Make your Action has write access. If not click [here](https://github.
-    com/nikhilbadyal/docker-py-revanced/settings/actions). In the bottom give read and write access to Actions.
+16. Make your Action has write access. If not click
+    [here](https://github.com/nikhilbadyal/docker-py-revanced/settings/actions).
+    In the bottom give read and write access to Actions.
     <img src="https://i.imgur.com/STSv2D3.png" width="400">
 17. If you want to patch reddit apps using your own Client ID. You can provide your Client ID
     as secret `REDDIT_CLIENT_ID` in `GitHub secrets`.
