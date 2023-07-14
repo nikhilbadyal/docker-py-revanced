@@ -98,8 +98,14 @@ class Patches(object):
 
         for app_name in (self.revanced_app_ids[x][1] for x in self.revanced_app_ids):
             setattr(self, app_name, [])
+        setattr(self, "universal_patch", [])
 
         for patch in patches:
+            if not patch["compatiblePackages"]:
+                p = {x: patch[x] for x in ["name", "description"]}
+                p["app"] = "universal"
+                p["version"] = "all"
+                getattr(self, "universal_patch").append(p)
             for compatible_package, version in [
                 (x["name"], x["versions"]) for x in patch["compatiblePackages"]
             ]:
@@ -141,6 +147,8 @@ class Patches(object):
         for app_name, app_id in self.revanced_app_ids.values():
             n_patches = len(getattr(self, app_id))
             logger.debug(f"Total patches in {app_name} are {n_patches}")
+        n_patches = len(getattr(self, "universal_patch"))
+        logger.debug(f"Total universal patches are {n_patches}")
 
     def __init__(self, config: RevancedConfig) -> None:
         self.config = config
@@ -186,8 +194,12 @@ class Patches(object):
             excluded_patches = self.config.env.list(
                 f"EXCLUDE_PATCH_{app}_EXTENDED".upper(), []
             )
+            included_patches = self.config.env.list(
+                f"INCLUDE_PATCH_{app}_EXTENDED".upper(), []
+            )
         else:
             excluded_patches = self.config.env.list(f"EXCLUDE_PATCH_{app}".upper(), [])
+            included_patches = self.config.env.list(f"INCLUDE_PATCH_{app}".upper(), [])
         for patch in patches:
             normalized_patch = patch["name"].lower().replace(" ", "-")
             parser.include(
@@ -195,6 +207,10 @@ class Patches(object):
             ) if normalized_patch not in excluded_patches else parser.exclude(
                 normalized_patch
             )
+        for normalized_patch in included_patches:
+            parser.include(normalized_patch) if normalized_patch not in getattr(
+                self, "universal_patch", []
+            ) else ()
         excluded = parser.get_excluded_patches()
         if excluded:
             logger.debug(f"Excluded patches {excluded} for {app}")
