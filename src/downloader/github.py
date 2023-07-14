@@ -16,14 +16,14 @@ class Github(Downloader):
 
         :param app: App to download
         """
-        owner = str(kwargs["owner"])
-        repo_name = str(kwargs["name"])
         logger.debug(f"Trying to download {app} from github")
-        if self.config.dry_run:
+        if self.config.dry_run or app == "microg":
             logger.debug(
                 f"Skipping download of {app}. File already exists or dry running."
             )
             return
+        owner = str(kwargs["owner"])
+        repo_name = str(kwargs["name"])
         repo_url = f"https://api.github.com/repos/{owner}/{repo_name}/releases/latest"
         headers = {
             "Content-Type": "application/vnd.github.v3+json",
