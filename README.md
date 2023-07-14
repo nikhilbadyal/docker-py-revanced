@@ -42,4 +42,4 @@ Let the 'forkception' begin!
 
 
 ###### Check [.env](https://github.com/Spacellary/docker-py-revanced/blob/main/.env) for a list of excluded patches and [options.json](https://github.com/Spacellary/docker-py-revanced/blob/main/apks/options.json) for patch options.
-###### Complete and original README can be found [here](https://github.com/Spacellary/docker-py-revanced/blob/main/README-ORIGINAL.md).
+###### Complete and original README can be found [here](https://github.com/Spacellary/ReVanced-Extended-Automated-Builds/blob/main/readme-history/README-ORIGINAL.md).
