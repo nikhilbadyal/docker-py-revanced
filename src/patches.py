@@ -144,6 +144,8 @@ class Patches(object):
         self.config = config
         self.check_java()
         self.fetch_patches()
+        if self.config.dry_run:
+            self.config.apps = list(self._revanced_app_ids.values())
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
         """Get all patches for the given app.
