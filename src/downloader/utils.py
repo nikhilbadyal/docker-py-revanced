@@ -29,10 +29,15 @@ def download_revanced(config: RevancedConfig, patcher: Patches) -> None:
             ["inotia00", "revanced-integrations", config.integrations_apk],
             ["inotia00", "revanced-patches", config.patches_jar],
         ]
-    if "youtube" in config.apps or "youtube_music" in config.apps:
-        assets += [
-            ["inotia00", "mMicroG", "mMicroG-output.apk"],
-        ]
+    if "youtube" in config.apps or "youtube_music" in config.apps or "MicroG" in config.apps:
+        if config.build_extended and "MicroG" in config.apps:
+            assets += [
+                ["inotia00", "mMicroG", "MicroG.apk"],
+            ]
+        else:
+            assets += [
+                ["inotia00", "mMicroG", "mMicroG-output.apk"],
+            ]
     downloader = DownloaderFactory.create_downloader(
         app="patches", patcher=patcher, config=config
     )
