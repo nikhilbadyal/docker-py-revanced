@@ -82,7 +82,7 @@ class RevancedConfig(object):
             "boost": f"{self.apk_mirror}/apk/ruben-mayayo/boost-for-reddit/",
             "rif": f"{self.apk_mirror}/apk/talklittle/reddit-is-fun/",
             "sync": f"{self.apk_mirror}/apk/red-apps-ltd/sync-for-reddit/",
-            "infinity ": f"{self.apk_mirror}/apk/docile-alligator/infinity-for-reddit/",
+            "infinity": f"{self.apk_mirror}/apk/docile-alligator/infinity-for-reddit/",
             "slide": f"{self.apk_mirror}/apk/haptic-apps/slide-for-reddit/",
             "bacon": f"{self.apk_mirror}/apk/onelouder-apps/baconreader-for-reddit/",
         }
