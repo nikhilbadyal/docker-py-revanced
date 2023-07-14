@@ -24,7 +24,7 @@ class DownloaderFactory(object):
         patcher : Patcher
         config : Config
         """
-        if app == "patches":
+        if app == "patches" or app == "microg":
             return Github(patcher, config)
         if app in config.apk_pure:
             return ApkPure(patcher, config)
