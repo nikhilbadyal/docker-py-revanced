@@ -29,16 +29,11 @@ Let the 'forkception' begin!
 6. Download your patched applications.
 
 #### Set up to build:
-* ReVanced Extended **YouTube** (latest supported) in...
-
-...all available architectures.
-* ReVanced Extended **Reddit** (latest supported) in...
-
-...all available architectures.
-* ReVanced Extended **YouTube Music** (latest) in the...
-
-...**arm64-v8a** architecture.
-
+* ReVanced Extended **YouTube** (latest supported).
+* ReVanced Extended **YouTube Music** (latest) in the **arm64-v8a** architecture.
+* ReVanced Extended **mMicroG** (latest supported).
+* ReVanced **Sync for Reddit** (version most compatible with patches).
+* ReVanced Extended **Reddit** (latest supported).
 
 
 ###### Check [.env](https://github.com/Spacellary/docker-py-revanced/blob/main/.env) for a list of excluded patches and [options.json](https://github.com/Spacellary/docker-py-revanced/blob/main/apks/options.json) for patch options.
