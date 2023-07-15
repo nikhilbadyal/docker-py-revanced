@@ -11,6 +11,11 @@ on:
         required: false
         type: boolean
         default: true
+      PRE_RELEASE:
+        description: "Release as a pre-release"
+        required: false
+        type: boolean
+        default: false  # Set the default value as false
       TELEGRAM_NO_ROOT_UPLOAD:
         description: "Upload Non Rooted APKs to Telegram"
         required: false
@@ -27,7 +32,7 @@ on:
         type: boolean
         default: false
       CLEANUP:
-        description: "Clear GitHub(Useful if Telegram upload is enabled)"
+        description: "Clear GitHub (Useful if Telegram upload is enabled)"
         required: false
         type: boolean
         default: false
@@ -86,13 +91,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}
           artifactErrorsFailBuild: true
+          prerelease: ${{ inputs.PRE_RELEASE }}  # Add the prerelease option
 
       - name: Sleep for 10 seconds
         run: |
           sleep 10
 
   virustotal-scan:
-    needs: [ upload-to-github ]
+    needs: [upload-to-github]
     uses: nikhilbadyal/ghactions/.github/workflows/virustotal-scan.yml@main
     with:
       FILES: |
@@ -104,7 +110,7 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   upload-to-telegram:
-    needs: [ upload-to-github ]
+    needs: [upload-to-github]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
     if: inputs.TELEGRAM_NO_ROOT_UPLOAD
     secrets:
@@ -118,7 +124,7 @@ jobs:
       SEND_STICKER: ${{ secrets.SEND_STICKER }}
 
   upload-to-telegram-root:
-    needs: [ upload-to-telegram ]
+    needs: [upload-to-telegram]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
     if: inputs.TELEGRAM_ROOT_UPLOAD
     secrets:
@@ -133,11 +139,10 @@ jobs:
       SEND_MESSAGE: ${{ secrets.SEND_MESSAGE }}
       MESSAGE: ${{ secrets.MESSAGE_ROOT }}
 
-
   cleanup:
     name: GitHub Cleanup
     if: inputs.CLEANUP
-    needs: [ upload-to-telegram ]
+    needs: [upload-to-telegram]
     uses: ./.github/workflows/github-cleanup.yml
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
