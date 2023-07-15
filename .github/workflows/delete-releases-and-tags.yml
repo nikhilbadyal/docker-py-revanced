@@ -22,7 +22,7 @@ jobs:
 
       - name: Delete Releases
         run: |
-          gh release list --repo ${{ github.repository }} --json tag_name --jq '.[].tag_name' | while read -r tag_name; do
+          gh release list --repo ${{ github.repository }} --limit 100 --template "{{range .}}{{.TagName}}\n{{end}}" | while read -r tag_name; do
             gh release delete --repo ${{ github.repository }} "$tag_name" --yes
           done
 
