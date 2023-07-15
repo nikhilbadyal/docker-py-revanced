@@ -1,0 +1,32 @@
+name: Delete Previous Releases and Tags
+
+on:
+  workflow_dispatch:
+
+jobs:
+  delete_releases_tags:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Delete Releases
+        run: |
+          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          REPO_OWNER=$(basename $GITHUB_REPOSITORY)
+          REPO_NAME=$(basename $(dirname $GITHUB_REPOSITORY))
+          RELEASES=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases")
+          for RELEASE_ID in $(echo "$RELEASES" | jq -r ".[].id"); do
+            curl -X DELETE -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/$RELEASE_ID"
+          done
+
+      - name: Delete Tags
+        run: |
+          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          REPO_OWNER=$(basename $GITHUB_REPOSITORY)
+          REPO_NAME=$(basename $(dirname $GITHUB_REPOSITORY))
+          TAGS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/tags")
+          for TAG_NAME in $(echo "$TAGS" | jq -r ".[].name"); do
+            git push --delete origin "$TAG_NAME"
+          done
