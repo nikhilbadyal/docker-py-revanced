@@ -2,10 +2,6 @@ name: Delete Releases and Tags
 
 on:
   workflow_dispatch:
-    inputs:
-      branch:
-        description: 'Branch name'
-        required: true
 
 jobs:
   delete-releases-tags:
