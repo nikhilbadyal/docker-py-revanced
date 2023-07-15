@@ -2,13 +2,13 @@ name: Delete Old Workflow Runs
 
 on:
   schedule:
-    - cron: "0 0 */2 * *"
+    - cron: "0 0 */30 * *"
   workflow_dispatch:
     inputs:
       days:
         description: 'Number of days.'
         required: true
-        default: 1
+        default: 30
       minimum_runs:
         description: 'The minimum runs to keep for each workflow.'
         required: true
