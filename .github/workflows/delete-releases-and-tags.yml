@@ -12,13 +12,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Delete releases and tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release list --limit 100 | awk '{print $1}' | xargs -I {} gh release delete {}
-          git tag -l | xargs git tag -d
+          git tag -l | xargs -r git tag -d
 
       - name: Push changes
         run: |
-          git push origin --delete $(git tag -l)
+          git push --delete origin $(git tag -l)
           git push --tags --force
