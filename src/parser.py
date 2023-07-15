@@ -104,7 +104,7 @@ class Parser(object):
             "--keystore",
             self.config.keystore_name,
             "--options",
-            "options.json"
+            "options.json",
         ]
         if is_experimental:
             logger.debug("Using experimental features")
