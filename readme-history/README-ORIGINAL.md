@@ -163,6 +163,7 @@ By default, script build the version as recommended by Revanced team.
     36. [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
     37. [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
     38. [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
+    39. [microg](https://github.com/inotia00/mMicroG/releases)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damaged caused.
     If you know any better/safe source to download clean. Please raise a PR.
@@ -179,8 +180,7 @@ By default, script build the version as recommended by Revanced team.
    PATCH_APPS=youtube,twitter,reddit
    ```
 4. If you want to exclude any patch. Set comma separated patch in `.env` file or in `ENVS` in `GitHub secrets`
-   (Recommended) in
-   the format
+   (Recommended) in the format
    ```ini
    EXCLUDE_PATCH_<REVANCED_APPS_NAME>=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
    ```
@@ -195,6 +195,26 @@ By default, script build the version as recommended by Revanced team.
     EXCLUDE_PATCH_YOUTUBE_EXTENDED=custom-branding-red,custom-branding-blue,materialyou
     EXCLUDE_PATCH_YOUTUBE_MUSIC_EXTENDED=custom-branding-music
    ```
+   **_All the patches for an app are included by default._**.<br><br>If you want to apply a universal patch. You can
+   include it
+   manually. See below for more information.<br>
+   If you want to include any universal patch. Set comma separated patch in `.env` file or in `ENVS` in `GitHub
+   secrets`
+   (Recommended) in the format
+   ```ini
+   INCLUDE_PATCH_<REVANCED_APPS_NAME>=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
+   ```
+   Example:
+   ```dotenv
+    INCLUDE_PATCH_YOUTUBE=remove-screenshot-restriction
+   ```
+   If you are using `Revanced Extended.` Add `_EXTENDED` in exclude options.
+   Example:
+   ```dotenv
+    INCLUDE_PATCH_YOUTUBE_EXTENDED=remove-screenshot-restriction
+   ```
+   **_Remember_** - Revanced patches are provided space separated, make sure you type those **-** separated here. It means a
+   patch named _**Hey There**_ will be entered as **_hey-there_** in the above example.
 5. If you want to build a specific version . Add `version` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended)
    in the format
    ```ini
