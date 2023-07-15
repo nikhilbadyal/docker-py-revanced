@@ -1,6 +1,6 @@
 ###### 15/JULY/2023:
 ### Merged upstream changes.
-### Added support for **RVX Reddit** and **RVX mMicroG**.
+* Added support for **RVX Reddit** and **RVX mMicroG**.
 
 ###### 23/MAR/2023:
 ### Builds are now automated!
