@@ -7,7 +7,7 @@ Also supports the other Reddit clients, such as **RV Sync**.
 
 ###### 23/MAR/2023:
 ### Builds are now automated!
-Added scheduled action that checks for patch updates, and if an update is found, automatically triggers the workflow that builds and releases the updated applications. It's not completaly perfect yet, but it works mostly fine.
+Added simple scheduled action that checks for patch updates, and if an update is found, records the new version of patches for future reference and automatically triggers the workflow to build and release the new applications.
 
 
 <hr>
