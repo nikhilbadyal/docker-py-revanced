@@ -16,8 +16,8 @@ jobs:
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           REPO_OWNER=$(basename $GITHUB_REPOSITORY)
           REPO_NAME=$(basename $(dirname $GITHUB_REPOSITORY))
-          RELEASES=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases")
-          for RELEASE_ID in $(echo "$RELEASES" | jq -r ".[].id"); do
+          RELEASES=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases" | jq -r ".[].id")
+          for RELEASE_ID in $RELEASES; do
             curl -X DELETE -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/$RELEASE_ID"
           done
 
@@ -26,7 +26,7 @@ jobs:
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           REPO_OWNER=$(basename $GITHUB_REPOSITORY)
           REPO_NAME=$(basename $(dirname $GITHUB_REPOSITORY))
-          TAGS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/tags")
-          for TAG_NAME in $(echo "$TAGS" | jq -r ".[].name"); do
+          TAGS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/tags" | jq -r ".[].name")
+          for TAG_NAME in $TAGS; do
             git push --delete origin "$TAG_NAME"
           done
