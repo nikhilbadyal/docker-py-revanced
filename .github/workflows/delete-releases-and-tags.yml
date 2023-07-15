@@ -14,12 +14,11 @@ jobs:
       - name: Delete releases and tags
         run: |
           gh release list --limit 100 | awk '{print $1}' | xargs -I {} gh release delete {}
-          git tag -l | xargs -r git tag -d
+          if [[ -n "$(git tag -l)" ]]; then git tag -d $(git tag -l); fi
 
       - name: Push tag deletion changes
         run: |
-          git fetch --prune --tags
-          git push origin --delete $(git tag -l)
+          if [[ -n "$(git tag -l)" ]]; then git fetch --prune --tags; git push origin --delete $(git tag -l); fi
 
       - name: Push updated tags
         run: |
