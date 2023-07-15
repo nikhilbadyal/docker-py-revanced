@@ -11,22 +11,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Set up GitHub CLI
+        uses: actions/checkout@v2
+        with:
+          repository: cli/cli
+
+      - name: Authenticate with GitHub CLI
+        run: |
+          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+
       - name: Delete Releases
         run: |
-          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          REPO_OWNER=$(basename $GITHUB_REPOSITORY)
-          REPO_NAME=$(basename $(dirname $GITHUB_REPOSITORY))
-          RELEASES=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases" | jq -r ".[].id")
-          for RELEASE_ID in $RELEASES; do
-            curl -X DELETE -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/releases/$RELEASE_ID"
+          gh release list --repo ${{ github.repository }} --json tag_name --jq '.[].tag_name' | while read -r tag_name; do
+            gh release delete --repo ${{ github.repository }} "$tag_name" --yes
           done
 
       - name: Delete Tags
         run: |
-          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          REPO_OWNER=$(basename $GITHUB_REPOSITORY)
-          REPO_NAME=$(basename $(dirname $GITHUB_REPOSITORY))
-          TAGS=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/tags" | jq -r ".[].name")
-          for TAG_NAME in $TAGS; do
-            git push --delete origin "$TAG_NAME"
+          git ls-remote --tags origin | awk '{print $2}' | sed 's#refs/tags/##' | while read -r tag_name; do
+            git push --delete origin "$tag_name"
           done
