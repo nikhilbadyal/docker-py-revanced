@@ -8,11 +8,11 @@ on:
       days:
         description: 'Number of days.'
         required: true
-        default: 30
+        default: 2
       minimum_runs:
         description: 'The minimum runs to keep for each workflow.'
         required: true
-        default: 20
+        default: 10
       delete_workflow_pattern:
         description: 'The name or filename of the workflow. If not set, it will target all workflows.'
         required: false
@@ -42,6 +42,10 @@ on:
       dry_run:
         description: 'Only log actions, do not perform any delete operations.'
         required: false
+      delay_seconds:
+        description: 'Delay duration in seconds before deletion.'
+        required: false
+        default: 0.2
 
 jobs:
   del_runs:
@@ -49,6 +53,11 @@ jobs:
     permissions:
       actions: write
     steps:
+      - name: Delay before deletion
+        run: |
+          echo "Delaying for ${{ github.event.inputs.delay_seconds }} seconds..."
+          sleep ${{ github.event.inputs.delay_seconds }}
+
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
         with:
