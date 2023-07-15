@@ -70,8 +70,8 @@ jobs:
       - name: Get Date
         id: get-date
         run: |
-          echo "date=$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
-          curl https://github.com/nikhilbadyal/docker-py-revanced/blob/changelogs/changelog.md > changelog.md
+          echo "date=$(TZ='America/Fortaleza' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
+          curl https://github.com/Spacellary/ReVanced-Extended-Automated-Builds/blob/changelogs/changelog.md > changelog.md
 
 #      - name: Delete Older Releases
 #        uses: nikhilbadyal/ghaction-rm-releases@v0.0.2
