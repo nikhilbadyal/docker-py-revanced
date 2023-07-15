@@ -57,7 +57,7 @@ jobs:
           if [ "$UPDATED_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Local version updated successfully!"
           else
-            echo "Error updating local version, halting workflow!"
+            echo "Error updating local version control file, halting workflow!"
             exit 1
           fi
       - name: Trigger build workflow
