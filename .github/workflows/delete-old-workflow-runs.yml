@@ -45,7 +45,7 @@ on:
       delay_seconds:
         description: 'Delay duration in seconds before deletion.'
         required: false
-        default: 0.2
+        default: 5
 
 jobs:
   del_runs:
