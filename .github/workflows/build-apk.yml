@@ -15,7 +15,7 @@ on:
         description: "Release as a pre-release"
         required: false
         type: boolean
-        default: false  # Set the default value as false
+        default: false
       TELEGRAM_NO_ROOT_UPLOAD:
         description: "Upload Non Rooted APKs to Telegram"
         required: false
@@ -91,7 +91,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: Build-${{ steps.get-date.outputs.date }}
           artifactErrorsFailBuild: true
-          prerelease: ${{ inputs.PRE_RELEASE }}  # Add the prerelease option
+          prerelease: ${{ inputs.PRE_RELEASE }}
 
       - name: Sleep for 10 seconds
         run: |
