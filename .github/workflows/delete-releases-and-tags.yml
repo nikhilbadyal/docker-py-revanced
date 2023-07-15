@@ -28,6 +28,7 @@ jobs:
 
       - name: Delete Tags
         run: |
-          git ls-remote --tags origin | awk '{print $2}' | sed 's#refs/tags/##' | while read -r tag_name; do
-            git push --delete origin "$tag_name" --quiet --no-verify --follow-tags
+          gh api repos/${{ github.repository }}/git/refs/tags --paginate | jq -r '.[].ref' | while read -r tag_ref; do
+            tag_name=$(basename "$tag_ref")
+            gh api repos/${{ github.repository }}/git/refs/tags/$tag_name -X DELETE
           done
