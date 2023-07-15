@@ -98,12 +98,12 @@ jobs:
             apks/VancedMicroG.apk"
           if-no-files-found: error
 
-      - name: Commit Update file
-        if: ${{ inputs.COMMIT_CHANGELOG }}
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          branch: changelogs
-          skip_checkout: true
-          file_pattern: changelog.md
-          commit_message: 🚀New Build
-          push_options: '--force'
+#      - name: Commit Update file
+#        if: ${{ inputs.COMMIT_CHANGELOG }}
+#        uses: stefanzweifel/git-auto-commit-action@v4
+#        with:
+#          branch: changelogs
+#          skip_checkout: true
+#          file_pattern: changelog.md
+#          commit_message: 🚀New Build
+#          push_options: '--force'
