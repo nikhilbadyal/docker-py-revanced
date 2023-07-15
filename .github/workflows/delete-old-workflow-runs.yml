@@ -43,10 +43,10 @@ on:
       dry_run:
         description: 'Only log actions, do not perform any delete operations.'
         required: false
-      delay_seconds:
-        description: 'Delay duration in seconds before deletion.'
-        required: false
-        default: 5
+#      delay_seconds:
+#        description: 'Delay duration in seconds before deletion.'
+#        required: false
+#        default: 2
 
 jobs:
   del_runs:
@@ -54,10 +54,10 @@ jobs:
     permissions:
       actions: write
     steps:
-      - name: Delay before deletion
-        run: |
-          echo "Delaying for ${{ github.event.inputs.delay_seconds }} seconds..."
-          sleep ${{ github.event.inputs.delay_seconds }}
+#      - name: Delay before deletion
+#        run: |
+#          echo "Delaying for ${{ github.event.inputs.delay_seconds }} seconds..."
+#          sleep ${{ github.event.inputs.delay_seconds }}
 
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
