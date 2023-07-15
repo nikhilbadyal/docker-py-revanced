@@ -21,7 +21,7 @@ jobs:
           REPO=$(basename $(dirname $GITHUB_REPOSITORY))
           TOKEN="${{ secrets.GITHUB_TOKEN }}"
           URL="https://api.github.com/repos/$OWNER/$REPO/releases?per_page=100"
-          RELEASES=$(curl -s -H "Authorization: Bearer $TOKEN" "$URL" | jq -r '.[].id')
+          RELEASES=$(curl -s -H "Authorization: Bearer $TOKEN" "$URL" | jq -r 'map(.id) | .[]')
           echo "::set-output name=releases::$RELEASES"
 
       - name: Delete Releases
