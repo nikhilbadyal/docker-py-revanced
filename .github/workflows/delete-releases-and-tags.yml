@@ -11,24 +11,41 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Set up GitHub CLI
-        uses: actions/checkout@v2
-        with:
-          repository: cli/cli
+      - name: Authenticate with GitHub Token
+        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
-      - name: Authenticate with GitHub CLI
+      - name: Get Releases
+        id: get_releases
         run: |
-          echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+          OWNER=$(basename $GITHUB_REPOSITORY)
+          REPO=$(basename $(dirname $GITHUB_REPOSITORY))
+          TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          URL="https://api.github.com/repos/$OWNER/$REPO/releases?per_page=100"
+          RELEASES=$(curl -s -H "Authorization: Bearer $TOKEN" "$URL" | jq -r '.[].id')
+          echo "::set-output name=releases::$RELEASES"
 
       - name: Delete Releases
         run: |
-          gh release list --repo ${{ github.repository }} --limit 100 --template "{{range .}}{{.TagName}}\n{{end}}" | while read -r tag_name; do
-            gh release delete --repo ${{ github.repository }} "$tag_name" --yes
+          for RELEASE_ID in ${{ steps.get_releases.outputs.releases }}; do
+            OWNER=$(basename $GITHUB_REPOSITORY)
+            REPO=$(basename $(dirname $GITHUB_REPOSITORY))
+            TOKEN="${{ secrets.GITHUB_TOKEN }}"
+            URL="https://api.github.com/repos/$OWNER/$REPO/releases/$RELEASE_ID"
+            curl -X DELETE -s -H "Authorization: Bearer $TOKEN" "$URL"
           done
+
+      - name: Get Tags
+        id: get_tags
+        run: |
+          OWNER=$(basename $GITHUB_REPOSITORY)
+          REPO=$(basename $(dirname $GITHUB_REPOSITORY))
+          TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          URL="https://api.github.com/repos/$OWNER/$REPO/git/refs/tags?per_page=100"
+          TAGS=$(curl -s -H "Authorization: Bearer $TOKEN" "$URL" | jq -r '.[].ref' | sed 's#refs/tags/##')
+          echo "::set-output name=tags::$TAGS"
 
       - name: Delete Tags
         run: |
-          gh api repos/${{ github.repository }}/git/refs/tags --paginate | jq -r '.[].ref' | while read -r tag_ref; do
-            tag_name=$(basename "$tag_ref")
-            gh api repos/${{ github.repository }}/git/refs/tags/$tag_name -X DELETE
+          for TAG_NAME in ${{ steps.get_tags.outputs.tags }}; do
+            git push --delete origin "$TAG_NAME"
           done
