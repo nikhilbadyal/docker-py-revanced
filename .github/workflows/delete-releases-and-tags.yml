@@ -1,46 +1,28 @@
-name: Delete Previous Releases and Tags
+name: Delete Releases and Tags
 
 on:
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        required: true
 
 jobs:
-  delete_releases_tags:
+  delete-releases-tags:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Authenticate with GitHub Token
-        run: echo "GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Get Releases
-        id: get_releases
+      - name: Delete releases and tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          OWNER=$(basename $GITHUB_REPOSITORY)
-          REPO=$(basename $(dirname $GITHUB_REPOSITORY))
-          TOKEN="${{ secrets.GITHUB_TOKEN }}"
-          URL="https://api.github.com/repos/$OWNER/$REPO/releases?per_page=100"
-          RELEASES=$(curl -s -H "Authorization: Bearer $TOKEN" "$URL" | jq -r '.[] | .id')
-          echo "::set-output name=releases::$RELEASES"
+          gh release list --limit 100 | awk '{print $1}' | xargs -I {} gh release delete {}
+          git tag -l | xargs git tag -d
 
-      - name: Delete Releases
+      - name: Push changes
         run: |
-          for RELEASE_ID in ${{ steps.get_releases.outputs.releases }}; do
-            OWNER=$(basename $GITHUB_REPOSITORY)
-            REPO=$(basename $(dirname $GITHUB_REPOSITORY))
-            TOKEN="${{ secrets.GITHUB_TOKEN }}"
-            URL="https://api.github.com/repos/$OWNER/$REPO/releases/$RELEASE_ID"
-            curl -X DELETE -s -H "Authorization: Bearer $TOKEN" "$URL"
-          done
-
-      - name: Get Tags
-        id: get_tags
-        run: |
-          git ls-remote --tags origin | awk '{print $2}' | sed 's#refs/tags/##'
-
-      - name: Delete Tags
-        run: |
-          for TAG_NAME in ${{ steps.get_tags.outputs.tags }}; do
-            git push --delete origin "$TAG_NAME"
-          done
+          git push origin --delete $(git tag -l)
+          git push --tags --force
