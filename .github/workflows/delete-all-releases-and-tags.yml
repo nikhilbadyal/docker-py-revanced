@@ -1,0 +1,29 @@
+name: Delete Releases and Tags
+
+on:
+  workflow_dispatch:
+
+jobs:
+  delete-releases-tags:
+    runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Delete releases and tags
+        run: |
+          gh release list --limit 100 | awk '{print $1}' | xargs -I {} gh release delete {}
+          git fetch --prune --tags
+          if [[ -n "$(git tag -l)" ]]; then git tag -d $(git tag -l); fi
+
+      - name: Push tag deletion changes
+        run: |
+          for tag in $(git tag -l); do git push origin --delete "$tag"; done
+
+      - name: Push updated tags
+        run: |
+          git push --tags --force
