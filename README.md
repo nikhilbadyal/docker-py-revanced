@@ -1,6 +1,6 @@
 ###### 15/JULY/2023:
 ### Merged upstream changes.
-* Now with support for **RVX mMicroG** and **RVX Reddit**.
+* Now with support for ~~**RVX mMicroG** and~~ **RVX Reddit**.
 
 Also supports the other Reddit clients, such as **RV Sync**.
 * Read the [README-ORIGINAL.md](https://github.com/Spacellary/ReVanced-Extended-Automated-Builds/blob/main/readme-history/README-ORIGINAL.md) for more information about those.
