@@ -34,7 +34,7 @@ Let the 'forkception' begin!
 #### Set up to build:
 * ReVanced Extended **YouTube** (latest supported).
 * ReVanced Extended **YouTube Music** (latest) in the **arm64-v8a** architecture.
-* ReVanced Extended **mMicroG** (latest supported).
+~~* ReVanced Extended **mMicroG** (latest).~~
 * ReVanced **Sync for Reddit** (version most compatible with patches).
 * ReVanced Extended **Reddit** (latest supported).
 
