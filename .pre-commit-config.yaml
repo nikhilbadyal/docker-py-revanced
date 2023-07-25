@@ -36,7 +36,7 @@ repos:
         args: [ "--profile", "black", ]
 
   - repo: https://github.com/hadialqattan/pycln
-    rev: v2.1.5
+    rev: v2.1.6
     hooks:
       - id: pycln
         args: [ --config=setup.cfg ]
