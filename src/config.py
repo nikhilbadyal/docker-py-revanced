@@ -58,7 +58,7 @@ class RevancedConfig(object):
         )
         self.apk_mirror_urls = {
             "reddit": f"{self.apk_mirror}/apk/redditinc/reddit/",
-            "twitter": f"{self.apk_mirror}/apk/twitter-inc/twitter/",
+            "twitter": f"{self.apk_mirror}/apk/x-corp/twitter/",
             "tiktok": f"{self.apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
             "warnwetter": f"{self.apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
             "youtube": f"{self.apk_mirror}/apk/google-inc/youtube/",
