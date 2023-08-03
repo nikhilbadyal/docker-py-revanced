@@ -36,7 +36,7 @@ class Patches(object):
         "eu.faircode.netguard": "netguard",
         "com.instagram.android": "instagram",
         "com.nis.app": "inshorts",
-        "com.facebook.orca": "facebook",
+        "com.facebook.orca": "messenger",
         "com.google.android.apps.recorder": "grecorder",
         "tv.trakt.trakt": "trakt",
         "com.candylink.openvpn": "candyvpn",

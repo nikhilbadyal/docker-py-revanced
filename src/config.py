@@ -28,7 +28,7 @@ class RevancedConfig(object):
             "irplus",
             "meme-generator-free",
             "yuka",
-            "facebook",
+            "messenger",
         ]
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager", "candyvpn"]
