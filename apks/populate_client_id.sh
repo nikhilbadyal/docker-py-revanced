@@ -6,7 +6,7 @@ path="apks/options.json"
 json_data=$(cat "${path}")
 
 new_object='{
-"patchName": "Change OAuth client id",
+"patchName": "Spoof client",
 "options": [
   {
     "key": "client-id",
@@ -14,8 +14,8 @@ new_object='{
   }
 ]
 }'
-# Check if an object with the patchName "Change OAuth client id" already exists
-existing_object_index=$(echo "${json_data}" | jq 'map(.patchName) | index("Change OAuth client id")')
+# Check if an object with the patchName "Spoof client" already exists
+existing_object_index=$(echo "${json_data}" | jq 'map(.patchName) | index("Spoof client")')
 echo "${existing_object_index}"
 if [[ ${existing_object_index} != "null" ]]; then
   echo "Exist"
