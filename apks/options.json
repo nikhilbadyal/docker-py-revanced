@@ -1,6 +1,6 @@
 [
   {
-    "patchName": "Change OAuth client id",
+    "patchName": "Spoof client",
     "options": [
       {
         "key": "client-id",
