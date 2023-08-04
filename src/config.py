@@ -28,7 +28,7 @@ class RevancedConfig(object):
             "irplus",
             "meme-generator-free",
             "yuka",
-            "facebook",
+            "messenger",
         ]
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager", "candyvpn"]
@@ -73,7 +73,7 @@ class RevancedConfig(object):
             "netguard": f"{self.apk_mirror}/apk/marcel-bokhorst/netguard-no-root-firewall/",
             "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
             "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
-            "facebook": f"{self.apk_mirror}/apk/facebook-2/facebook/",
+            "messenger": f"{self.apk_mirror}/apk/facebook-2/messenger/",
             "grecorder": f"{self.apk_mirror}/apk/google-inc/google-recorder/",
             "trakt": f"{self.apk_mirror}/apk/trakt/trakt/",
             "candyvpn": f"{self.apk_mirror}/apk/liondev-io/candylink-vpn/",
