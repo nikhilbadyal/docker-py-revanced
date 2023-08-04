@@ -47,7 +47,7 @@
     "value" : "@android:color/black"
   } ]
 }, {
-  "patchName" : "Change OAuth client id",
+  "patchName" : "Spoof client",
   "options" : [ {
     "key" : "client-id",
     "value" : null
