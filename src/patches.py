@@ -65,9 +65,11 @@ class Patches(object):
     }
 
     @staticmethod
-    def check_java() -> None:
+    def check_java(dry_run: bool) -> None:
         """Check if Java17 is installed."""
         try:
+            if dry_run:
+                return
             jd = subprocess.check_output(
                 ["java", "-version"], stderr=subprocess.STDOUT
             ).decode("utf-8")
@@ -152,7 +154,7 @@ class Patches(object):
 
     def __init__(self, config: RevancedConfig) -> None:
         self.config = config
-        self.check_java()
+        self.check_java(self.config.dry_run)
         self.fetch_patches()
         if self.config.dry_run:
             self.config.apps = list(self._revanced_app_ids.values())
