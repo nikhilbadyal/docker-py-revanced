@@ -86,7 +86,7 @@ def slugify(string: str) -> str:
 
 
 def check_java(dry_run: bool) -> None:
-    """Check if Java17 is installed."""
+    """Check if Java>=17 is installed."""
     try:
         if dry_run:
             return
