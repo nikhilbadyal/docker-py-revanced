@@ -35,7 +35,6 @@ class Patches(object):
         "com.teslacoilsw.launcher": "nova_launcher",
         "eu.faircode.netguard": "netguard",
         "com.instagram.android": "instagram",
-        "com.laurencedawson.reddit_sync": "reddit_sync",
         "com.nis.app": "inshorts",
         "com.facebook.orca": "messenger",
         "com.google.android.apps.recorder": "grecorder",
