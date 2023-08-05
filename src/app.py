@@ -32,6 +32,9 @@ class APP(object):
         self.keystore_name = config.env.str(
             f"{app_name}_KEYSTORE_FILE_NAME".upper(), config.global_keystore_name
         )
+        self.archs_to_build = config.env.list(
+            f"{app_name}_ARCHS_TO_BUILD".upper(), config.global_archs_to_build
+        )
         self.download_patch_resources(config)
 
     def get_output_file_name(self) -> str:

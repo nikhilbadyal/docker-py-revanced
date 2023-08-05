@@ -215,6 +215,7 @@ By default, script build the version as recommended by Revanced team.
    YOUTUBE_MUSIC_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest
    YOUTUBE_MUSIC_CLI_DL=https://github.com/inotia00/revanced-cli/releases/latest
    YOUTUBE_MUSIC_KEYSTORE_FILE_NAME=key.store
+   YOUTUBE_MUSIC_ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
    ```
    These link if not from GitHub must be direct download links.
 7. You can also provide a default resources which will be used when per app config is missing.
@@ -280,10 +281,10 @@ By default, script build the version as recommended by Revanced team.
 12. You can build only for a particular arch in order to get smaller apk files.This can be done with by adding comma
     separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the format.
     ```dotenv
-     ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
+     GLOABAL_ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
     ```
     Possible values for `ARCHS_TO_BUILD` are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
-    Make sure you are using `revanced-extended` as `revanced` doesn't support this.
+    Make sure the patching resource support this.
 13. You can scan your built apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
 14. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just

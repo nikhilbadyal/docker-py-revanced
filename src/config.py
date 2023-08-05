@@ -75,7 +75,7 @@ class RevancedConfig(object):
             key: value + value.split("/")[-2]
             for key, value in self.apk_mirror_urls.items()
         }
-        self.archs_to_build = env.list("ARCHS_TO_BUILD", [])
+        self.global_archs_to_build = env.list("GLOBAL_ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
         self.alternative_youtube_music_patches = env.list(
             "ALTERNATIVE_YOUTUBE_MUSIC_PATCHES", []
