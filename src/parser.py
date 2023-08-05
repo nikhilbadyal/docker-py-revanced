@@ -89,7 +89,7 @@ class Parser(object):
             "-o",
             app.get_output_file_name(),
             "--keystore",
-            self.config.keystore_name,
+            app.keystore_name,
             "--options",
             "options.json",
         ]
@@ -111,7 +111,6 @@ class Parser(object):
         logger.debug(
             f"Sending request to revanced cli for building with args java {args}"
         )
-        return
         process = Popen(["java", *args], stdout=PIPE)
         output = process.stdout
         if not output:

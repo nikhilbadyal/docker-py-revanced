@@ -214,6 +214,7 @@ By default, script build the version as recommended by Revanced team.
    YOUTUBE_MUSIC_INTEGRATION_DL=https://github.com/inotia00/revanced-integrations/releases/latest
    YOUTUBE_MUSIC_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest
    YOUTUBE_MUSIC_CLI_DL=https://github.com/inotia00/revanced-cli/releases/latest
+   YOUTUBE_MUSIC_KEYSTORE_FILE_NAME=key.store
    ```
    These link if not from GitHub must be direct download links.
 7. You can also provide a default resources which will be used when per app config is missing.
@@ -260,7 +261,7 @@ By default, script build the version as recommended by Revanced team.
     inside `apks` folder. And adding the name of `keystore-file` in `.env` file or in `ENVS` in `GitHub secrets`
     (Recommended) in the format
     ```dotenv
-     KEYSTORE_FILE_NAME=revanced.keystore
+     GLOBAL_KEYSTORE_FILE_NAME=revanced.keystore
     ```
 11. For Telegram Upload.
      1. Set up a telegram channel, send a message to it and forward the message to
