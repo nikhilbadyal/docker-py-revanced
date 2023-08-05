@@ -35,9 +35,6 @@ class RevancedConfig(object):
         ]
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager", "candyvpn"]
-        self.global_keystore_name = env.str(
-            "GLOBAL_KEYSTORE_FILE_NAME", "revanced.keystore"
-        )
         self.ci_test = env.bool("CI_TEST", False)
         self.apps = env.list("PATCH_APPS", default_build)
         self.rip_libs_apps: List[str] = []
@@ -75,7 +72,6 @@ class RevancedConfig(object):
             key: value + value.split("/")[-2]
             for key, value in self.apk_mirror_urls.items()
         }
-        self.global_archs_to_build = env.list("GLOBAL_ARCHS_TO_BUILD", [])
         self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
         self.alternative_youtube_music_patches = env.list(
             "ALTERNATIVE_YOUTUBE_MUSIC_PATCHES", []
@@ -84,5 +80,11 @@ class RevancedConfig(object):
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
         self.dry_run = env.bool("DRY_RUN", False)
         self.global_cli_dl = env.str("GLOBAL_CLI_DL", default_cli)
-        self.global_patches_dl = env.str("GLOBAL_CLI_DL", default_patches)
-        self.global_integrations_dl = env.str("GLOBAL_CLI_DL", default_integrations)
+        self.global_patches_dl = env.str("GLOBAL_PATCHES_DL", default_patches)
+        self.global_integrations_dl = env.str(
+            "GLOBAL_INTEGRATIONS_DL", default_integrations
+        )
+        self.global_keystore_name = env.str(
+            "GLOBAL_KEYSTORE_FILE_NAME", "revanced.keystore"
+        )
+        self.global_archs_to_build = env.list("GLOBAL_ARCHS_TO_BUILD", [])
