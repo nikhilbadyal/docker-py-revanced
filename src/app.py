@@ -39,7 +39,7 @@ class APP(object):
 
     def get_output_file_name(self) -> str:
         """Get output file appended with version."""
-        return f"Re-{self.app_name}-{slugify(self.app_version)}.apk"
+        return f"Re-{self.app_name}-{slugify(self.app_version)}-output.apk"
 
     def set_recommended_version(self, version: str, exp: bool = False) -> None:
         """Update if cooking non-recommended."""
