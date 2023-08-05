@@ -96,7 +96,7 @@ class Parser(object):
         if app.experiment:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        args[1::2] = map(lambda i: self.config.temp_folder.joinpath(i), args[1::2])
+        args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
         if self.config.ci_test:
             self.exclude_all_patches()
         if self._PATCHES:
