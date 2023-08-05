@@ -1,23 +1,27 @@
 """Revanced Configurations."""
 from pathlib import Path
-from typing import Dict, List
+from typing import List
 
 from environs import Env
 from requests import Session
 
 from src.utils import default_build
 
+default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
+default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
+default_integrations = (
+    "https://github.com/revanced/revanced-integrations/releases/latest"
+)
+
 
 class RevancedConfig(object):
     """Revanced Configurations."""
 
     def __init__(self, env: Env) -> None:
-        self.app_versions: Dict[str, str] = {}
         self.env = env
         self.temp_folder = Path("apks")
         self.session = Session()
         self.session.headers["User-Agent"] = "anything"
-        self.build_extended = env.bool("BUILD_EXTENDED", False)
         self.apk_mirror = "https://www.apkmirror.com"
         self.upto_down = [
             "spotify",
@@ -34,27 +38,7 @@ class RevancedConfig(object):
         self.keystore_name = env.str("KEYSTORE_FILE_NAME", "revanced.keystore")
         self.ci_test = env.bool("CI_TEST", False)
         self.apps = env.list("PATCH_APPS", default_build)
-        self.extended_apps: List[str] = ["youtube", "youtube_music", "microg", "reddit"]
-        self.rip_libs_apps: List[str] = ["youtube"]
-        self.normal_cli_jar = "revanced-cli.jar"
-        self.normal_patches_jar = "revanced-patches.jar"
-        self.normal_integrations_apk = "revanced-integrations.apk"
-        self.normal_options_json = "options.json"
-        self.cli_jar = (
-            f"inotia00-{self.normal_cli_jar}"
-            if self.build_extended
-            else self.normal_cli_jar
-        )
-        self.patches_jar = (
-            f"inotia00-{self.normal_patches_jar}"
-            if self.build_extended
-            else self.normal_patches_jar
-        )
-        self.integrations_apk = (
-            f"inotia00-{self.normal_integrations_apk}"
-            if self.build_extended
-            else self.normal_integrations_apk
-        )
+        self.rip_libs_apps: List[str] = []
         self.apk_mirror_urls = {
             "reddit": f"{self.apk_mirror}/apk/redditinc/reddit/",
             "twitter": f"{self.apk_mirror}/apk/x-corp/twitter/",
@@ -97,3 +81,6 @@ class RevancedConfig(object):
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
         self.dry_run = env.bool("DRY_RUN", False)
+        self.global_cli_dl = env.str("GLOBAL_CLI_DL", default_cli)
+        self.global_patches_dl = env.str("GLOBAL_CLI_DL", default_patches)
+        self.global_integrations_dl = env.str("GLOBAL_CLI_DL", default_integrations)
