@@ -76,11 +76,11 @@ class Patches(object):
             jd = jd[1:-1]
             if "Runtime Environment" not in jd:
                 raise subprocess.CalledProcessError(-1, "java -version")
-            if "17" not in jd:
+            if "17" not in jd and "20" not in jd:
                 raise subprocess.CalledProcessError(-1, "java -version")
             logger.debug("Cool!! Java is available")
         except subprocess.CalledProcessError:
-            logger.debug("Java 17 Must be installed")
+            logger.debug("Java>= 17 Must be installed")
             exit(-1)
 
     # noinspection DuplicatedCode
