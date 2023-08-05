@@ -48,7 +48,7 @@ class APP(object):
 
     def __str__(self: "APP") -> str:
         attrs = vars(self)
-        return ", ".join("%s: %s" % item for item in attrs.items())
+        return ", ".join([f"{key}: {value}" for key, value in attrs.items()])
 
     @staticmethod
     def download(url: str, config: RevancedConfig, assets_filter: str) -> str:
