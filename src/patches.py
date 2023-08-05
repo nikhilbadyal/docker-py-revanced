@@ -65,6 +65,11 @@ class Patches(object):
     }
 
     @staticmethod
+    def support_app() -> Dict[str, str]:
+        """Return supported apps."""
+        return Patches._revanced_app_ids
+
+    @staticmethod
     def check_java(dry_run: bool) -> None:
         """Check if Java17 is installed."""
         try:
