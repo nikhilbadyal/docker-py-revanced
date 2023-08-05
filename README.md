@@ -189,16 +189,10 @@ By default, script build the version as recommended by Revanced team.
     EXCLUDE_PATCH_YOUTUBE=custom-branding,hide-get-premium
     EXCLUDE_PATCH_YOUTUBE_MUSIC=yt-music-is-shit
    ```
-   If you are using `Revanced Extended.` Add `_EXTENDED` in exclude options.
-   Example:
-   ```dotenv
-    EXCLUDE_PATCH_YOUTUBE_EXTENDED=custom-branding-red,custom-branding-blue,materialyou
-    EXCLUDE_PATCH_YOUTUBE_MUSIC_EXTENDED=custom-branding-music
-   ```
    **_All the patches for an app are included by default._**.<br><br>If you want to apply a universal patch. You can
    include it
    manually. See below for more information.<br>
-   If you want to include any universal patch. Set comma separated patch in `.env` file or in `ENVS` in `GitHub
+5. If you want to include any universal patch. Set comma separated patch in `.env` file or in `ENVS` in `GitHub
    secrets`
    (Recommended) in the format
    ```ini
@@ -213,9 +207,23 @@ By default, script build the version as recommended by Revanced team.
    ```dotenv
     INCLUDE_PATCH_YOUTUBE_EXTENDED=remove-screenshot-restriction
    ```
-   **_Remember_** - Revanced patches are provided space separated, make sure you type those **-** separated here. It means a
-   patch named _**Hey There**_ will be entered as **_hey-there_** in the above example.
-5. If you want to build a specific version . Add `version` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended)
+   **_Remember_** - Revanced patches are provided space separated, make sure you type those **-** separated here.
+    It means a patch named _**Hey There**_ will be entered as **_hey-there_** in the above example.
+6. If you want to use custom Patching resource. You can do so by providing respective DLs. Per app support is there too.
+   ```ini
+   YOUTUBE_MUSIC_INTEGRATION_DL=https://github.com/inotia00/revanced-integrations/releases/latest
+   YOUTUBE_MUSIC_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest
+   YOUTUBE_MUSIC_CLI_DL=https://github.com/inotia00/revanced-cli/releases/latest
+   ```
+   These link if not from GitHub must be direct download links.
+7. You can also provide a default resources which will be used when per app config is missing.
+   ```ini
+   GLOBAL_INTEGRATION_DL=https://github.com/inotia00/revanced-integrations/releases/latest
+   GLOBAL_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest
+   GLOBAL_CLI_DL=https://github.com/inotia00/revanced-cli/releases/latest
+   ```
+   These link if not from GitHub must be direct download links.
+8. If you want to build a specific version . Add `version` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended)
    in the format
    ```ini
    <APPNAME>_VERSION=<VERSION>
@@ -229,7 +237,7 @@ By default, script build the version as recommended by Revanced team.
    TIKTOK_VERSION=X.X.X
    WARNWETTER_VERSION=X.X.X
    ```
-6. If you want to build `latest` version, whatever latest is available(including
+9. If you want to build `latest` version, whatever latest is available(including
    beta) .
    Add `latest` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
 
@@ -248,48 +256,39 @@ By default, script build the version as recommended by Revanced team.
    WARNWETTER_VERSION=latest
    ```
 
-7. If you don't want to use default keystore. You can provide your own by placing it
-   inside `apks` folder. And adding the name of `keystore-file` in `.env` file or in `ENVS` in `GitHub secrets`
-   (Recommended) in the format
-   ```dotenv
-    KEYSTORE_FILE_NAME=revanced.keystore
-   ```
-8. If you want to use Revanced-Extended for YouTube and YouTube Music. Add the following adding
-   in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
-   ```dotenv
-    BUILD_EXTENDED=True
-   ```
-   or disable it with (default)
-   ```dotenv
-    BUILD_EXTENDED=False
-   ```
-9. For Telegram Upload.
-    1. Set up a telegram channel, send a message to it and forward the message to
-       this telegram [bot](https://t.me/username_to_id_bot)
-    2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
-       <img src="https://i.imgur.com/22UiaWs.png" width="300" style="left"><br>
-    3. `TELEGRAM_BOT_TOKEN` - Telegram provides BOT_TOKEN. It works as sender. Open [bot](https://t.me/BotFather) and
-       create one copy api key<br>
-       <img src="https://i.imgur.com/A6JCyK2.png" width="300" style="left"><br>
-    4. `TELEGRAM_API_ID` - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)<br>
-       <img src="https://i.imgur.com/eha3nnb.png" width="300" style="left"><br>
-    5. `TELEGRAM_API_HASH` - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)<br>
-       <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
-    6. After Everything done successfully the actions secrets of the repository will look something like<br>
-       <img src="https://i.imgur.com/dzC1KFa.png" width="400">
-10. You can build only for a particular arch in order to get smaller apk files.This can be done with by adding comma
+10. If you don't want to use default keystore. You can provide your own by placing it
+    inside `apks` folder. And adding the name of `keystore-file` in `.env` file or in `ENVS` in `GitHub secrets`
+    (Recommended) in the format
+    ```dotenv
+     KEYSTORE_FILE_NAME=revanced.keystore
+    ```
+11. For Telegram Upload.
+     1. Set up a telegram channel, send a message to it and forward the message to
+        this telegram [bot](https://t.me/username_to_id_bot)
+     2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
+        <img src="https://i.imgur.com/22UiaWs.png" width="300" style="left"><br>
+     3. `TELEGRAM_BOT_TOKEN` - Telegram provides BOT_TOKEN. It works as sender. Open [bot](https://t.me/BotFather) and
+        create one copy api key<br>
+        <img src="https://i.imgur.com/A6JCyK2.png" width="300" style="left"><br>
+     4. `TELEGRAM_API_ID` - Telegram API_ID is provided by telegram [here](https://my.telegram.org/apps)<br>
+        <img src="https://i.imgur.com/eha3nnb.png" width="300" style="left"><br>
+     5. `TELEGRAM_API_HASH` - Telegram API_HASH is provided by telegram [here](https://my.telegram.org/apps)<br>
+        <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
+     6. After Everything done successfully the actions secrets of the repository will look something like<br>
+        <img src="https://i.imgur.com/dzC1KFa.png" width="400">
+12. You can build only for a particular arch in order to get smaller apk files.This can be done with by adding comma
     separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the format.
     ```dotenv
      ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
     ```
     Possible values for `ARCHS_TO_BUILD` are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
     Make sure you are using `revanced-extended` as `revanced` doesn't support this.
-11. You can scan your built apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
-12. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
+13. You can scan your built apks files with VirusTotal. For that, Add `VT_API_KEY` in `GitHub secrets`.
+14. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets`.<br>
     Or you can ignore what I said above and always use `GitHub secrets`.
-13. If APKMirror or other apk source is blocked in your region or script somehow is unable to download from apkmirror.
+15. If APKMirror or other apk source is blocked in your region or script somehow is unable to download from apkmirror.
     You can download apk manually from any source. Place them in `/apks` directory and provide environment variable
     in `.env` file or in `ENVS` in `GitHub secrets`(Recommended) in the format.
     ```dotenv
@@ -303,18 +302,16 @@ By default, script build the version as recommended by Revanced team.
     `/apks` folder.
 
     Name of the downloaded apk must match with the available app choices found [here.](#note)
-14. If you run script again & again. You might hit GitHub API limit. In that case you can provide your Personal
+16. If you run script again & again. You might hit GitHub API limit. In that case you can provide your Personal
     GitHub Access Token in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format -
     ```dotenv
      PERSONAL_ACCESS_TOKEN=<PAT>
     ```
-15. Sample Envs<br>
+17. Sample Envs<br>
     <img src="https://i.imgur.com/ajSE5nA.png" width="600" style="left">
-16. Make your Action has write access. If not click
+18. Make your Action has write access. If not click
     [here](https://github.com/nikhilbadyal/docker-py-revanced/settings/actions).
     In the bottom give read and write access to Actions.
     <img src="https://i.imgur.com/STSv2D3.png" width="400">
-17. If you want to patch reddit apps using your own Client ID. You can provide your Client ID
+19. If you want to patch reddit apps using your own Client ID. You can provide your Client ID
     as secret `REDDIT_CLIENT_ID` in `GitHub secrets`.
-
-Thanks to [@aliharslan0](https://github.com/aliharslan0/pyrevanced) for his work.
