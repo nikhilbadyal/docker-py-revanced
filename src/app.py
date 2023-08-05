@@ -51,7 +51,7 @@ class APP(object):
         return ", ".join("%s: %s" % item for item in attrs.items())
 
     @staticmethod
-    def download(url: str, config: RevancedConfig, assets_filter: str = None) -> str:  # type: ignore
+    def download(url: str, config: RevancedConfig, assets_filter: str) -> str:
         """Downloader."""
         from src.downloader.download import Downloader
 
@@ -70,14 +70,14 @@ class APP(object):
         logger.info("Downloading resources for patching.")
         # Create a list of resource download tasks
         download_tasks = [
-            ("cli", self.cli_dl, config),
-            ("integrations", self.integrations_dl, config),
+            ("cli", self.cli_dl, config, ".*jar"),
+            ("integrations", self.integrations_dl, config, ".*apk"),
             ("patches", self.patches_dl, config, ".*jar"),
             ("patches_json", self.patches_dl, config, ".*json"),
         ]
 
         # Using a ThreadPoolExecutor for parallelism
-        with ThreadPoolExecutor() as executor:
+        with ThreadPoolExecutor(4) as executor:
             futures = {
                 resource_name: executor.submit(self.download, *args)
                 for resource_name, *args in download_tasks

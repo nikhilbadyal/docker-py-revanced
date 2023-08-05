@@ -58,6 +58,11 @@ class Patches(object):
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()
     }
 
+    @staticmethod
+    def support_app() -> Dict[str, str]:
+        """Return supported apps."""
+        return Patches._revanced_app_ids
+
     def scrap_patches(self, file_name: str) -> Any:
         """Scrap Patches."""
         if os.path.exists(file_name):
