@@ -21,7 +21,7 @@ def main() -> None:
 
     logger.info(f"Will Patch only {config.apps}")
     for app in config.apps:
-        logger.info("Trying to build %s" % app)
+        logger.info(f"Trying to build {app}")
         try:
             app = APP(app_name=app, config=config)
             patcher = Patches(config, app)
