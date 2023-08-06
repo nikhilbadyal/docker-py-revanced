@@ -72,10 +72,6 @@ class RevancedConfig(object):
             key: value + value.split("/")[-2]
             for key, value in self.apk_mirror_urls.items()
         }
-        self.alternative_youtube_patches = env.list("ALTERNATIVE_YOUTUBE_PATCHES", [])
-        self.alternative_youtube_music_patches = env.list(
-            "ALTERNATIVE_YOUTUBE_MUSIC_PATCHES", []
-        )
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
         self.dry_run = env.bool("DRY_RUN", False)

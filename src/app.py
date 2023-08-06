@@ -25,8 +25,8 @@ class APP(object):
         self.integrations_dl = config.env.str(
             f"{app_name}_INTEGRATION_DL".upper(), config.global_integrations_dl
         )
-        self.exclude_request = config.env.list(f"EXCLUDE_PATCH_{app_name}".upper(), [])
-        self.include_request = config.env.list(f"INCLUDE_PATCH_{app_name}".upper(), [])
+        self.exclude_request = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
+        self.include_request = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
         self.resource: Dict[str, str] = {}
         self.no_of_patches = 0
         self.keystore_name = config.env.str(
