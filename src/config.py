@@ -9,6 +9,7 @@ from src.utils import default_build
 
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
+default_patches_json = default_patches
 default_integrations = (
     "https://github.com/revanced/revanced-integrations/releases/latest"
 )
@@ -77,6 +78,9 @@ class RevancedConfig(object):
         self.dry_run = env.bool("DRY_RUN", False)
         self.global_cli_dl = env.str("GLOBAL_CLI_DL", default_cli)
         self.global_patches_dl = env.str("GLOBAL_PATCHES_DL", default_patches)
+        self.global_patches_json_dl = env.str(
+            "GLOBAL_PATCHES_JSON_DL", default_patches_json
+        )
         self.global_integrations_dl = env.str(
             "GLOBAL_INTEGRATIONS_DL", default_integrations
         )

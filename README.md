@@ -118,7 +118,7 @@ You can use any of the following methods to build.
 
 ### Global Config
 
-| Env Name                                                 |                    Description                    | Default                                                                                                  |
+| **Env Name**                                             |                  **Description**                  | **Default**                                                                                              |
 |:---------------------------------------------------------|:-------------------------------------------------:|:---------------------------------------------------------------------------------------------------------|
 | [PATCH_APPS](#patch-apps)                                |                Apps to patch/build                | youtube                                                                                                  |
 | [EXISTING_DOWNLOADED_APKS ](#existing-downloaded-apks)   |           Already downloaded clean apks           | []                                                                                                       |
@@ -126,6 +126,7 @@ You can use any of the following methods to build.
 | DRY_RUN                                                  |                   Do a dry run                    | False                                                                                                    |
 | [GLOBAL_CLI_DL*](#global-resources)                      |     DL for CLI to be used for patching apps.      | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                 |
 | [GLOBAL_PATCHES_DL*](#global-resources)                  |   DL for Patches to be used for patching apps.    | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
+| [GLOBAL_PATCHES_JSON_DL*](#global-resources)             | DL for Patches Json to be used for patching apps. | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
 | [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced CLI](https://github.com/revanced/revanced-integrations)                                        |
 | [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |       Key file to be used for signing apps        | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
 | [GLOBAL_ARCHS_TO_BUILD*](#global-archs-to-build)         |         Arch to keep in the patched apk.          | All                                                                                                      |
@@ -143,6 +144,7 @@ You can use any of the following methods to build.
 |:------------------------------------------------------------|:---------------------------------------------------------:|:-------------------------------|
 | [*APP_NAME*_CLI_DL](#global-resources)                      |     DL for CLI to be used for patching **APP_NAME**.      | GLOBAL_CLI_DL                  |
 | [*APP_NAME*_PATCHES_DL](#global-resources)                  |   DL for Patches to be used for patching **APP_NAME**.    | GLOBAL_PATCHES_DL              |
+| [*APP_NAME*_PATCHES_JSON_DL](#global-resources)             | DL for Patches Json to be used for patching **APP_NAME**. | GLOBAL_PATCHES_JSON_DL         |
 | [*APP_NAME*_INTEGRATIONS_DL](#global-resources)             | DL for Integrations to be used for patching **APP_NAME**. | GLOBAL_INTEGRATIONS_DL         |
 | [*APP_NAME*_KEYSTORE_FILE_NAME](#global-keystore-file-name) |       Key file to be used for signing **APP_NAME**.       | GLOBAL_KEYSTORE_FILE_NAME      |
 | [*APP_NAME*_ARCHS_TO_BUILD](#global-archs-to-build)         |         Arch to keep in the patched **APP_NAME**.         | GLOBAL_ARCHS_TO_BUILD          |
@@ -234,6 +236,7 @@ You can use any of the following methods to build.
    ```dotenv
     GLOBAL_CLI_DL=https://github.com/revanced/revanced-cli
     GLOBAL_PATCHES_DL=https://github.com/revanced/revanced-patches
+    GLOBAL_PATCHES_JSON_DL=https://github.com/revanced/revanced-patches
     GLOBAL_INTEGRATIONS_DL=https://github.com/revanced/revanced-integrations
    ```
    Resources downloaded from envs and will be used for patching for any **APP_NAME**.
@@ -245,6 +248,7 @@ You can use any of the following methods to build.
    ```dotenv
     YOUTUBE_CLI_DL=https://github.com/inotia00/revanced-cli
     YOUTUBE_PATCHES_DL=https://github.com/inotia00/revanced-patches
+    YOUTUBE_PATCHES_JSON_DL=https://github.com/inotia00/revanced-patches
     YOUTUBE_INTEGRATIONS_DL=https://github.com/inotia00/revanced-integrations
    ```
    With the config tool will try to patch youtube with resources from inotia00 while other global resource will used

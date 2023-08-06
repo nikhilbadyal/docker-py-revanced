@@ -25,6 +25,9 @@ class APP(object):
         self.integrations_dl = config.env.str(
             f"{app_name}_INTEGRATION_DL".upper(), config.global_integrations_dl
         )
+        self.patches_json_dl = config.env.str(
+            f"{app_name}_PATCHES_JSON_DL".upper(), config.global_patches_json_dl
+        )
         self.exclude_request = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
         self.include_request = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
         self.resource: Dict[str, str] = {}
@@ -73,7 +76,7 @@ class APP(object):
             ("cli", self.cli_dl, config, ".*jar"),
             ("integrations", self.integrations_dl, config, ".*apk"),
             ("patches", self.patches_dl, config, ".*jar"),
-            ("patches_json", self.patches_dl, config, ".*json"),
+            ("patches_json", self.patches_json_dl, config, ".*json"),
         ]
 
         # Using a ThreadPoolExecutor for parallelism
