@@ -2,7 +2,7 @@
 from typing import List
 
 import requests
-from bs4 import BeautifulSoup
+from google_play_scraper import app as gplay_app
 
 from src.patches import Patches
 from src.utils import handle_response
@@ -14,13 +14,12 @@ def gplay_icon_scrapper(package_name: str) -> str:
     """Scrap Icon from Gplay."""
     # noinspection PyBroadException
     try:
-        app_url = (
-            f"https://play.google.com/store/apps/details?id={package_name}&hl=en&gl=US"
+        result = gplay_app(
+            package_name,
         )
-        response = requests.get(app_url)
-        soup = BeautifulSoup(response.text, "html.parser")
-        icon = soup.select_one("div.Il7kR > img")
-        return str(icon["srcset"].split(" ")[0])
+        if not result["icon"]:
+            raise ValueError()
+        return str(result["icon"])
     except Exception:
         return not_found_icon
 
@@ -30,14 +29,16 @@ def generate_markdown_table(data: List[List[str]]) -> str:
     if len(data) == 0:
         return "No data to generate table."
 
-    table = "| Package Name | PlayStore link | APKMirror link| Supported ?|\n"
-    table += "|-------------|----------------|---------------|------------|\n"
+    table = "| Package Name | App Icon | PlayStore link | APKMirror link| Supported?|\n"
+    table += (
+        "|-------------|----------|----------------|---------------|------------|\n"
+    )
 
     for row in data:
-        if len(row) != 3:
+        if len(row) != 5:
             raise ValueError("Each row must contain 4 columns of data.")
 
-        table += f"| {row[0]} | {row[1]} | {row[2]} | <li>- [ ] </li> |\n"
+        table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |\n"
 
     return table
 
@@ -57,14 +58,16 @@ def main() -> None:
 
     supported_app = set(Patches.support_app().keys())
     missing_support = possible_apps.difference(supported_app)
-    output = "New app found which aren't supported yet.\n\n"
+    output = "New app found which aren't supported or outdated.\n\n"
     data = []
     for index, app in enumerate(missing_support):
         data.append(
             [
+                app,
                 f'<img src="{gplay_icon_scrapper(app)}" width=50 height=50>',
                 f"[PlayStore Link](https://play.google.com/store/apps/details?id={app})",
                 f"[APKMirror Link](https://www.apkmirror.com/?s={app})",
+                "<li>- [ ] </li>",
             ]
         )
     table = generate_markdown_table(data)
