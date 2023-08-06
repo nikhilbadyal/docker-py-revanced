@@ -6,9 +6,10 @@ from typing import List
 
 from loguru import logger
 
+from src.app import APP
 from src.config import RevancedConfig
 from src.patches import Patches
-from src.utils import possible_archs, slugify
+from src.utils import possible_archs
 
 
 class Parser(object):
@@ -70,63 +71,45 @@ class Parser(object):
     # noinspection IncorrectFormatting
     def patch_app(
         self,
-        app: str,
-        version: str,
-        is_experimental: bool = False,
-        output_prefix: str = "-",
+        app: APP,
     ) -> None:
         """Revanced APP Patcher.
 
         :param app: Name of the app
-        :param version: Version of the application
-        :param is_experimental: Whether to enable experimental support
-        :param output_prefix: Prefix to add to the output apks file name
         """
-        cli = self.config.normal_cli_jar
-        patches = self.config.normal_patches_jar
-        integrations = self.config.normal_integrations_apk
-        options = self.config.normal_options_json
-        if self.config.build_extended and app in self.config.extended_apps:
-            cli = self.config.cli_jar
-            patches = self.config.patches_jar
-            integrations = self.config.integrations_apk
         args = [
             "-jar",
-            cli,
+            app.resource["cli"],
             "-a",
-            app + ".apk",
+            app.app_name + ".apk",
             "-b",
-            patches,
+            app.resource["patches"],
             "-m",
-            integrations,
+            app.resource["integrations"],
             "-o",
-            f"Re-{app}-{slugify(version)}{output_prefix}output.apk",
+            app.get_output_file_name(),
             "--keystore",
-            self.config.keystore_name,
+            app.keystore_name,
             "--options",
-            options,
+            "options.json",
         ]
-        if is_experimental:
+        if app.experiment:
             logger.debug("Using experimental features")
             args.append("--experimental")
-        args[1::2] = map(lambda i: self.config.temp_folder.joinpath(i), args[1::2])
+        args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
         if self.config.ci_test:
             self.exclude_all_patches()
         if self._PATCHES:
             args.extend(self._PATCHES)
-        if (
-            self.config.build_extended
-            and len(self.config.archs_to_build) > 0
-            and app in self.config.rip_libs_apps
-        ):
-            excluded = set(possible_archs) - set(self.config.archs_to_build)
+        if app.app_name in self.config.rip_libs_apps:
+            excluded = set(possible_archs) - set(app.archs_to_build)
             for arch in excluded:
                 args.append("--rip-lib")
                 args.append(arch)
 
         start = perf_counter()
         logger.debug(
-            f"Sending request to revanced cli for building {app} revanced with args java {args}"
+            f"Sending request to revanced cli for building with args java {args}"
         )
         process = Popen(["java", *args], stdout=PIPE)
         output = process.stdout

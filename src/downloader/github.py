@@ -1,7 +1,8 @@
 """Github Downloader."""
-from typing import Dict
+from typing import Dict, List
 
 import requests
+from lastversion import latest
 from loguru import logger
 
 from src.downloader.download import Downloader
@@ -41,3 +42,11 @@ class Github(Downloader):
             download_url = response.json()["assets"][0]["browser_download_url"]
         update_changelog(f"{owner}/{repo_name}", response.json())
         self._download(download_url, file_name=app)
+
+    @staticmethod
+    def patch_resource(repo_url: str, assets_filter: str) -> list[str]:
+        """Fetch patch resource from repo url."""
+        latest_resource_version: List[str] = latest(
+            repo_url, assets_filter=assets_filter, output_format="assets"
+        )
+        return latest_resource_version
