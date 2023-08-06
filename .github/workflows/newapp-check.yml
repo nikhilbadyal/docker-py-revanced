@@ -1,0 +1,41 @@
+name: Check for new Revanced apps
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  status_check:
+    if: github.repository == 'nikhilbadyal/docker-py-revanced'
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo content
+        uses: actions/checkout@main
+
+      - name: setup python
+        uses: actions/setup-python@main
+        with:
+          python-version: '3.11'
+
+      - name: Install Requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Execute Status Check
+        run: |
+          output=$(python -m scripts.status_check)
+          echo "changelog=$output" >>$GITHUB_OUTPUT
+        id: status
+      - name: Update Check
+        run: echo "${{ steps.status.outputs.changelog }}"
+
+      - name: Create Issue Action
+        uses: nashmaniac/create-issue-action@v1.2
+        with:
+          title: Revanced apps Status
+          token: ${{secrets.GITHUB_TOKEN}}
+          assignees: ${{ github.repository_owner }}
+          labels: 💁‍new-app
+          body:  ${{ steps.status.outputs.changelog }}

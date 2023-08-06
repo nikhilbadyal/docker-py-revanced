@@ -1,5 +1,6 @@
 beautifulsoup4==4.12.2
 environs==9.5.0
+lastversion==3.0.1
 loguru==0.7.0
 pre-commit==3.3.3
 requests==2.31.0
