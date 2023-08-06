@@ -25,9 +25,13 @@ jobs:
 
       - name: Execute Status Check
         run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           output=$(python -m scripts.status_check)
-          echo "changelog=$output" >>$GITHUB_OUTPUT
+          echo "changelog<<$EOF" >> $GITHUB_OUTPUT
+          echo "$output" >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
         id: status
+
       - name: Update Check
         run: echo "${{ steps.status.outputs.changelog }}"
 
@@ -38,4 +42,4 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           assignees: ${{ github.repository_owner }}
           labels: 💁‍new-app
-          body:  ${{ steps.status.outputs.changelog }}
+          body: ${{ steps.status.outputs.changelog }}
