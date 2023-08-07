@@ -30,7 +30,7 @@ jobs:
           echo "::set-output name=tag_name::$LATEST_RELEASE"
       - name: Compare with local version
         run: |
-          LOCAL_VERSION=$(cat .apks/latest-parsed-version.md)
+          LOCAL_VERSION=$(cat apks/latest-parsed-version.md)
           if [ "$LOCAL_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Already up-to-date!"
           else
@@ -53,7 +53,7 @@ jobs:
       - name: Verify local version update
         if: ${{ steps.compare-version.outputs.trigger_build == 'true' }}
         run: |
-          UPDATED_VERSION=$(cat .apks/latest-parsed-version.md)
+          UPDATED_VERSION=$(cat apks/latest-parsed-version.md)
           if [ "$UPDATED_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Local version updated successfully!"
           else
