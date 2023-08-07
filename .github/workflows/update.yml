@@ -2,7 +2,7 @@ name: Update Checker
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "0 * * * *"
 jobs:
   check-update:
     runs-on: ubuntu-latest
