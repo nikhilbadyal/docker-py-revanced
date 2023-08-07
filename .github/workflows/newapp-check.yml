@@ -3,7 +3,6 @@ name: Check for new Revanced apps
 on:
   schedule:
     - cron: "0 0 * * *"
-  push:
   workflow_dispatch:
     inputs:
       CREATE_ISSUE:
