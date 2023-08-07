@@ -1,44 +1,36 @@
 name: Update Checker
-
 on:
   workflow_dispatch:
   schedule:
     - cron: "*/5 * * * *"
-
-env:
-  CHECK_UPDATE: ${{ secrets.CHECK_UPDATE }}
-
 jobs:
   check-update:
     runs-on: ubuntu-latest
     steps:
-      - name: Get latest release from $CHECK_UPDATE
+      - name: Configure git
+        run: |
+          git config --global user.name "actions-user"
+          git config --global user.email "actions@github.com"
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Check if file exists
+        run: |
+          if [[ ! -f latest-parsed-version.md ]]; then
+            echo "The file latest-parsed-version.md was not found at the base of the repository. This file is necessary for keeping track of the previously built version and compare it the remote version. To avoid generating failed runs, the workflow will now be interrupted."
+            exit 0
+          fi
+      - name: Get latest release from inotia00/revanced-patches
         id: latest-release
         run: |
-          LATEST_RELEASE=$(curl -s "https://api.github.com/repos/${CHECK_UPDATE}/releases/latest" | jq -r '.tag_name')
+          LATEST_RELEASE=$(curl -s https://api.github.com/repos/inotia00/revanced-patches/releases/latest | jq -r '.tag_name')
           if [ "$LATEST_RELEASE" == "null" ]; then
             echo "Couldn't fetch latest release. Workflow halted!"
             exit 0
           fi
           echo "::set-output name=tag_name::$LATEST_RELEASE"
-
-      - name: Set paths
-        run: |
-          APKS_PATH="$GITHUB_WORKSPACE/apks"
-          LATEST_PARSED_VERSION_FILE="$APKS_PATH/latest-parsed-version.md"
-          ls -la "$GITHUB_WORKSPACE"   # Debugging: List the contents of the workspace
-          ls -la "$APKS_PATH"          # Debugging: List the contents of the "apks" folder
-
-      - name: Check if file exists
-        run: |
-          if [ ! -f "$LATEST_PARSED_VERSION_FILE" ]; then
-            echo "The file latest-parsed-version.md was not found in the 'apks' folder. This file is necessary for keeping track of the previously built version and comparing it to the remote version. To avoid generating failed runs, the workflow will now be interrupted."
-            exit 0
-          fi
-
       - name: Compare with local version
         run: |
-          LOCAL_VERSION=$(cat "$LATEST_PARSED_VERSION_FILE")
+          LOCAL_VERSION=$(cat latest-parsed-version.md)
           if [ "$LOCAL_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Already up-to-date!"
           else
@@ -50,29 +42,27 @@ jobs:
               exit 0
             else
               echo "Local reported version doesn't match fetched version, updating local version and running new Build action!"
-              echo "${{ steps.latest-release.outputs.tag_name }}" > "$LATEST_PARSED_VERSION_FILE"
-              git add "$LATEST_PARSED_VERSION_FILE"
+              echo "${{ steps.latest-release.outputs.tag_name }}" > latest-parsed-version.md
+              git add latest-parsed-version.md
               git commit -m "Update latest-parsed-version.md"
               git push
               echo "::set-output name=trigger_build::true"
             fi
           fi
         id: compare-version
-
       - name: Verify local version update
         if: ${{ steps.compare-version.outputs.trigger_build == 'true' }}
         run: |
-          UPDATED_VERSION=$(cat "$LATEST_PARSED_VERSION_FILE")
+          UPDATED_VERSION=$(cat latest-parsed-version.md)
           if [ "$UPDATED_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Local version updated successfully!"
           else
             echo "Error updating local version control file, halting workflow!"
             exit 1
           fi
-
       - name: Trigger build workflow
         if: ${{ steps.compare-version.outputs.trigger_build == 'true' }}
         uses: benc-uk/workflow-dispatch@v1.1
         with:
-          workflow: "Build & Release"
+          workflow: "Build & Release" # build-apk.yml
           token: ${{ secrets.GITHUB_TOKEN }}
