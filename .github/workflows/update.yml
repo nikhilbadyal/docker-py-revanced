@@ -24,13 +24,15 @@ jobs:
 
       - name: Set paths
         run: |
-          APKS_PATH="$GITHUB_WORKSPACE/apks"
-          LATEST_PARSED_VERSION_FILE="$APKS_PATH/latest-parsed-version.md"
+          LATEST_PARSED_VERSION_FILE=$(find "$GITHUB_WORKSPACE" -name "latest-parsed-version.md" -type f)
+          if [ -z "$LATEST_PARSED_VERSION_FILE" ]; then
+            echo "latest-parsed-version.md not found. Please ensure the file exists in the repository."
+            exit 1
+          fi
 
       - name: Debug workspace contents
         run: |
           ls -la "$GITHUB_WORKSPACE"
-          ls -la "$APKS_PATH"
 
       - name: Compare with local version
         run: |
