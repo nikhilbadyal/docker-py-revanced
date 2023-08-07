@@ -13,7 +13,6 @@ Also supports the other Reddit clients, such as **RV Sync**.
 ### Builds are now automated!
 Added simple scheduled action that checks for patch updates, and if an update is found, records the new version of patches for future reference and automatically triggers the workflow to build and release the new applications.
 
-
 <hr>
 
 ### Feel free to fork this fork.
@@ -30,7 +29,7 @@ Let the 'forkception' begin!
 
 * This requires you to set your PERSONAL_ACCESS_TOKEN secret to trigger builds. Read about how to get a token [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
-*It will take around 5 minutes to complete the workflow.*
+*It will take around 7 minutes to complete the workflow.*
 
 5. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
 6. Download your patched applications.
@@ -38,9 +37,8 @@ Let the 'forkception' begin!
 #### Set up to build:
 * ReVanced Extended **YouTube** (latest supported).
 * ReVanced Extended **YouTube Music** (latest) in the **arm64-v8a** architecture.
+* ReVanced Extended **Reddit** (latest).
 * ReVanced **Sync for Reddit** (latest).
-* ReVanced Extended **Reddit** (latest supported).
-
 
 ###### Check [.env](https://github.com/Spacellary/docker-py-revanced/blob/main/.env) for a list of excluded patches and [options.json](https://github.com/Spacellary/docker-py-revanced/blob/main/apks/options.json) for patch options.
 ###### Complete and original README can be found [here](https://github.com/Spacellary/ReVanced-Extended-Automated-Builds/blob/main/readme-history/README-ORIGINAL.md).
