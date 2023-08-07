@@ -22,15 +22,19 @@ jobs:
           fi
           echo "::set-output name=tag_name::$LATEST_RELEASE"
 
-      - name: Debug workspace contents
-        run: |
-          ls -la "$GITHUB_WORKSPACE"   # Debugging: List the contents of the workspace
-
       - name: Set paths
         run: |
           APKS_PATH="$GITHUB_WORKSPACE/apks"
           LATEST_PARSED_VERSION_FILE="$APKS_PATH/latest-parsed-version.md"
+          ls -la "$GITHUB_WORKSPACE"   # Debugging: List the contents of the workspace
           ls -la "$APKS_PATH"          # Debugging: List the contents of the "apks" folder
+
+      - name: Check if file exists
+        run: |
+          if [ ! -f "$LATEST_PARSED_VERSION_FILE" ]; then
+            echo "The file latest-parsed-version.md was not found in the 'apks' folder. This file is necessary for keeping track of the previously built version and comparing it to the remote version. To avoid generating failed runs, the workflow will now be interrupted."
+            exit 0
+          fi
 
       - name: Compare with local version
         run: |
