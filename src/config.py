@@ -68,6 +68,7 @@ class RevancedConfig(object):
             "infinity": f"{self.apk_mirror}/apk/docile-alligator/infinity-for-reddit/",
             "slide": f"{self.apk_mirror}/apk/haptic-apps/slide-for-reddit/",
             "bacon": f"{self.apk_mirror}/apk/onelouder-apps/baconreader-for-reddit/",
+            "pixiv": f"{self.apk_mirror}/apk/pixiv-inc/pixiv/",
         }
         self.apk_mirror_version_urls = {
             key: value + value.split("/")[-2]

@@ -198,6 +198,7 @@ You can use any of the following methods to build.
     37. [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
     38. [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
     39. [microg](https://github.com/inotia00/mMicroG/releases)
+    40. [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
 
     <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
     caused.If you know any better/safe source to download clean. Open a discussion.

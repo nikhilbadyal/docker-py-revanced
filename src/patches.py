@@ -53,6 +53,7 @@ class Patches(object):
         "com.google.android.youtube": "youtube",
         "com.google.android.apps.youtube.music": "youtube_music",
         "com.mgoogle.android.gms": "microg",
+        "jp.pxv.android": "pixiv",
     }
     revanced_app_ids = {
         key: (value, "_" + value) for key, value in _revanced_app_ids.items()
