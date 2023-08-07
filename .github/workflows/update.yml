@@ -22,11 +22,14 @@ jobs:
           fi
           echo "::set-output name=tag_name::$LATEST_RELEASE"
 
+      - name: Debug workspace contents
+        run: |
+          ls -la "$GITHUB_WORKSPACE"   # Debugging: List the contents of the workspace
+
       - name: Set paths
         run: |
           APKS_PATH="$GITHUB_WORKSPACE/apks"
           LATEST_PARSED_VERSION_FILE="$APKS_PATH/latest-parsed-version.md"
-          ls -la "$GITHUB_WORKSPACE"   # Debugging: List the contents of the workspace
           ls -la "$APKS_PATH"          # Debugging: List the contents of the "apks" folder
 
       - name: Compare with local version
