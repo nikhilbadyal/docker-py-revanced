@@ -27,6 +27,11 @@ jobs:
           APKS_PATH="$GITHUB_WORKSPACE/apks"
           LATEST_PARSED_VERSION_FILE="$APKS_PATH/latest-parsed-version.md"
 
+      - name: Debug workspace contents
+        run: |
+          ls -la "$GITHUB_WORKSPACE"
+          ls -la "$APKS_PATH"
+
       - name: Compare with local version
         run: |
           LOCAL_VERSION=$(cat "$LATEST_PARSED_VERSION_FILE")
