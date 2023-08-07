@@ -12,19 +12,6 @@ jobs:
   check-update:
     runs-on: ubuntu-latest
     steps:
-      - name: Check if .env file exists
-        run: |
-          if [[ ! -f .env ]]; then
-            echo "The .env file was not found in the repository. Please create the .env file with the necessary variables."
-            exit 0
-          fi
-
-      - name: Read CHECK_UPDATE from .env
-        id: read-check-update
-        run: |
-          CHECK_UPDATE=$(grep -E '^CHECK_UPDATE=' .env | cut -d '=' -f2-)
-          echo "::set-output name=CHECK_UPDATE::$CHECK_UPDATE"
-
       - name: Get latest release from $CHECK_UPDATE
         id: latest-release
         run: |
@@ -35,14 +22,14 @@ jobs:
           fi
           echo "::set-output name=tag_name::$LATEST_RELEASE"
 
-      - name: Debug GITHUB_WORKSPACE
+      - name: Set paths
         run: |
-          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
-          ls -R "$GITHUB_WORKSPACE"
+          APKS_PATH="$GITHUB_WORKSPACE/apks"
+          LATEST_PARSED_VERSION_FILE="$APKS_PATH/latest-parsed-version.md"
 
       - name: Compare with local version
         run: |
-          LOCAL_VERSION=$(cat "$GITHUB_WORKSPACE/apks/latest-parsed-version.md")
+          LOCAL_VERSION=$(cat "$LATEST_PARSED_VERSION_FILE")
           if [ "$LOCAL_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Already up-to-date!"
           else
@@ -54,9 +41,9 @@ jobs:
               exit 0
             else
               echo "Local reported version doesn't match fetched version, updating local version and running new Build action!"
-              echo "${{ steps.latest-release.outputs.tag_name }}" > "$GITHUB_WORKSPACE/apks/latest-parsed-version.md"
-              git add "$GITHUB_WORKSPACE/apks/latest-parsed-version.md"
-              git commit -m "Update apks/latest-parsed-version.md"
+              echo "${{ steps.latest-release.outputs.tag_name }}" > "$LATEST_PARSED_VERSION_FILE"
+              git add "$LATEST_PARSED_VERSION_FILE"
+              git commit -m "Update latest-parsed-version.md"
               git push
               echo "::set-output name=trigger_build::true"
             fi
@@ -66,7 +53,7 @@ jobs:
       - name: Verify local version update
         if: ${{ steps.compare-version.outputs.trigger_build == 'true' }}
         run: |
-          UPDATED_VERSION=$(cat "$GITHUB_WORKSPACE/apks/latest-parsed-version.md")
+          UPDATED_VERSION=$(cat "$LATEST_PARSED_VERSION_FILE")
           if [ "$UPDATED_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Local version updated successfully!"
           else
