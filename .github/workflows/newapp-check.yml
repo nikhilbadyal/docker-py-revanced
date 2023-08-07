@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
+    inputs:
+      CREATE_ISSUE:
+        description: "Create GitHub issue"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   status_check:
@@ -33,9 +39,18 @@ jobs:
         id: status
 
       - name: Update Check
-        run: echo "${{ steps.status.outputs.changelog }}"
+        run: |
+          run: echo "${{ steps.status.outputs.changelog }}"
+
+      - name: Upload status file
+        uses: actions/upload-artifact@main
+        with:
+          name: issue_body.md
+          path: status.md
+          if-no-files-found: error
 
       - name: Create Issue Action
+        if: inputs.CREATE_ISSUE
         uses: nashmaniac/create-issue-action@v1.2
         with:
           title: Revanced apps Status

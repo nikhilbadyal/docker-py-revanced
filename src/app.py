@@ -23,7 +23,7 @@ class APP(object):
             f"{app_name}_PATCHES_DL".upper(), config.global_patches_dl
         )
         self.integrations_dl = config.env.str(
-            f"{app_name}_INTEGRATION_DL".upper(), config.global_integrations_dl
+            f"{app_name}_INTEGRATIONS_DL".upper(), config.global_integrations_dl
         )
         self.patches_json_dl = config.env.str(
             f"{app_name}_PATCHES_JSON_DL".upper(), config.global_patches_json_dl
