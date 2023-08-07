@@ -1,5 +1,6 @@
 """Utilities."""
 import re
+import subprocess
 from typing import Dict
 
 from loguru import logger
@@ -50,6 +51,12 @@ class PatcherDownloadFailed(Exception):
     pass
 
 
+class PatchesJsonFailed(ValueError):
+    """Patches failed."""
+
+    pass
+
+
 def handle_response(response: Response) -> None:
     """Handle Get Request Response."""
     response_code = response.status_code
@@ -76,3 +83,22 @@ def slugify(string: str) -> str:
     string = string.strip("-")
 
     return string
+
+
+def check_java(dry_run: bool) -> None:
+    """Check if Java>=17 is installed."""
+    try:
+        if dry_run:
+            return
+        jd = subprocess.check_output(
+            ["java", "-version"], stderr=subprocess.STDOUT
+        ).decode("utf-8")
+        jd = jd[1:-1]
+        if "Runtime Environment" not in jd:
+            raise subprocess.CalledProcessError(-1, "java -version")
+        if "17" not in jd and "20" not in jd:
+            raise subprocess.CalledProcessError(-1, "java -version")
+        logger.debug("Cool!! Java is available")
+    except subprocess.CalledProcessError:
+        logger.debug("Java>= 17 Must be installed")
+        exit(-1)
