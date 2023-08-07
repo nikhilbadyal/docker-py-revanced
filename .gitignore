@@ -8,3 +8,4 @@ venv
 changelog.md
 .idea
 *.json
+status.md
