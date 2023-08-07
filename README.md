@@ -25,14 +25,12 @@ Let the 'forkception' begin!
 1. Go to the Actions page at the top.
 2. Select the "Build & Release" action.
 3. Click the "Run Workflow" drop-down button and run it.
-4. Optionally select the "Update Checker" action, and **enable** it. It will periodically check for new patch releases and trigger a new Build & Release when necessary.
-
-* This requires you to set your PERSONAL_ACCESS_TOKEN secret to trigger builds. Read about how to get a token [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
+4. Optionally select the "Update Checker" action, and **enable** it. It will periodically check for new `inotia00/revanced-patches` releases and trigger a new Build & Release when necessary.
 
 *It will take around 7 minutes to complete the workflow.*
 
-5. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
-6. Download your patched applications.
+1. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
+2. Download your patched applications.
 
 #### Set up to build:
 * ReVanced Extended **YouTube** (latest supported).
