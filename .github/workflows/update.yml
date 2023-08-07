@@ -37,6 +37,7 @@ jobs:
           
       - name: Compare with local version
         run: |
+          cd apks
           LOCAL_VERSION=$(cat latest-parsed-version.md)
           if [ "$LOCAL_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Already up-to-date!"
@@ -61,6 +62,7 @@ jobs:
       - name: Verify local version update
         if: ${{ steps.compare-version.outputs.trigger_build == 'true' }}
         run: |
+          cd apks
           UPDATED_VERSION=$(cat latest-parsed-version.md)
           if [ "$UPDATED_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Local version updated successfully!"
@@ -74,4 +76,4 @@ jobs:
         uses: benc-uk/workflow-dispatch@v1.1
         with:
           workflow: "Build & Release"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
