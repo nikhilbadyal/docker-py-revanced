@@ -35,13 +35,14 @@ jobs:
           fi
           echo "::set-output name=tag_name::$LATEST_RELEASE"
 
-      - name: Print current working directory
+      - name: Debug GITHUB_WORKSPACE
         run: |
-          pwd
+          echo "GITHUB_WORKSPACE: $GITHUB_WORKSPACE"
+          ls -R "$GITHUB_WORKSPACE"
 
       - name: Compare with local version
         run: |
-          LOCAL_VERSION=$(cat "${GITHUB_WORKSPACE}/apks/latest-parsed-version.md")
+          LOCAL_VERSION=$(cat "$GITHUB_WORKSPACE/apks/latest-parsed-version.md")
           if [ "$LOCAL_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Already up-to-date!"
           else
@@ -53,8 +54,8 @@ jobs:
               exit 0
             else
               echo "Local reported version doesn't match fetched version, updating local version and running new Build action!"
-              echo "${{ steps.latest-release.outputs.tag_name }}" > "${GITHUB_WORKSPACE}/apks/latest-parsed-version.md"
-              git add "${GITHUB_WORKSPACE}/apks/latest-parsed-version.md"
+              echo "${{ steps.latest-release.outputs.tag_name }}" > "$GITHUB_WORKSPACE/apks/latest-parsed-version.md"
+              git add "$GITHUB_WORKSPACE/apks/latest-parsed-version.md"
               git commit -m "Update apks/latest-parsed-version.md"
               git push
               echo "::set-output name=trigger_build::true"
@@ -65,7 +66,7 @@ jobs:
       - name: Verify local version update
         if: ${{ steps.compare-version.outputs.trigger_build == 'true' }}
         run: |
-          UPDATED_VERSION=$(cat "${GITHUB_WORKSPACE}/apks/latest-parsed-version.md")
+          UPDATED_VERSION=$(cat "$GITHUB_WORKSPACE/apks/latest-parsed-version.md")
           if [ "$UPDATED_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Local version updated successfully!"
           else
