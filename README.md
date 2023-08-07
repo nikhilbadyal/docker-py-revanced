@@ -1,11 +1,15 @@
+###### 07/AUGUST/2023:
+### Merged new upstream features...
+* [Custom patch resources](https://github.com/nikhilbadyal/docker-py-revanced/issues/230) are now supported, with per-app configuration options available! For more information about this, [check here](https://github.com/Spacellary/ReVanced-Extended-Automated-Builder/blob/main/readme-history/README-ORIGINAL.md#global-config).
+
 ###### 15/JULY/2023:
-### Merged upstream changes.
-* Now with support for ~~**RVX mMicroG** and~~ **RVX Reddit**.
+### Merged upstream changes...
+* Now with support for **RVX Reddit**.
 
 Also supports the other Reddit clients, such as **RV Sync**.
 * Read the [README-ORIGINAL.md](https://github.com/Spacellary/ReVanced-Extended-Automated-Builds/blob/main/readme-history/README-ORIGINAL.md) for more information about those.
 
-###### 23/MAR/2023:
+###### 23/MARCH/2023:
 ### Builds are now automated!
 Added simple scheduled action that checks for patch updates, and if an update is found, records the new version of patches for future reference and automatically triggers the workflow to build and release the new applications.
 
