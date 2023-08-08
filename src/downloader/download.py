@@ -45,9 +45,7 @@ class Downloader(object):
         headers = {}
         if self.config.personal_access_token and "github" in url:
             logger.debug("Using personal access token")
-            headers.update(
-                {"Authorization": "token " + self.config.personal_access_token}
-            )
+            headers["Authorization"] = f"token {self.config.personal_access_token}"
         response = self.config.session.get(
             url,
             stream=True,
