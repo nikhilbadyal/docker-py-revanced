@@ -1,10 +1,13 @@
 """Utilities."""
+import os
 import re
 import subprocess
 from typing import Dict
 
 from loguru import logger
 from requests import Response
+
+from src.config import RevancedConfig
 
 default_build = [
     "youtube",
@@ -97,3 +100,23 @@ def check_java(dry_run: bool) -> None:
     except subprocess.CalledProcessError:
         logger.debug("Java>= 17 Must be installed")
         exit(-1)
+
+
+def extra_downloads(config: RevancedConfig) -> None:
+    """Download extra files."""
+    from src.app import APP
+
+    try:
+        for extra in config.extra_download_files:
+            url, file_name = extra.split("@")
+            file_name_without_extension, file_extension = os.path.splitext(file_name)
+
+            if file_extension.lower() == ".apk":
+                new_file_name = f"{file_name_without_extension}-output{file_extension}"
+            else:
+                raise ValueError("Only .apk extensions are allowed.")
+            APP.download(url, config, assets_filter="", file_name=new_file_name)
+    except ValueError:
+        logger.info(
+            "Unable to download extra file. Provide input in url@name.apk format."
+        )

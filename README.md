@@ -136,6 +136,7 @@ You can use any of the following methods to build.
 | [TELEGRAM_BOT_TOKEN](#telegram-support)                  |          APKs Sender for Telegram upload          | None                                                                                                     |
 | [TELEGRAM_API_ID](#telegram-support)                     |         Used for telegram Authentication          | None                                                                                                     |
 | [TELEGRAM_API_HASH](#telegram-support)                   |         Used for telegram Authentication          | None                                                                                                     |
+| [EXTRA_FILES](#extra-files)                              |    Extra files apk to upload in GitHub upload.    | None                                                                                                     |
 
 `*` - Can be overridden for individual app.
 ### App Level Config
@@ -282,7 +283,16 @@ You can use any of the following methods to build.
    *Note* -
    1. Possible values are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
    2. Make sure the patching resource(CLI) support this feature.
-10. <a id="custom-exclude-patching"></a>If you want to exclude any patch. Set comma separated patch in `.env` file
+10. <a id="extra-files"></a>If you want to include any extra file to the Github upload. Set comma arguments
+     in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
+    ```ini
+    EXTRA_FILES=<url>@<appName>.apk
+    ```
+    Example:
+    ```dotenv
+     EXTRA_FILES=https://github.com/inotia00/mMicroG/releases/latest@mmicrog.apk,https://github.com/revanced/revanced-integrations@integrations.apk
+    ```
+11. <a id="custom-exclude-patching"></a>If you want to exclude any patch. Set comma separated patch in `.env` file
     or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
     <APP_NAME>_EXCLUDE_PATCH=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
@@ -296,7 +306,7 @@ You can use any of the following methods to build.
     1. **All** the patches for an app are **included** by default.<br>
     2. Revanced patches are provided as space separated, make sure you type those **-** separated here.
     It means a patch named _**Hey There**_ must be entered as **_hey-there_** in the above example.
-11. <a id="custom-include-patching"></a>If you want to include any universal patch. Set comma separated patch in `.env`
+12. <a id="custom-include-patching"></a>If you want to include any universal patch. Set comma separated patch in `.env`
     file or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
     <APP_NAME>_INCLUDE_PATCH=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
@@ -308,7 +318,7 @@ You can use any of the following methods to build.
     Note -
     1. Revanced patches are provided as space separated, make sure you type those **-** separated here.
        It means a patch named _**Hey There**_ must be entered as **_hey-there_** in the above example.
-12. <a id="app-version"></a>If you want to build a specific version or latest version. Add `version` in `.env` file
+13. <a id="app-version"></a>If you want to build a specific version or latest version. Add `version` in `.env` file
     or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
     <APP_NAME>_VERSION=<VERSION>
@@ -319,7 +329,7 @@ You can use any of the following methods to build.
     YOUTUBE_MUSIC_VERSION=X.X.X
     TWITTER_VERSION=latest
     ```
-13. <a id="telegram-support"></a>For Telegram Upload.
+14. <a id="telegram-support"></a>For Telegram Upload.
      1. Set up a telegram channel, send a message to it and forward the message to
         this telegram [bot](https://t.me/username_to_id_bot)
      2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
@@ -333,12 +343,12 @@ You can use any of the following methods to build.
         <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
      6. After Everything done successfully a part of the actions secrets of the repository may look like<br>
         <img src="https://i.imgur.com/Cjifz1M.png" width="400">
-14. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
+15. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets`.<br>
-15. Sample Envs<br>
+16. Sample Envs<br>
     <img src="https://i.imgur.com/FxOtiGs.png" width="600" style="left">
-16. Make sure your Action has write access. If not click
+17. Make sure your Action has write access. If not click
     [here](https://github.com/nikhilbadyal/docker-py-revanced/settings/actions).
     In the bottom give read and write access to Actions.
     <img src="https://i.imgur.com/STSv2D3.png" width="400">

@@ -54,7 +54,9 @@ class APP(object):
         return ", ".join([f"{key}: {value}" for key, value in attrs.items()])
 
     @staticmethod
-    def download(url: str, config: RevancedConfig, assets_filter: str) -> str:
+    def download(
+        url: str, config: RevancedConfig, assets_filter: str, file_name: str = ""
+    ) -> str:
         """Downloader."""
         from src.downloader.download import Downloader
 
@@ -63,8 +65,9 @@ class APP(object):
             from src.downloader.github import Github
 
             url = Github.patch_resource(url, assets_filter)[0]
-        extension = pathlib.Path(url).suffix
-        file_name = APP.generate_filename(url) + extension
+        if not file_name:
+            extension = pathlib.Path(url).suffix
+            file_name = APP.generate_filename(url) + extension
         Downloader(None, config).direct_download(url, file_name)  # type: ignore
         return file_name
 
