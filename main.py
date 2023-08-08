@@ -8,7 +8,7 @@ from src.config import RevancedConfig
 from src.downloader.factory import DownloaderFactory
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import AppNotFound, PatchesJsonFailed, check_java
+from src.utils import AppNotFound, PatchesJsonFailed, check_java, extra_downloads
 
 
 def main() -> None:
@@ -17,6 +17,7 @@ def main() -> None:
 
     env = Env()
     config = RevancedConfig(env)
+    extra_downloads(config)
     check_java(config.dry_run)
 
     logger.info(f"Will Patch only {config.apps}")

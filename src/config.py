@@ -5,8 +5,6 @@ from typing import List
 from environs import Env
 from requests import Session
 
-from src.utils import default_build
-
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
 default_patches_json = default_patches
@@ -19,6 +17,8 @@ class RevancedConfig(object):
     """Revanced Configurations."""
 
     def __init__(self, env: Env) -> None:
+        from src.utils import default_build
+
         self.env = env
         self.temp_folder = Path("apks")
         self.session = Session()
@@ -89,3 +89,4 @@ class RevancedConfig(object):
             "GLOBAL_KEYSTORE_FILE_NAME", "revanced.keystore"
         )
         self.global_archs_to_build = env.list("GLOBAL_ARCHS_TO_BUILD", [])
+        self.extra_download_files: List[str] = env.list("EXTRA_FILES", [])
