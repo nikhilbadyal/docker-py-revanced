@@ -25,9 +25,9 @@ Let the 'forkception' begin!
 1. Go to the Actions page at the top.
 2. Select the "Build & Release" action.
 3. Click the "Run Workflow" drop-down button and run it.
-4. Optionally select the "Update Checker" action, and **enable** it. It will periodically check for new `inotia00/revanced-patches` releases and trigger a new Build & Release when necessary.
+4. Optionally select the "Update Checker" action, and **enable** it. It will periodically check for new `inotia00/revanced-patches` releases and trigger a new Build & Release when necessary. <br> <br> *As ReVanced Extended has been [discontinued](https://github.com/inotia00/revanced-documentation/wiki/Announcement) new patches aren't expected to be released. You may change the repository to watch for updates in the [update.yml [line 25]](.github/workflows/update.yml) workflow file.*
 
-*It will take around 7 minutes to complete the workflow.*
+***It will take around 7 minutes to complete the Build & Release workflow.***
 
 1. Go to "Releases" at the bottom (on mobile) or at the right (on Desktop).
 2. Download your patched applications.
