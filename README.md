@@ -290,7 +290,7 @@ You can use any of the following methods to build.
     ```
     Example:
     ```dotenv
-     EXTRA_FILES=https://github.com/inotia00/mMicroG/releases/latest@mmicrog.apk
+     EXTRA_FILES=https://github.com/inotia00/mMicroG/releases/latest@mmicrog.apk,https://github.com/revanced/revanced-integrations@integrations.apk
     ```
 11. <a id="custom-exclude-patching"></a>If you want to exclude any patch. Set comma separated patch in `.env` file
     or in `ENVS` in `GitHub secrets` (Recommended) in the format
