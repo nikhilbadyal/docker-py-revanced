@@ -81,7 +81,7 @@ class Parser(object):
             "-jar",
             app.resource["cli"],
             "-a",
-            app.app_name + ".apk",
+            f"{app.app_name}.apk",
             "-b",
             app.resource["patches"],
             "-m",
@@ -104,9 +104,7 @@ class Parser(object):
         if app.app_name in self.config.rip_libs_apps:
             excluded = set(possible_archs) - set(app.archs_to_build)
             for arch in excluded:
-                args.append("--rip-lib")
-                args.append(arch)
-
+                args.extend(("--rip-lib", arch))
         start = perf_counter()
         logger.debug(
             f"Sending request to revanced cli for building with args java {args}"
