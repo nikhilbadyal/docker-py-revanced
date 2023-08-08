@@ -94,7 +94,7 @@ class APP(object):
                 try:
                     self.resource[resource_name] = future.result()
                 except Exception as e:
-                    raise PatcherDownloadFailed(f"An exception occurred: {e}")
+                    raise PatcherDownloadFailed(f"An exception occurred: {e}") from e
 
     @staticmethod
     def generate_filename(url: str) -> str:
