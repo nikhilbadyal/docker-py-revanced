@@ -1,0 +1,19 @@
+mode: chatops
+silent: true
+branchName: '${issue.number}-${issue.title,}'
+gitSafeReplacementChar: '-'
+branches:
+  - label:
+      - bug🐞
+    prefix: feature/
+  - label:
+      - feature-request👓
+    prefix: feature/
+  - label:
+      - new-app💁‍
+    prefix: new-app/
+  - label:
+      - documentation📄
+    prefix: documentation/
+experimental:
+  branchNameArgument: true

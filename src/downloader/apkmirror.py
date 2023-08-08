@@ -56,8 +56,7 @@ class ApkMirror(Downloader):
                 f"Unable to find any apk on apkmirror_specific_version on {main_page}"
             )
             raise AppNotFound("Unable to find apk on apkmirror site.")
-        download_url = self.config.apk_mirror + sub_url
-        return download_url
+        return self.config.apk_mirror + sub_url
 
     def specific_version(self, app: str, version: str) -> None:
         """Function to download the specified version of app from  apkmirror.

@@ -1,34 +1,35 @@
-# Config for Dependabot updates. See Documentation here:
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-
 version: 2
 updates:
-  # Update GitHub actions in workflows
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - dependencies🫂
     assignees:
       - "nikhilbadyal"
-
-  # Enable version updates for Docker
+    reviewers:
+      - "nikhilbadyal"
 
   - package-ecosystem: "docker"
-    # Look for a `Dockerfile` in the `docker/test/postgres` directory
     directory: "/"
-    # Check for updates to GitHub Actions every weekday
     schedule:
       interval: "daily"
+    labels:
+      - dependencies🫂
     assignees:
       - "nikhilbadyal"
+    reviewers:
+      - "nikhilbadyal"
 
-  # Enable version updates for Python/Pip - Production
   - package-ecosystem: "pip"
-    # Look for a `requirements.txt` in the `root` directory
-    # also 'setup.cfg', 'runtime.txt' and 'requirements/*.txt'
     directory: "/"
-    # Check for updates to GitHub Actions every weekday
     schedule:
       interval: "daily"
+    labels:
+      - dependencies🫂
     assignees:
+      - "nikhilbadyal"
+    reviewers:
         - "nikhilbadyal"

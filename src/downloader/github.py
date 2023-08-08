@@ -31,9 +31,7 @@ class Github(Downloader):
         }
         if self.config.personal_access_token:
             logger.debug("Using personal access token")
-            headers.update(
-                {"Authorization": "token " + self.config.personal_access_token}
-            )
+            headers["Authorization"] = f"token {self.config.personal_access_token}"
         response = requests.get(repo_url, headers=headers)
         handle_response(response)
         if repo_name == "revanced-patches":
