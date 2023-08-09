@@ -52,12 +52,14 @@ class Github(Downloader):
         github_repo_owner = path_segments[0]
         github_repo_name = path_segments[1]
 
-        release_tag = "latest"
-        for i, segment in enumerate(path_segments):
-            if segment == "tag":
-                release_tag = "tags/" + path_segments[i + 1]
-                break
-
+        release_tag = next(
+            (
+                f"tags/{path_segments[i + 1]}"
+                for i, segment in enumerate(path_segments)
+                if segment == "tag"
+            ),
+            "latest",
+        )
         return github_repo_owner, github_repo_name, release_tag
 
     @staticmethod
@@ -86,8 +88,7 @@ class Github(Downloader):
         for asset in assets:
             assets_url = asset["browser_download_url"]
             assets_name = asset["name"]
-            match = filter_pattern.search(assets_url)
-            if match:
+            if match := filter_pattern.search(assets_url):
                 logger.debug(f"Found {assets_name} to be downloaded from {assets_url}")
                 return match.group()
         return ""
