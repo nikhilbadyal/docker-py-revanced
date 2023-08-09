@@ -115,8 +115,8 @@ def extra_downloads(config: RevancedConfig) -> None:
                 new_file_name = f"{file_name_without_extension}-output{file_extension}"
             else:
                 raise ValueError("Only .apk extensions are allowed.")
-            APP.download(url, config, assets_filter="", file_name=new_file_name)
-    except ValueError:
+            APP.download(url, config, assets_filter=".*apk", file_name=new_file_name)
+    except (ValueError, IndexError):
         logger.info(
             "Unable to download extra file. Provide input in url@name.apk format."
         )
