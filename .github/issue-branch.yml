@@ -5,7 +5,7 @@ gitSafeReplacementChar: '-'
 branches:
   - label:
       - bug🐞
-    prefix: feature/
+    prefix: bug/
   - label:
       - feature-request👓
     prefix: feature/
