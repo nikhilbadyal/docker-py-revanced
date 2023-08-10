@@ -52,21 +52,21 @@ def handle_github_response(response: Response) -> None:
 def slugify(string: str) -> str:
     """Converts a string to a slug format."""
     # Convert to lowercase
-    string = string.lower()
+    modified_string = string.lower()
 
     # Remove special characters
-    string = re.sub(r"[^\w\s-]", "", string)
+    modified_string = re.sub(r"[^\w\s-]", "", modified_string)
 
     # Replace spaces with dashes
-    string = re.sub(r"\s+", "-", string)
+    modified_string = re.sub(r"\s+", "-", modified_string)
 
     # Remove consecutive dashes
-    string = re.sub(r"-+", "-", string)
+    modified_string = re.sub(r"-+", "-", modified_string)
 
     # Remove leading and trailing dashes
-    string = string.strip("-")
+    modified_string = modified_string.strip("-")
 
-    return string
+    return modified_string
 
 
 def check_java(dry_run: bool) -> None:
