@@ -7,7 +7,7 @@ from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
-from src.utils import AppNotFound, PatchesJsonFailed
+from src.exceptions import AppNotFound, PatchesJsonFailed
 
 
 class Patches(object):
