@@ -1,6 +1,5 @@
 """Revanced Patches."""
 import json
-import os
 from typing import Any, Dict, List, Tuple
 
 from loguru import logger
@@ -66,11 +65,12 @@ class Patches(object):
 
     def scrap_patches(self, file_name: str) -> Any:
         """Scrap Patches."""
-        if os.path.exists(file_name):
+        try:
             with open(file_name) as f:
                 patches = json.load(f)
             return patches
-        raise PatchesJsonFailed()
+        except FileNotFoundError:
+            raise PatchesJsonFailed()
 
     # noinspection DuplicatedCode
     def fetch_patches(self, config: RevancedConfig, app: APP) -> None:
