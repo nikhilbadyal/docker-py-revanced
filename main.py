@@ -6,10 +6,10 @@ from loguru import logger
 
 from src.config import RevancedConfig
 from src.downloader.factory import DownloaderFactory
-from src.exceptions import PatchingFailed
+from src.exceptions import AppNotFound, PatchesJsonFailed, PatchingFailed
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import AppNotFound, PatchesJsonFailed, check_java, extra_downloads
+from src.utils import check_java, extra_downloads
 
 
 def main() -> None:

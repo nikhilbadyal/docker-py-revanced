@@ -4,7 +4,7 @@ from typing import Any
 from loguru import logger
 
 from src.downloader.download import Downloader
-from src.utils import AppNotFound
+from src.exceptions import AppNotFound
 
 
 class ApkPure(Downloader):

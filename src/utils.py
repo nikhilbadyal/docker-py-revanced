@@ -38,18 +38,6 @@ def update_changelog(name: str, response: Dict[str, str]) -> None:
         file1.write(change_log)
 
 
-class AppNotFound(ValueError):
-    """Not a valid Revanced App."""
-
-    pass
-
-
-class PatchesJsonFailed(ValueError):
-    """Patches failed."""
-
-    pass
-
-
 def handle_response(response: Response) -> None:
     """Handle Get Request Response."""
     response_code = response.status_code
