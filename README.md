@@ -239,7 +239,7 @@ You can use any of the following methods to build.
     GLOBAL_CLI_DL=https://github.com/revanced/revanced-cli
     GLOBAL_PATCHES_DL=https://github.com/revanced/revanced-patches
     GLOBAL_PATCHES_JSON_DL=https://github.com/revanced/revanced-patches
-    GLOBAL_INTEGRATIONS_DL=https://github.com/revanced/revanced-integrations
+    GLOBAL_INTEGRATIONS_DL=local://integrations.apk
    ```
    Resources downloaded from envs and will be used for patching for any **APP_NAME**.
    Unless provided different resource for the individual app.<br><br>
@@ -253,8 +253,10 @@ You can use any of the following methods to build.
     YOUTUBE_PATCHES_JSON_DL=https://github.com/inotia00/revanced-patches
     YOUTUBE_INTEGRATIONS_DL=https://github.com/inotia00/revanced-integrations
    ```
-   With the config tool will try to patch youtube with resources from inotia00 while other global resource will used
-   for patching other apps.
+   With the config tool will try to patch YouTube with resources from inotia00 while other global resource will used
+   for patching other apps.<br>
+   If you have want to provide resource locally in the apks folder. You can specify that by mentioning filename
+   prefixed with `local://`.
    *Note* - The link provided must be DLs. Unless they are from GitHub.
 8. <a id="global-keystore-file-name"></a>If you don't want to use default keystore. You can provide your own by
    placing it inside `apks` folder. And adding the name of `keystore-file` in `.env` file or in `ENVS` in `GitHub
