@@ -15,6 +15,14 @@ from src.utils import possible_archs
 class Parser(object):
     """Revanced Parser."""
 
+    CLI_JAR = "-jar"
+    APK_ARG = "-a"
+    PATCHES_ARG = "-b"
+    INTEGRATIONS_ARG = "-m"
+    OUTPUT_ARG = "-o"
+    KEYSTORE_ARG = "--keystore"
+    OPTIONS_ARG = "--options"
+
     def __init__(self, patcher: Patches, config: RevancedConfig) -> None:
         self._PATCHES: List[str] = []
         self._EXCLUDED: List[str] = []
@@ -78,19 +86,19 @@ class Parser(object):
         :param app: Name of the app
         """
         args = [
-            "-jar",
+            self.CLI_JAR,
             app.resource["cli"],
-            "-a",
+            self.APK_ARG,
             f"{app.app_name}.apk",
-            "-b",
+            self.PATCHES_ARG,
             app.resource["patches"],
-            "-m",
+            self.INTEGRATIONS_ARG,
             app.resource["integrations"],
-            "-o",
+            self.OUTPUT_ARG,
             app.get_output_file_name(),
-            "--keystore",
+            self.KEYSTORE_ARG,
             app.keystore_name,
-            "--options",
+            self.OPTIONS_ARG,
             "options.json",
         ]
         if app.experiment:
