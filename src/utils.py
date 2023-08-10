@@ -97,10 +97,11 @@ def extra_downloads(config: RevancedConfig) -> None:
             url, file_name = extra.split("@")
             file_name_without_extension, file_extension = os.path.splitext(file_name)
 
-            if file_extension.lower() == ".apk":
-                new_file_name = f"{file_name_without_extension}-output{file_extension}"
-            else:
-                raise ValueError("Only .apk extensions are allowed.")
+            if file_extension.lower() != ".apk":
+                logger.info(f"Only .apk extensions are allowed {file_name}.")
+                continue
+
+            new_file_name = f"{file_name_without_extension}-output{file_extension}"
             APP.download(url, config, assets_filter=".*apk", file_name=new_file_name)
     except (ValueError, IndexError):
         logger.info(
