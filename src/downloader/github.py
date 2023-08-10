@@ -8,7 +8,7 @@ from loguru import logger
 
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
-from src.utils import handle_response, update_changelog
+from src.utils import handle_github_response, update_changelog
 
 
 class Github(Downloader):
@@ -35,7 +35,7 @@ class Github(Downloader):
             logger.debug("Using personal access token")
             headers["Authorization"] = f"token {self.config.personal_access_token}"
         response = requests.get(repo_url, headers=headers)
-        handle_response(response)
+        handle_github_response(response)
         if repo_name == "revanced-patches":
             download_url = response.json()["assets"][1]["browser_download_url"]
         else:
@@ -78,7 +78,7 @@ class Github(Downloader):
         if config.personal_access_token:
             headers["Authorization"] = f"token {config.personal_access_token}"
         response = requests.get(api_url, headers=headers)
-        handle_response(response)
+        handle_github_response(response)
         assets = response.json()["assets"]
         try:
             filter_pattern = re.compile(asset_filter)

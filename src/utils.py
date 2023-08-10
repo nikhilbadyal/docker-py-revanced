@@ -40,7 +40,7 @@ def update_changelog(name: str, response: Dict[str, str]) -> None:
         file1.write(change_log)
 
 
-def handle_response(response: Response) -> None:
+def handle_github_response(response: Response) -> None:
     """Handle Get Request Response."""
     response_code = response.status_code
     if response_code != 200:
