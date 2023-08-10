@@ -8,7 +8,8 @@ from typing import Dict
 from loguru import logger
 
 from src.config import RevancedConfig
-from src.utils import PatcherDownloadFailed, slugify
+from src.exceptions import PatchingFailed
+from src.utils import slugify
 
 
 class APP(object):
@@ -64,7 +65,7 @@ class APP(object):
         if url.startswith("https://github"):
             from src.downloader.github import Github
 
-            url = Github.patch_resource(url, assets_filter)[0]
+            url = Github.patch_resource(url, assets_filter, config)
         if not file_name:
             extension = pathlib.Path(url).suffix
             file_name = APP.generate_filename(url) + extension
@@ -97,7 +98,7 @@ class APP(object):
                 try:
                     self.resource[resource_name] = future.result()
                 except Exception as e:
-                    raise PatcherDownloadFailed(f"An exception occurred: {e}") from e
+                    raise PatchingFailed(e) from e
 
     @staticmethod
     def generate_filename(url: str) -> str:

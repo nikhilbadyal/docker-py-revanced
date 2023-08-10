@@ -8,6 +8,7 @@ from loguru import logger
 from requests import Response
 
 from src.config import RevancedConfig
+from src.exceptions import PatchingFailed
 
 default_build = [
     "youtube",
@@ -43,12 +44,6 @@ class AppNotFound(ValueError):
     pass
 
 
-class PatcherDownloadFailed(Exception):
-    """Not a valid Revanced App."""
-
-    pass
-
-
 class PatchesJsonFailed(ValueError):
     """Patches failed."""
 
@@ -59,8 +54,9 @@ def handle_response(response: Response) -> None:
     """Handle Get Request Response."""
     response_code = response.status_code
     if response_code != 200:
-        logger.error(response.text)
-        exit(1)
+        raise PatchingFailed(
+            f"Unable to downloaded assets from GitHub. Reason - {response.text}"
+        )
 
 
 def slugify(string: str) -> str:
@@ -98,7 +94,7 @@ def check_java(dry_run: bool) -> None:
             raise subprocess.CalledProcessError(-1, "java -version")
         logger.debug("Cool!! Java is available")
     except subprocess.CalledProcessError:
-        logger.debug("Java>= 17 Must be installed")
+        logger.error("Java>= 17 Must be installed")
         exit(-1)
 
 

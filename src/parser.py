@@ -1,5 +1,4 @@
 """Revanced Parser."""
-import sys
 from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import List
@@ -8,6 +7,7 @@ from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
+from src.exceptions import PatchingFailed
 from src.patches import Patches
 from src.utils import possible_archs
 
@@ -112,8 +112,7 @@ class Parser(object):
         process = Popen(["java", *args], stdout=PIPE)
         output = process.stdout
         if not output:
-            logger.error("Failed to send request for patching.")
-            sys.exit(-1)
+            raise PatchingFailed("Failed to send request for patching.")
         for line in output:
             logger.debug(line.decode(), flush=True, end="")
         process.wait()
