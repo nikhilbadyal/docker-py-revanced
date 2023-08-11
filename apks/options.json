@@ -41,6 +41,12 @@
     "value" : true
   } ]
 }, {
+  "patchName" : "Spoof player parameters",
+  "options" : [ {
+    "key" : "SpoofPlayerParameterShorts",
+    "value" : true
+  } ]
+}, {
   "patchName" : "Theme",
   "options" : [ {
     "key" : "darkThemeBackgroundColor",
