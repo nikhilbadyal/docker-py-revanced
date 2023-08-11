@@ -66,6 +66,8 @@ class APP(object):
             from src.downloader.github import Github
 
             url = Github.patch_resource(url, assets_filter, config)
+        elif url.startswith("local://"):
+            return url.split("/")[-1]
         if not file_name:
             extension = pathlib.Path(url).suffix
             file_name = APP.generate_filename(url) + extension

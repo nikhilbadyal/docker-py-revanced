@@ -10,7 +10,7 @@ from google_play_scraper.exceptions import GooglePlayScraperException
 
 from src.exceptions import APKMirrorScrapperFailure
 from src.patches import Patches
-from src.utils import handle_response
+from src.utils import handle_github_response
 
 not_found_icon = "https://img.icons8.com/bubbles/500/android-os.png"
 headers = {
@@ -105,7 +105,7 @@ def generate_markdown_table(data: List[List[str]]) -> str:
 def main() -> None:
     repo_url = "https://api.revanced.app/v2/patches/latest"
     response = requests.get(repo_url)
-    handle_response(response)
+    handle_github_response(response)
 
     parsed_data = response.json()
     compatible_packages = parsed_data["patches"]

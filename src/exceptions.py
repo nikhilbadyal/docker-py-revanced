@@ -4,13 +4,19 @@ class APKMirrorScrapperFailure(Exception):
     pass
 
 
-class ExtraAssetsFailure(Exception):
-    """Failed to scrap icon from apkmirror."""
+class PatchingFailed(Exception):
+    """Patching Failed."""
 
     pass
 
 
-class PatchingFailed(Exception):
-    """Patching Failed."""
+class AppNotFound(ValueError):
+    """Not a valid Revanced App."""
+
+    pass
+
+
+class PatchesJsonFailed(ValueError):
+    """Patches failed."""
 
     pass

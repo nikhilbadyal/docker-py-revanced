@@ -1,13 +1,12 @@
 """Revanced Patches."""
 import json
-import os
 from typing import Any, Dict, List, Tuple
 
 from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
-from src.utils import AppNotFound, PatchesJsonFailed
+from src.exceptions import AppNotFound, PatchesJsonFailed
 
 
 class Patches(object):
@@ -64,18 +63,10 @@ class Patches(object):
         """Return supported apps."""
         return Patches._revanced_app_ids
 
-    def scrap_patches(self, file_name: str) -> Any:
-        """Scrap Patches."""
-        if os.path.exists(file_name):
-            with open(file_name) as f:
-                patches = json.load(f)
-            return patches
-        raise PatchesJsonFailed()
-
-    # noinspection DuplicatedCode
     def fetch_patches(self, config: RevancedConfig, app: APP) -> None:
         """Function to fetch all patches."""
-        patches = self.scrap_patches(
+        patch_loader = PatchLoader()
+        patches = patch_loader.load_patches(
             f'{config.temp_folder}/{app.resource["patches_json"]}'
         )
         for app_name in (self.revanced_app_ids[x][1] for x in self.revanced_app_ids):
@@ -121,7 +112,6 @@ class Patches(object):
             pass
         return patches, version
 
-    # noinspection IncorrectFormatting
     def include_exclude_patch(
         self, app: APP, parser: Any, patches: List[Dict[str, str]]
     ) -> None:
@@ -164,3 +154,17 @@ class Patches(object):
             recommended_version = app.app_version
         app.set_recommended_version(recommended_version, experiment)
         return total_patches
+
+
+class PatchLoader:
+    """Patch Loader."""
+
+    @staticmethod
+    def load_patches(file_name: str) -> Any:
+        """Load patches from a file."""
+        try:
+            with open(file_name) as f:
+                patches = json.load(f)
+            return patches
+        except FileNotFoundError:
+            raise PatchesJsonFailed()
