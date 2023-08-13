@@ -27,7 +27,7 @@ class UptoDown(Downloader):
         :return: Version of downloaded apk
         """
         logger.debug("downloading specified version of app from uptodown.")
-        url = f"https://{self.upto_down_aliases.get(app)}.en.uptodown.com/android/versions"
+        url = f"https://{self.upto_down.get(app)}.en.uptodown.com/android/versions"
         html = self.config.session.get(url).text
         soup = BeautifulSoup(html, "html.parser")
         versions_list = soup.find("section", {"id": "versions"})

@@ -24,7 +24,7 @@ class RevancedConfig(object):
         self.session = Session()
         self.session.headers["User-Agent"] = "anything"
         self.apk_mirror = "https://www.apkmirror.com"
-        self.upto_down_aliases = {
+        self.upto_down = {
             "spotify": "spotify",
             "nyx-music-player": "nyx-music-player",
             "my-expenses": "my-expenses",
