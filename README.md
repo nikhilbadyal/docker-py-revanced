@@ -184,7 +184,7 @@ You can use any of the following methods to build.
     22. [netguard](https://www.apkmirror.com/apk/marcel-bokhorst/netguard-no-root-firewall/)
     23. [instagram](https://www.apkmirror.com/apk/instagram/instagram-instagram/)
     24. [inshorts](https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/)
-    25. [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
+    25. [messenger](https://www.apkmirror.com/apk/facebook-2/messenger/)
     26. [grecorder](https://www.apkmirror.com/apk/google-inc/google-recorder/)
     27. [trakt](https://www.apkmirror.com/apk/trakt/trakt/)
     28. [candyvpn](https://www.apkmirror.com/apk/liondev-io/candylink-vpn/)
