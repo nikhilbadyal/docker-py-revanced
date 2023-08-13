@@ -24,17 +24,17 @@ class RevancedConfig(object):
         self.session = Session()
         self.session.headers["User-Agent"] = "anything"
         self.apk_mirror = "https://www.apkmirror.com"
-        self.upto_down = [
-            "spotify",
-            "nyx-music-player",
-            "my-expenses",
-            "backdrops",
-            "twitch",
-            "irplus",
-            "meme-generator-free",
-            "yuka",
-            "grecorder",
-        ]
+        self.upto_down_aliases = {
+            "spotify": "spotify",
+            "nyx-music-player": "nyx-music-player",
+            "my-expenses": "my-expenses",
+            "backdrops": "backdrops",
+            "twitch": "twitch",
+            "irplus": "irplus",
+            "meme-generator-free": "meme-generator-free",
+            "yuka": "yuka",
+            "grecorder": "opnemer",
+        }
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager", "candyvpn"]
         self.ci_test = env.bool("CI_TEST", False)
