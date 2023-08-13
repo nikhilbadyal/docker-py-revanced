@@ -33,7 +33,7 @@ class RevancedConfig(object):
             "irplus",
             "meme-generator-free",
             "yuka",
-            "opnemer",
+            "grecorder",
         ]
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager", "candyvpn"]
