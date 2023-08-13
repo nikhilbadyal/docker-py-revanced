@@ -33,6 +33,7 @@ class RevancedConfig(object):
             "irplus",
             "meme-generator-free",
             "yuka",
+            "opnemer"
         ]
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager", "candyvpn"]
@@ -57,7 +58,6 @@ class RevancedConfig(object):
             "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
             "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
             "messenger": f"{self.apk_mirror}/apk/facebook-2/messenger/",
-            "grecorder": f"{self.apk_mirror}/apk/google-inc/google-recorder/",
             "trakt": f"{self.apk_mirror}/apk/trakt/trakt/",
             "candyvpn": f"{self.apk_mirror}/apk/liondev-io/candylink-vpn/",
             "sonyheadphone": f"{self.apk_mirror}/apk/sony-corporation/sony-headphones-connect/",

@@ -36,7 +36,7 @@ class Patches(object):
         "com.instagram.android": "instagram",
         "com.nis.app": "inshorts",
         "com.facebook.orca": "messenger",
-        "com.google.android.apps.recorder": "grecorder",
+        "com.google.android.apps.recorder": "opnemer",
         "tv.trakt.trakt": "trakt",
         "com.candylink.openvpn": "candyvpn",
         "com.sony.songpal.mdr": "sonyheadphone",
