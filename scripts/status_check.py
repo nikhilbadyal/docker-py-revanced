@@ -12,7 +12,8 @@ from src.patches import Patches
 from src.utils import (
     apk_mirror_base_url,
     apkmirror_status_check,
-    handle_github_response, bs4_parser,
+    bs4_parser,
+    handle_github_response,
 )
 
 not_found_icon = "https://img.icons8.com/bubbles/500/android-os.png"
