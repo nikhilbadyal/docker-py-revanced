@@ -36,18 +36,20 @@ class ApkMirror(Downloader):
         logger.debug(f"Extracting download link from\n{main_page}")
         download_button = self._extracted_search_div(main_page, "center")
         download_links = download_button.find_all("a")
-        final_download_link = None
-        for download_link in download_links:
-            if download_link.get("href") and "download/?key=" in download_link.get(
-                "href"
-            ):
-                final_download_link = download_link["href"]
-                break
-        if not final_download_link:
+        if final_download_link := next(
+            (
+                download_link["href"]
+                for download_link in download_links
+                if download_link.get("href")
+                and "download/?key=" in download_link.get("href")
+            ),
+            None,
+        ):
+            self._extract_force_download_link(
+                self.config.apk_mirror + final_download_link, app
+            )
+        else:
             raise AppNotFound(f"Unable to download apk from {main_page}")
-        self._extract_force_download_link(
-            self.config.apk_mirror + final_download_link, app
-        )
 
     def get_download_page(self, main_page: str) -> str:
         """Function to get the download page in apk_mirror.
