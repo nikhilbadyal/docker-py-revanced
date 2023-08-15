@@ -23,7 +23,7 @@ apk_mirror_header = {
     "Authorization": "Basic YXBpLWFwa3VwZGF0ZXI6cm01cmNmcnVVakt5MDRzTXB5TVBKWFc4",
     "Content-Type": "application/json",
 }
-
+bs4_parser = 'html.parser'
 
 def update_changelog(name: str, response: Dict[str, str]) -> None:
     """Updated Changelog."""
