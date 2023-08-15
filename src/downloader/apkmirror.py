@@ -2,7 +2,7 @@
 from typing import Any
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from loguru import logger
 
 from scripts.status_check import headers
@@ -71,7 +71,7 @@ class ApkMirror(Downloader):
         return f"{self.config.apk_mirror}{sub_url}"
 
     @staticmethod
-    def _extracted_search_div(url: str, search_class: str):
+    def _extracted_search_div(url: str, search_class: str) -> Tag:
         """Extract search div."""
         r = requests.get(url, headers=headers)
         if r.status_code != 200:
