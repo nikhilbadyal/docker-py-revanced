@@ -5,7 +5,6 @@ from loguru import logger
 from selectolax.lexbor import LexborHTMLParser
 
 from src.downloader.download import Downloader
-from src.exceptions import AppNotFound
 
 
 class ApkSos(Downloader):
@@ -32,12 +31,6 @@ class ApkSos(Downloader):
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        package_name = None
-        for package, app_tuple in self.patcher.revanced_app_ids.items():
-            if app_tuple[0] == app:
-                package_name = package
-        if not package_name:
-            logger.info("Unable to download from apkcombo")
-            raise AppNotFound()
+        package_name = self.patcher.get_package_name(app)
         download_url = f"https://apksos.com/download-app/{package_name}"
         self.extract_download_link(download_url, app)
