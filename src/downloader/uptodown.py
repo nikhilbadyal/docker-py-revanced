@@ -7,6 +7,7 @@ from selectolax.lexbor import LexborHTMLParser
 
 from src.downloader.download import Downloader
 from src.exceptions import AppNotFound
+from src.utils import bs4_parser
 
 
 class UptoDown(Downloader):
@@ -31,7 +32,7 @@ class UptoDown(Downloader):
             f"https://{self.config.upto_down.get(app)}.en.uptodown.com/android/versions"
         )
         html = self.config.session.get(url).text
-        soup = BeautifulSoup(html, "html.parser")
+        soup = BeautifulSoup(html, bs4_parser)
         versions_list = soup.find("section", {"id": "versions"})
         download_url = None
         for version_item in versions_list.find_all("div", {"data-url": True}):
