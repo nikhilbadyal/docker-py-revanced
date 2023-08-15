@@ -59,6 +59,14 @@ class Patches(object):
     }
 
     @staticmethod
+    def get_package_name(app: str) -> str:
+        """Get Package name from app name."""
+        for package, app_tuple in Patches.revanced_app_ids.items():
+            if app_tuple[0] == app:
+                return package
+        raise AppNotFound("App Not Found.")
+
+    @staticmethod
     def support_app() -> Dict[str, str]:
         """Return supported apps."""
         return Patches._revanced_app_ids

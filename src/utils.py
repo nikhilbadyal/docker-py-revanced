@@ -1,9 +1,11 @@
 """Utilities."""
+import json
 import os
 import re
 import subprocess
-from typing import Dict
+from typing import Any, Dict
 
+import requests
 from loguru import logger
 from requests import Response
 
@@ -15,6 +17,12 @@ default_build = [
     "youtube_music",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+apk_mirror_base_url = "https://www.apkmirror.com"
+apk_mirror_header = {
+    "User-Agent": "APKUpdater-v" + "3.0.1",
+    "Authorization": "Basic YXBpLWFwa3VwZGF0ZXI6cm01cmNmcnVVakt5MDRzTXB5TVBKWFc4",
+    "Content-Type": "application/json",
+}
 
 
 def update_changelog(name: str, response: Dict[str, str]) -> None:
@@ -107,3 +115,14 @@ def extra_downloads(config: RevancedConfig) -> None:
         logger.info(
             "Unable to download extra file. Provide input in url@name.apk format."
         )
+
+
+def apkmirror_status_check(package_name: str) -> Any:
+    """Check if app exists on APKMirror."""
+    check_if_exist = f"{apk_mirror_base_url}/wp-json/apkm/v1/app_exists/"
+    body = {"pnames": [package_name]}
+    return json.loads(
+        requests.post(
+            check_if_exist, data=json.dumps(body), headers=apk_mirror_header
+        ).content
+    )
