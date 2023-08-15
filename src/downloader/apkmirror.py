@@ -70,7 +70,7 @@ class ApkMirror(Downloader):
 
     @staticmethod
     def _extracted_search_div(url: str, search_class: str):
-        """Extract search div"""
+        """Extract search div."""
         r = requests.get(url, headers=headers)
         if r.status_code != 200:
             raise AppNotFound(f"Unable to connect with {url} on ApkMirror.")
