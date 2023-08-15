@@ -16,11 +16,7 @@ class ApkMirror(Downloader):
 
     def _extract_force_download_link(self, link: str, app: str) -> None:
         """Extract force download link."""
-        r = requests.get(link, headers=headers)
-        if r.status_code != 200:
-            raise AppNotFound(f"Unable to connect with {link} on ApkMirror.")
-        soup = BeautifulSoup(r.text, bs4_parser)
-        notes_divs = soup.find(class_="tab-pane")
+        notes_divs = self._extracted_search_div(link, "tab-pane")
         possible_links = notes_divs.find_all("a")
         for possible_link in possible_links:
             if possible_link.get("href") and "download.php?id=" in possible_link.get(
@@ -38,11 +34,7 @@ class ApkMirror(Downloader):
         :param app: Name of the app
         """
         logger.debug(f"Extracting download link from\n{main_page}")
-        r = requests.get(main_page, headers=headers)
-        if r.status_code != 200:
-            raise AppNotFound(f"Unable to connect with {main_page} on ApkMirror.")
-        soup = BeautifulSoup(r.text, bs4_parser)
-        download_button = soup.find(class_="center")
+        download_button = self._extracted_search_div(main_page, "center")
         download_links = download_button.find_all("a")
         final_download_link = None
         for download_link in download_links:
@@ -58,15 +50,10 @@ class ApkMirror(Downloader):
     def get_download_page(self, main_page: str) -> str:
         """Function to get the download page in apk_mirror.
 
-        :param parser: Parser
         :param main_page: Main Download Page in APK mirror(Index)
         :return:
         """
-        r = requests.get(main_page, headers=headers)
-        if r.status_code != 200:
-            raise AppNotFound(f"Unable to connect with {main_page} on ApkMirror.")
-        soup = BeautifulSoup(r.text, bs4_parser)
-        list_widget = soup.find(class_="listWidget")
+        list_widget = self._extracted_search_div(main_page, "listWidget")
         table_rows = list_widget.find_all(class_="table-row")
         sub_url = None
         for row in table_rows:
@@ -78,6 +65,15 @@ class ApkMirror(Downloader):
         if not sub_url:
             raise AppNotFound("Unable to download apk from APKMirror.")
         return f"{self.config.apk_mirror}{sub_url}"
+
+    @staticmethod
+    def _extracted_search_div(url: str, search_class: str):
+        """Extract search div"""
+        r = requests.get(url, headers=headers)
+        if r.status_code != 200:
+            raise AppNotFound(f"Unable to connect with {url} on ApkMirror.")
+        soup = BeautifulSoup(r.text, bs4_parser)
+        return soup.find(class_=search_class)
 
     def specific_version(self, app: str, version: str) -> None:
         """Function to download the specified version of app from  apkmirror.
