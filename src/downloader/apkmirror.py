@@ -46,7 +46,9 @@ class ApkMirror(Downloader):
         download_links = download_button.find_all("a")
         final_download_link = None
         for download_link in download_links:
-            if download_link.get("href") and "download/?key=" in download_link.get("href"):
+            if download_link.get("href") and "download/?key=" in download_link.get(
+                "href"
+            ):
                 final_download_link = download_link["href"]
                 break
         if not final_download_link:
