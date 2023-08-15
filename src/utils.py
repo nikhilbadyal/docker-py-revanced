@@ -121,9 +121,8 @@ def apkmirror_status_check(package_name: str) -> Any:
     """Check if app exists on APKMirror."""
     check_if_exist = f"{apk_mirror_base_url}/wp-json/apkm/v1/app_exists/"
     body = {"pnames": [package_name]}
-    response = json.loads(
+    return json.loads(
         requests.post(
             check_if_exist, data=json.dumps(body), headers=apk_mirror_header
         ).content
     )
-    return response

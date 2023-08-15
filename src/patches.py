@@ -64,8 +64,7 @@ class Patches(object):
         package_name = None
         for package, app_tuple in Patches.revanced_app_ids.items():
             if app_tuple[0] == app:
-                package_name = package
-                return package_name
+                return package
         raise AppNotFound("App Not Found.")
 
     @staticmethod
