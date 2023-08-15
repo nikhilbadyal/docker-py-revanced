@@ -1,10 +1,11 @@
 """Upto Down Downloader."""
 from typing import Any
 
+import requests
 from bs4 import BeautifulSoup
 from loguru import logger
-from selectolax.lexbor import LexborHTMLParser
 
+from scripts.status_check import headers
 from src.downloader.download import Downloader
 from src.exceptions import AppNotFound
 from src.utils import bs4_parser
@@ -14,9 +15,12 @@ class UptoDown(Downloader):
     """Files downloader."""
 
     def extract_download_link(self, page: str, app: str) -> None:
-        parser = LexborHTMLParser(self.config.session.get(page).text)
-        main_page = parser.css_first("#detail-download-button")
-        download_url = main_page.attributes["data-url"]
+        r = requests.get(page, headers=headers, allow_redirects=True)
+        soup = BeautifulSoup(r.text, bs4_parser)
+        soup = soup.find(id="detail-download-button")
+        download_url = soup.get("data-url")
+        if not download_url:
+            raise AppNotFound("Unable to download from uptodown.")
         self._download(download_url, f"{app}.apk")
         logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
 
