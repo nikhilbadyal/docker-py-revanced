@@ -61,7 +61,6 @@ class Patches(object):
     @staticmethod
     def get_package_name(app: str) -> str:
         """Get Package name from app name."""
-        package_name = None
         for package, app_tuple in Patches.revanced_app_ids.items():
             if app_tuple[0] == app:
                 return package
