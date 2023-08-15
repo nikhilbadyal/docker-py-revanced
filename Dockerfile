@@ -1,6 +1,6 @@
 ARG PYTHON_VERSION=3.10-slim-bullseye
 
-FROM python:${PYTHON_VERSION} as python
+FROM python:${PYTHON_VERSION} AS python
 
 
 ARG APP_HOME=/app
