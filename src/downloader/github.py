@@ -8,6 +8,7 @@ from loguru import logger
 
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
+from src.exceptions import PatchingFailed
 from src.utils import handle_github_response, update_changelog
 
 
@@ -82,9 +83,8 @@ class Github(Downloader):
         assets = response.json()["assets"]
         try:
             filter_pattern = re.compile(asset_filter)
-        except re.error:
-            logger.error("Invalid regex pattern provided.")
-            raise Exception()
+        except re.error as e:
+            raise PatchingFailed("Invalid regex pattern provided.") from e
         for asset in assets:
             assets_url = asset["browser_download_url"]
             assets_name = asset["name"]
