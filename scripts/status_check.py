@@ -28,7 +28,9 @@ def apkcombo_scrapper(package_name: str) -> str:
     """Apkcombo scrapper."""
     try:
         apkcombo_url = f"https://apkcombo.com/genericApp/{package_name}"
-        r = requests.get(apkcombo_url, headers=headers, allow_redirects=True)
+        r = requests.get(
+            apkcombo_url, headers=headers, allow_redirects=True, timeout=10
+        )
         soup = BeautifulSoup(r.text, bs4_parser)
         url = soup.select_one("div.avatar > img")["data-src"]
         return re.sub(r"=.*$", "", url)
@@ -41,12 +43,12 @@ def apkmirror_scrapper(package_name: str) -> str:
     response = apkmirror_status_check(package_name)
     search_url = f"{apk_mirror_base_url}/?s={package_name}"
     if response["data"][0]["exists"]:
-        return _extracted_from_apkmirror_scrapper_6(search_url)
+        return _extracted_from_apkmirror_scrapper(search_url)
     raise APKMirrorIconScrapFailure(url=search_url)
 
 
-def _extracted_from_apkmirror_scrapper_6(search_url):
-    r = requests.get(search_url, headers=headers)
+def _extracted_from_apkmirror_scrapper(search_url: str) -> str:
+    r = requests.get(search_url, headers=headers, timeout=10)
     soup = BeautifulSoup(r.text, bs4_parser)
     sub_url = soup.select_one("div.bubble-wrap > img")["src"]
     new_width = 500
@@ -74,7 +76,7 @@ def gplay_icon_scrapper(package_name: str) -> str:
     except GooglePlayScraperException:
         try:
             return apkmirror_scrapper(package_name)
-        except APKMirrorScrapperFailure:
+        except APKMirrorIconScrapFailure:
             return apkcombo_scrapper(package_name)
     except Exception:
         return not_found_icon
@@ -100,7 +102,7 @@ def generate_markdown_table(data: List[List[str]]) -> str:
 
 def main() -> None:
     repo_url = "https://api.revanced.app/v2/patches/latest"
-    response = requests.get(repo_url)
+    response = requests.get(repo_url, timeout=10)
     handle_github_response(response)
 
     parsed_data = response.json()

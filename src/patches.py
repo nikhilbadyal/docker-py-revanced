@@ -113,7 +113,8 @@ class Patches(object):
         app_names = {value[0]: value[1] for value in self.revanced_app_ids.values()}
 
         if not (app_name := app_names.get(app)):
-            raise AppNotFound(app)
+            raise AppNotFound(f"App '{app}' not found in the supported apps.")
+
         patches = getattr(self, app_name)
         version = "latest"
         with contextlib.suppress(StopIteration):
