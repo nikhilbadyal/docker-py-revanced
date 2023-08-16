@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from google_play_scraper import app as gplay_app
 from google_play_scraper.exceptions import GooglePlayScraperException
 
-from src.exceptions import APKMirrorScrapperFailure
+from src.exceptions import APKMirrorIconScrapFailure
 from src.patches import Patches
 from src.utils import (
     apk_mirror_base_url,
@@ -39,22 +39,26 @@ def apkcombo_scrapper(package_name: str) -> str:
 def apkmirror_scrapper(package_name: str) -> str:
     """Apkmirror URL."""
     response = apkmirror_status_check(package_name)
+    search_url = f"{apk_mirror_base_url}/?s={package_name}"
     if response["data"][0]["exists"]:
-        search_url = f"{apk_mirror_base_url}/?s={package_name}"
-        r = requests.get(search_url, headers=headers)
-        soup = BeautifulSoup(r.text, bs4_parser)
-        sub_url = soup.select_one("div.bubble-wrap > img")["src"]
-        new_width = 500
-        new_height = 500
-        new_quality = 100
+        return _extracted_from_apkmirror_scrapper_6(search_url)
+    raise APKMirrorIconScrapFailure(url=search_url)
 
-        # regular expression pattern to match w=xx&h=xx&q=xx
-        pattern = r"(w=\d+&h=\d+&q=\d+)"
 
-        return apk_mirror_base_url + re.sub(
-            pattern, f"w={new_width}&h={new_height}&q={new_quality}", sub_url
-        )
-    raise APKMirrorScrapperFailure()
+def _extracted_from_apkmirror_scrapper_6(search_url):
+    r = requests.get(search_url, headers=headers)
+    soup = BeautifulSoup(r.text, bs4_parser)
+    sub_url = soup.select_one("div.bubble-wrap > img")["src"]
+    new_width = 500
+    new_height = 500
+    new_quality = 100
+
+    # regular expression pattern to match w=xx&h=xx&q=xx
+    pattern = r"(w=\d+&h=\d+&q=\d+)"
+
+    return apk_mirror_base_url + re.sub(
+        pattern, f"w={new_width}&h={new_height}&q={new_quality}", sub_url
+    )
 
 
 def gplay_icon_scrapper(package_name: str) -> str:
