@@ -20,7 +20,9 @@ class UptoDown(Downloader):
         soup = soup.find(id="detail-download-button")
         download_url = soup.get("data-url")
         if not download_url:
-            raise UptoDownAPKDownloadFailure(f"Unable to download {app} from uptodown.",url=page)
+            raise UptoDownAPKDownloadFailure(
+                f"Unable to download {app} from uptodown.", url=page
+            )
         self._download(download_url, f"{app}.apk")
         logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
 
@@ -45,7 +47,9 @@ class UptoDown(Downloader):
                 download_url = version_item["data-url"]
                 break
         if download_url is None:
-            raise UptoDownAPKDownloadFailure(f"Unable to download {app} from uptodown.",url=url)
+            raise UptoDownAPKDownloadFailure(
+                f"Unable to download {app} from uptodown.", url=url
+            )
         self.extract_download_link(download_url, app)
         logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
 

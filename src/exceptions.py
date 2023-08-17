@@ -17,7 +17,7 @@ class APKMirrorIconScrapFailure(Exception):
 
 
 class DownloadFailure(Exception):
-    """Generic Download failure"""
+    """Generic Download failure."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         """Initialize the APKMirrorAPKDownloadFailure exception.
@@ -33,6 +33,7 @@ class DownloadFailure(Exception):
 
 class APKDownloadFailure(DownloadFailure):
     """Exception raised when the apk cannot be scraped."""
+
     pass
 
 
