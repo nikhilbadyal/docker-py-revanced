@@ -7,7 +7,11 @@ from loguru import logger
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.exceptions import AppNotFound, APKMirrorAPKDownloadFailure, APKMirrorAPKNotFound
+from src.exceptions import (
+    APKMirrorAPKDownloadFailure,
+    APKMirrorAPKNotFound,
+    AppNotFound,
+)
 from src.utils import apkmirror_status_check, bs4_parser
 
 
@@ -25,7 +29,9 @@ class ApkMirror(Downloader):
                 return self._download(
                     self.config.apk_mirror + possible_link["href"], f"{app}.apk"
                 )
-        raise APKMirrorAPKDownloadFailure(f"Unable to extract force download for {app}",url=link)
+        raise APKMirrorAPKDownloadFailure(
+            f"Unable to extract force download for {app}", url=link
+        )
 
     def extract_download_link(self, main_page: str, app: str) -> None:
         """Function to extract the download link from apkmirror html page.
@@ -49,7 +55,9 @@ class ApkMirror(Downloader):
                 self.config.apk_mirror + final_download_link, app
             )
         else:
-            raise APKMirrorAPKDownloadFailure(f"Unable to extract link from {app} version list",url=main_page)
+            raise APKMirrorAPKDownloadFailure(
+                f"Unable to extract link from {app} version list", url=main_page
+            )
 
     def get_download_page(self, main_page: str) -> str:
         """Function to get the download page in apk_mirror.
@@ -67,7 +75,9 @@ class ApkMirror(Downloader):
                     sub_url = row.find(class_="accent_color")["href"]
                     break
         if not sub_url:
-            raise APKMirrorAPKDownloadFailure(f"Unable to extract download page",url=main_page)
+            raise APKMirrorAPKDownloadFailure(
+                f"Unable to extract download page", url=main_page
+            )
         return f"{self.config.apk_mirror}{sub_url}"
 
     @staticmethod
@@ -75,7 +85,10 @@ class ApkMirror(Downloader):
         """Extract search div."""
         r = requests.get(url, headers=headers)
         if r.status_code != 200:
-            raise APKMirrorAPKDownloadFailure(f"Unable to connect with {url} on ApkMirror. Are you blocked by APKMirror", url=url)
+            raise APKMirrorAPKDownloadFailure(
+                f"Unable to connect with {url} on ApkMirror. Are you blocked by APKMirror",
+                url=url,
+            )
         soup = BeautifulSoup(r.text, bs4_parser)
         return soup.find(class_=search_class)
 
