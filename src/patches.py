@@ -8,7 +8,7 @@ from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
-from src.exceptions import AppNotFound, PatchesJsonFailed
+from src.exceptions import AppNotFound, PatchesJsonLoadFailed
 
 
 class Patches(object):
@@ -66,7 +66,7 @@ class Patches(object):
         for package, app_tuple in Patches.revanced_app_ids.items():
             if app_tuple[0] == app:
                 return package
-        raise AppNotFound("App Not Found.")
+        raise AppNotFound(f"App {app} not supported yet.")
 
     @staticmethod
     def support_app() -> Dict[str, str]:
@@ -113,7 +113,7 @@ class Patches(object):
         app_names = {value[0]: value[1] for value in self.revanced_app_ids.values()}
 
         if not (app_name := app_names.get(app)):
-            raise AppNotFound(f"App '{app}' not found in the supported apps.")
+            raise AppNotFound(f"App {app} not supported yet.")
 
         patches = getattr(self, app_name)
         version = "latest"
@@ -176,4 +176,4 @@ class PatchLoader:
                 patches = json.load(f)
             return patches
         except FileNotFoundError as e:
-            raise PatchesJsonFailed() from e
+            raise PatchesJsonLoadFailed("File not found", file_name=file_name) from e

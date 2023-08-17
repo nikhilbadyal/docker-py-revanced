@@ -93,7 +93,7 @@ def generate_markdown_table(data: List[List[str]]) -> str:
     )
     for row in data:
         if len(row) != 6:
-            raise ValueError("Each row must contain 4 columns of data.")
+            raise ValueError("Each row must contain 6 columns of data.")
 
         table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |{row[5]} |\n"
 

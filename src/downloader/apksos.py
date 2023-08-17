@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.exceptions import AppNotFound
+from src.exceptions import APKSosAPKDownloadFailure
 from src.utils import bs4_parser
 
 
@@ -26,7 +26,7 @@ class ApkSos(Downloader):
         for possible_link in possible_links:
             if possible_link.get("href"):
                 return self._download(possible_link["href"], f"{app}.apk")
-        raise AppNotFound("Unable to download apk from apk_combo")
+        raise APKSosAPKDownloadFailure(f"Unable to download {app}", url=page)
 
     def latest_version(self, app: str, **kwargs: Any) -> None:
         """Function to download whatever the latest version of app from

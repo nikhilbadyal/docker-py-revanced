@@ -4,7 +4,7 @@ from typing import Any
 from loguru import logger
 
 from src.downloader.download import Downloader
-from src.exceptions import AppNotFound
+from src.patches import Patches
 
 
 class ApkPure(Downloader):
@@ -17,13 +17,7 @@ class ApkPure(Downloader):
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        package_name = None
-        for package, app_tuple in self.patcher.revanced_app_ids.items():
-            if app_tuple[0] == app:
-                package_name = package
-        if not package_name:
-            logger.info("Unable to download from apkpure")
-            raise AppNotFound()
+        package_name = Patches.get_package_name(app)
         download_url = f"https://d.apkpure.com/b/APK/{package_name}?version=latest"
         self._download(download_url, f"{app}.apk")
         logger.debug(f"Downloaded {app} apk from apk_pure_downloader in rt")

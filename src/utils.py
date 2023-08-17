@@ -9,7 +9,7 @@ from loguru import logger
 from requests import Response
 
 from src.config import RevancedConfig
-from src.exceptions import PatchingFailed
+from src.exceptions import DownloadFailure
 
 default_build = [
     "youtube",
@@ -71,7 +71,7 @@ def handle_github_response(response: Response) -> None:
     """Handle Get Request Response."""
     response_code = response.status_code
     if response_code != 200:
-        raise PatchingFailed(
+        raise DownloadFailure(
             f"Unable to downloaded assets from GitHub. Reason - {response.text}"
         )
 

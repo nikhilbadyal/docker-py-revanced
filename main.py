@@ -6,7 +6,7 @@ from loguru import logger
 
 from src.config import RevancedConfig
 from src.downloader.factory import DownloaderFactory
-from src.exceptions import AppNotFound, PatchesJsonFailed, PatchingFailed
+from src.exceptions import AppNotFound, PatchesJsonLoadFailed, PatchingFailed
 from src.parser import Parser
 from src.patches import Patches
 from src.utils import check_java, extra_downloads
@@ -38,7 +38,7 @@ def main() -> None:
             parser.patch_app(app)
         except AppNotFound as e:
             logger.info(f"Invalid app requested to build {e}")
-        except PatchesJsonFailed:
+        except PatchesJsonLoadFailed:
             logger.exception("Patches.json not found")
         except PatchingFailed as e:
             logger.exception(e)
