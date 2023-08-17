@@ -76,7 +76,7 @@ class ApkMirror(Downloader):
                     break
         if not sub_url:
             raise APKMirrorAPKDownloadFailure(
-                f"Unable to extract download page", url=main_page
+                "Unable to extract download page", url=main_page
             )
         return f"{self.config.apk_mirror}{sub_url}"
 
