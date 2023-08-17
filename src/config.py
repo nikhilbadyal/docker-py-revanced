@@ -12,6 +12,8 @@ default_integrations = (
     "https://github.com/revanced/revanced-integrations/releases/latest"
 )
 
+APK_MIRROR_BASE_URL = "https://www.apkmirror.com"
+
 
 class RevancedConfig(object):
     """Revanced Configurations."""
@@ -23,7 +25,7 @@ class RevancedConfig(object):
         self.temp_folder = Path("apks")
         self.session = Session()
         self.session.headers["User-Agent"] = "anything"
-        self.apk_mirror = "https://www.apkmirror.com"
+        self.apk_mirror = APK_MIRROR_BASE_URL
         self.upto_down = {
             "spotify": "spotify",
             "nyx-music-player": "nyx-music-player",

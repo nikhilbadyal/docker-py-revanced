@@ -1,7 +1,19 @@
-class APKMirrorScrapperFailure(Exception):
-    """Failed to scrap icon from apkmirror."""
+from typing import Any
 
-    pass
+
+class APKMirrorIconScrapFailure(Exception):
+    """Exception raised when the icon cannot be scraped from apkmirror."""
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        """Initialize the APKMirrorIconScrapFailure exception.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+                url (str, optional): The URL of the failed icon scraping. Defaults to None.
+        """
+        super().__init__(*args)
+        self.url = kwargs.get("url", None)
 
 
 class PatchingFailed(Exception):
