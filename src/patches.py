@@ -8,7 +8,7 @@ from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
-from src.exceptions import AppNotFound, PatchesJsonFailed
+from src.exceptions import AppNotFound, PatchesJsonLoadFailed
 
 
 class Patches(object):
@@ -176,4 +176,4 @@ class PatchLoader:
                 patches = json.load(f)
             return patches
         except FileNotFoundError as e:
-            raise PatchesJsonFailed("File not found", file_name=file_name) from e
+            raise PatchesJsonLoadFailed("File not found", file_name=file_name) from e

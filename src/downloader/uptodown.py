@@ -7,7 +7,7 @@ from loguru import logger
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.exceptions import AppNotFound, UptoDownAPKDownloadFailure
+from src.exceptions import UptoDownAPKDownloadFailure
 from src.utils import bs4_parser
 
 

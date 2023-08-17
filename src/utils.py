@@ -9,7 +9,7 @@ from loguru import logger
 from requests import Response
 
 from src.config import RevancedConfig
-from src.exceptions import DownloadFailure, PatchingFailed
+from src.exceptions import DownloadFailure
 
 default_build = [
     "youtube",

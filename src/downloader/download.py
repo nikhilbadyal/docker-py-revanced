@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from src.config import RevancedConfig
 from src.downloader.utils import implement_method
-from src.exceptions import DownloadFailure, PatchingFailed
+from src.exceptions import DownloadFailure
 from src.patches import Patches
 from src.utils import handle_github_response
 

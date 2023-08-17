@@ -8,7 +8,7 @@ from loguru import logger
 
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
-from src.exceptions import DownloadFailure, PatchingFailed
+from src.exceptions import DownloadFailure
 from src.utils import handle_github_response, update_changelog
 
 

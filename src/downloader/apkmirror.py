@@ -7,11 +7,7 @@ from loguru import logger
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.exceptions import (
-    APKMirrorAPKDownloadFailure,
-    APKMirrorAPKNotFound,
-    AppNotFound,
-)
+from src.exceptions import APKMirrorAPKDownloadFailure, APKMirrorAPKNotFound
 from src.utils import apkmirror_status_check, bs4_parser
 
 
@@ -86,7 +82,8 @@ class ApkMirror(Downloader):
         r = requests.get(url, headers=headers)
         if r.status_code != 200:
             raise APKMirrorAPKDownloadFailure(
-                f"Unable to connect with {url} on ApkMirror. Are you blocked by APKMirror",
+                f"Unable to connect with {url} on ApkMirror. Are you blocked by APKMirror or abused apkmirror "
+                f"?.Reason - {r.text}",
                 url=url,
             )
         soup = BeautifulSoup(r.text, bs4_parser)

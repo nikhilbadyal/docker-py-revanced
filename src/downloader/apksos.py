@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.exceptions import APKSosAPKDownloadFailure, AppNotFound
+from src.exceptions import APKSosAPKDownloadFailure
 from src.utils import bs4_parser
 
 

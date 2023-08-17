@@ -4,7 +4,6 @@ from typing import Any
 from loguru import logger
 
 from src.downloader.download import Downloader
-from src.exceptions import APKPureAPKDownloadFailure, AppNotFound
 from src.patches import Patches
 
 
