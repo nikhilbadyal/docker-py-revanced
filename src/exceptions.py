@@ -32,27 +32,32 @@ class APKDownloadFailure(Exception):
 
 
 class APKMirrorAPKDownloadFailure(APKDownloadFailure):
-    """Exception raised when downloading an APK from apkmirror failed"""
+    """Exception raised when downloading an APK from apkmirror failed."""
+
     pass
 
 
 class APKMirrorAPKNotFound(APKDownloadFailure):
-    """Exception raised when apk doesn't exist on APKMirror"""
+    """Exception raised when apk doesn't exist on APKMirror."""
+
     pass
 
 
 class UptoDownAPKDownloadFailure(APKDownloadFailure):
-    """Exception raised when downloading an APK from uptodown failed"""
+    """Exception raised when downloading an APK from uptodown failed."""
+
     pass
 
 
 class APKPureAPKDownloadFailure(APKDownloadFailure):
-    """Exception raised when downloading an APK from apkpure failed"""
+    """Exception raised when downloading an APK from apkpure failed."""
+
     pass
 
 
 class APKSosAPKDownloadFailure(APKDownloadFailure):
-    """Exception raised when downloading an APK from apksos failed"""
+    """Exception raised when downloading an APK from apksos failed."""
+
     pass
 
 
