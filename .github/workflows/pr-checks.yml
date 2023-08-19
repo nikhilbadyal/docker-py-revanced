@@ -6,7 +6,10 @@ on:
   pull_request:
     paths-ignore:
       - '*.md'
-
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
 jobs:
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
