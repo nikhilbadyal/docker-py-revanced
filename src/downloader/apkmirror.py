@@ -7,8 +7,8 @@ from loguru import logger
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.exceptions import APKMirrorAPKDownloadFailure, APKMirrorAPKNotFound
-from src.utils import apkmirror_status_check, bs4_parser
+from src.exceptions import APKMirrorAPKDownloadFailure
+from src.utils import bs4_parser
 
 
 class ApkMirror(Downloader):
@@ -67,7 +67,9 @@ class ApkMirror(Downloader):
         for row in table_rows:
             if row.find(class_="accent_color"):
                 apk_type = row.find(class_="apkm-badge").get_text()
-                if apk_type == "APK":
+                if apk_type == "APK" and (
+                    "arm64-v8a" in row.text.strip() or "universal" in row.text.strip()
+                ):
                     sub_url = row.find(class_="accent_color")["href"]
                     break
         if not sub_url:
@@ -89,15 +91,19 @@ class ApkMirror(Downloader):
         soup = BeautifulSoup(r.text, bs4_parser)
         return soup.find(class_=search_class)
 
-    def specific_version(self, app: str, version: str) -> None:
+    def specific_version(self, app: str, version: str, main_page: str = "") -> None:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
         :param version: Version of the application to download
+        :param main_page: Version of the application to download
         :return: Version of downloaded apk
         """
-        version = version.replace(".", "-")
-        main_page = f"{self.config.apk_mirror_version_urls.get(app)}-{version}-release/"
+        if not main_page:
+            version = version.replace(".", "-")
+            main_page = (
+                f"{self.config.apk_mirror_version_urls.get(app)}-{version}-release/"
+            )
         download_page = self.get_download_page(main_page)
         self.extract_download_link(download_page, app)
 
@@ -108,14 +114,15 @@ class ApkMirror(Downloader):
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        from src.patches import Patches
 
-        package_name = Patches.get_package_name(app)
-        response = apkmirror_status_check(package_name)
-        if response["data"][0]["exists"]:
-            version = response["data"][0]["release"]["version"]
-            logger.debug(
-                f"Trying to download {app}'s latest version({version}) from apkmirror"
-            )
-            return self.specific_version(app, version)
-        raise APKMirrorAPKNotFound("App not found on apkmirror.")
+        app_main_page = self.config.apk_mirror_urls[app]
+        versions_div = self._extracted_search_div(
+            app_main_page, "listWidget p-relative"
+        )
+        app_rows = versions_div.find_all(class_="appRow")
+        version_urls = [
+            app_row.find(class_="downloadLink")["href"] for app_row in app_rows
+        ]
+        return self.specific_version(
+            app, "latest", self.config.apk_mirror + max(version_urls)
+        )
