@@ -124,4 +124,6 @@ class ApkMirror(Downloader):
         version_urls = [
             app_row.find(class_="downloadLink")["href"] for app_row in app_rows
         ]
-        return self.specific_version(app, "latest", apk_sources + max(version_urls))
+        return self.specific_version(
+            app, "latest", APK_MIRROR_BASE_URL + max(version_urls)
+        )
