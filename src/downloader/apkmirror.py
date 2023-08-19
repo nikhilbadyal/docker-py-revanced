@@ -7,8 +7,9 @@ from loguru import logger
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.exceptions import APKMirrorAPKDownloadFailure
-from src.utils import bs4_parser
+from src.downloader.sources import APK_MIRROR_BASE_URL
+from src.exceptions import APKMirrorAPKDownloadFailure, APKMirrorAPKNotFound
+from src.utils import apkmirror_status_check, bs4_parser
 
 
 class ApkMirror(Downloader):
@@ -23,7 +24,7 @@ class ApkMirror(Downloader):
                 "href"
             ):
                 return self._download(
-                    self.config.apk_mirror + possible_link["href"], f"{app}.apk"
+                    APK_MIRROR_BASE_URL + possible_link["href"], f"{app}.apk"
                 )
         raise APKMirrorAPKDownloadFailure(
             f"Unable to extract force download for {app}", url=link
@@ -48,7 +49,7 @@ class ApkMirror(Downloader):
             None,
         ):
             self._extract_force_download_link(
-                self.config.apk_mirror + final_download_link, app
+                APK_MIRROR_BASE_URL + final_download_link, app
             )
         else:
             raise APKMirrorAPKDownloadFailure(
@@ -76,7 +77,7 @@ class ApkMirror(Downloader):
             raise APKMirrorAPKDownloadFailure(
                 "Unable to extract download page", url=main_page
             )
-        return f"{self.config.apk_mirror}{sub_url}"
+        return f"{APK_MIRROR_BASE_URL}{sub_url}"
 
     @staticmethod
     def _extracted_search_div(url: str, search_class: str) -> Tag:
