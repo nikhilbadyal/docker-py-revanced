@@ -12,6 +12,8 @@ default_integrations = (
     "https://github.com/revanced/revanced-integrations/releases/latest"
 )
 
+APK_MIRROR_BASE_URL = "https://www.apkmirror.com"
+
 
 class RevancedConfig(object):
     """Revanced Configurations."""
@@ -23,17 +25,18 @@ class RevancedConfig(object):
         self.temp_folder = Path("apks")
         self.session = Session()
         self.session.headers["User-Agent"] = "anything"
-        self.apk_mirror = "https://www.apkmirror.com"
-        self.upto_down = [
-            "spotify",
-            "nyx-music-player",
-            "my-expenses",
-            "backdrops",
-            "twitch",
-            "irplus",
-            "meme-generator-free",
-            "yuka",
-        ]
+        self.apk_mirror = APK_MIRROR_BASE_URL
+        self.upto_down = {
+            "spotify": "spotify",
+            "nyx-music-player": "nyx-music-player",
+            "my-expenses": "my-expenses",
+            "backdrops": "backdrops",
+            "twitch": "twitch",
+            "irplus": "irplus",
+            "meme-generator-free": "meme-generator-free",
+            "yuka": "yuka",
+            "grecorder": "opnemer",
+        }
         self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
         self.apk_sos = ["expensemanager", "candyvpn"]
         self.ci_test = env.bool("CI_TEST", False)
@@ -57,7 +60,6 @@ class RevancedConfig(object):
             "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
             "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
             "messenger": f"{self.apk_mirror}/apk/facebook-2/messenger/",
-            "grecorder": f"{self.apk_mirror}/apk/google-inc/google-recorder/",
             "trakt": f"{self.apk_mirror}/apk/trakt/trakt/",
             "candyvpn": f"{self.apk_mirror}/apk/liondev-io/candylink-vpn/",
             "sonyheadphone": f"{self.apk_mirror}/apk/sony-corporation/sony-headphones-connect/",

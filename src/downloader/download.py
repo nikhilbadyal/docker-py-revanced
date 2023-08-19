@@ -10,7 +10,7 @@ from tqdm import tqdm
 
 from src.config import RevancedConfig
 from src.downloader.utils import implement_method
-from src.exceptions import PatchingFailed
+from src.exceptions import DownloadFailure
 from src.patches import Patches
 from src.utils import handle_github_response
 
@@ -37,7 +37,7 @@ class Downloader(object):
 
     def _download(self, url: str, file_name: str) -> None:
         if not url:
-            raise PatchingFailed("No download to download")
+            raise DownloadFailure("No url provided to download")
         if self.file_status_check(
             self.config.temp_folder.joinpath(file_name), self.config.dry_run, url
         ):

@@ -1,4 +1,6 @@
 """Revanced Patches."""
+
+import contextlib
 import json
 from typing import Any, Dict, List, Tuple
 
@@ -6,7 +8,7 @@ from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
-from src.exceptions import AppNotFound, PatchesJsonFailed
+from src.exceptions import AppNotFound, PatchesJsonLoadFailed
 
 
 class Patches(object):
@@ -59,6 +61,14 @@ class Patches(object):
     }
 
     @staticmethod
+    def get_package_name(app: str) -> str:
+        """Get Package name from app name."""
+        for package, app_tuple in Patches.revanced_app_ids.items():
+            if app_tuple[0] == app:
+                return package
+        raise AppNotFound(f"App {app} not supported yet.")
+
+    @staticmethod
     def support_app() -> Dict[str, str]:
         """Return supported apps."""
         return Patches._revanced_app_ids
@@ -103,13 +113,12 @@ class Patches(object):
         app_names = {value[0]: value[1] for value in self.revanced_app_ids.values()}
 
         if not (app_name := app_names.get(app)):
-            raise AppNotFound(app)
+            raise AppNotFound(f"App {app} not supported yet.")
+
         patches = getattr(self, app_name)
         version = "latest"
-        try:
+        with contextlib.suppress(StopIteration):
             version = next(i["version"] for i in patches if i["version"] != "all")
-        except StopIteration:
-            pass
         return patches, version
 
     def include_exclude_patch(
@@ -166,5 +175,5 @@ class PatchLoader:
             with open(file_name) as f:
                 patches = json.load(f)
             return patches
-        except FileNotFoundError:
-            raise PatchesJsonFailed()
+        except FileNotFoundError as e:
+            raise PatchesJsonLoadFailed("File not found", file_name=file_name) from e

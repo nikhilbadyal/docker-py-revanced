@@ -5,5 +5,4 @@ lastversion==3.0.1
 loguru==0.7.0
 pre-commit==3.3.3
 requests==2.31.0
-selectolax==0.3.16
 tqdm==4.66.1

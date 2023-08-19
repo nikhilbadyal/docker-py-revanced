@@ -8,10 +8,6 @@ on:
       - '*.md'
 
 jobs:
-  linter-pr-check:
-    uses: nikhilbadyal/ghactions/.github/workflows/python-linter.yml@main
-    with:
-      PYTHON_VERSION: '3.10'
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
     with:
