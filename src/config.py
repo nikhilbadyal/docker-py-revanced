@@ -31,9 +31,6 @@ class RevancedConfig(object):
             list(apk_sources.keys()) if self.ci_test else default_build,
         )
         self.rip_libs_apps: List[str] = []
-        self.apk_mirror_version_urls = {
-            key: value + value.split("/")[-2] for key, value in apk_sources.items()
-        }
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
         self.dry_run = env.bool("DRY_RUN", False)
