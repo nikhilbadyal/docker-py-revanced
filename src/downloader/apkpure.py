@@ -19,6 +19,6 @@ class ApkPure(Downloader):
         :return: Version of downloaded apk
         """
         package_name = Patches.get_package_name(app)
-        download_url = apk_sources.get(app).format(package_name)
+        download_url = apk_sources[app].format(package_name)
         self._download(download_url, f"{app}.apk")
         logger.debug(f"Downloaded {app} apk from apk_pure_downloader")

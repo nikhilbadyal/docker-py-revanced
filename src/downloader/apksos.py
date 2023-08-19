@@ -37,5 +37,5 @@ class ApkSos(Downloader):
         :return: Version of downloaded apk
         """
         package_name = self.patcher.get_package_name(app)
-        download_url = apk_sources.get(app).format(package_name)
+        download_url = apk_sources[app].format(package_name)
         self.extract_download_link(download_url, app)

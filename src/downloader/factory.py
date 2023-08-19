@@ -33,14 +33,14 @@ class DownloaderFactory(object):
         patcher : Patcher
         config : Config
         """
-        if apk_sources.get(app).startswith(GITHUB_BASE_URL):
+        if apk_sources.get(app, "").startswith(GITHUB_BASE_URL):
             return Github(patcher, config)
-        if apk_sources.get(app).startswith(APK_PURE_URL):
+        if apk_sources.get(app, "").startswith(APK_PURE_URL):
             return ApkPure(patcher, config)
-        elif apk_sources.get(app).startswith(APK_SOS_URL):
+        elif apk_sources.get(app, "").startswith(APK_SOS_URL):
             return ApkSos(patcher, config)
-        elif apk_sources.get(app).startswith(UPTODOWN_BASE_URL):
+        elif apk_sources.get(app, "").startswith(UPTODOWN_BASE_URL):
             return UptoDown(patcher, config)
-        elif apk_sources.get(app).startswith(APK_MIRROR_BASE_URL):
+        elif apk_sources.get(app, "").startswith(APK_MIRROR_BASE_URL):
             return ApkMirror(patcher, config)
         raise DownloadFailure(f"No download factory found for {app}")

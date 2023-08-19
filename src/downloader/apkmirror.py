@@ -7,9 +7,9 @@ from loguru import logger
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
-from src.downloader.sources import APK_MIRROR_BASE_URL
-from src.exceptions import APKMirrorAPKDownloadFailure, APKMirrorAPKNotFound
-from src.utils import apkmirror_status_check, bs4_parser
+from src.downloader.sources import APK_MIRROR_BASE_URL, apk_sources
+from src.exceptions import APKMirrorAPKDownloadFailure
+from src.utils import bs4_parser
 
 
 class ApkMirror(Downloader):
@@ -82,7 +82,7 @@ class ApkMirror(Downloader):
     @staticmethod
     def _extracted_search_div(url: str, search_class: str) -> Tag:
         """Extract search div."""
-        r = requests.get(url, headers=headers)
+        r = requests.get(url, headers=headers, timeout=10)
         if r.status_code != 200:
             raise APKMirrorAPKDownloadFailure(
                 f"Unable to connect with {url} on ApkMirror. Are you blocked by APKMirror or abused apkmirror "
@@ -116,7 +116,7 @@ class ApkMirror(Downloader):
         :return: Version of downloaded apk
         """
 
-        app_main_page = self.config.apk_mirror_urls[app]
+        app_main_page = apk_sources[app]
         versions_div = self._extracted_search_div(
             app_main_page, "listWidget p-relative"
         )
@@ -124,6 +124,4 @@ class ApkMirror(Downloader):
         version_urls = [
             app_row.find(class_="downloadLink")["href"] for app_row in app_rows
         ]
-        return self.specific_version(
-            app, "latest", self.config.apk_mirror + max(version_urls)
-        )
+        return self.specific_version(app, "latest", apk_sources + max(version_urls))
