@@ -67,7 +67,7 @@ class ApkMirror(Downloader):
         for row in table_rows:
             if row.find(class_="accent_color"):
                 apk_type = row.find(class_="apkm-badge").get_text()
-                if apk_type == "APK" and "arm64-v8a" in row.text.strip():
+                if apk_type == "APK" and ("arm64-v8a" in row.text.strip() or "universal" in row.text.strip()):
                     sub_url = row.find(class_="accent_color")["href"]
                     break
         if not sub_url:
