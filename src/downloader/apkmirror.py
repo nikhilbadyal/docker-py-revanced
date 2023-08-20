@@ -104,7 +104,7 @@ class ApkMirror(Downloader):
         """
         if not main_page:
             version = version.replace(".", "-")
-            apk_main_page = apk_sources.get(app, "")
+            apk_main_page = apk_sources[app]
             version_page = apk_main_page + apk_main_page.split("/")[-2]
             main_page = f"{version_page}-{version}-release/"
         download_page = self.get_download_page(main_page)
