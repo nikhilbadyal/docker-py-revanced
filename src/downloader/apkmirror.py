@@ -70,6 +70,7 @@ class ApkMirror(Downloader):
                 apk_type = row.find(class_="apkm-badge").get_text()
                 if apk_type == "APK" and (
                     "arm64-v8a" in row.text.strip() or "universal" in row.text.strip()
+                    or "noarch" in row.text.strip()
                 ):
                     sub_url = row.find(class_="accent_color")["href"]
                     break
@@ -102,7 +103,7 @@ class ApkMirror(Downloader):
         """
         if not main_page:
             version = version.replace(".", "-")
-            apk_main_page = apk_sources.get(app)
+            apk_main_page = apk_sources.get(app, "")
             version_page = apk_main_page + apk_main_page.split("/")[-2]
             main_page = f"{version_page}-{version}-release/"
         download_page = self.get_download_page(main_page)
