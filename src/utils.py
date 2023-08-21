@@ -2,7 +2,7 @@
 import os
 import re
 import subprocess
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import requests
 from loguru import logger
@@ -123,13 +123,13 @@ def extra_downloads(config: RevancedConfig) -> None:
         for extra in config.extra_download_files:
             url, file_name = extra.split("@")
             file_name_without_extension, file_extension = os.path.splitext(file_name)
-
-            if file_extension.lower() != ".apk":
-                logger.info(f"Only .apk extensions are allowed {file_name}.")
-                continue
-
             new_file_name = f"{file_name_without_extension}-output{file_extension}"
-            APP.download(url, config, assets_filter=".*apk", file_name=new_file_name)
+            APP.download(
+                url,
+                config,
+                assets_filter=f".*{file_extension}",
+                file_name=new_file_name,
+            )
     except (ValueError, IndexError):
         logger.info(
             "Unable to download extra file. Provide input in url@name.apk format."
@@ -149,3 +149,7 @@ def apkmirror_status_check(package_name: str) -> Any:
     body = {"pnames": [package_name]}
     response = requests.post(api_url, json=body, headers=apk_mirror_header)
     return response.json()
+
+
+def contains_any_word(string: str, words: List[str]) -> bool:
+    return any(word in string for word in words)

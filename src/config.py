@@ -5,8 +5,6 @@ from typing import List
 from environs import Env
 from requests import Session
 
-from src.downloader.sources import apk_sources
-
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
 default_patches_json = default_patches
@@ -28,7 +26,7 @@ class RevancedConfig(object):
         self.ci_test = env.bool("CI_TEST", False)
         self.apps = env.list(
             "PATCH_APPS",
-            list(apk_sources.keys()) if self.ci_test else default_build,
+            default_build,
         )
         self.rip_libs_apps: List[str] = []
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
@@ -47,3 +45,7 @@ class RevancedConfig(object):
         )
         self.global_archs_to_build = env.list("GLOBAL_ARCHS_TO_BUILD", [])
         self.extra_download_files: List[str] = env.list("EXTRA_FILES", [])
+        self.apk_editor = "apkeditor-output.jar"
+        self.extra_download_files.append(
+            "https://github.com/REAndroid/APKEditor@apkeditor.jar"
+        )

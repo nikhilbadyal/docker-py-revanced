@@ -89,7 +89,7 @@ class Parser(object):
             self.CLI_JAR,
             app.resource["cli"],
             self.APK_ARG,
-            f"{app.app_name}.apk",
+            app.download_file_name,
             self.PATCHES_ARG,
             app.resource["patches"],
             self.INTEGRATIONS_ARG,

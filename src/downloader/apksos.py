@@ -14,7 +14,7 @@ from src.utils import bs4_parser
 class ApkSos(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self, page: str, app: str) -> None:
+    def extract_download_link(self, page: str, app: str) -> str:
         """Function to extract the download link from apkmirror html page.
 
         :param page: Url of the page
@@ -26,10 +26,12 @@ class ApkSos(Downloader):
         possible_links = download_button.find_all("a")
         for possible_link in possible_links:
             if possible_link.get("href"):
-                return self._download(possible_link["href"], f"{app}.apk")
+                file_name = f"{app}.apk"
+                self._download(possible_link["href"], file_name)
+                return file_name
         raise APKSosAPKDownloadFailure(f"Unable to download {app}", url=page)
 
-    def latest_version(self, app: str, **kwargs: Any) -> None:
+    def latest_version(self, app: str, **kwargs: Any) -> str:
         """Function to download whatever the latest version of app from
         apkmirror.
 
@@ -38,4 +40,4 @@ class ApkSos(Downloader):
         """
         package_name = self.patcher.get_package_name(app)
         download_url = apk_sources[app].format(package_name)
-        self.extract_download_link(download_url, app)
+        return self.extract_download_link(download_url, app)
