@@ -47,3 +47,7 @@ class RevancedConfig(object):
         )
         self.global_archs_to_build = env.list("GLOBAL_ARCHS_TO_BUILD", [])
         self.extra_download_files: List[str] = env.list("EXTRA_FILES", [])
+        self.apk_editor = "apkeditor-output.jar"
+        self.extra_download_files.append(
+            "https://github.com/REAndroid/APKEditor@apkeditor.jar"
+        )

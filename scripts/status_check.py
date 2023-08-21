@@ -48,7 +48,7 @@ def apkmirror_scrapper(package_name: str) -> str:
 
 
 def _extracted_from_apkmirror_scrapper(search_url: str) -> str:
-    r = requests.get(search_url, headers=headers, timeout=10)
+    r = requests.get(search_url, headers=headers, timeout=60)
     soup = BeautifulSoup(r.text, bs4_parser)
     sub_url = soup.select_one("div.bubble-wrap > img")["src"]
     new_width = 500
