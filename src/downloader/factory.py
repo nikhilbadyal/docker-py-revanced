@@ -10,7 +10,6 @@ from src.downloader.sources import (
     APK_PURE_URL,
     APK_SOS_URL,
     GITHUB_BASE_URL,
-    UPTODOWN_BASE_URL,
     apk_sources,
 )
 from src.downloader.uptodown import UptoDown
