@@ -126,8 +126,8 @@ class ApkMirror(Downloader):
         version_urls = [
             app_row.find(class_="downloadLink")["href"]
             for app_row in app_rows
-            if "beta" not in app_row.find(class_="downloadLink")["href"].lower()
-            and "alpha" not in app_row.find(class_="downloadLink")["href"].lower()
+            if "beta" not in app_row.find(class_="appRowTitle").get_text().lower()
+            and "alpha" not in app_row.find(class_="appRowTitle").get_text().lower()
         ]
         return self.specific_version(
             app, "latest", APK_MIRROR_BASE_URL + max(version_urls)
