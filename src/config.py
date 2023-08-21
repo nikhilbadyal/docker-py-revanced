@@ -5,14 +5,14 @@ from typing import List
 from environs import Env
 from requests import Session
 
+from src.downloader.sources import apk_sources
+
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
 default_patches_json = default_patches
 default_integrations = (
     "https://github.com/revanced/revanced-integrations/releases/latest"
 )
-
-APK_MIRROR_BASE_URL = "https://www.apkmirror.com"
 
 
 class RevancedConfig(object):
@@ -25,57 +25,12 @@ class RevancedConfig(object):
         self.temp_folder = Path("apks")
         self.session = Session()
         self.session.headers["User-Agent"] = "anything"
-        self.apk_mirror = APK_MIRROR_BASE_URL
-        self.upto_down = {
-            "spotify": "spotify",
-            "nyx-music-player": "nyx-music-player",
-            "my-expenses": "my-expenses",
-            "backdrops": "backdrops",
-            "twitch": "twitch",
-            "irplus": "irplus",
-            "meme-generator-free": "meme-generator-free",
-            "yuka": "yuka",
-            "grecorder": "opnemer",
-        }
-        self.apk_pure = ["hex-editor", "androidtwelvewidgets"]
-        self.apk_sos = ["expensemanager", "candyvpn"]
         self.ci_test = env.bool("CI_TEST", False)
-        self.apps = env.list("PATCH_APPS", default_build)
+        self.apps = env.list(
+            "PATCH_APPS",
+            list(apk_sources.keys()) if self.ci_test else default_build,
+        )
         self.rip_libs_apps: List[str] = []
-        self.apk_mirror_urls = {
-            "reddit": f"{self.apk_mirror}/apk/redditinc/reddit/",
-            "twitter": f"{self.apk_mirror}/apk/x-corp/twitter/",
-            "tiktok": f"{self.apk_mirror}/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/",
-            "warnwetter": f"{self.apk_mirror}/apk/deutscher-wetterdienst/warnwetter/",
-            "youtube": f"{self.apk_mirror}/apk/google-inc/youtube/",
-            "youtube_music": f"{self.apk_mirror}/apk/google-inc/youtube-music/",
-            "ticktick": f"{self.apk_mirror}/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/",
-            "icon_pack_studio": f"{self.apk_mirror}/apk/smart-launcher-team/icon-pack-studio/",
-            "twitch": f"{self.apk_mirror}/apk/twitch-interactive-inc/twitch/",
-            "windy": f"{self.apk_mirror}/apk/windy-weather-world-inc/windy-wind-weather-forecast/",
-            "tasker": f"{self.apk_mirror}/apk/joaomgcd/tasker-crafty-apps-eu/",
-            "vsco": f"{self.apk_mirror}/apk/vsco/vsco-cam/",
-            "nova_launcher": f"{self.apk_mirror}/apk/teslacoil-software/nova-launcher/",
-            "netguard": f"{self.apk_mirror}/apk/marcel-bokhorst/netguard-no-root-firewall/",
-            "instagram": f"{self.apk_mirror}/apk/instagram/instagram-instagram/",
-            "inshorts": f"{self.apk_mirror}/apk/inshorts-formerly-news-in-shorts/",
-            "messenger": f"{self.apk_mirror}/apk/facebook-2/messenger/",
-            "trakt": f"{self.apk_mirror}/apk/trakt/trakt/",
-            "candyvpn": f"{self.apk_mirror}/apk/liondev-io/candylink-vpn/",
-            "sonyheadphone": f"{self.apk_mirror}/apk/sony-corporation/sony-headphones-connect/",
-            "relay": f"{self.apk_mirror}/apk/dbrady/relay-for-reddit-2/",
-            "boost": f"{self.apk_mirror}/apk/ruben-mayayo/boost-for-reddit/",
-            "rif": f"{self.apk_mirror}/apk/talklittle/reddit-is-fun/",
-            "sync": f"{self.apk_mirror}/apk/red-apps-ltd/sync-for-reddit/",
-            "infinity": f"{self.apk_mirror}/apk/docile-alligator/infinity-for-reddit/",
-            "slide": f"{self.apk_mirror}/apk/haptic-apps/slide-for-reddit/",
-            "bacon": f"{self.apk_mirror}/apk/onelouder-apps/baconreader-for-reddit/",
-            "pixiv": f"{self.apk_mirror}/apk/pixiv-inc/pixiv/",
-        }
-        self.apk_mirror_version_urls = {
-            key: value + value.split("/")[-2]
-            for key, value in self.apk_mirror_urls.items()
-        }
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
         self.dry_run = env.bool("DRY_RUN", False)

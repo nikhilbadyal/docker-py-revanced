@@ -5,7 +5,15 @@ from src.downloader.apkpure import ApkPure
 from src.downloader.apksos import ApkSos
 from src.downloader.download import Downloader
 from src.downloader.github import Github
+from src.downloader.sources import (
+    APK_MIRROR_BASE_URL,
+    APK_PURE_URL,
+    APK_SOS_URL,
+    GITHUB_BASE_URL,
+    apk_sources,
+)
 from src.downloader.uptodown import UptoDown
+from src.exceptions import DownloadFailure
 from src.patches import Patches
 
 
@@ -24,13 +32,14 @@ class DownloaderFactory(object):
         patcher : Patcher
         config : Config
         """
-        if app in {"patches", "microg"}:
+        if apk_sources[app].startswith(GITHUB_BASE_URL):
             return Github(patcher, config)
-        if app in config.apk_pure:
+        if apk_sources[app].startswith(APK_PURE_URL):
             return ApkPure(patcher, config)
-        elif app in config.apk_sos:
+        elif apk_sources[app].startswith(APK_SOS_URL):
             return ApkSos(patcher, config)
-        elif app in config.upto_down:
+        elif apk_sources[app].endswith("en.uptodown.com/android"):
             return UptoDown(patcher, config)
-        else:
+        elif apk_sources[app].startswith(APK_MIRROR_BASE_URL):
             return ApkMirror(patcher, config)
+        raise DownloadFailure(f"No download factory found for {app}")

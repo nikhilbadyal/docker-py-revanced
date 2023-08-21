@@ -7,6 +7,7 @@ from loguru import logger
 
 from scripts.status_check import headers
 from src.downloader.download import Downloader
+from src.downloader.sources import apk_sources
 from src.exceptions import UptoDownAPKDownloadFailure
 from src.utils import bs4_parser
 
@@ -34,9 +35,7 @@ class UptoDown(Downloader):
         :return: Version of downloaded apk
         """
         logger.debug("downloading specified version of app from uptodown.")
-        url = (
-            f"https://{self.config.upto_down.get(app)}.en.uptodown.com/android/versions"
-        )
+        url = f"{apk_sources[app]}/versions"
         html = self.config.session.get(url).text
         soup = BeautifulSoup(html, bs4_parser)
         versions_list = soup.find("section", {"id": "versions"})
@@ -54,7 +53,5 @@ class UptoDown(Downloader):
         logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
 
     def latest_version(self, app: str, **kwargs: Any) -> None:
-        page = (
-            f"https://{self.config.upto_down.get(app)}.en.uptodown.com/android/download"
-        )
+        page = f"{apk_sources[app]}/download"
         self.extract_download_link(page, app)
