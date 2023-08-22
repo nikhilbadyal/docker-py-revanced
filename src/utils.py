@@ -67,13 +67,11 @@ def get_parent_repo() -> str:
     return "https://github.com/nikhilbadyal/docker-py-revanced"
 
 
-def handle_github_response(response: Response) -> None:
+def handle_request_response(response: Response) -> None:
     """Handle Get Request Response."""
     response_code = response.status_code
     if response_code != 200:
-        raise DownloadFailure(
-            f"Unable to downloaded assets from GitHub. Reason - {response.text}"
-        )
+        raise DownloadFailure(f"Unable to downloaded assets. Reason - {response.text}")
 
 
 def slugify(string: str) -> str:

@@ -13,7 +13,7 @@ from src.utils import (
     apk_mirror_base_url,
     apkmirror_status_check,
     bs4_parser,
-    handle_github_response,
+    handle_request_response,
 )
 
 not_found_icon = "https://img.icons8.com/bubbles/500/android-os.png"
@@ -103,7 +103,7 @@ def generate_markdown_table(data: List[List[str]]) -> str:
 def main() -> None:
     repo_url = "https://releases.revanced.app/patches"
     response = requests.get(repo_url, timeout=10)
-    handle_github_response(response)
+    handle_request_response(response)
 
     patches = response.json()
 

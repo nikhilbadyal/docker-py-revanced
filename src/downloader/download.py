@@ -13,7 +13,7 @@ from src.config import RevancedConfig
 from src.downloader.utils import implement_method
 from src.exceptions import DownloadFailure
 from src.patches import Patches
-from src.utils import handle_github_response
+from src.utils import handle_request_response
 
 
 class Downloader(object):
@@ -55,7 +55,7 @@ class Downloader(object):
             stream=True,
             headers=headers,
         )
-        handle_github_response(response)
+        handle_request_response(response)
         total = int(response.headers.get("content-length", 0))
         bar = tqdm(
             desc=file_name,
