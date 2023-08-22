@@ -1,5 +1,6 @@
 """Downloader Class."""
 import os
+import subprocess
 from pathlib import Path
 from queue import PriorityQueue
 from time import perf_counter
@@ -71,11 +72,11 @@ class Downloader(object):
         self._QUEUE.put((perf_counter() - start, file_name))
         logger.debug(f"Downloaded {file_name}")
 
-    def extract_download_link(self, page: str, app: str) -> None:
+    def extract_download_link(self, page: str, app: str) -> str:
         """Extract download link from web page."""
         raise NotImplementedError(implement_method)
 
-    def specific_version(self, app: str, version: str) -> None:
+    def specific_version(self, app: str, version: str) -> str:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -84,7 +85,7 @@ class Downloader(object):
         """
         raise NotImplementedError(implement_method)
 
-    def latest_version(self, app: str, **kwargs: Any) -> None:
+    def latest_version(self, app: str, **kwargs: Any) -> str:
         """Function to download the latest version of app.
 
         :param app: Name of the application
@@ -92,21 +93,52 @@ class Downloader(object):
         """
         raise NotImplementedError(implement_method)
 
-    def download(self, version: str, app: str, **kwargs: Any) -> None:
+    def convert_to_apk(self, file_name: str) -> str:
+        """Convert apks to apk."""
+        if file_name.endswith(".apk"):
+            return file_name
+        output_apk_file = self.replace_file_extension(file_name, ".apk")
+        output_path = f"{self.config.temp_folder}/{output_apk_file}"
+        Path(output_path).unlink(missing_ok=True)
+        subprocess.run(
+            [
+                "java",
+                "-jar",
+                f"{self.config.temp_folder}/{self.config.apk_editor}",
+                "m",
+                "-i",
+                f"{self.config.temp_folder}/{file_name}",
+                "-o",
+                output_path,
+            ],
+            capture_output=True,
+            check=True,
+        )
+        logger.info("Converted zip to apk.")
+        return output_apk_file
+
+    @staticmethod
+    def replace_file_extension(filename: str, new_extension: str) -> str:
+        """Replace the extension of a file."""
+        base_name, _ = os.path.splitext(filename)
+        return base_name + new_extension
+
+    def download(self, version: str, app: str, **kwargs: Any) -> str:
         """Public function to download apk to patch.
 
         :param version: version to download
         :param app: App to download
         """
         if self.config.dry_run:
-            return
+            return ""
         if app in self.config.existing_downloaded_apks:
             logger.debug(f"Will not download {app} -v{version} from the internet.")
-            return
+            return app
         if version and version != "latest":
-            self.specific_version(app, version)
+            file_name = self.specific_version(app, version)
         else:
-            self.latest_version(app, **kwargs)
+            file_name = self.latest_version(app, **kwargs)
+        return self.convert_to_apk(file_name)
 
     def direct_download(self, dl: str, file_name: str) -> None:
         """Download from DL."""

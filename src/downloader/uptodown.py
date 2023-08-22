@@ -15,8 +15,8 @@ from src.utils import bs4_parser
 class UptoDown(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self, page: str, app: str) -> None:
-        r = requests.get(page, headers=headers, allow_redirects=True)
+    def extract_download_link(self, page: str, app: str) -> str:
+        r = requests.get(page, headers=headers, allow_redirects=True, timeout=60)
         soup = BeautifulSoup(r.text, bs4_parser)
         soup = soup.find(id="detail-download-button")
         download_url = soup.get("data-url")
@@ -24,10 +24,11 @@ class UptoDown(Downloader):
             raise UptoDownAPKDownloadFailure(
                 f"Unable to download {app} from uptodown.", url=page
             )
-        self._download(download_url, f"{app}.apk")
-        logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
+        file_name = f"{app}.apk"
+        self._download(download_url, file_name)
+        return file_name
 
-    def specific_version(self, app: str, version: str) -> None:
+    def specific_version(self, app: str, version: str) -> str:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -49,9 +50,8 @@ class UptoDown(Downloader):
             raise UptoDownAPKDownloadFailure(
                 f"Unable to download {app} from uptodown.", url=url
             )
-        self.extract_download_link(download_url, app)
-        logger.debug(f"Downloaded {app} apk from upto_down_downloader in rt")
+        return self.extract_download_link(download_url, app)
 
-    def latest_version(self, app: str, **kwargs: Any) -> None:
+    def latest_version(self, app: str, **kwargs: Any) -> str:
         page = f"{apk_sources[app]}/download"
-        self.extract_download_link(page, app)
+        return self.extract_download_link(page, app)
