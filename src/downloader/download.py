@@ -72,11 +72,11 @@ class Downloader(object):
         self._QUEUE.put((perf_counter() - start, file_name))
         logger.debug(f"Downloaded {file_name}")
 
-    def extract_download_link(self, page: str, app: str) -> str:
+    def extract_download_link(self, page: str, app: str) -> Tuple[str, str]:
         """Extract download link from web page."""
         raise NotImplementedError(implement_method)
 
-    def specific_version(self, app: str, version: str) -> str:
+    def specific_version(self, app: str, version: str) -> Tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -85,7 +85,7 @@ class Downloader(object):
         """
         raise NotImplementedError(implement_method)
 
-    def latest_version(self, app: str, **kwargs: Any) -> str:
+    def latest_version(self, app: str, **kwargs: Any) -> Tuple[str, str]:
         """Function to download the latest version of app.
 
         :param app: Name of the application
@@ -123,22 +123,22 @@ class Downloader(object):
         base_name, _ = os.path.splitext(filename)
         return base_name + new_extension
 
-    def download(self, version: str, app: str, **kwargs: Any) -> str:
+    def download(self, version: str, app: str, **kwargs: Any) -> Tuple[str, str]:
         """Public function to download apk to patch.
 
         :param version: version to download
         :param app: App to download
         """
         if self.config.dry_run:
-            return ""
+            return "", ""
         if app in self.config.existing_downloaded_apks:
             logger.debug(f"Will not download {app} -v{version} from the internet.")
-            return app
+            return app, f"local://{app}"
         if version and version != "latest":
-            file_name = self.specific_version(app, version)
+            file_name, app_dl = self.specific_version(app, version)
         else:
-            file_name = self.latest_version(app, **kwargs)
-        return self.convert_to_apk(file_name)
+            file_name, app_dl = self.latest_version(app, **kwargs)
+        return self.convert_to_apk(file_name), app_dl
 
     def direct_download(self, dl: str, file_name: str) -> None:
         """Download from DL."""

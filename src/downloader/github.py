@@ -15,7 +15,7 @@ from src.utils import handle_request_response, update_changelog
 class Github(Downloader):
     """Files downloader."""
 
-    def latest_version(self, app: str, **kwargs: Dict[str, str]) -> str:
+    def latest_version(self, app: str, **kwargs: Dict[str, str]) -> Tuple[str, str]:
         """Function to download files from GitHub repositories.
 
         :param app: App to download
@@ -25,7 +25,7 @@ class Github(Downloader):
             logger.debug(
                 f"Skipping download of {app}. File already exists or dry running."
             )
-            return app
+            return app, f"local://{app}"
         owner = str(kwargs["owner"])
         repo_name = str(kwargs["name"])
         repo_url = f"https://api.github.com/repos/{owner}/{repo_name}/releases/latest"
@@ -43,7 +43,7 @@ class Github(Downloader):
             download_url = response.json()["assets"][0]["browser_download_url"]
         update_changelog(f"{owner}/{repo_name}", response.json())
         self._download(download_url, file_name=app)
-        return app
+        return app, download_url
 
     @staticmethod
     def _extract_repo_owner_and_tag(url: str) -> Tuple[str, str, str]:

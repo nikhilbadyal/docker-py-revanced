@@ -40,6 +40,7 @@ class APP(object):
             f"{app_name}_ARCHS_TO_BUILD".upper(), config.global_archs_to_build
         )
         self.download_file_name = None
+        self.download_dl = None
         self.download_patch_resources(config)
 
     def get_output_file_name(self) -> str:
