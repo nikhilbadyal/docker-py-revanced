@@ -4,11 +4,6 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
 on:
   workflow_dispatch:
-    inputs:
-      FILES_TO_EXPECT:
-        type: string
-        required: false
-        default: '-1'
   workflow_call:
     secrets:
       ENVS:
@@ -16,10 +11,6 @@ on:
       REDDIT_CLIENT_ID:
         required: false
     inputs:
-      FILES_TO_EXPECT:
-        type: string
-        required: false
-        default: '-1'
       COMMIT_CHANGELOG:
         type: boolean
         required: false
