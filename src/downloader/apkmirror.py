@@ -75,8 +75,7 @@ class ApkMirror(Downloader):
                 if apk_type == "APK" and (not contains_any_word(text, apk_archs)):
                     continue
                 links[apk_type] = f"{APK_MIRROR_BASE_URL}{sub_url}"
-        preferred_link = links.get("APK", links.get("BUNDLE"))
-        if preferred_link:
+        if preferred_link := links.get("APK", links.get("BUNDLE")):
             return preferred_link
         raise APKMirrorAPKDownloadFailure(
             "Unable to extract download page", url=main_page

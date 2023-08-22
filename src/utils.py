@@ -152,7 +152,4 @@ def apkmirror_status_check(package_name: str) -> Any:
 
 
 def contains_any_word(string: str, words: List[str]) -> bool:
-    for word in words:
-        if word in string:
-            return True
-    return False
+    return any(word in string for word in words)
