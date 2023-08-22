@@ -101,16 +101,15 @@ def generate_markdown_table(data: List[List[str]]) -> str:
 
 
 def main() -> None:
-    repo_url = "https://api.revanced.app/v2/patches/latest"
+    repo_url = "https://releases.revanced.app/patches"
     response = requests.get(repo_url, timeout=10)
     handle_github_response(response)
 
-    parsed_data = response.json()
-    compatible_packages = parsed_data["patches"]
+    patches = response.json()
 
     possible_apps = set()
-    for package in compatible_packages:
-        for compatible_package in package["compatiblePackages"]:
+    for patch in patches:
+        for compatible_package in patch["compatiblePackages"]:
             possible_apps.add(compatible_package["name"])
 
     supported_app = set(Patches.support_app().keys())
