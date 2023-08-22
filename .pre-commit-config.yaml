@@ -60,3 +60,10 @@ repos:
         args:
           - '--strict'
         additional_dependencies: [ types-requests ]
+
+ci:
+    autofix_commit_msg: |
+      🚨 Lint Fixes
+    autofix_prs: true
+    autoupdate_commit_msg: |
+      ✨Update versions of tools in pre-commit configs to latest version
