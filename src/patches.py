@@ -62,7 +62,19 @@ class Patches(object):
 
     @staticmethod
     def get_package_name(app: str) -> str:
-        """Get Package name from app name."""
+        """The function `get_package_name` takes an app name as input and
+        returns the corresponding package name, or raises an exception if the
+        app is not supported.
+
+        Parameters
+        ----------
+        app : str
+            The `app` parameter is a string that represents the name of an app.
+
+        Returns
+        -------
+            a string, which is the package name corresponding to the given app name.
+        """
         for package, app_tuple in Patches.revanced_app_ids.items():
             if app_tuple[0] == app:
                 return package
@@ -70,11 +82,27 @@ class Patches(object):
 
     @staticmethod
     def support_app() -> Dict[str, str]:
-        """Return supported apps."""
+        """The function `support_app()` returns a dictionary of supported app
+        IDs.
+
+        Returns
+        -------
+            a dictionary of supported apps.
+        """
         return Patches._revanced_app_ids
 
     def fetch_patches(self, config: RevancedConfig, app: APP) -> None:
-        """Function to fetch all patches."""
+        """The function fetches patches from a JSON file and organizes them
+        based on compatibility with different applications.
+
+        Parameters
+        ----------
+        config : RevancedConfig
+            The `config` parameter is of type `RevancedConfig` and represents the configuration for the
+        application.
+        app : APP
+            The `app` parameter is of type `APP`. It represents an instance of the `APP` class.
+        """
         patch_loader = PatchLoader()
         patches = patch_loader.load_patches(
             f'{config.temp_folder}/{app.resource["patches_json"]}'
@@ -105,10 +133,20 @@ class Patches(object):
         self.fetch_patches(config, app)
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
-        """Get all patches for the given app.
+        """The function `get` retrieves all patches for a given application and
+        returns them along with the latest version.
 
-        :param app: Name of the application
-        :return: Patches
+        Parameters
+        ----------
+        app : str
+            The `app` parameter is a string that represents the name of the application for which you want
+        to retrieve patches.
+
+        Returns
+        -------
+            a tuple containing two elements. The first element is a list of dictionaries representing
+        patches for the given app. The second element is a string representing the version of the
+        patches.
         """
         app_names = {value[0]: value[1] for value in self.revanced_app_ids.values()}
 
@@ -124,11 +162,20 @@ class Patches(object):
     def include_exclude_patch(
         self, app: APP, parser: Any, patches: List[Dict[str, str]]
     ) -> None:
-        """Include and exclude patches for a given app.
+        """The function `include_exclude_patch` includes and excludes patches
+        for a given app based on certain conditions.
 
-        :param app: Name of the app
-        :param parser: Parser Obj
-        :param patches: All the patches of a given app
+        Parameters
+        ----------
+        app : APP
+            The "app" parameter is the name of the app for which the patches are being included or
+        excluded.
+        parser : Any
+            The `parser` parameter is an object of type `Any`, which means it can be any type of object. It
+        is used to perform parsing operations.
+        patches : List[Dict[str, str]]
+            A list of dictionaries, where each dictionary represents a patch and contains the following
+        keys:
         """
         for patch in patches:
             normalized_patch = patch["name"].lower().replace(" ", "-")
@@ -144,11 +191,21 @@ class Patches(object):
         logger.info(app)
 
     def get_app_configs(self, app: "APP") -> List[Dict[str, str]]:
-        """Get Configurations for a given app.
+        """The function `get_app_configs` retrieves configurations for a given
+        app, including patches, version information, and whether it is
+        experimental.
 
-        :param app: Name of the application
-        :return: All Patches , Its version and whether it is
-            experimental
+        Parameters
+        ----------
+        app : "APP"
+            The "app" parameter is the name of the application for which you want to get the
+        configurations.
+
+        Returns
+        -------
+            the total_patches, which is a list of dictionaries containing information about the patches for
+        the given app. Each dictionary in the list contains the keys "Patches", "Version", and
+        "Experimental".
         """
         experiment = False
         total_patches, recommended_version = self.get(app=app.app_name)
@@ -170,7 +227,19 @@ class PatchLoader:
 
     @staticmethod
     def load_patches(file_name: str) -> Any:
-        """Load patches from a file."""
+        """The function `load_patches` loads patches from a file and returns
+        them.
+
+        Parameters
+        ----------
+        file_name : str
+            The `file_name` parameter is a string that represents the name or path of the file from which
+        the patches will be loaded.
+
+        Returns
+        -------
+            the patches loaded from the file.
+        """
         try:
             with open(file_name) as f:
                 patches = json.load(f)

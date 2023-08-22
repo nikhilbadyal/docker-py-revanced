@@ -43,11 +43,28 @@ class APP(object):
         self.download_patch_resources(config)
 
     def get_output_file_name(self) -> str:
-        """Get output file appended with version."""
+        """The function returns a string representing the output file name for
+        an APK file appended with version.
+
+        Returns
+        -------
+            a string that represents the output file name for an APK file.
+        """
         return f"Re-{self.app_name}-{slugify(self.app_version)}-output.apk"
 
     def set_recommended_version(self, version: str, exp: bool = False) -> None:
-        """Update if cooking non-recommended."""
+        """The function sets the recommended version and experiment flag for an
+        app.
+
+        Parameters
+        ----------
+        version : str
+            The version parameter is a string that represents the recommended version of the app.
+        exp : bool, optional
+            The "exp" parameter is a boolean flag that indicates whether the specified version is for an
+        experimental or regular release. If "exp" is set to True, it means the version is for an
+        experimental release. If "exp" is set to False or not provided, it means the version is for
+        """
         self.app_version = version
         self.experiment = exp
 
@@ -59,7 +76,30 @@ class APP(object):
     def download(
         url: str, config: RevancedConfig, assets_filter: str, file_name: str = ""
     ) -> str:
-        """Downloader."""
+        """The `download` function downloads a file from a given URL using a
+        specified configuration and filters the assets based on a given filter.
+
+        Parameters
+        ----------
+        url : str
+            The `url` parameter is a string that represents the URL of the resource you want to download.
+        It can be a URL from GitHub or a local file URL.
+        config : RevancedConfig
+            The `config` parameter is an instance of the `RevancedConfig` class. It is used to provide
+        configuration settings for the download process.
+        assets_filter : str
+            The `assets_filter` parameter is a string that is used to filter the assets to be downloaded
+        from a GitHub repository. It is used when the `url` parameter starts with "https://github". The
+        `assets_filter` string is matched against the names of the assets in the repository, and only
+        file_name : str
+            The `file_name` parameter is a string that represents the name of the file that will be
+        downloaded. If no value is provided for `file_name`, the function will generate a filename based
+        on the URL of the file being downloaded.
+
+        Returns
+        -------
+            a string, which is the file name of the downloaded file.
+        """
         from src.downloader.download import Downloader
 
         url = url.strip()
@@ -76,7 +116,15 @@ class APP(object):
         return file_name
 
     def download_patch_resources(self, config: RevancedConfig) -> None:
-        """Download resource for patching."""
+        """The function `download_patch_resources` downloads various resources
+        for patching in parallel using a ThreadPoolExecutor.
+
+        Parameters
+        ----------
+        config : RevancedConfig
+            The `config` parameter is an instance of the `RevancedConfig` class. It is used to provide
+        configuration settings for the resource download tasks.
+        """
         logger.info("Downloading resources for patching.")
         # Create a list of resource download tasks
         download_tasks = [
@@ -105,6 +153,17 @@ class APP(object):
 
     @staticmethod
     def generate_filename(url: str) -> str:
-        """Get file name from url."""
+        """The function `generate_filename` takes a URL as input and returns a
+        hashed version of the URL as the filename.
+
+        Parameters
+        ----------
+        url : str
+            The `url` parameter is a string that represents a URL.
+
+        Returns
+        -------
+            the encoded URL as a string.
+        """
         encoded_url: str = hashlib.sha256(url.encode()).hexdigest()
         return encoded_url
