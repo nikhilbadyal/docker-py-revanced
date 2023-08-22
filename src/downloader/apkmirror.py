@@ -5,11 +5,10 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from loguru import logger
 
-from scripts.status_check import headers
 from src.downloader.download import Downloader
 from src.downloader.sources import APK_MIRROR_BASE_URL, apk_sources
 from src.exceptions import APKMirrorAPKDownloadFailure
-from src.utils import bs4_parser, contains_any_word
+from src.utils import bs4_parser, contains_any_word, request_header
 
 
 class ApkMirror(Downloader):
@@ -84,7 +83,7 @@ class ApkMirror(Downloader):
     @staticmethod
     def _extracted_search_div(url: str, search_class: str) -> Tag:
         """Extract search div."""
-        r = requests.get(url, headers=headers, timeout=60)
+        r = requests.get(url, headers=request_header, timeout=60)
         if r.status_code != 200:
             raise APKMirrorAPKDownloadFailure(
                 f"Unable to connect with {url} on ApkMirror. Are you blocked by APKMirror or abused apkmirror "

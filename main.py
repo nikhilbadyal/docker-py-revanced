@@ -35,6 +35,7 @@ def main() -> None:
                 app=app.app_name, patcher=patcher, config=config
             )
             app.download_file_name = downloader.download(app.app_version, app.app_name)
+            logger.info(app)
             parser.patch_app(app)
         except AppNotFound as e:
             logger.info(f"Invalid app requested to build {e}")

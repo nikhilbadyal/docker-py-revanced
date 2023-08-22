@@ -17,12 +17,12 @@ class RevancedConfig(object):
     """Revanced Configurations."""
 
     def __init__(self, env: Env) -> None:
-        from src.utils import default_build
+        from src.utils import default_build, request_header
 
         self.env = env
         self.temp_folder = Path("apks")
         self.session = Session()
-        self.session.headers["User-Agent"] = "anything"
+        self.session.headers["User-Agent"] = request_header["User-Agent"]
         self.ci_test = env.bool("CI_TEST", False)
         self.apps = env.list(
             "PATCH_APPS",

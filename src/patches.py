@@ -188,7 +188,6 @@ class Patches(object):
             parser.include(normalized_patch) if normalized_patch not in getattr(
                 self, "universal_patch", []
             ) else ()
-        logger.info(app)
 
     def get_app_configs(self, app: "APP") -> List[Dict[str, str]]:
         """The function `get_app_configs` retrieves configurations for a given

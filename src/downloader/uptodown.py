@@ -5,18 +5,17 @@ import requests
 from bs4 import BeautifulSoup
 from loguru import logger
 
-from scripts.status_check import headers
 from src.downloader.download import Downloader
 from src.downloader.sources import apk_sources
 from src.exceptions import UptoDownAPKDownloadFailure
-from src.utils import bs4_parser
+from src.utils import bs4_parser, request_header
 
 
 class UptoDown(Downloader):
     """Files downloader."""
 
     def extract_download_link(self, page: str, app: str) -> str:
-        r = requests.get(page, headers=headers, allow_redirects=True, timeout=60)
+        r = requests.get(page, headers=request_header, allow_redirects=True, timeout=60)
         soup = BeautifulSoup(r.text, bs4_parser)
         soup = soup.find(id="detail-download-button")
         download_url = soup.get("data-url")

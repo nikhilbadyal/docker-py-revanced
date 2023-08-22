@@ -17,8 +17,10 @@ default_build = [
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 apk_mirror_base_url = "https://www.apkmirror.com"
-apk_mirror_header = {
-    "User-Agent": "APKUpdater-v" + "3.0.1",
+request_header = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (HTML, like Gecko)"
+    " Chrome/96.0.4664.93 Safari/537.36",
     "Authorization": "Basic YXBpLWFwa3VwZGF0ZXI6cm01cmNmcnVVakt5MDRzTXB5TVBKWFc4",
     "Content-Type": "application/json",
 }
@@ -237,7 +239,7 @@ def apkmirror_status_check(package_name: str) -> Any:
     """
     api_url = f"{apk_mirror_base_url}/wp-json/apkm/v1/app_exists/"
     body = {"pnames": [package_name]}
-    response = requests.post(api_url, json=body, headers=apk_mirror_header)
+    response = requests.post(api_url, json=body, headers=request_header)
     return response.json()
 
 

@@ -4,11 +4,10 @@ from typing import Any
 import requests
 from bs4 import BeautifulSoup
 
-from scripts.status_check import headers
 from src.downloader.download import Downloader
 from src.downloader.sources import apk_sources
 from src.exceptions import APKSosAPKDownloadFailure
-from src.utils import bs4_parser
+from src.utils import bs4_parser, request_header
 
 
 class ApkSos(Downloader):
@@ -20,7 +19,7 @@ class ApkSos(Downloader):
         :param page: Url of the page
         :param app: Name of the app
         """
-        r = requests.get(page, headers=headers, allow_redirects=True)
+        r = requests.get(page, headers=request_header, allow_redirects=True)
         soup = BeautifulSoup(r.text, bs4_parser)
         download_button = soup.find(class_="col-sm-12 col-md-8 text-center")
         possible_links = download_button.find_all("a")
