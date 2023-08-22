@@ -1,5 +1,5 @@
 """Upto Down Downloader."""
-from typing import Any
+from typing import Any, Tuple
 
 import requests
 from bs4 import BeautifulSoup
@@ -14,7 +14,7 @@ from src.utils import bs4_parser, request_header
 class UptoDown(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self, page: str, app: str) -> str:
+    def extract_download_link(self, page: str, app: str) -> Tuple[str, str]:
         r = requests.get(page, headers=request_header, allow_redirects=True, timeout=60)
         soup = BeautifulSoup(r.text, bs4_parser)
         soup = soup.find(id="detail-download-button")
@@ -25,9 +25,9 @@ class UptoDown(Downloader):
             )
         file_name = f"{app}.apk"
         self._download(download_url, file_name)
-        return file_name
+        return file_name, download_url
 
-    def specific_version(self, app: str, version: str) -> str:
+    def specific_version(self, app: str, version: str) -> Tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -51,6 +51,6 @@ class UptoDown(Downloader):
             )
         return self.extract_download_link(download_url, app)
 
-    def latest_version(self, app: str, **kwargs: Any) -> str:
+    def latest_version(self, app: str, **kwargs: Any) -> Tuple[str, str]:
         page = f"{apk_sources[app]}/download"
         return self.extract_download_link(page, app)

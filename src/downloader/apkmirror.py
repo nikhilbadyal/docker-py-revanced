@@ -1,5 +1,5 @@
 """Downloader Class."""
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 import requests
 from bs4 import BeautifulSoup, Tag
@@ -14,7 +14,7 @@ from src.utils import bs4_parser, contains_any_word, request_header
 class ApkMirror(Downloader):
     """Files downloader."""
 
-    def _extract_force_download_link(self, link: str, app: str) -> str:
+    def _extract_force_download_link(self, link: str, app: str) -> Tuple[str, str]:
         """Extract force download link."""
         notes_divs = self._extracted_search_div(link, "tab-pane")
         apk_type = self._extracted_search_div(link, "apkm-badge").get_text()
@@ -26,12 +26,12 @@ class ApkMirror(Downloader):
             ):
                 file_name = f"{app}.{extension}"
                 self._download(APK_MIRROR_BASE_URL + possible_link["href"], file_name)
-                return file_name
+                return file_name, APK_MIRROR_BASE_URL + possible_link["href"]
         raise APKMirrorAPKDownloadFailure(
             f"Unable to extract force download for {app}", url=link
         )
 
-    def extract_download_link(self, page: str, app: str) -> str:
+    def extract_download_link(self, page: str, app: str) -> Tuple[str, str]:
         """Function to extract the download link from apkmirror html page.
 
         :param page: Url of the page
@@ -93,7 +93,9 @@ class ApkMirror(Downloader):
         soup = BeautifulSoup(r.text, bs4_parser)
         return soup.find(class_=search_class)
 
-    def specific_version(self, app: str, version: str, main_page: str = "") -> str:
+    def specific_version(
+        self, app: str, version: str, main_page: str = ""
+    ) -> Tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -109,7 +111,7 @@ class ApkMirror(Downloader):
         download_page = self.get_download_page(main_page)
         return self.extract_download_link(download_page, app)
 
-    def latest_version(self, app: str, **kwargs: Any) -> str:
+    def latest_version(self, app: str, **kwargs: Any) -> Tuple[str, str]:
         """Function to download whatever the latest version of app from
         apkmirror.
 
