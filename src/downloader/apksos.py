@@ -4,8 +4,8 @@ from typing import Any, Tuple
 import requests
 from bs4 import BeautifulSoup
 
+from src.app import APP
 from src.downloader.download import Downloader
-from src.downloader.sources import apk_sources
 from src.exceptions import APKSosAPKDownloadFailure
 from src.patches import Patches
 from src.utils import bs4_parser, request_header
@@ -31,13 +31,13 @@ class ApkSos(Downloader):
                 return file_name, possible_link["href"]
         raise APKSosAPKDownloadFailure(f"Unable to download {app}", url=page)
 
-    def latest_version(self, app: str, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self, app: APP, **kwargs: Any) -> Tuple[str, str]:
         """Function to download whatever the latest version of app from
         apkmirror.
 
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        package_name = Patches.get_package_name(app)
-        download_url = apk_sources[app].format(package_name)
-        return self.extract_download_link(download_url, app)
+        package_name = Patches.get_package_name(app.app_name)
+        download_url = app.download_source.format(package_name)
+        return self.extract_download_link(download_url, app.app_name)

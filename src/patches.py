@@ -14,7 +14,7 @@ from src.exceptions import AppNotFound, PatchesJsonLoadFailed
 class Patches(object):
     """Revanced Patches."""
 
-    _revanced_app_ids = {
+    revanced_package_names = {
         "com.reddit.frontpage": "reddit",
         "com.ss.android.ugc.trill": "tiktok",
         "com.twitter.android": "twitter",
@@ -56,9 +56,6 @@ class Patches(object):
         "com.mgoogle.android.gms": "microg",
         "jp.pxv.android": "pixiv",
     }
-    revanced_app_ids = {
-        key: (value, "_" + value) for key, value in _revanced_app_ids.items()
-    }
 
     @staticmethod
     def get_package_name(app: str) -> str:
@@ -75,8 +72,8 @@ class Patches(object):
         -------
             a string, which is the package name corresponding to the given app name.
         """
-        for package, app_tuple in Patches.revanced_app_ids.items():
-            if app_tuple[0] == app:
+        for package, app_name in Patches.revanced_package_names.items():
+            if app_name == app:
                 return package
         raise AppNotFound(f"App {app} not supported yet.")
 
@@ -89,7 +86,7 @@ class Patches(object):
         -------
             a dictionary of supported apps.
         """
-        return Patches._revanced_app_ids
+        return Patches.revanced_package_names
 
     def fetch_patches(self, config: RevancedConfig, app: APP) -> None:
         """The function fetches patches from a JSON file and organizes them
@@ -107,29 +104,30 @@ class Patches(object):
         patches = patch_loader.load_patches(
             f'{config.temp_folder}/{app.resource["patches_json"]}'
         )
-        for app_name in (self.revanced_app_ids[x][1] for x in self.revanced_app_ids):
-            setattr(self, app_name, [])
-        setattr(self, "universal_patch", [])
 
         for patch in patches:
             if not patch["compatiblePackages"]:
                 p = {x: patch[x] for x in ["name", "description"]}
                 p["app"] = "universal"
                 p["version"] = "all"
-                getattr(self, "universal_patch").append(p)
+                self.patches_dict["universal_patch"].append(p)
             for compatible_package, version in [
                 (x["name"], x["versions"]) for x in patch["compatiblePackages"]
             ]:
-                if compatible_package in self.revanced_app_ids:
-                    app_name = self.revanced_app_ids[compatible_package][1]
+                if compatible_package in self.revanced_package_names.keys():
+                    app_name = self.revanced_package_names[compatible_package]
+                    if not self.patches_dict.get(app_name, None):
+                        self.patches_dict[app_name] = []
                     p = {x: patch[x] for x in ["name", "description"]}
                     p["app"] = compatible_package
                     p["version"] = version[-1] if version else "all"
-                    getattr(self, app_name).append(p)
-        n_patches = len(getattr(self, f"_{app.app_name}"))
+                    self.patches_dict[app_name].append(p)
+
+        n_patches = len(self.patches_dict[app.app_name])
         app.no_of_patches = n_patches
 
     def __init__(self, config: RevancedConfig, app: APP) -> None:
+        self.patches_dict: Dict[str, Any] = {"universal_patch": []}
         self.fetch_patches(config, app)
 
     def get(self, app: str) -> Tuple[List[Dict[str, str]], str]:
@@ -148,12 +146,12 @@ class Patches(object):
         patches for the given app. The second element is a string representing the version of the
         patches.
         """
-        app_names = {value[0]: value[1] for value in self.revanced_app_ids.values()}
+        app_names = self.revanced_package_names
 
-        if not (app_name := app_names.get(app)):
+        if app not in app_names.values():
             raise AppNotFound(f"App {app} not supported yet.")
 
-        patches = getattr(self, app_name)
+        patches = self.patches_dict[app]
         version = "latest"
         with contextlib.suppress(StopIteration):
             version = next(i["version"] for i in patches if i["version"] != "all")
@@ -185,9 +183,9 @@ class Patches(object):
                 normalized_patch
             )
         for normalized_patch in app.include_request:
-            parser.include(normalized_patch) if normalized_patch not in getattr(
-                self, "universal_patch", []
-            ) else ()
+            parser.include(
+                normalized_patch
+            ) if normalized_patch not in self.patches_dict["universal_patch"] else ()
 
     def get_app_configs(self, app: "APP") -> List[Dict[str, str]]:
         """The function `get_app_configs` retrieves configurations for a given

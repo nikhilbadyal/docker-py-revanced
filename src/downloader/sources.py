@@ -1,8 +1,10 @@
 APK_MIRROR_BASE_URL = "https://www.apkmirror.com"
 APK_MIRROR_BASE_APK_URL = f"{APK_MIRROR_BASE_URL}/apk"
 UPTODOWN_BASE_URL = "https://{}.en.uptodown.com/android"
-APK_PURE_URL = "https://d.apkpure.com/b/APK/{}?version=latest"
-APK_SOS_URL = "https://apksos.com/download-app/{}"
+APK_PURE_BASE_URL = "https://d.apkpure.com/b/APK"
+APK_PURE_URL = APK_PURE_BASE_URL + "/{}?version=latest"
+APKS_SOS_BASE_URL = "https://apksos.com/download-app"
+APK_SOS_URL = APKS_SOS_BASE_URL + "/{}"
 GITHUB_BASE_URL = "https://github.com"
 apk_sources = {
     "backdrops": f"{APK_MIRROR_BASE_APK_URL}/backdrops/backdrops-wallpapers/",

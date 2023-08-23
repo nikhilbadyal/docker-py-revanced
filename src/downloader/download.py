@@ -9,6 +9,7 @@ from typing import Any, Tuple
 from loguru import logger
 from tqdm import tqdm
 
+from src.app import APP
 from src.config import RevancedConfig
 from src.downloader.utils import implement_method
 from src.exceptions import DownloadFailure
@@ -74,7 +75,7 @@ class Downloader(object):
         """Extract download link from web page."""
         raise NotImplementedError(implement_method)
 
-    def specific_version(self, app: str, version: str) -> Tuple[str, str]:
+    def specific_version(self, app: APP, version: str) -> Tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -83,7 +84,7 @@ class Downloader(object):
         """
         raise NotImplementedError(implement_method)
 
-    def latest_version(self, app: str, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self, app: APP, **kwargs: Any) -> Tuple[str, str]:
         """Function to download the latest version of app.
 
         :param app: Name of the application
@@ -121,7 +122,7 @@ class Downloader(object):
         base_name, _ = os.path.splitext(filename)
         return base_name + new_extension
 
-    def download(self, version: str, app: str, **kwargs: Any) -> Tuple[str, str]:
+    def download(self, version: str, app: APP, **kwargs: Any) -> Tuple[str, str]:
         """Public function to download apk to patch.
 
         :param version: version to download
@@ -130,8 +131,10 @@ class Downloader(object):
         if self.config.dry_run:
             return "", ""
         if app in self.config.existing_downloaded_apks:
-            logger.debug(f"Will not download {app} -v{version} from the internet.")
-            return app, f"local://{app}"
+            logger.debug(
+                f"Will not download {app.app_name} -v{version} from the internet."
+            )
+            return app.app_name, f"local://{app.app_name}"
         if version and version != "latest":
             file_name, app_dl = self.specific_version(app, version)
         else:

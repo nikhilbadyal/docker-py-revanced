@@ -5,8 +5,9 @@ import requests
 from bs4 import BeautifulSoup, Tag
 from loguru import logger
 
+from src.app import APP
 from src.downloader.download import Downloader
-from src.downloader.sources import APK_MIRROR_BASE_URL, apk_sources
+from src.downloader.sources import APK_MIRROR_BASE_URL
 from src.exceptions import APKMirrorAPKDownloadFailure
 from src.utils import bs4_parser, contains_any_word, request_header
 
@@ -94,7 +95,7 @@ class ApkMirror(Downloader):
         return soup.find(class_=search_class)
 
     def specific_version(
-        self, app: str, version: str, main_page: str = ""
+        self, app: APP, version: str, main_page: str = ""
     ) -> Tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
@@ -105,13 +106,13 @@ class ApkMirror(Downloader):
         """
         if not main_page:
             version = version.replace(".", "-")
-            apk_main_page = apk_sources[app]
+            apk_main_page = app.download_source
             version_page = apk_main_page + apk_main_page.split("/")[-2]
             main_page = f"{version_page}-{version}-release/"
         download_page = self.get_download_page(main_page)
-        return self.extract_download_link(download_page, app)
+        return self.extract_download_link(download_page, app.app_name)
 
-    def latest_version(self, app: str, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self, app: APP, **kwargs: Any) -> Tuple[str, str]:
         """Function to download whatever the latest version of app from
         apkmirror.
 
@@ -119,7 +120,7 @@ class ApkMirror(Downloader):
         :return: Version of downloaded apk
         """
 
-        app_main_page = apk_sources[app]
+        app_main_page = app.download_source
         versions_div = self._extracted_search_div(
             app_main_page, "listWidget p-relative"
         )
