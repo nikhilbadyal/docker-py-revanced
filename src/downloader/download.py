@@ -12,19 +12,17 @@ from tqdm import tqdm
 from src.config import RevancedConfig
 from src.downloader.utils import implement_method
 from src.exceptions import DownloadFailure
-from src.patches import Patches
 from src.utils import handle_request_response
 
 
 class Downloader(object):
     """Files downloader."""
 
-    def __init__(self, patcher: Patches, config: RevancedConfig):
+    def __init__(self, config: RevancedConfig):
         self._CHUNK_SIZE = 10485760
         self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
         self.config = config
-        self.patcher = patcher
 
     @staticmethod
     def file_status_check(file_name: Path, dry_run: bool, url: str) -> bool:

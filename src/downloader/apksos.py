@@ -7,6 +7,7 @@ from bs4 import BeautifulSoup
 from src.downloader.download import Downloader
 from src.downloader.sources import apk_sources
 from src.exceptions import APKSosAPKDownloadFailure
+from src.patches import Patches
 from src.utils import bs4_parser, request_header
 
 
@@ -37,6 +38,6 @@ class ApkSos(Downloader):
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        package_name = self.patcher.get_package_name(app)
+        package_name = Patches.get_package_name(app)
         download_url = apk_sources[app].format(package_name)
         return self.extract_download_link(download_url, app)

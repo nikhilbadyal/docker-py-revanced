@@ -113,7 +113,7 @@ class APP(object):
         if not file_name:
             extension = pathlib.Path(url).suffix
             file_name = APP.generate_filename(url) + extension
-        Downloader(None, config).direct_download(url, file_name)  # type: ignore
+        Downloader(config).direct_download(url, file_name)
         return file_name
 
     def download_patch_resources(self, config: RevancedConfig) -> None:

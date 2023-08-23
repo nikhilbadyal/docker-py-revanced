@@ -32,7 +32,7 @@ def main() -> None:
             app_all_patches = patcher.get_app_configs(app)
             patcher.include_exclude_patch(app, parser, app_all_patches)
             downloader = DownloaderFactory.create_downloader(
-                app=app.app_name, patcher=patcher, config=config
+                app=app.app_name, config=config
             )
             app.download_file_name, app.download_dl = downloader.download(
                 app.app_version, app.app_name
