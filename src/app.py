@@ -50,6 +50,7 @@ class APP(object):
     def download_apk_for_patching(self, config: RevancedConfig) -> None:
         """Download apk to be patched."""
         from src.downloader.factory import DownloaderFactory
+
         logger.info("Downloading apk to be patched")
         downloader = DownloaderFactory.create_downloader(
             app=self.app_name, config=config
