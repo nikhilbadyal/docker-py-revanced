@@ -152,6 +152,7 @@ You can use any of the following methods to build.
 | [*APP_NAME*_EXCLUDE_PATCH**](#custom-exclude-patching)      |     Patches to exclude while patching  **APP_NAME**.      | []                             |
 | [*APP_NAME*_INCLUDE_PATCH**](#custom-include-patching)      |     Patches to include while patching  **APP_NAME**.      | []                             |
 | [*APP_NAME*_VERSION**](#app-version)                        |         Version to use for download for patching.         | Recommended by patch resources |
+| [*APP_NAME*_DL](#app-dl)                                    |                                                           |                                |
 
 `**` - By default all patches for a given app are included.<br>
 `**` - Can be used to included universal patch.
@@ -331,7 +332,17 @@ You can use any of the following methods to build.
     YOUTUBE_MUSIC_VERSION=X.X.X
     TWITTER_VERSION=latest
     ```
-14. <a id="telegram-support"></a>For Telegram Upload.
+14. <a id="app-dl"></a>If you have your personal source for apk to be downloaded. You can also provide that and tool
+    will not scarp links from apk sources.Add `dl` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in
+    the format
+    ```ini
+    <APP_NAME>_DL=<direct-app-download>
+    ```
+    Example:
+    ```ini
+    YOUTUBE_DL=https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
+    ```
+15. <a id="telegram-support"></a>For Telegram Upload.
      1. Set up a telegram channel, send a message to it and forward the message to
         this telegram [bot](https://t.me/username_to_id_bot)
      2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
@@ -345,12 +356,12 @@ You can use any of the following methods to build.
         <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
      6. After Everything done successfully a part of the actions secrets of the repository may look like<br>
         <img src="https://i.imgur.com/Cjifz1M.png" width="400">
-15. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
+16. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets`.<br>
-16. Sample Envs<br>
+17. Sample Envs<br>
     <img src="https://i.imgur.com/FxOtiGs.png" width="600" style="left">
-17. Make sure your Action has write access. If not click
+18. Make sure your Action has write access. If not click
     [here](https://github.com/nikhilbadyal/docker-py-revanced/settings/actions).
     In the bottom give read and write access to Actions.
     <img src="https://i.imgur.com/STSv2D3.png" width="400">
