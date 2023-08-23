@@ -8,8 +8,8 @@ from typing import Dict, List
 from loguru import logger
 
 from src.config import RevancedConfig
-from src.downloader.download import Downloader
-from src.exceptions import PatchingFailed
+from src.downloader.sources import apk_sources
+from src.exceptions import DownloadFailure, PatchingFailed
 from src.utils import slugify
 
 
@@ -47,9 +47,11 @@ class APP(object):
         self.download_file_name = ""
         self.download_dl = config.env.str(f"{app_name}_DL".upper(), "")
         self.download_patch_resources(config)
+        self.download_source = config.env.str(f"{app_name}_DL_SOURCE".upper(), "")
 
     def download_apk_for_patching(self, config: RevancedConfig) -> None:
         """Download apk to be patched."""
+        from src.downloader.download import Downloader
         from src.downloader.factory import DownloaderFactory
 
         if self.download_dl:
@@ -60,11 +62,16 @@ class APP(object):
             )
         else:
             logger.info("Downloading apk to be patched by scrapping")
+            try:
+                if not self.download_source:
+                    self.download_source = apk_sources[self.app_name]
+            except KeyError:
+                raise DownloadFailure(f"No download source found for {self.app_name}")
             downloader = DownloaderFactory.create_downloader(
-                app=self.app_name, config=config
+                config=config, apk_source=self.download_source
             )
             self.download_file_name, self.download_dl = downloader.download(
-                self.app_version, self.app_name
+                self.app_version, self
             )
 
     def get_output_file_name(self) -> str:

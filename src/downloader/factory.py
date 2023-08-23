@@ -7,10 +7,9 @@ from src.downloader.download import Downloader
 from src.downloader.github import Github
 from src.downloader.sources import (
     APK_MIRROR_BASE_URL,
-    APK_PURE_URL,
-    APK_SOS_URL,
+    APK_PURE_BASE_URL,
+    APKS_SOS_BASE_URL,
     GITHUB_BASE_URL,
-    apk_sources,
 )
 from src.downloader.uptodown import UptoDown
 from src.exceptions import DownloadFailure
@@ -20,22 +19,23 @@ class DownloaderFactory(object):
     """Downloader Factory."""
 
     @staticmethod
-    def create_downloader(app: str, config: RevancedConfig) -> Downloader:
+    def create_downloader(config: RevancedConfig, apk_source: str) -> Downloader:
         """Returns appropriate downloader.
 
         Parameters
         ----------
         app : App Name
         config : Config
+        apk_source : Source URL for APK
         """
-        if apk_sources[app].startswith(GITHUB_BASE_URL):
+        if apk_source.startswith(GITHUB_BASE_URL):
             return Github(config)
-        if apk_sources[app].startswith(APK_PURE_URL):
+        if apk_source.startswith(APK_PURE_BASE_URL):
             return ApkPure(config)
-        elif apk_sources[app].startswith(APK_SOS_URL):
+        elif apk_source.startswith(APKS_SOS_BASE_URL):
             return ApkSos(config)
-        elif apk_sources[app].endswith("en.uptodown.com/android"):
+        elif apk_source.endswith("en.uptodown.com/android"):
             return UptoDown(config)
-        elif apk_sources[app].startswith(APK_MIRROR_BASE_URL):
+        elif apk_source.startswith(APK_MIRROR_BASE_URL):
             return ApkMirror(config)
-        raise DownloadFailure(f"No download factory found for {app}")
+        raise DownloadFailure("No download factory found.")
