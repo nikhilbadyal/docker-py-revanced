@@ -5,7 +5,6 @@ from environs import Env
 from loguru import logger
 
 from src.config import RevancedConfig
-from src.downloader.factory import DownloaderFactory
 from src.exceptions import AppNotFound, PatchesJsonLoadFailed, PatchingFailed
 from src.parser import Parser
 from src.patches import Patches
@@ -30,13 +29,8 @@ def main() -> None:
             patcher = Patches(config, app)
             parser = Parser(patcher, config)
             app_all_patches = patcher.get_app_configs(app)
+            app.download_apk_for_patching(config)
             patcher.include_exclude_patch(app, parser, app_all_patches)
-            downloader = DownloaderFactory.create_downloader(
-                app=app.app_name, config=config
-            )
-            app.download_file_name, app.download_dl = downloader.download(
-                app.app_version, app.app_name
-            )
             logger.info(app)
             parser.patch_app(app)
         except AppNotFound as e:

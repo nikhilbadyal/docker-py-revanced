@@ -3,7 +3,7 @@ import concurrent
 import hashlib
 import pathlib
 from concurrent.futures import ThreadPoolExecutor
-from typing import Dict
+from typing import Dict, List
 
 from loguru import logger
 
@@ -29,19 +29,34 @@ class APP(object):
         self.patches_json_dl = config.env.str(
             f"{app_name}_PATCHES_JSON_DL".upper(), config.global_patches_json_dl
         )
-        self.exclude_request = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
-        self.include_request = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
+        self.exclude_request: List[str] = config.env.list(
+            f"{app_name}_EXCLUDE_PATCH".upper(), []
+        )
+        self.include_request: List[str] = config.env.list(
+            f"{app_name}_INCLUDE_PATCH".upper(), []
+        )
         self.resource: Dict[str, str] = {}
-        self.no_of_patches = 0
+        self.no_of_patches: int = 0
         self.keystore_name = config.env.str(
             f"{app_name}_KEYSTORE_FILE_NAME".upper(), config.global_keystore_name
         )
         self.archs_to_build = config.env.list(
             f"{app_name}_ARCHS_TO_BUILD".upper(), config.global_archs_to_build
         )
-        self.download_file_name = None
-        self.download_dl = None
+        self.download_file_name = ""
+        self.download_dl = ""
         self.download_patch_resources(config)
+
+    def download_apk_for_patching(self, config: RevancedConfig) -> None:
+        """Download apk to be patched."""
+        from src.downloader.factory import DownloaderFactory
+        logger.info("Downloading apk to be patched")
+        downloader = DownloaderFactory.create_downloader(
+            app=self.app_name, config=config
+        )
+        self.download_file_name, self.download_dl = downloader.download(
+            self.app_version, self.app_name
+        )
 
     def get_output_file_name(self) -> str:
         """The function returns a string representing the output file name for
