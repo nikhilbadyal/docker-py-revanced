@@ -8,6 +8,7 @@ from typing import Dict, List
 from loguru import logger
 
 from src.config import RevancedConfig
+from src.downloader.download import Downloader
 from src.exceptions import PatchingFailed
 from src.utils import slugify
 
@@ -44,20 +45,27 @@ class APP(object):
             f"{app_name}_ARCHS_TO_BUILD".upper(), config.global_archs_to_build
         )
         self.download_file_name = ""
-        self.download_dl = ""
+        self.download_dl = config.env.str(f"{app_name}_DL".upper(), "")
         self.download_patch_resources(config)
 
     def download_apk_for_patching(self, config: RevancedConfig) -> None:
         """Download apk to be patched."""
         from src.downloader.factory import DownloaderFactory
 
-        logger.info("Downloading apk to be patched")
-        downloader = DownloaderFactory.create_downloader(
-            app=self.app_name, config=config
-        )
-        self.download_file_name, self.download_dl = downloader.download(
-            self.app_version, self.app_name
-        )
+        if self.download_dl:
+            logger.info("Downloading apk to be patched using provided dl")
+            self.download_file_name = f"{self.app_name}.apk"
+            Downloader(config).direct_download(
+                self.download_dl, self.download_file_name
+            )
+        else:
+            logger.info("Downloading apk to be patched by scrapping")
+            downloader = DownloaderFactory.create_downloader(
+                app=self.app_name, config=config
+            )
+            self.download_file_name, self.download_dl = downloader.download(
+                self.app_version, self.app_name
+            )
 
     def get_output_file_name(self) -> str:
         """The function returns a string representing the output file name for
