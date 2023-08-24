@@ -17,6 +17,8 @@ class APP(object):
     """Patched APK."""
 
     def __init__(self, app_name: str, config: RevancedConfig):
+        from src.patches import Patches
+
         self.app_name = app_name
         self.app_version = config.env.str(f"{app_name}_VERSION".upper(), None)
         self.experiment = False
@@ -48,6 +50,9 @@ class APP(object):
         self.download_dl = config.env.str(f"{app_name}_DL".upper(), "")
         self.download_patch_resources(config)
         self.download_source = config.env.str(f"{app_name}_DL_SOURCE".upper(), "")
+        self.package_name = config.env.str(
+            f"{app_name}_PACKAGE_NAME".upper(), Patches.get_package_name(app_name)
+        )
 
     def download_apk_for_patching(self, config: RevancedConfig) -> None:
         """Download apk to be patched."""
@@ -64,7 +69,9 @@ class APP(object):
             logger.info("Downloading apk to be patched by scrapping")
             try:
                 if not self.download_source:
-                    self.download_source = apk_sources[self.app_name]
+                    self.download_source = apk_sources[self.app_name].format(
+                        self.package_name
+                    )
             except KeyError:
                 raise DownloadFailure(f"No download source found for {self.app_name}")
             downloader = DownloaderFactory.create_downloader(
