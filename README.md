@@ -112,7 +112,7 @@ You can use any of the following methods to build.
 | [GLOBAL_CLI_DL*](#global-resources)                      |     DL for CLI to be used for patching apps.      | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                 |
 | [GLOBAL_PATCHES_DL*](#global-resources)                  |   DL for Patches to be used for patching apps.    | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
 | [GLOBAL_PATCHES_JSON_DL*](#global-resources)             | DL for Patches Json to be used for patching apps. | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
-| [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced CLI](https://github.com/revanced/revanced-integrations)                                        |
+| [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced Integrations](https://github.com/revanced/revanced-integrations)                                        |
 | [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |       Key file to be used for signing apps        | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
 | [GLOBAL_ARCHS_TO_BUILD*](#global-archs-to-build)         |         Arch to keep in the patched apk.          | All                                                                                                      |
 | REDDIT_CLIENT_ID                                         |       Reddit Client ID to patch reddit apps       | None                                                                                                     |
@@ -136,13 +136,14 @@ You can use any of the following methods to build.
 | [*APP_NAME*_ARCHS_TO_BUILD](#global-archs-to-build)         |         Arch to keep in the patched **APP_NAME**.         | GLOBAL_ARCHS_TO_BUILD          |
 | [*APP_NAME*_EXCLUDE_PATCH**](#custom-exclude-patching)      |     Patches to exclude while patching  **APP_NAME**.      | []                             |
 | [*APP_NAME*_INCLUDE_PATCH**](#custom-include-patching)      |     Patches to include while patching  **APP_NAME**.      | []                             |
-| [*APP_NAME*_VERSION**](#app-version)                        |         Version to use for download for patching.         | Recommended by patch resources |
-| [*APP_NAME*_DL](#app-dl)                                    |            Direct download Link for clean apk             | None                           |
-| [*APP_NAME*_DL_SOURCE](#any-patch-apps)                     |     Download source of any of the supported scrapper      | None                           |
-| [*APP_NAME*_DL_SOURCE](#any-patch-apps)                     |           Package name of the app to be patched           | None                           |
+| [*APP_NAME*_VERSION](#app-version)                          |         Version to use for download for patching.         | Recommended by patch resources |
+| [*APP_NAME*_PACKAGE_NAME***](#any-patch-apps)               |           Package name of the app to be patched           | None                           |
+| [*APP_NAME*_DL_SOURCE***](#any-patch-apps)                  |     Download source of any of the supported scrapper      | None                           |
+| [*APP_NAME*_DL***](#app-dl)                                 |            Direct download Link for clean apk             | None                           |
 
 `**` - By default all patches for a given app are included.<br>
 `**` - Can be used to included universal patch.
+`***` - Can be used for unavailable apps in the repository (unofficial apps).
 
 ## Note
 
@@ -194,8 +195,8 @@ You can use any of the following methods to build.
    <APP_NAME>_DL_SOURCE=<apk-link-to-any-of-the-suppored-scrapper>
    <APP_NAME>_PACKAGE_NAME=<package-name-of-the-application>
    ```
-   You can also provide DL to the clean apk instead of providing DL_SOURCES as mentioned in this [note](#app-dl)
-   Supported Scrappers are
+   You can also provide DL to the clean apk instead of providing DL_SOURCES as mentioned in this [note](#app-dl).
+   Supported Scrappers are:
    1. APKMIRROR - Supports downloading any versions
         1. Link Format - https://www.apkmirror.com/apk/<organisation-name>/app-name/
         2. Example Link - https://www.apkmirror.com/apk/google-inc/youtube/
@@ -214,7 +215,7 @@ You can use any of the following methods to build.
 
 2. By default, script build the latest version mentioned in `patches.json` file.
 3. Remember to download the **_Microg_**. Otherwise, you may not be able to open YouTube/YouTube Music.
-4. <a id="patch-apps"></a>By default, tool will build only `youtube`. To build other apps supported by patching
+4. <a id="patch-apps"></a>By default, tool will build only `youtube,youtube_music`. To build other apps supported by patching
    resources.Add the apps you want to build in `.env` file or in `ENVS` in `GitHub secrets` in the format
    ```ini
    PATCH_APPS=<APP_NAME>
