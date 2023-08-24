@@ -69,7 +69,9 @@ class APP(object):
             logger.info("Downloading apk to be patched by scrapping")
             try:
                 if not self.download_source:
-                    self.download_source = apk_sources[self.app_name]
+                    self.download_source = apk_sources[self.app_name].format(
+                        self.package_name
+                    )
             except KeyError:
                 raise DownloadFailure(f"No download source found for {self.app_name}")
             downloader = DownloaderFactory.create_downloader(

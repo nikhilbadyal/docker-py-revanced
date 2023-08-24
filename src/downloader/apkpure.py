@@ -15,7 +15,6 @@ class ApkPure(Downloader):
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        download_url = app.download_source.format(app.package_name)
         file_name = f"{app.app_name}.apk"
-        self._download(download_url, file_name)
-        return file_name, download_url
+        self._download(app.download_source, file_name)
+        return file_name, app.download_source
