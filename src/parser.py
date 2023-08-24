@@ -30,33 +30,61 @@ class Parser(object):
         self.config = config
 
     def include(self, name: str) -> None:
-        """Include a given patch.
+        """The function `include` adds a given patch to a list of patches.
 
-        :param name: Name of the patch
+        Parameters
+        ----------
+        name : str
+            The `name` parameter is a string that represents the name of the patch to be included.
         """
         self._PATCHES.extend(["-i", name])
 
     def exclude(self, name: str) -> None:
-        """Exclude a given patch.
+        """The `exclude` function adds a given patch to the list of excluded
+        patches.
 
-        :param name: Name of the patch to exclude
+        Parameters
+        ----------
+        name : str
+            The `name` parameter is a string that represents the name of the patch to be excluded.
         """
         self._PATCHES.extend(["-e", name])
         self._EXCLUDED.append(name)
 
     def get_excluded_patches(self) -> List[str]:
-        """Getter to get all excluded patches :return: List of excluded
-        patches."""
+        """The function `get_excluded_patches` is a getter method that returns
+        a list of excluded patches.
+
+        Returns
+        -------
+            The method is returning a list of excluded patches.
+        """
         return self._EXCLUDED
 
     def get_all_patches(self) -> List[str]:
-        """Getter to get all excluded patches :return: List of excluded
-        patches."""
+        """The function "get_all_patches" is a getter method that returns a
+        list of all patches.
+
+        Returns
+        -------
+            The method is returning a list of all patches.
+        """
         return self._PATCHES
 
     def invert_patch(self, name: str) -> bool:
-        """Getter to get all excluded patches :return: List of excluded
-        patches."""
+        """The function `invert_patch` takes a name as input, it toggles the
+        status of the patch and returns True, otherwise it returns False.
+
+        Parameters
+        ----------
+        name : str
+            The `name` parameter is a string that represents the name of a patch.
+
+        Returns
+        -------
+            a boolean value. It returns True if the patch name is found in the list of patches and
+        successfully inverted, and False if the patch name is not found in the list.
+        """
         try:
             name = name.lower().replace(" ", "-")
             patch_index = self._PATCHES.index(name)
@@ -71,7 +99,11 @@ class Parser(object):
             return False
 
     def exclude_all_patches(self) -> None:
-        """Exclude all patches to Speed up CI."""
+        """The function `exclude_all_patches` replaces all occurrences of "-i"
+        with "-e" in the list `self._PATCHES`.
+
+        Hence exclude all patches
+        """
         for idx, item in enumerate(self._PATCHES):
             if item == "-i":
                 self._PATCHES[idx] = "-e"
@@ -81,15 +113,20 @@ class Parser(object):
         self,
         app: APP,
     ) -> None:
-        """Revanced APP Patcher.
+        """The function `patch_app` is used to patch an app using the Revanced
+        CLI tool.
 
-        :param app: Name of the app
+        Parameters
+        ----------
+        app : APP
+            The `app` parameter is an instance of the `APP` class. It represents an application that needs
+        to be patched.
         """
         args = [
             self.CLI_JAR,
             app.resource["cli"],
             self.APK_ARG,
-            f"{app.app_name}.apk",
+            app.download_file_name,
             self.PATCHES_ARG,
             app.resource["patches"],
             self.INTEGRATIONS_ARG,

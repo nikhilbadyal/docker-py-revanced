@@ -13,15 +13,11 @@ from src.utils import (
     apk_mirror_base_url,
     apkmirror_status_check,
     bs4_parser,
-    handle_github_response,
+    handle_request_response,
+    request_header,
 )
 
 not_found_icon = "https://img.icons8.com/bubbles/500/android-os.png"
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (HTML, like Gecko)"
-    " Chrome/96.0.4664.93 Safari/537.36"
-}
 
 
 def apkcombo_scrapper(package_name: str) -> str:
@@ -29,7 +25,7 @@ def apkcombo_scrapper(package_name: str) -> str:
     try:
         apkcombo_url = f"https://apkcombo.com/genericApp/{package_name}"
         r = requests.get(
-            apkcombo_url, headers=headers, allow_redirects=True, timeout=10
+            apkcombo_url, headers=request_header, allow_redirects=True, timeout=10
         )
         soup = BeautifulSoup(r.text, bs4_parser)
         url = soup.select_one("div.avatar > img")["data-src"]
@@ -48,7 +44,7 @@ def apkmirror_scrapper(package_name: str) -> str:
 
 
 def _extracted_from_apkmirror_scrapper(search_url: str) -> str:
-    r = requests.get(search_url, headers=headers, timeout=10)
+    r = requests.get(search_url, headers=request_header, timeout=60)
     soup = BeautifulSoup(r.text, bs4_parser)
     sub_url = soup.select_one("div.bubble-wrap > img")["src"]
     new_width = 500
@@ -101,16 +97,15 @@ def generate_markdown_table(data: List[List[str]]) -> str:
 
 
 def main() -> None:
-    repo_url = "https://api.revanced.app/v2/patches/latest"
+    repo_url = "https://releases.revanced.app/patches"
     response = requests.get(repo_url, timeout=10)
-    handle_github_response(response)
+    handle_request_response(response)
 
-    parsed_data = response.json()
-    compatible_packages = parsed_data["patches"]
+    patches = response.json()
 
     possible_apps = set()
-    for package in compatible_packages:
-        for compatible_package in package["compatiblePackages"]:
+    for patch in patches:
+        for compatible_package in patch["compatiblePackages"]:
             possible_apps.add(compatible_package["name"])
 
     supported_app = set(Patches.support_app().keys())

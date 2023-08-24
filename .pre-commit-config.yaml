@@ -54,9 +54,16 @@ repos:
         args: [ "--config=setup.cfg" ]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.5.0
+    rev: v1.5.1
     hooks:
       - id: mypy
         args:
           - '--strict'
         additional_dependencies: [ types-requests ]
+
+ci:
+    autofix_commit_msg: |
+      🚨 Lint Fixes
+    autofix_prs: true
+    autoupdate_commit_msg: |
+      ✨Update versions of tools in pre-commit configs to latest version

@@ -6,26 +6,27 @@ from urllib.parse import urlparse
 import requests
 from loguru import logger
 
+from src.app import APP
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
 from src.exceptions import DownloadFailure
-from src.utils import handle_github_response, update_changelog
+from src.utils import handle_request_response, update_changelog
 
 
 class Github(Downloader):
     """Files downloader."""
 
-    def latest_version(self, app: str, **kwargs: Dict[str, str]) -> None:
+    def latest_version(self, app: APP, **kwargs: Dict[str, str]) -> Tuple[str, str]:
         """Function to download files from GitHub repositories.
 
         :param app: App to download
         """
-        logger.debug(f"Trying to download {app} from github")
-        if self.config.dry_run or app == "microg":
+        logger.debug(f"Trying to download {app.app_name} from github")
+        if self.config.dry_run:
             logger.debug(
-                f"Skipping download of {app}. File already exists or dry running."
+                f"Skipping download of {app.app_name}. File already exists or dry running."
             )
-            return
+            return app.app_name, f"local://{app.app_name}"
         owner = str(kwargs["owner"])
         repo_name = str(kwargs["name"])
         repo_url = f"https://api.github.com/repos/{owner}/{repo_name}/releases/latest"
@@ -35,14 +36,15 @@ class Github(Downloader):
         if self.config.personal_access_token:
             logger.debug("Using personal access token")
             headers["Authorization"] = f"token {self.config.personal_access_token}"
-        response = requests.get(repo_url, headers=headers)
-        handle_github_response(response)
+        response = requests.get(repo_url, headers=headers, timeout=60)
+        handle_request_response(response)
         if repo_name == "revanced-patches":
             download_url = response.json()["assets"][1]["browser_download_url"]
         else:
             download_url = response.json()["assets"][0]["browser_download_url"]
         update_changelog(f"{owner}/{repo_name}", response.json())
-        self._download(download_url, file_name=app)
+        self._download(download_url, file_name=app.app_name)
+        return app.app_name, download_url
 
     @staticmethod
     def _extract_repo_owner_and_tag(url: str) -> Tuple[str, str, str]:
@@ -78,8 +80,8 @@ class Github(Downloader):
         }
         if config.personal_access_token:
             headers["Authorization"] = f"token {config.personal_access_token}"
-        response = requests.get(api_url, headers=headers)
-        handle_github_response(response)
+        response = requests.get(api_url, headers=headers, timeout=60)
+        handle_request_response(response)
         assets = response.json()["assets"]
         try:
             filter_pattern = re.compile(asset_filter)

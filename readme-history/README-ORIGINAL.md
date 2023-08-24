@@ -15,7 +15,7 @@ You can get pre-built apks [here](https://revanced_apkss.t.me/)
 
 You can use any of the following methods to build.
 
-- 🚀 **_GitHub**_ (**_`Recommended`_**)
+- 🚀 **GitHub** (**_`Recommended`_**)
 
      1. Click Star to support the project.<br>
        <img src="https://i.imgur.com/FFyXaWY.png" width="400" style="left"><br>
@@ -48,40 +48,25 @@ You can use any of the following methods to build.
         <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
 
 - 🐳 **_Docker Compose_**<br>
-    Windows/Mac users simply install Docker Desktop. If using Linux see below
 
-    1. Install Docker(Skip if already installed)
-       ```bash
-       curl -fsSL https://get.docker.com -o get-docker.sh
-       sh get-docker.sh
-       ```
-    2. Grant Permissions with(Skip if already there)
-       ```bash
-        sudo chmod 777 /var/run/docker.sock
-       ```
-    3. Install Docker compose(Skip if already installed or using **_`Docker Desktop`_**)
-       ```bash
-       curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" \
-       -o /usr/local/bin/docker-compose
-       sudo chmod +x /usr/local/bin/docker-compose
-       ```
-    4. Clone the repo
+    1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+    2. Clone the repo
        ```bash
        git clone https://github.com/nikhilbadyal/docker-py-revanced
        ```
-    5. cd to the cloned repo
+    3. cd to the cloned repo
        ```bash
        cd docker-py-revanced
        ```
-    6. Update `.env` file if you want some customization(See notes)
-    7. Run script with
+    4. Update `.env` file if you want some customization(See notes)
+    5. Run script with
        ```shell
        docker-compose up --build
        ```
 
 - 🐳With Docker
 
-    1. Install Docker(Skip if already installed)
+    1. Install Docker or [Docker Desktop](https://www.docker.com/products/docker-desktop/).
        ```bash
        curl -fsSL https://get.docker.com -o get-docker.sh
        sh get-docker.sh
@@ -127,7 +112,7 @@ You can use any of the following methods to build.
 | [GLOBAL_CLI_DL*](#global-resources)                      |     DL for CLI to be used for patching apps.      | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                 |
 | [GLOBAL_PATCHES_DL*](#global-resources)                  |   DL for Patches to be used for patching apps.    | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
 | [GLOBAL_PATCHES_JSON_DL*](#global-resources)             | DL for Patches Json to be used for patching apps. | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
-| [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced CLI](https://github.com/revanced/revanced-integrations)                                        |
+| [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced Integrations](https://github.com/revanced/revanced-integrations)                                        |
 | [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |       Key file to be used for signing apps        | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
 | [GLOBAL_ARCHS_TO_BUILD*](#global-archs-to-build)         |         Arch to keep in the patched apk.          | All                                                                                                      |
 | REDDIT_CLIENT_ID                                         |       Reddit Client ID to patch reddit apps       | None                                                                                                     |
@@ -151,14 +136,18 @@ You can use any of the following methods to build.
 | [*APP_NAME*_ARCHS_TO_BUILD](#global-archs-to-build)         |         Arch to keep in the patched **APP_NAME**.         | GLOBAL_ARCHS_TO_BUILD          |
 | [*APP_NAME*_EXCLUDE_PATCH**](#custom-exclude-patching)      |     Patches to exclude while patching  **APP_NAME**.      | []                             |
 | [*APP_NAME*_INCLUDE_PATCH**](#custom-include-patching)      |     Patches to include while patching  **APP_NAME**.      | []                             |
-| [*APP_NAME*_VERSION**](#app-version)                        |         Version to use for download for patching.         | Recommended by patch resources |
+| [*APP_NAME*_VERSION](#app-version)                          |         Version to use for download for patching.         | Recommended by patch resources |
+| [*APP_NAME*_PACKAGE_NAME***](#any-patch-apps)               |           Package name of the app to be patched           | None                           |
+| [*APP_NAME*_DL_SOURCE***](#any-patch-apps)                  |     Download source of any of the supported scrapper      | None                           |
+| [*APP_NAME*_DL***](#app-dl)                                 |            Direct download Link for clean apk             | None                           |
 
 `**` - By default all patches for a given app are included.<br>
 `**` - Can be used to included universal patch.
+`***` - Can be used for unavailable apps in the repository (unofficial apps).
 
 ## Note
 
-1. Supported values for **APP_NAME** are :
+1. <a id="any-patch-apps"></a>**Officially** Supported values for **APP_NAME**** are :
 
     1. [youtube](https://www.apkmirror.com/apk/google-inc/youtube/)
     2. [youtube_music](https://www.apkmirror.com/apk/google-inc/youtube-music/)
@@ -200,12 +189,33 @@ You can use any of the following methods to build.
     38. [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
     39. [microg](https://github.com/inotia00/mMicroG/releases)
     40. [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
+    <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
+   few more inputs to the tool which are mentioned below.
+   ```ini
+   <APP_NAME>_DL_SOURCE=<apk-link-to-any-of-the-suppored-scrapper>
+   <APP_NAME>_PACKAGE_NAME=<package-name-of-the-application>
+   ```
+   You can also provide DL to the clean apk instead of providing DL_SOURCES as mentioned in this [note](#app-dl).
+   Supported Scrappers are:
+   1. APKMIRROR - Supports downloading any versions
+        1. Link Format - https://www.apkmirror.com/apk/<organisation-name>/app-name/
+        2. Example Link - https://www.apkmirror.com/apk/google-inc/youtube/
+   2. UPTODOWN - Supports downloading any versions
+        1. Link Format - https://<app-name>.en.uptodown.com/android
+        2. Example Link - https://spotify.en.uptodown.com/android
+   3. APKSOS - Supports downloading any versions
+       1. Link Format - https://apksos.com/download-app/<package-name>
+       2. Example Link - https://apksos.com/download-app/com.expensemanager
+   4. APKPURE - Supports downloading only latest version
+       1. Link Format - https://d.apkpure.com/b/APK/<package-name>?version=latest
+       2. Example Link - https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
 
-    <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
+   <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
     caused.If you know any better/safe source to download clean. Open a discussion.
-2. By default, script build the latest version as recommended by `patches.json` team.
+
+2. By default, script build the latest version mentioned in `patches.json` file.
 3. Remember to download the **_Microg_**. Otherwise, you may not be able to open YouTube/YouTube Music.
-4. <a id="patch-apps"></a>By default, tool will build only `youtube`. To build other apps supported by patching
+4. <a id="patch-apps"></a>By default, tool will build only `youtube,youtube_music`. To build other apps supported by patching
    resources.Add the apps you want to build in `.env` file or in `ENVS` in `GitHub secrets` in the format
    ```ini
    PATCH_APPS=<APP_NAME>
@@ -331,7 +341,17 @@ You can use any of the following methods to build.
     YOUTUBE_MUSIC_VERSION=X.X.X
     TWITTER_VERSION=latest
     ```
-14. <a id="telegram-support"></a>For Telegram Upload.
+14. <a id="app-dl"></a>If you have your personal source for apk to be downloaded. You can also provide that and tool
+    will not scarp links from apk sources.Add `dl` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in
+    the format
+    ```ini
+    <APP_NAME>_DL=<direct-app-download>
+    ```
+    Example:
+    ```ini
+    YOUTUBE_DL=https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
+    ```
+15. <a id="telegram-support"></a>For Telegram Upload.
      1. Set up a telegram channel, send a message to it and forward the message to
         this telegram [bot](https://t.me/username_to_id_bot)
      2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
@@ -345,12 +365,12 @@ You can use any of the following methods to build.
         <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
      6. After Everything done successfully a part of the actions secrets of the repository may look like<br>
         <img src="https://i.imgur.com/Cjifz1M.png" width="400">
-15. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
+16. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets`.<br>
-16. Sample Envs<br>
+17. Sample Envs<br>
     <img src="https://i.imgur.com/FxOtiGs.png" width="600" style="left">
-17. Make sure your Action has write access. If not click
+18. Make sure your Action has write access. If not click
     [here](https://github.com/nikhilbadyal/docker-py-revanced/settings/actions).
     In the bottom give read and write access to Actions.
     <img src="https://i.imgur.com/STSv2D3.png" width="400">

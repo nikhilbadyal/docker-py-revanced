@@ -1,23 +1,20 @@
 """APK Pure Downloader Class."""
-from typing import Any
+from typing import Any, Tuple
 
-from loguru import logger
-
+from src.app import APP
 from src.downloader.download import Downloader
-from src.patches import Patches
 
 
 class ApkPure(Downloader):
     """Files downloader."""
 
-    def latest_version(self, app: str, **kwargs: Any) -> None:
+    def latest_version(self, app: APP, **kwargs: Any) -> Tuple[str, str]:
         """Function to download whatever the latest version of app from
         apkmirror.
 
         :param app: Name of the application
         :return: Version of downloaded apk
         """
-        package_name = Patches.get_package_name(app)
-        download_url = f"https://d.apkpure.com/b/APK/{package_name}?version=latest"
-        self._download(download_url, f"{app}.apk")
-        logger.debug(f"Downloaded {app} apk from apk_pure_downloader in rt")
+        file_name = f"{app.app_name}.apk"
+        self._download(app.download_source, file_name)
+        return file_name, app.download_source
