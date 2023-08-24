@@ -142,7 +142,7 @@ You can use any of the following methods to build.
 | [*APP_NAME*_DL***](#app-dl)                                 |            Direct download Link for clean apk             | None                           |
 
 `**` - By default all patches for a given app are included.<br>
-`**` - Can be used to included universal patch.   
+`**` - Can be used to included universal patch.
 `***` - Can be used for unavailable apps in the repository (unofficial apps).
 
 ## Note
@@ -195,7 +195,7 @@ You can use any of the following methods to build.
    <APP_NAME>_DL_SOURCE=<apk-link-to-any-of-the-suppored-scrapper>
    <APP_NAME>_PACKAGE_NAME=<package-name-of-the-application>
    ```
-   You can also provide DL to the clean apk instead of providing DL_SOURCES as mentioned in this [note](#app-dl).   
+   You can also provide DL to the clean apk instead of providing DL_SOURCES as mentioned in this [note](#app-dl).
    Supported Scrappers are:
    1. APKMIRROR - Supports downloading any versions
         1. Link Format - https://www.apkmirror.com/apk/<organisation-name>/app-name/
