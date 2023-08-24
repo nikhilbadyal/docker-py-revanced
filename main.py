@@ -34,7 +34,7 @@ def main() -> None:
             logger.info(app)
             parser.patch_app(app)
         except AppNotFound as e:
-            logger.info(f"Invalid app requested to build {e}")
+            logger.info(e)
         except PatchesJsonLoadFailed:
             logger.exception("Patches.json not found")
         except PatchingFailed as e:
