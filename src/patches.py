@@ -75,7 +75,9 @@ class Patches(object):
         for package, app_name in Patches.revanced_package_names.items():
             if app_name == app:
                 return package
-        raise AppNotFound(f"App {app} not supported yet.")
+        raise AppNotFound(
+            f"App {app} not supported officially yet. Please provide package name in env to proceed."
+        )
 
     @staticmethod
     def support_app() -> Dict[str, str]:
@@ -100,6 +102,7 @@ class Patches(object):
         app : APP
             The `app` parameter is of type `APP`. It represents an instance of the `APP` class.
         """
+        self.patches_dict[app.app_name] = []
         patch_loader = PatchLoader()
         patches = patch_loader.load_patches(
             f'{config.temp_folder}/{app.resource["patches_json"]}'
@@ -111,20 +114,17 @@ class Patches(object):
                 p["app"] = "universal"
                 p["version"] = "all"
                 self.patches_dict["universal_patch"].append(p)
-            for compatible_package, version in [
-                (x["name"], x["versions"]) for x in patch["compatiblePackages"]
-            ]:
-                if compatible_package in self.revanced_package_names.keys():
-                    app_name = self.revanced_package_names[compatible_package]
-                    if not self.patches_dict.get(app_name, None):
-                        self.patches_dict[app_name] = []
-                    p = {x: patch[x] for x in ["name", "description"]}
-                    p["app"] = compatible_package
-                    p["version"] = version[-1] if version else "all"
-                    self.patches_dict[app_name].append(p)
+            else:
+                for compatible_package, version in [
+                    (x["name"], x["versions"]) for x in patch["compatiblePackages"]
+                ]:
+                    if app.package_name == compatible_package:
+                        p = {x: patch[x] for x in ["name", "description"]}
+                        p["app"] = compatible_package
+                        p["version"] = version[-1] if version else "all"
+                        self.patches_dict[app.app_name].append(p)
 
-        n_patches = len(self.patches_dict[app.app_name])
-        app.no_of_patches = n_patches
+        app.no_of_patches = len(self.patches_dict[app.app_name])
 
     def __init__(self, config: RevancedConfig, app: APP) -> None:
         self.patches_dict: Dict[str, Any] = {"universal_patch": []}
@@ -146,10 +146,6 @@ class Patches(object):
         patches for the given app. The second element is a string representing the version of the
         patches.
         """
-        app_names = self.revanced_package_names
-
-        if app not in app_names.values():
-            raise AppNotFound(f"App {app} not supported yet.")
 
         patches = self.patches_dict[app]
         version = "latest"

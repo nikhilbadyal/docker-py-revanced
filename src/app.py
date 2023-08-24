@@ -50,9 +50,8 @@ class APP(object):
         self.download_dl = config.env.str(f"{app_name}_DL".upper(), "")
         self.download_patch_resources(config)
         self.download_source = config.env.str(f"{app_name}_DL_SOURCE".upper(), "")
-        self.package_name = config.env.str(
-            f"{app_name}_PACKAGE_NAME".upper(), Patches.get_package_name(app_name)
-        )
+        env_package_name = config.env.str(f"{app_name}_PACKAGE_NAME".upper(), None)
+        self.package_name = env_package_name or Patches.get_package_name(app_name)
 
     def download_apk_for_patching(self, config: RevancedConfig) -> None:
         """Download apk to be patched."""
@@ -73,7 +72,10 @@ class APP(object):
                         self.package_name
                     )
             except KeyError:
-                raise DownloadFailure(f"No download source found for {self.app_name}")
+                raise DownloadFailure(
+                    f"App {self.app_name} not supported officially yet. Please provide download "
+                    "source in env."
+                )
             downloader = DownloaderFactory.create_downloader(
                 config=config, apk_source=self.download_source
             )
