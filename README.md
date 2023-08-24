@@ -152,14 +152,16 @@ You can use any of the following methods to build.
 | [*APP_NAME*_EXCLUDE_PATCH**](#custom-exclude-patching)      |     Patches to exclude while patching  **APP_NAME**.      | []                             |
 | [*APP_NAME*_INCLUDE_PATCH**](#custom-include-patching)      |     Patches to include while patching  **APP_NAME**.      | []                             |
 | [*APP_NAME*_VERSION**](#app-version)                        |         Version to use for download for patching.         | Recommended by patch resources |
-| [*APP_NAME*_DL](#app-dl)                                    |                                                           |                                |
+| [*APP_NAME*_DL](#app-dl)                                    |            Direct download Link for clean apk             | None                           |
+| [*APP_NAME*_DL_SOURCE](#any-patch-apps)                     |     Download source of any of the supported scrapper      | None                           |
+| [*APP_NAME*_DL_SOURCE](#any-patch-apps)                     |           Package name of the app to be patched           | None                           |
 
 `**` - By default all patches for a given app are included.<br>
 `**` - Can be used to included universal patch.
 
 ## Note
 
-1. Supported values for **APP_NAME** are :
+1. <a id="any-patch-apps"></a>**Officially** Supported values for **APP_NAME**** are :
 
     1. [youtube](https://www.apkmirror.com/apk/google-inc/youtube/)
     2. [youtube_music](https://www.apkmirror.com/apk/google-inc/youtube-music/)
@@ -201,10 +203,31 @@ You can use any of the following methods to build.
     38. [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
     39. [microg](https://github.com/inotia00/mMicroG/releases)
     40. [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
+    <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
+   few more inputs to the tool which are mentioned below.
+   ```ini
+   <APP_NAME>_DL_SOURCE=<apk-link-to-any-of-the-suppored-scrapper>
+   <APP_NAME>_PACKAGE_NAME=<package-name-of-the-application>
+   ```
+   You can also provide DL to the clean apk instead of providing DL_SOURCES as mentioned in this [note](#app-dl)
+   Supported Scrappers are
+   1. APKMIRROR - Supports downloading any versions
+        1. Link Format - https://www.apkmirror.com/apk/<organisation-name>/app-name/
+        2. Example Link - https://www.apkmirror.com/apk/google-inc/youtube/
+   2. UPTODOWN - Supports downloading any versions
+        1. Link Format - https://<app-name>.en.uptodown.com/android
+        2. Example Link - https://spotify.en.uptodown.com/android
+   3. APKSOS - Supports downloading any versions
+       1. Link Format - https://apksos.com/download-app/<package-name>
+       2. Example Link - https://apksos.com/download-app/com.expensemanager
+   4. APKPURE - Supports downloading only latest version
+       1. Link Format - https://d.apkpure.com/b/APK/<package-name>?version=latest
+       2. Example Link - https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
 
-    <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
+   <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
     caused.If you know any better/safe source to download clean. Open a discussion.
-2. By default, script build the latest version as recommended by `patches.json` team.
+
+2. By default, script build the latest version mentioned in `patches.json` file.
 3. Remember to download the **_Microg_**. Otherwise, you may not be able to open YouTube/YouTube Music.
 4. <a id="patch-apps"></a>By default, tool will build only `youtube`. To build other apps supported by patching
    resources.Add the apps you want to build in `.env` file or in `ENVS` in `GitHub secrets` in the format
