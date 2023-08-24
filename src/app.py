@@ -74,7 +74,7 @@ class APP(object):
             except KeyError:
                 raise DownloadFailure(
                     f"App {self.app_name} not supported officially yet. Please provide download "
-                    f"source in env."
+                    "source in env."
                 )
             downloader = DownloaderFactory.create_downloader(
                 config=config, apk_source=self.download_source
