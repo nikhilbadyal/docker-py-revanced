@@ -15,7 +15,7 @@ You can get pre-built apks [here](https://revanced_apkss.t.me/)
 
 You can use any of the following methods to build.
 
-- 🚀 **_GitHub**_ (**_`Recommended`_**)
+- 🚀 **GitHub** (**_`Recommended`_**)
 
      1. Click Star to support the project.<br>
        <img src="https://i.imgur.com/FFyXaWY.png" width="400" style="left"><br>
@@ -48,40 +48,25 @@ You can use any of the following methods to build.
         <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
 
 - 🐳 **_Docker Compose_**<br>
-    Windows/Mac users simply install Docker Desktop. If using Linux see below
 
-    1. Install Docker(Skip if already installed)
-       ```bash
-       curl -fsSL https://get.docker.com -o get-docker.sh
-       sh get-docker.sh
-       ```
-    2. Grant Permissions with(Skip if already there)
-       ```bash
-        sudo chmod 777 /var/run/docker.sock
-       ```
-    3. Install Docker compose(Skip if already installed or using **_`Docker Desktop`_**)
-       ```bash
-       curl -L "https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-$(uname -s)-$(uname -m)" \
-       -o /usr/local/bin/docker-compose
-       sudo chmod +x /usr/local/bin/docker-compose
-       ```
-    4. Clone the repo
+    1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+    2. Clone the repo
        ```bash
        git clone https://github.com/nikhilbadyal/docker-py-revanced
        ```
-    5. cd to the cloned repo
+    3. cd to the cloned repo
        ```bash
        cd docker-py-revanced
        ```
-    6. Update `.env` file if you want some customization(See notes)
-    7. Run script with
+    4. Update `.env` file if you want some customization(See notes)
+    5. Run script with
        ```shell
        docker-compose up --build
        ```
 
 - 🐳With Docker
 
-    1. Install Docker(Skip if already installed)
+    1. Install Docker or [Docker Desktop](https://www.docker.com/products/docker-desktop/).
        ```bash
        curl -fsSL https://get.docker.com -o get-docker.sh
        sh get-docker.sh
