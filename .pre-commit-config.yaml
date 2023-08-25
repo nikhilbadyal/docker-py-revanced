@@ -22,36 +22,43 @@ repos:
       - id: requirements-txt-fixer
       - id: trailing-whitespace
 
-
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.0.285'
+    hooks:
+      - id: ruff
+        args:
+          - "--config=pyproject.toml"
+          - "--fix"
 
   - repo: https://github.com/psf/black
     rev: 23.7.0
     hooks:
       - id: black
+        args:
+          - "--config=pyproject.toml"
 
   - repo: https://github.com/pycqa/isort
     rev: 5.12.0
     hooks:
       - id: isort
-        args: [ "--profile", "black", ]
+        args:
+          - "--settings-path=pyproject.toml"
 
   - repo: https://github.com/hadialqattan/pycln
     rev: v2.2.2
     hooks:
       - id: pycln
-        args: [ --config=setup.cfg ]
+        args:
+          - "--config=pyproject.toml"
 
   - repo: https://github.com/PyCQA/docformatter
     rev: v1.7.5
     hooks:
       - id: docformatter
-        args: [ --in-place ]
+        args:
+          - "--config=pyproject.toml"
+          - "--in-place"
 
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.1.0
-    hooks:
-      - id: flake8
-        args: [ "--config=setup.cfg" ]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.5.1
@@ -59,7 +66,8 @@ repos:
       - id: mypy
         args:
           - '--strict'
-        additional_dependencies: [ types-requests ]
+          - "--config=pyproject.toml"
+        additional_dependencies: [ types-requests,types-beautifulsoup4 ]
 
 ci:
     autofix_commit_msg: |

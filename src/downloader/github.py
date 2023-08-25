@@ -1,6 +1,6 @@
 """Github Downloader."""
 import re
-from typing import Dict, Tuple
+from typing import Dict, Self, Tuple
 from urllib.parse import urlparse
 
 import requests
@@ -9,23 +9,21 @@ from loguru import logger
 from src.app import APP
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
-from src.exceptions import DownloadFailure
+from src.exceptions import DownloadError
 from src.utils import handle_request_response, update_changelog
 
 
 class Github(Downloader):
     """Files downloader."""
 
-    def latest_version(self, app: APP, **kwargs: Dict[str, str]) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Dict[str, str]) -> Tuple[str, str]:
         """Function to download files from GitHub repositories.
 
         :param app: App to download
         """
         logger.debug(f"Trying to download {app.app_name} from github")
         if self.config.dry_run:
-            logger.debug(
-                f"Skipping download of {app.app_name}. File already exists or dry running."
-            )
+            logger.debug(f"Skipping download of {app.app_name}. File already exists or dry running.")
             return app.app_name, f"local://{app.app_name}"
         owner = str(kwargs["owner"])
         repo_name = str(kwargs["name"])
@@ -56,11 +54,7 @@ class Github(Downloader):
         github_repo_name = path_segments[1]
 
         release_tag = next(
-            (
-                f"tags/{path_segments[i + 1]}"
-                for i, segment in enumerate(path_segments)
-                if segment == "tag"
-            ),
+            (f"tags/{path_segments[i + 1]}" for i, segment in enumerate(path_segments) if segment == "tag"),
             "latest",
         )
         return github_repo_owner, github_repo_name, release_tag
@@ -86,9 +80,8 @@ class Github(Downloader):
         try:
             filter_pattern = re.compile(asset_filter)
         except re.error as e:
-            raise DownloadFailure(
-                f"Invalid regex {asset_filter} pattern provided."
-            ) from e
+            msg = f"Invalid regex {asset_filter} pattern provided."
+            raise DownloadError(msg) from e
         for asset in assets:
             assets_url = asset["browser_download_url"]
             assets_name = asset["name"]
@@ -98,11 +91,7 @@ class Github(Downloader):
         return ""
 
     @staticmethod
-    def patch_resource(
-        repo_url: str, assets_filter: str, config: RevancedConfig
-    ) -> str:
+    def patch_resource(repo_url: str, assets_filter: str, config: RevancedConfig) -> str:
         """Fetch patch resource from repo url."""
         repo_owner, repo_name, tag = Github._extract_repo_owner_and_tag(repo_url)
-        return Github._get_release_assets(
-            repo_owner, repo_name, tag, assets_filter, config
-        )
+        return Github._get_release_assets(repo_owner, repo_name, tag, assets_filter, config)

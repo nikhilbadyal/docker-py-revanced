@@ -1,13 +1,15 @@
-from typing import Any
+"""Possible Exceptions."""
+from typing import Any, Self
 
 
-class APKMirrorIconScrapFailure(Exception):
+class APKMirrorIconScrapError(Exception):
     """Exception raised when the icon cannot be scraped from apkmirror."""
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
         """Initialize the APKMirrorIconScrapFailure exception.
 
         Args:
+        ----
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
                 url (str, optional): The URL of the failed icon scraping. Defaults to None.
@@ -16,13 +18,18 @@ class APKMirrorIconScrapFailure(Exception):
         self.url = kwargs.get("url", None)
 
 
-class DownloadFailure(Exception):
+class APKComboIconScrapError(APKMirrorIconScrapError):
+    """Exception raised when the icon cannot be scraped from apkcombo."""
+
+
+class DownloadError(Exception):
     """Generic Download failure."""
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
         """Initialize the APKMirrorAPKDownloadFailure exception.
 
         Args:
+        ----
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
                 url (str, optional): The URL of the failed icon scraping. Defaults to None.
@@ -31,64 +38,53 @@ class DownloadFailure(Exception):
         self.url = kwargs.get("url", None)
 
 
-class APKDownloadFailure(DownloadFailure):
+class APKDownloadError(DownloadError):
     """Exception raised when the apk cannot be scraped."""
 
-    pass
 
-
-class APKMirrorAPKDownloadFailure(APKDownloadFailure):
+class APKMirrorAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from apkmirror failed."""
 
-    pass
 
-
-class APKMirrorAPKNotFound(APKDownloadFailure):
+class APKMirrorAPKNotFoundError(APKDownloadError):
     """Exception raised when apk doesn't exist on APKMirror."""
 
-    pass
 
-
-class UptoDownAPKDownloadFailure(APKDownloadFailure):
+class UptoDownAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from uptodown failed."""
 
-    pass
 
-
-class APKPureAPKDownloadFailure(APKDownloadFailure):
+class APKPureAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from apkpure failed."""
 
-    pass
 
-
-class APKSosAPKDownloadFailure(APKDownloadFailure):
+class APKSosAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from apksos failed."""
 
-    pass
 
-
-class PatchingFailed(Exception):
+class PatchingFailedError(Exception):
     """Patching Failed."""
 
-    pass
 
-
-class AppNotFound(ValueError):
+class AppNotFoundError(ValueError):
     """Not a valid Revanced App."""
 
-    pass
 
-
-class PatchesJsonLoadFailed(ValueError):
+class PatchesJsonLoadError(ValueError):
     """Failed to load patches json."""
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
         """Initialize the PatchesJsonLoadFailed exception.
 
         Args:
+        ----
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
                 file_name (str, optional): The name of json file. Defaults to None.
         """
         super().__init__(*args)
         self.file_name = kwargs.get("file_name", None)
+
+
+class UnknownError(Exception):
+    """Some unknown error."""

@@ -1,0 +1,17 @@
+name: Push Base Image to DockerHub
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dockerhub-push:
+    uses: nikhilbadyal/ghactions/.github/workflows/dockerhub-push.yml@main
+    with:
+      IMAGE_TAG: ${{ github.repository }}-base:latest
+      FILE: Dockerfile-base
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}

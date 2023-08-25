@@ -22,7 +22,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@main
         with:
-          python-version: '3.11'
+          python-version: '3.11.4'
 
       - name: Install Requirements
         run: |
