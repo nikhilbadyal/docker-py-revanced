@@ -35,8 +35,7 @@ RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY ./entrypoint /entrypoint
-RUN sed -i 's/\r$//g' /entrypoint
-RUN chmod +x /entrypoint
+RUN sed -i 's/\r$//g' /entrypoint && chmod +x /entrypoint
 # copy application code to WORKDIR
 COPY . ${APP_HOME}
 

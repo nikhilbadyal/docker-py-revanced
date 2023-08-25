@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 from queue import PriorityQueue
 from time import perf_counter
-from typing import Any, Tuple
+from typing import Any, Self, Tuple
 
 from loguru import logger
 from tqdm import tqdm
@@ -12,35 +12,25 @@ from tqdm import tqdm
 from src.app import APP
 from src.config import RevancedConfig
 from src.downloader.utils import implement_method
-from src.exceptions import DownloadFailure
+from src.exceptions import DownloadError
 from src.utils import handle_request_response
 
 
-class Downloader(object):
+class Downloader:
     """Files downloader."""
 
-    def __init__(self, config: RevancedConfig):
+    def __init__(self: Self, config: RevancedConfig) -> None:
         self._CHUNK_SIZE = 10485760
         self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
         self.config = config
 
-    @staticmethod
-    def file_status_check(file_name: Path, dry_run: bool, url: str) -> bool:
-        """Check if file already exists."""
-        if os.path.exists(file_name) or dry_run:
-            logger.debug(
-                f"Skipping download of {file_name} from {url}. File already exists or dry running."
-            )
-            return True
-        return False
-
-    def _download(self, url: str, file_name: str) -> None:
+    def _download(self: Self, url: str, file_name: str) -> None:
         if not url:
-            raise DownloadFailure("No url provided to download")
-        if self.file_status_check(
-            self.config.temp_folder.joinpath(file_name), self.config.dry_run, url
-        ):
+            msg = "No url provided to download"
+            raise DownloadError(msg)
+        if self.config.dry_run or Path(file_name).exists():
+            logger.debug(f"Skipping download of {file_name} from {url}. File already exists or dry running.")
             return
         logger.info(f"Trying to download {file_name} from {url}")
         self._QUEUE_LENGTH += 1
@@ -71,11 +61,11 @@ class Downloader(object):
         self._QUEUE.put((perf_counter() - start, file_name))
         logger.debug(f"Downloaded {file_name}")
 
-    def extract_download_link(self, page: str, app: str) -> Tuple[str, str]:
+    def extract_download_link(self: Self, page: str, app: str) -> Tuple[str, str]:
         """Extract download link from web page."""
         raise NotImplementedError(implement_method)
 
-    def specific_version(self, app: APP, version: str) -> Tuple[str, str]:
+    def specific_version(self: Self, app: APP, version: str) -> Tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -84,7 +74,7 @@ class Downloader(object):
         """
         raise NotImplementedError(implement_method)
 
-    def latest_version(self, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Any) -> Tuple[str, str]:
         """Function to download the latest version of app.
 
         :param app: Name of the application
@@ -92,7 +82,7 @@ class Downloader(object):
         """
         raise NotImplementedError(implement_method)
 
-    def convert_to_apk(self, file_name: str) -> str:
+    def convert_to_apk(self: Self, file_name: str) -> str:
         """Convert apks to apk."""
         if file_name.endswith(".apk"):
             return file_name
@@ -122,7 +112,7 @@ class Downloader(object):
         base_name, _ = os.path.splitext(filename)
         return base_name + new_extension
 
-    def download(self, version: str, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def download(self: Self, version: str, app: APP, **kwargs: Any) -> Tuple[str, str]:
         """Public function to download apk to patch.
 
         :param version: version to download
@@ -131,9 +121,7 @@ class Downloader(object):
         if self.config.dry_run:
             return "", ""
         if app in self.config.existing_downloaded_apks:
-            logger.debug(
-                f"Will not download {app.app_name} -v{version} from the internet."
-            )
+            logger.debug(f"Will not download {app.app_name} -v{version} from the internet.")
             return app.app_name, f"local://{app.app_name}"
         if version and version != "latest":
             file_name, app_dl = self.specific_version(app, version)
@@ -141,6 +129,6 @@ class Downloader(object):
             file_name, app_dl = self.latest_version(app, **kwargs)
         return self.convert_to_apk(file_name), app_dl
 
-    def direct_download(self, dl: str, file_name: str) -> None:
+    def direct_download(self: Self, dl: str, file_name: str) -> None:
         """Download from DL."""
         self._download(dl, file_name)
