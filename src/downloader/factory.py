@@ -10,7 +10,7 @@ from src.downloader.uptodown import UptoDown
 from src.exceptions import DownloadError
 
 
-class DownloaderFactory:
+class DownloaderFactory(object):
     """Downloader Factory."""
 
     @staticmethod

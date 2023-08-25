@@ -52,6 +52,7 @@ ignore = [
     "PTH122", #os-path-splitext
     "TRY301", #raise-within-try
     "PERF203", #try-except-in-loop
+    "UP004" #useless-object-inheritance
 ]
 fix = true
 show-fixes = true

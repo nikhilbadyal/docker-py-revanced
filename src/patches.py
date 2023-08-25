@@ -12,7 +12,7 @@ from src.config import RevancedConfig
 from src.exceptions import AppNotFoundError, PatchesJsonLoadError
 
 
-class Patches:
+class Patches(object):
     """Revanced Patches."""
 
     revanced_package_names: ClassVar[Dict[str, str]] = {
@@ -197,7 +197,7 @@ class Patches:
         return total_patches
 
 
-class PatchLoader:
+class PatchLoader(object):
     """Patch Loader."""
 
     @staticmethod

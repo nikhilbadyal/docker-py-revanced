@@ -11,7 +11,7 @@ default_patches_json = default_patches
 default_integrations = "https://github.com/revanced/revanced-integrations/releases/latest"
 
 
-class RevancedConfig:
+class RevancedConfig(object):
     """Revanced Configurations."""
 
     def __init__(self: Self, env: Env) -> None:

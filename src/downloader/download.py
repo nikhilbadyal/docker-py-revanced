@@ -16,7 +16,7 @@ from src.exceptions import DownloadError
 from src.utils import handle_request_response
 
 
-class Downloader:
+class Downloader(object):
     """Files downloader."""
 
     def __init__(self: Self, config: RevancedConfig) -> None:

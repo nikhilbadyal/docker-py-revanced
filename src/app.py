@@ -13,7 +13,7 @@ from src.exceptions import DownloadError, PatchingFailedError, UnknownError
 from src.utils import slugify
 
 
-class APP:
+class APP(object):
     """Patched APK."""
 
     def __init__(self: Self, app_name: str, config: RevancedConfig) -> None:

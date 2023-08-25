@@ -12,7 +12,7 @@ from src.patches import Patches
 from src.utils import possible_archs
 
 
-class Parser:
+class Parser(object):
     """Revanced Parser."""
 
     CLI_JAR = "-jar"
