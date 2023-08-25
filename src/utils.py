@@ -28,6 +28,7 @@ request_header = {
     "Content-Type": "application/json",
 }
 bs4_parser = "html.parser"
+changelog_file = "changelog.md"
 
 
 def update_changelog(name: str, response: Dict[str, str]) -> None:
@@ -84,7 +85,7 @@ def write_to_file(change_log: str) -> None:
     change_log : str
         A string representing the changelog that you want to write to the file.
     """
-    with Path("changelog.md").open("w", encoding="utf_8") as file1:
+    with Path(changelog_file).open("a", encoding="utf_8") as file1:
         file1.write(change_log)
 
 
@@ -191,6 +192,11 @@ def extra_downloads(config: RevancedConfig) -> None:
             )
     except (ValueError, IndexError):
         logger.info("Unable to download extra file. Provide input in url@name.apk format.")
+
+
+def delete_old_changelog() -> None:
+    """The function `delete_old_changelog` deleted old changelog file."""
+    Path(changelog_file).unlink(missing_ok=True)
 
 
 def apkmirror_status_check(package_name: str) -> Any:
