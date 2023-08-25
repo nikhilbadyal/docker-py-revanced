@@ -1,3 +1,4 @@
+"""APK Sources used."""
 APK_MIRROR_BASE_URL = "https://www.apkmirror.com"
 APK_MIRROR_BASE_APK_URL = f"{APK_MIRROR_BASE_URL}/apk"
 UPTODOWN_BASE_URL = "https://{}.en.uptodown.com/android"
