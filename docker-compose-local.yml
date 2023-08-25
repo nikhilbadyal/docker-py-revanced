@@ -7,7 +7,6 @@ services:
       dockerfile: Dockerfile
     image: revanced-builder
     container_name: revanced-builder
-    platform: linux/amd64
     env_file:
       - .env
     volumes:

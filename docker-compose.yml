@@ -4,7 +4,6 @@ services:
   revanced:
     image: nikhilbadyal/docker-py-revanced
     container_name: revanced-builder
-    platform: linux/amd64
     env_file:
       - .env
     volumes:
