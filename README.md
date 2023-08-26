@@ -193,6 +193,7 @@ You can use any of the following methods to build.
     42. [solidexplorer](https://www.apkmirror.com/apk/neatbytes/solid-explorer-beta/)
     43. [lightroom](https://www.apkmirror.com/apk/adobe/lightroom/)
     44. [duolingo](https://www.apkmirror.com/apk/duolingo/duolingo-duolingo/)
+    45. [musically](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below.
    ```ini
