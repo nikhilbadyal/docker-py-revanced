@@ -12,6 +12,7 @@ apk_sources = {
     "bacon": f"{APK_MIRROR_BASE_APK_URL}/onelouder-apps/baconreader-for-reddit/",
     "boost": f"{APK_MIRROR_BASE_APK_URL}/ruben-mayayo/boost-for-reddit/",
     "candyvpn": f"{APK_MIRROR_BASE_APK_URL}/liondev-io/candylink-vpn/",
+    "duolingo": f"{APK_MIRROR_BASE_APK_URL}/duolingo/duolingo-duolingo/",
     "grecorder": f"{APK_MIRROR_BASE_APK_URL}/google-inc/google-recorder/",
     "icon_pack_studio": f"{APK_MIRROR_BASE_APK_URL}/smart-launcher-team/icon-pack-studio/",
     "infinity": f"{APK_MIRROR_BASE_APK_URL}/docile-alligator/infinity-for-reddit/",
