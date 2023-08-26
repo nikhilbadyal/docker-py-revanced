@@ -58,6 +58,7 @@ apk_sources = {
     "youtube_music": f"{APK_MIRROR_BASE_APK_URL}/google-inc/youtube-music/",
     "yuka": f"{APK_MIRROR_BASE_APK_URL}/yuka-apps/yuka-food-cosmetic-scan/",
     "strava": f"{APK_MIRROR_BASE_APK_URL}/strava-inc/strava-running-and-cycling-gps/",
+    "vanced": f"{APK_MIRROR_BASE_APK_URL}/team-vanced/youtube-vanced/",
     "my-expenses": UPTODOWN_BASE_URL.format("my-expenses"),
     "spotify": UPTODOWN_BASE_URL.format("spotify"),
     "androidtwelvewidgets": APK_PURE_URL,
