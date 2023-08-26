@@ -67,4 +67,5 @@ apk_sources = {
     "photomath": APK_MONK_APK_URL,
     "joey": APK_MONK_APK_URL,
     "spotify-lite": APK_MONK_APK_URL,
+    "digitales": APK_MONK_APK_URL,
 }
