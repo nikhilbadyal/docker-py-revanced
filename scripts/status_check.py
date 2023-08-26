@@ -12,11 +12,13 @@ from src.downloader.sources import (
     APK_COMBO_GENERIC_URL,
     APK_MIRROR_BASE_URL,
     APK_MIRROR_PACKAGE_URL,
+    APK_MONK_APK_URL,
+    APK_MONK_ICON_URL,
     PLAY_STORE_APK_URL,
     not_found_icon,
     revanced_api,
 )
-from src.exceptions import APKComboIconScrapError, APKMirrorIconScrapError, UnknownError
+from src.exceptions import APKComboIconScrapError, APKMirrorIconScrapError, APKMonkIconScrapError, UnknownError
 from src.patches import Patches
 from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header
 
@@ -40,6 +42,44 @@ def apkcombo_scrapper(package_name: str) -> str:
         return re.sub(r"=.*$", "", url)  # type: ignore[arg-type]
     except UnknownError as e:
         raise APKComboIconScrapError(url=apkcombo_url) from e
+
+
+def bigger_image(possible_links: List[str]) -> str:
+    """Select image with higher dimension."""
+    higher_dimension_url = ""
+    max_dimension = 0
+
+    for url in possible_links:
+        dimensions = url.split("_")[-1].split(".")[0].split("x")
+        width = int(dimensions[0])
+        height = int(dimensions[1])
+
+        area = width * height
+
+        if area > max_dimension:
+            max_dimension = area
+            higher_dimension_url = url
+
+    return higher_dimension_url
+
+
+def apkmonk_scrapper(package_name: str) -> str:
+    """APKMonk scrapper."""
+    apkmonk_url = APK_MONK_APK_URL.format(package_name)
+    icon_logo = APK_MONK_ICON_URL.format(package_name)
+    r = requests.get(apkmonk_url, headers=combo_headers, allow_redirects=True, timeout=60)
+    head = BeautifulSoup(r.text, bs4_parser).head
+    if head:
+        parsed_head = BeautifulSoup(str(head), bs4_parser)
+        href_elements = parsed_head.find_all(href=True)
+        possible_link = []
+        for element in href_elements:
+            href_value = element.get("href")
+            if href_value.startswith(icon_logo):
+                possible_link.append(href_value)
+        if possible_link:
+            return bigger_image(possible_link)
+    raise APKMonkIconScrapError(url=apkmonk_url)
 
 
 def apkmirror_scrapper(package_name: str) -> str:
@@ -92,7 +132,10 @@ def icon_scrapper(package_name: str) -> str:
             try:
                 return apkcombo_scrapper(package_name)
             except APKComboIconScrapError:
-                return not_found_icon
+                try:
+                    return apkmonk_scrapper(package_name)
+                except APKMonkIconScrapError:
+                    return not_found_icon
     except UnknownError:
         return not_found_icon
 
@@ -103,7 +146,7 @@ def generate_markdown_table(data: List[List[str]]) -> str:
         return "No data to generate for the table."
 
     table = (
-        "| Package Name | App Icon | PlayStore link | APKMirror link|APKCombo Link| Supported?|\n"
+        "| Package Name | App Icon | PlayStore link | APKMirror link|APKMonk Link| Supported?|\n"
         "|-------------|----------|----------------|---------------|------------------|----------|\n"
     )
     for row in data:
@@ -137,7 +180,7 @@ def main() -> None:
             f'<img src="{icon_scrapper(app)}" width=50 height=50>',
             f"[PlayStore Link]({PLAY_STORE_APK_URL.format(app)})",
             f"[APKMirror Link]({APK_MIRROR_PACKAGE_URL.format(app)})",
-            f"[APKCombo Link]({APK_COMBO_GENERIC_URL.format(app)})",
+            f"[APKMonk Link]({APK_MONK_APK_URL.format(app)})",
             "<li>- [ ] </li>",
         ]
         for app in missing_support

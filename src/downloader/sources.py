@@ -17,6 +17,7 @@ not_found_icon = "https://img.icons8.com/bubbles/500/android-os.png"
 revanced_api = "https://releases.revanced.app/patches"
 APK_MONK_BASE_URL = "https://www.apkmonk.com"
 APK_MONK_APK_URL = APK_MONK_BASE_URL + "/app/{}/"
+APK_MONK_ICON_URL = "https://cdn.apkmonk.com/logos/{}"
 apk_sources = {
     "backdrops": f"{APK_MIRROR_BASE_APK_URL}/backdrops/backdrops-wallpapers/",
     "bacon": f"{APK_MIRROR_BASE_APK_URL}/onelouder-apps/baconreader-for-reddit/",
