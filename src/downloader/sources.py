@@ -64,4 +64,5 @@ apk_sources = {
     "expensemanager": APK_SOS_URL,
     "hex-editor": APK_PURE_URL,
     "photomath": APK_MONK_APK_URL,
+    "joey": APK_MONK_APK_URL,
 }
