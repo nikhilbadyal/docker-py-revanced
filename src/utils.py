@@ -11,6 +11,7 @@ from loguru import logger
 from requests import Response
 
 from src.config import RevancedConfig
+from src.downloader.sources import APK_MIRROR_APK_CHECK
 from src.downloader.utils import status_code_200
 from src.exceptions import DownloadError
 
@@ -19,7 +20,6 @@ default_build = [
     "youtube_music",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
-apk_mirror_base_url = "https://www.apkmirror.com"
 request_header = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (HTML, like Gecko)"
@@ -212,9 +212,8 @@ def apkmirror_status_check(package_name: str) -> Any:
     -------
         the response from the APKMirror API as a JSON object.
     """
-    api_url = f"{apk_mirror_base_url}/wp-json/apkm/v1/app_exists/"
     body = {"pnames": [package_name]}
-    response = requests.post(api_url, json=body, headers=request_header, timeout=60)
+    response = requests.post(APK_MIRROR_APK_CHECK, json=body, headers=request_header, timeout=60)
     return response.json()
 
 

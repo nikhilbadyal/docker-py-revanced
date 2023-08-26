@@ -1,12 +1,20 @@
 """APK Sources used."""
 APK_MIRROR_BASE_URL = "https://www.apkmirror.com"
 APK_MIRROR_BASE_APK_URL = f"{APK_MIRROR_BASE_URL}/apk"
+APK_MIRROR_PACKAGE_URL = f"{APK_MIRROR_BASE_URL}/?s=" + "{}"
+APK_MIRROR_APK_CHECK = f"{APK_MIRROR_BASE_URL}/wp-json/apkm/v1/app_exists/"
 UPTODOWN_BASE_URL = "https://{}.en.uptodown.com/android"
 APK_PURE_BASE_URL = "https://d.apkpure.com/b/APK"
 APK_PURE_URL = APK_PURE_BASE_URL + "/{}?version=latest"
 APKS_SOS_BASE_URL = "https://apksos.com/download-app"
 APK_SOS_URL = APKS_SOS_BASE_URL + "/{}"
 GITHUB_BASE_URL = "https://github.com"
+PLAY_STORE_BASE_URL = "https://play.google.com"
+PLAY_STORE_APK_URL = f"{PLAY_STORE_BASE_URL}/store/apps/details?id=" + "{}"
+APK_COMBO_BASE_URL = "https://apkcombo.com"
+APK_COMBO_GENERIC_URL = APK_COMBO_BASE_URL + "/genericApp/{}"
+not_found_icon = "https://img.icons8.com/bubbles/500/android-os.png"
+revanced_api = "https://releases.revanced.app/patches"
 apk_sources = {
     "backdrops": f"{APK_MIRROR_BASE_APK_URL}/backdrops/backdrops-wallpapers/",
     "bacon": f"{APK_MIRROR_BASE_APK_URL}/onelouder-apps/baconreader-for-reddit/",
