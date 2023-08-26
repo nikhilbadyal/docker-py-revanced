@@ -18,6 +18,7 @@ apk_sources = {
     "inshorts": f"{APK_MIRROR_BASE_APK_URL}/inshorts-formerly-news-in-shorts/inshorts-news-in-60-words-2/",
     "instagram": f"{APK_MIRROR_BASE_APK_URL}/instagram/instagram-instagram/",
     "irplus": f"{APK_MIRROR_BASE_APK_URL}/binarymode/irplus-infrared-remote/",
+    "lightroom": f"{APK_MIRROR_BASE_APK_URL}/adobe/lightroom/",
     "meme-generator-free": f"{APK_MIRROR_BASE_APK_URL}/zombodroid/meme-generator-free/",
     "messenger": f"{APK_MIRROR_BASE_APK_URL}/facebook-2/messenger/",
     "netguard": f"{APK_MIRROR_BASE_APK_URL}/marcel-bokhorst/netguard-no-root-firewall/",
