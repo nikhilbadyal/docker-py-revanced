@@ -18,7 +18,7 @@ body:
     attributes:
       label: Name
       description: |
-        Name of the app.
+        Name of the app which failed to build.
     validations:
       required: true
 
