@@ -38,6 +38,7 @@ class Patches(object):
         "eu.faircode.netguard": "netguard",
         "com.instagram.android": "instagram",
         "com.nis.app": "inshorts",
+        "com.adobe.lrmobile": "lightroom",
         "com.facebook.orca": "messenger",
         "com.google.android.apps.recorder": "grecorder",
         "tv.trakt.trakt": "trakt",
