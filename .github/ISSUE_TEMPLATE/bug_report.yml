@@ -14,15 +14,6 @@ body:
         - label: I've read the [request guidelines](https://github.com/nikhilbadyal/docker-py-revanced#only-builder-support)
           required: true
 
-  - type: checkboxes
-    attributes:
-      label: I've checked that that ...
-      description: |
-        Make sure that your request fulfills all of the following requirements.
-      options:
-        - label: ... license allows distribution/repackaging of the software
-        - label: ... this is not an abdandonware
-
   - type: input
     attributes:
       label: Name
