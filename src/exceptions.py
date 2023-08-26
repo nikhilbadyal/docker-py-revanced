@@ -22,6 +22,10 @@ class APKComboIconScrapError(APKMirrorIconScrapError):
     """Exception raised when the icon cannot be scraped from apkcombo."""
 
 
+class APKMonkIconScrapError(APKMirrorIconScrapError):
+    """Exception raised when the icon cannot be scraped from apkmonk."""
+
+
 class DownloadError(Exception):
     """Generic Download failure."""
 
