@@ -61,6 +61,7 @@ class Patches(object):
         "com.mgoogle.android.gms": "microg",
         "jp.pxv.android": "pixiv",
         "com.strava": "strava",
+        "com.microblink.photomath": "photomath",
     }
 
     @staticmethod
