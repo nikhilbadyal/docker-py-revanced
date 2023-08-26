@@ -66,4 +66,5 @@ apk_sources = {
     "hex-editor": APK_PURE_URL,
     "photomath": APK_MONK_APK_URL,
     "joey": APK_MONK_APK_URL,
+    "spotify-lite": APK_MONK_APK_URL,
 }
