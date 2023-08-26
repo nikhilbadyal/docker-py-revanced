@@ -15,4 +15,4 @@ jobs:
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     with:
-      PYTHON_VERSION: '3.11.4'
+      PYTHON_VERSION: '3.11.5'
