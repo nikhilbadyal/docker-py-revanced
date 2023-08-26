@@ -35,8 +35,7 @@ class ApkMonk(Downloader):
         key_value_pattern = r'\{"pkg":"([^"]+)","key":"([^"]+)"\}'
         url = None
         for script in download_scripts:
-            match = re.search(key_value_pattern, script.text)
-            if match:
+            if match := re.search(key_value_pattern, script.text):
                 pkg_value = match.group(1)
                 key_value = match.group(2)
                 url = f"{APK_MONK_BASE_URL}/down_file?pkg={pkg_value}&key={key_value}"
