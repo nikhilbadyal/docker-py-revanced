@@ -1,0 +1,66 @@
+name: Bug Report
+description: Encountered some issue while building?
+labels:
+  - "bug🐞"
+
+body:
+  - type: checkboxes
+    attributes:
+      label: Request guidelines
+      description: Please read the request guidelines before proceeding.
+      options:
+        - label: I've read the [request guidelines](https://portapps.io/doc/request-app/)
+          required: true
+
+  - type: checkboxes
+    attributes:
+      label: I've checked that that ...
+      description: |
+        Make sure that your request fulfills all of the following requirements.
+      options:
+        - label: ... license allows distribution/repackaging of the software
+        - label: ... this is not an abdandonware
+
+  - type: input
+    attributes:
+      label: Name
+      description: |
+        Name of the app.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        Please provide the error log or link to the error log
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Website
+      description: |
+        Link to app's website or GitHub repository.
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: License
+      description: |
+        License of the app (e.g. Freeware, OSS, GPL, MIT, ...)
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: TOS link
+      description: |
+        Link to app's Terms of Service (if applicable).
+
+  - type: textarea
+    attributes:
+      label: Additional info
+      description: |
+        Please provide any additional information that seem useful.
