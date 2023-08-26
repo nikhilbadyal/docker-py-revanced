@@ -201,6 +201,7 @@ You can use any of the following methods to build.
     - [digitales](https://www.apkmonk.com/app/at.gv.oe.app/)
     - [scbeasy](https://www.apkmonk.com/app/com.scb.phone/)
     - [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
+    - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below.
    ```ini

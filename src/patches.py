@@ -68,6 +68,7 @@ class Patches(object):
         "at.gv.oe.app": "digitales",
         "com.scb.phone": "scbeasy",
         "reddit.news": "reddit-news",
+        "at.gv.bmf.bmf2go": "finanz-online",
     }
 
     @staticmethod
