@@ -2,6 +2,8 @@ name: Bug Report
 description: Encountered some issue while building?
 labels:
   - "bug🐞"
+assignees:
+  - nikhilbadyal
 
 body:
   - type: checkboxes
