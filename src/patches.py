@@ -39,6 +39,7 @@ class Patches(object):
         "com.instagram.android": "instagram",
         "com.nis.app": "inshorts",
         "pl.solidexplorer2": "solidexplorer",
+        "com.adobe.lrmobile": "lightroom",
         "com.facebook.orca": "messenger",
         "com.google.android.apps.recorder": "grecorder",
         "tv.trakt.trakt": "trakt",

@@ -190,6 +190,7 @@ You can use any of the following methods to build.
     39. [microg](https://github.com/inotia00/mMicroG/releases)
     40. [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
     41. [solidexplorer](https://www.apkmirror.com/apk/neatbytes/solid-explorer-beta/)
+    42. [lightroom](https://www.apkmirror.com/apk/adobe/lightroom/)
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below.
    ```ini
