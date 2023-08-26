@@ -122,21 +122,19 @@ def gplay_icon_scrapper(package_name: str) -> str:
 
 def icon_scrapper(package_name: str) -> str:
     """Scrap Icon."""
-    try:
-        return gplay_icon_scrapper(package_name)
-    except GooglePlayScraperException:
+    scraper_names = {
+        "gplay_icon_scrapper": GooglePlayScraperException,
+        "apkmirror_scrapper": APKMirrorIconScrapError,
+        "apkmonk_scrapper": APKMonkIconScrapError,
+    }
+
+    for scraper_name, error_type in scraper_names.items():
         try:
-            return apkmirror_scrapper(package_name)
-        except APKMirrorIconScrapError:
-            try:
-                return apkcombo_scrapper(package_name)
-            except APKComboIconScrapError:
-                try:
-                    return apkmonk_scrapper(package_name)
-                except APKMonkIconScrapError:
-                    return not_found_icon
-    except UnknownError:
-        return not_found_icon
+            return str(globals()[scraper_name](package_name))
+        except error_type:
+            pass
+
+    return not_found_icon
 
 
 def generate_markdown_table(data: List[List[str]]) -> str:
