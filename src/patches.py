@@ -58,6 +58,7 @@ class Patches(object):
         "com.google.android.apps.youtube.music": "youtube_music",
         "com.mgoogle.android.gms": "microg",
         "jp.pxv.android": "pixiv",
+        "com.strava": "strava",
     }
 
     @staticmethod
