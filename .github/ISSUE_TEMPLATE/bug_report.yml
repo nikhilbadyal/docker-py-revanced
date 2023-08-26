@@ -24,33 +24,19 @@ body:
 
   - type: textarea
     attributes:
-      label: Description
+      label: Error log or link to the logs if using Github Action
       description: |
-        Please provide the error log or link to the error log
+        Please provide the error log or link to the error log if using Github Action
     validations:
       required: true
 
-  - type: input
+  - type: textarea
     attributes:
-      label: Website
+      label: ENVS
       description: |
-        Link to app's website or GitHub repository.
+        Please provide the ENVS used for building. If not using any write NA
     validations:
       required: true
-
-  - type: input
-    attributes:
-      label: License
-      description: |
-        License of the app (e.g. Freeware, OSS, GPL, MIT, ...)
-    validations:
-      required: true
-
-  - type: input
-    attributes:
-      label: TOS link
-      description: |
-        Link to app's Terms of Service (if applicable).
 
   - type: textarea
     attributes:
