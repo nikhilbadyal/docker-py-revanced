@@ -62,6 +62,7 @@ class Patches(object):
         "jp.pxv.android": "pixiv",
         "com.strava": "strava",
         "com.microblink.photomath": "photomath",
+        "o.o.joey": "joey",
     }
 
     @staticmethod
