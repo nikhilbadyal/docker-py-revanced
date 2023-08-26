@@ -46,6 +46,10 @@ class APKMirrorAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from apkmirror failed."""
 
 
+class APKMonkAPKDownloadError(APKDownloadError):
+    """Exception raised when downloading an APK from apkmonk failed."""
+
+
 class APKMirrorAPKNotFoundError(APKDownloadError):
     """Exception raised when apk doesn't exist on APKMirror."""
 
