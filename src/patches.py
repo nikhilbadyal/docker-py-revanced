@@ -64,7 +64,7 @@ class Patches(object):
         "com.microblink.photomath": "photomath",
         "o.o.joey": "joey",
         "com.vanced.android.youtube": "vanced",
-        "com.spotify.lite/": "spotify-lite",
+        "com.spotify.lite": "spotify-lite",
     }
 
     @staticmethod
