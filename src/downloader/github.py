@@ -76,6 +76,7 @@ class Github(Downloader):
             headers["Authorization"] = f"token {config.personal_access_token}"
         response = requests.get(api_url, headers=headers, timeout=60)
         handle_request_response(response)
+        update_changelog(f"{github_repo_owner}/{github_repo_name}", response.json())
         assets = response.json()["assets"]
         try:
             filter_pattern = re.compile(asset_filter)

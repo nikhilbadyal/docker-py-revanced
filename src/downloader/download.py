@@ -29,7 +29,7 @@ class Downloader(object):
         if not url:
             msg = "No url provided to download"
             raise DownloadError(msg)
-        if self.config.dry_run or Path(file_name).exists():
+        if self.config.dry_run or self.config.temp_folder.joinpath(file_name).exists():
             logger.debug(f"Skipping download of {file_name} from {url}. File already exists or dry running.")
             return
         logger.info(f"Trying to download {file_name} from {url}")
