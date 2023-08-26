@@ -11,6 +11,10 @@ on:
       REDDIT_CLIENT_ID:
         required: false
     inputs:
+      CI_TEST:
+        required: false
+        type: boolean
+        default: false
       COMMIT_CHANGELOG:
         type: boolean
         required: false
@@ -73,10 +77,11 @@ jobs:
 
       - name: Build Revanced APKs
         run: |
-          if [ -n "CI_TEST" ]; then
+          if [[ "${{ inputs.CI_TEST }}" =~ ^(true|True|1)$ ]]; then
               echo "In CI Testing. Using local compose file."
               docker-compose -f docker-compose-local.yml up --build
           else
+              echo "Using Prod compose file."
               docker-compose up --build
           fi
       - name: Upload Build APKS
