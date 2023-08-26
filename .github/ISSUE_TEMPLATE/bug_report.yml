@@ -11,7 +11,7 @@ body:
       label: Request guidelines
       description: Please read the request guidelines before proceeding.
       options:
-        - label: I've read the [request guidelines](https://github.com/nikhilbadyal/docker-py-revanced#only-builder-support)
+        - label: I've read the [issue guidelines](https://github.com/nikhilbadyal/docker-py-revanced#only-builder-support)
           required: true
 
   - type: input
