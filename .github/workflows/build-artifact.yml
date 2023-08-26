@@ -73,8 +73,12 @@ jobs:
 
       - name: Build Revanced APKs
         run: |
-          docker-compose -f docker-compose-local.yml up --build
-
+          if [ -n "CI_TEST" ]; then
+              echo "In CI Testing. Using local compose file."
+              docker-compose -f docker-compose-local.yml up --build
+          else
+              docker-compose up --build
+          fi
       - name: Upload Build APKS
         uses: actions/upload-artifact@main
         with:
