@@ -65,6 +65,7 @@ class Patches(object):
         "o.o.joey": "joey",
         "com.vanced.android.youtube": "vanced",
         "com.spotify.lite": "spotify-lite",
+        "at.gv.oe.app": "digitales",
     }
 
     @staticmethod
