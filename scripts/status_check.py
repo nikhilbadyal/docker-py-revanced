@@ -68,8 +68,7 @@ def apkmonk_scrapper(package_name: str) -> str:
     apkmonk_url = APK_MONK_APK_URL.format(package_name)
     icon_logo = APK_MONK_ICON_URL.format(package_name)
     r = requests.get(apkmonk_url, headers=combo_headers, allow_redirects=True, timeout=60)
-    head = BeautifulSoup(r.text, bs4_parser).head
-    if head:
+    if head := BeautifulSoup(r.text, bs4_parser).head:
         parsed_head = BeautifulSoup(str(head), bs4_parser)
         href_elements = parsed_head.find_all(href=True)
         possible_link = []
