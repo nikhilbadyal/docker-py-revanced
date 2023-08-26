@@ -200,6 +200,7 @@ You can use any of the following methods to build.
     49. [spotify-lite](https://www.apkmonk.com/app/com.spotify.lite/)
     50. [digitales](https://www.apkmonk.com/app/at.gv.oe.app/)
     51. [scbeasy](https://www.apkmonk.com/app/com.scb.phone/)
+    51. [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below.
    ```ini

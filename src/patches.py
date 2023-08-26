@@ -67,6 +67,7 @@ class Patches(object):
         "com.spotify.lite": "spotify-lite",
         "at.gv.oe.app": "digitales",
         "at.gv.bmf.bmf2go": "scbeasy",
+        "reddit.news": "reddit-news",
     }
 
     @staticmethod
