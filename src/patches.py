@@ -17,6 +17,7 @@ class Patches(object):
 
     revanced_package_names: ClassVar[Dict[str, str]] = {
         "com.reddit.frontpage": "reddit",
+        "com.duolingo": "duolingo",
         "com.ss.android.ugc.trill": "tiktok",
         "com.twitter.android": "twitter",
         "de.dwd.warnapp": "warnwetter",
