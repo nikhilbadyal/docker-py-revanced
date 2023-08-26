@@ -66,7 +66,7 @@ class Patches(object):
         "com.vanced.android.youtube": "vanced",
         "com.spotify.lite": "spotify-lite",
         "at.gv.oe.app": "digitales",
-        "at.gv.bmf.bmf2go": "scbeasy",
+        "com.scb.phone": "scbeasy",
         "reddit.news": "reddit-news",
     }
 
