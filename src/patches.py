@@ -63,6 +63,7 @@ class Patches(object):
         "com.strava": "strava",
         "com.microblink.photomath": "photomath",
         "o.o.joey": "joey",
+        "com.vanced.android.youtube": "vanced",
     }
 
     @staticmethod
