@@ -68,4 +68,5 @@ apk_sources = {
     "joey": APK_MONK_APK_URL,
     "spotify-lite": APK_MONK_APK_URL,
     "digitales": APK_MONK_APK_URL,
+    "scbeasy": APK_MONK_APK_URL,
 }
