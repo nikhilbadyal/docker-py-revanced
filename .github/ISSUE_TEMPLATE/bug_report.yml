@@ -34,7 +34,8 @@ body:
     attributes:
       label: ENVS
       description: |
-        Please provide the ENVS used for building. If not using any write NA
+        Please provide the ENVS used for building. If not using any write NA.
+      render: Dotenv
     validations:
       required: true
 
@@ -42,4 +43,4 @@ body:
     attributes:
       label: Additional info
       description: |
-        Please provide any additional information that seem useful.
+        Please provide any additional information that seems useful.

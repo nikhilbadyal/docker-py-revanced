@@ -1,0 +1,45 @@
+name: Feature Request
+description: Have an awesome idea to improve the builder?
+labels:
+  - "feature-request👓"
+assignees:
+  - nikhilbadyal
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Thanks :heart: for taking the time to fill out this feature request report!**
+        We kindly ask that you search to see if an issue [already exists](https://github.com/nikhilbadyal/docker-py-revanced/issues?q=label%3Afeature-request%F0%9F%91%93+) for your feature.
+
+  - type: checkboxes
+    attributes:
+      label: Support guidelines
+      description: Please read the request guidelines before proceeding.
+      options:
+        - label: I've read the [support guidelines](https://github.com/nikhilbadyal/docker-py-revanced#only-builder-support)
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        A clear and concise description of the feature you're interested in.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Motivation
+      description: |
+        Please explain why you believe this feature is necessary and how it will be beneficial for others.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: |
+        Please provide any additional information that seems useful.
+    validations:
+      required: false
