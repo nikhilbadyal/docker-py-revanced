@@ -28,6 +28,7 @@ apk_sources = {
     "relay": f"{APK_MIRROR_BASE_APK_URL}/dbrady/relay-for-reddit-2/",
     "rif": f"{APK_MIRROR_BASE_APK_URL}/talklittle/reddit-is-fun/",
     "slide": f"{APK_MIRROR_BASE_APK_URL}/haptic-apps/slide-for-reddit/",
+    "solidexplorer": f"{APK_MIRROR_BASE_APK_URL}/neatbytes/solid-explorer-beta/",
     "sonyheadphone": f"{APK_MIRROR_BASE_APK_URL}/sony-corporation/sony-headphones-connect/",
     "sync": f"{APK_MIRROR_BASE_APK_URL}/red-apps-ltd/sync-for-reddit/",
     "tasker": f"{APK_MIRROR_BASE_APK_URL}/joaomgcd/tasker-crafty-apps-eu/",
