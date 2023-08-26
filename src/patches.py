@@ -19,6 +19,7 @@ class Patches(object):
         "com.reddit.frontpage": "reddit",
         "com.duolingo": "duolingo",
         "com.ss.android.ugc.trill": "tiktok",
+        "com.zhiliaoapp.musically": "musically",
         "com.twitter.android": "twitter",
         "de.dwd.warnapp": "warnwetter",
         "com.spotify.music": "spotify",

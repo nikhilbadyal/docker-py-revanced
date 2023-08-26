@@ -44,6 +44,7 @@ apk_sources = {
     "tasker": f"{APK_MIRROR_BASE_APK_URL}/joaomgcd/tasker-crafty-apps-eu/",
     "ticktick": f"{APK_MIRROR_BASE_APK_URL}/appest-inc/ticktick-to-do-list-with-reminder-day-planner/",
     "tiktok": f"{APK_MIRROR_BASE_APK_URL}/tiktok-pte-ltd/tik-tok-including-musical-ly/",
+    "musically": f"{APK_MIRROR_BASE_APK_URL}/tiktok-pte-ltd/tik-tok-including-musical-ly/",
     "trakt": f"{APK_MIRROR_BASE_APK_URL}/trakt/trakt/",
     "twitch": f"{APK_MIRROR_BASE_APK_URL}/twitch-interactive-inc/twitch/",
     "twitter": f"{APK_MIRROR_BASE_APK_URL}/x-corp/twitter/",
