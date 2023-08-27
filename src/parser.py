@@ -1,4 +1,5 @@
 """Revanced Parser."""
+from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import List, Self
@@ -17,6 +18,7 @@ class Parser(object):
 
     CLI_JAR = "-jar"
     APK_ARG = "-a"
+    NEW_APK_ARG = "patch"
     PATCHES_ARG = "-b"
     INTEGRATIONS_ARG = "-m"
     OUTPUT_ARG = "-o"
@@ -101,6 +103,21 @@ class Parser(object):
             if item == "-i":
                 self._PATCHES[idx] = "-e"
 
+    @staticmethod
+    def is_new_cli(cli_path: Path) -> bool:
+        """Check if new cli is being used."""
+        process = Popen(["java", "-jar", cli_path, "-V"], stdout=PIPE)
+        output = process.stdout
+        if not output:
+            msg = "Failed to send request for patching."
+            raise PatchingFailedError(msg)
+        combined_result = ""
+        for line in output:
+            combined_result += line.decode()
+        if combined_result.find("v3"):
+            return True
+        return False
+
     # noinspection IncorrectFormatting
     def patch_app(
         self: Self,
@@ -114,10 +131,16 @@ class Parser(object):
             The `app` parameter is an instance of the `APP` class. It represents an application that needs
         to be patched.
         """
+        if self.is_new_cli(self.config.temp_folder.joinpath(app.resource["cli"])):
+            apk_arg = self.NEW_APK_ARG
+            exp = "--force"
+        else:
+            apk_arg = self.APK_ARG
+            exp = "--experimental"
         args = [
             self.CLI_JAR,
             app.resource["cli"],
-            self.APK_ARG,
+            apk_arg,
             app.download_file_name,
             self.PATCHES_ARG,
             app.resource["patches"],
@@ -132,7 +155,7 @@ class Parser(object):
         ]
         if app.experiment:
             logger.debug("Using experimental features")
-            args.append("--experimental")
+            args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
         if self.config.ci_test:
             self.exclude_all_patches()
