@@ -111,12 +111,8 @@ class Parser(object):
         if not output:
             msg = "Failed to send request for patching."
             raise PatchingFailedError(msg)
-        combined_result = ""
-        for line in output:
-            combined_result += line.decode()
-        if combined_result.find("v3"):
-            return True
-        return False
+        combined_result = "".join(line.decode() for line in output)
+        return bool(combined_result.find("v3"))
 
     # noinspection IncorrectFormatting
     def patch_app(
