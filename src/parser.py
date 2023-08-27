@@ -111,11 +111,11 @@ class Parser(object):
         if not output:
             msg = "Failed to send request for patching."
             raise PatchingFailedError(msg)
-        combined_result = ""
-        for line in output:
-            combined_result += line.decode()
-        if combined_result.find("v3"):
+        combined_result = "".join(line.decode() for line in output)
+        if combined_result.find("v3") != -1:
+            logger.debug("New cli")
             return True
+        logger.debug("Old cli")
         return False
 
     # noinspection IncorrectFormatting

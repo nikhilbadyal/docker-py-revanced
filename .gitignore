@@ -5,6 +5,7 @@ venv
 */__pycache__*
 *.pyc
 /revanced-cache/
+/revanced-resource-cache/
 changelog.md
 .idea
 *.json
