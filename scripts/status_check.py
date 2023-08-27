@@ -135,8 +135,7 @@ def apkpure_scrapper(package_name: str) -> str:
         soup = BeautifulSoup(r.text, bs4_parser)
         search_result = soup.find_all(class_="brand-info-top")
         for brand_info in search_result:
-            icon_element = brand_info.find(class_="icon")
-            if icon_element:
+            if icon_element := brand_info.find(class_="icon"):
                 return str(icon_element.get("src"))
         raise APKPureIconScrapError(url=apkpure_url)
     except UnknownError as e:
