@@ -14,15 +14,22 @@ from src.downloader.sources import (
     APK_MIRROR_PACKAGE_URL,
     APK_MONK_APK_URL,
     APK_MONK_ICON_URL,
+    APK_PURE_ICON_URL,
     PLAY_STORE_APK_URL,
     not_found_icon,
     revanced_api,
 )
-from src.exceptions import APKComboIconScrapError, APKMirrorIconScrapError, APKMonkIconScrapError, UnknownError
+from src.exceptions import (
+    APKComboIconScrapError,
+    APKMirrorIconScrapError,
+    APKMonkIconScrapError,
+    APKPureIconScrapError,
+    UnknownError,
+)
 from src.patches import Patches
 from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header
 
-no_of_col = 6
+no_of_col = 8
 combo_headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/116.0"}
 
 
@@ -120,12 +127,30 @@ def gplay_icon_scrapper(package_name: str) -> str:
         raise GooglePlayScraperException from e
 
 
+def apkpure_scrapper(package_name: str) -> str:
+    """Scrap Icon from apkpure."""
+    apkpure_url = APK_PURE_ICON_URL.format(package_name)
+    try:
+        r = requests.get(apkpure_url, headers=combo_headers, allow_redirects=True, timeout=60)
+        soup = BeautifulSoup(r.text, bs4_parser)
+        search_result = soup.find_all(class_="brand-info-top")
+        for brand_info in search_result:
+            icon_element = brand_info.find(class_="icon")
+            if icon_element:
+                return str(icon_element.get("src"))
+        raise APKPureIconScrapError(url=apkpure_url)
+    except UnknownError as e:
+        raise APKPureIconScrapError(url=apkpure_url) from e
+
+
 def icon_scrapper(package_name: str) -> str:
     """Scrap Icon."""
     scraper_names = {
         "gplay_icon_scrapper": GooglePlayScraperException,
         "apkmirror_scrapper": APKMirrorIconScrapError,
         "apkmonk_scrapper": APKMonkIconScrapError,
+        "apkpure_scrapper": APKPureIconScrapError,
+        "apkcombo_scrapper": APKComboIconScrapError,
     }
 
     for scraper_name, error_type in scraper_names.items():
@@ -143,15 +168,15 @@ def generate_markdown_table(data: List[List[str]]) -> str:
         return "No data to generate for the table."
 
     table = (
-        "| Package Name | App Icon | PlayStore link | APKMirror link|APKMonk Link| Supported?|\n"
-        "|-------------|----------|----------------|---------------|------------------|----------|\n"
+        "| Package Name | App Icon | PlayStore| APKMirror |APKMonk |ApkPure | ApkCombo |Supported?|\n"
+        "|--------------|----------|----------|-----------|--------|--------|----------|----------|\n"
     )
     for row in data:
         if len(row) != no_of_col:
             msg = f"Each row must contain {no_of_col} columns of data."
             raise ValueError(msg)
 
-        table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |{row[5]} |\n"
+        table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |{row[5]} | {row[6]} | {row[7]} |\n"
 
     return table
 
@@ -178,6 +203,8 @@ def main() -> None:
             f"[PlayStore Link]({PLAY_STORE_APK_URL.format(app)})",
             f"[APKMirror Link]({APK_MIRROR_PACKAGE_URL.format(app)})",
             f"[APKMonk Link]({APK_MONK_APK_URL.format(app)})",
+            f"[APKPure Link]({APK_PURE_ICON_URL.format(app)})",
+            f"[APKCombo Link]({APK_COMBO_GENERIC_URL.format(app)})",
             "<li>- [ ] </li>",
         ]
         for app in missing_support
