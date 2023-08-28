@@ -10,7 +10,7 @@ from src.app import APP
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
 from src.exceptions import DownloadError
-from src.utils import handle_request_response, update_changelog
+from src.utils import handle_request_response, request_timeout, update_changelog
 
 
 class Github(Downloader):
@@ -34,8 +34,8 @@ class Github(Downloader):
         if self.config.personal_access_token:
             logger.debug("Using personal access token")
             headers["Authorization"] = f"token {self.config.personal_access_token}"
-        response = requests.get(repo_url, headers=headers, timeout=60)
-        handle_request_response(response)
+        response = requests.get(repo_url, headers=headers, timeout=request_timeout)
+        handle_request_response(response, repo_url)
         if repo_name == "revanced-patches":
             download_url = response.json()["assets"][1]["browser_download_url"]
         else:
@@ -74,8 +74,8 @@ class Github(Downloader):
         }
         if config.personal_access_token:
             headers["Authorization"] = f"token {config.personal_access_token}"
-        response = requests.get(api_url, headers=headers, timeout=60)
-        handle_request_response(response)
+        response = requests.get(api_url, headers=headers, timeout=request_timeout)
+        handle_request_response(response, api_url)
         update_changelog(f"{github_repo_owner}/{github_repo_name}", response.json())
         assets = response.json()["assets"]
         try:

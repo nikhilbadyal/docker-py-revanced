@@ -29,6 +29,7 @@ request_header = {
 }
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
+request_timeout = 60
 
 
 def update_changelog(name: str, response: Dict[str, str]) -> None:
@@ -99,7 +100,7 @@ def get_parent_repo() -> str:
     return "https://github.com/nikhilbadyal/docker-py-revanced"
 
 
-def handle_request_response(response: Response) -> None:
+def handle_request_response(response: Response, url: str) -> None:
     """The function handles the response of a GET request and raises an exception if the response code is not 200.
 
     Parameters
@@ -108,11 +109,13 @@ def handle_request_response(response: Response) -> None:
         The parameter `response` is of type `Response`, which is likely referring to a response object from
     an HTTP request. This object typically contains information about the response received from the
     server, such as the status code, headers, and response body.
+    url: str
+        The url on which request was made
     """
     response_code = response.status_code
     if response_code != status_code_200:
         msg = f"Unable to downloaded assets. Reason - {response.text}"
-        raise DownloadError(msg)
+        raise DownloadError(msg, url=url)
 
 
 def slugify(string: str) -> str:
