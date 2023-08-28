@@ -152,7 +152,8 @@ class APP(object):
                 try:
                     self.resource[resource_name] = future.result()
                 except BuilderError as e:
-                    raise PatchingFailedError(e) from e
+                    msg = "Failed to download resource."
+                    raise PatchingFailedError(msg) from e
 
     @staticmethod
     def generate_filename(url: str) -> str:
