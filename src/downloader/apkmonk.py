@@ -5,6 +5,7 @@ from typing import Any, Self, Tuple
 import requests
 from bs4 import BeautifulSoup
 
+from scripts.status_check import combo_headers
 from src.app import APP
 from src.downloader.download import Downloader
 from src.downloader.sources import APK_MONK_BASE_URL
@@ -41,11 +42,12 @@ class ApkMonk(Downloader):
                 url = f"{APK_MONK_BASE_URL}/down_file?pkg={pkg_value}&key={key_value}"
                 break
         if not url:
-            msg = "Unable to scrap link"
+            msg = "Unable to get key-value link"
             raise APKMonkAPKDownloadError(
                 msg,
                 url=page,
             )
+        request_header["User-Agent"] = combo_headers["User-Agent"]
         r = requests.get(url, headers=request_header, allow_redirects=True, timeout=60)
         if r.status_code != status_code_200:
             msg = f"Unable to connect with {page}.Reason - {r.text}"
@@ -66,6 +68,12 @@ class ApkMonk(Downloader):
         :return: Version of downloaded apk
         """
         r = requests.get(app.download_source, headers=request_header, allow_redirects=True, timeout=60)
+        if r.status_code != status_code_200:
+            msg = f"Unable to connect with {app.download_source}.Reason - {r.text}"
+            raise APKMonkAPKDownloadError(
+                msg,
+                url=app.download_source,
+            )
         soup = BeautifulSoup(r.text, bs4_parser)
         version_table = soup.find_all(class_="striped")
         for version_row in version_table:
@@ -75,7 +83,7 @@ class ApkMonk(Downloader):
                 if app_version == app.app_version:
                     download_link = link["href"]
                     return self.extract_download_link(APK_MONK_BASE_URL + download_link, app.app_name)
-        msg = "Unable to scrap link"
+        msg = "Unable to scrap version link"
         raise APKMonkAPKDownloadError(
             msg,
             url=app.download_source,
