@@ -7,6 +7,11 @@ class BuilderError(Exception):
 
     message = "Default Error message."
 
+    def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
+        if args:
+            self.message = args[0]
+        super().__init__(self.message)
+
     def __str__(self: Self) -> str:
         """Return error message."""
         return self.message
