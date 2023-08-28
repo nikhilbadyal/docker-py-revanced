@@ -14,6 +14,7 @@ concurrency:
 jobs:
   dockerhub-push:
     uses: nikhilbadyal/ghactions/.github/workflows/dockerhub-push.yml@main
+    if: github.repository == 'nikhilbadyal/docker-py-revanced'
     with:
       IMAGE_TAG: ${{ github.repository }}-base:latest
       FILE: Dockerfile-base
