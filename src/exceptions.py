@@ -2,7 +2,17 @@
 from typing import Any, Self
 
 
-class APKMirrorIconScrapError(Exception):
+class BuilderError(Exception):
+    """Base class for all the project errors."""
+
+    message = "Default Error message."
+
+    def __str__(self: Self) -> str:
+        """Return error message."""
+        return self.message
+
+
+class APKMirrorIconScrapError(BuilderError):
     """Exception raised when the icon cannot be scraped from apkmirror."""
 
     def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
@@ -30,11 +40,11 @@ class APKMonkIconScrapError(APKMirrorIconScrapError):
     """Exception raised when the icon cannot be scraped from apkmonk."""
 
 
-class DownloadError(Exception):
+class DownloadError(BuilderError):
     """Generic Download failure."""
 
     def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
-        """Initialize the APKMirrorAPKDownloadFailure exception.
+        """Initialize the DownloadFailure exception.
 
         Args:
         ----
@@ -44,6 +54,11 @@ class DownloadError(Exception):
         """
         super().__init__(*args)
         self.url = kwargs.get("url", None)
+
+    def __str__(self: Self) -> str:
+        """Exception message."""
+        base_message = super().__str__()
+        return f"Message - {base_message} Url - {self.url}"
 
 
 class APKDownloadError(DownloadError):
@@ -74,15 +89,15 @@ class APKSosAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from apksos failed."""
 
 
-class PatchingFailedError(Exception):
+class PatchingFailedError(BuilderError):
     """Patching Failed."""
 
 
-class AppNotFoundError(ValueError):
+class AppNotFoundError(BuilderError):
     """Not a valid Revanced App."""
 
 
-class PatchesJsonLoadError(ValueError):
+class PatchesJsonLoadError(BuilderError):
     """Failed to load patches json."""
 
     def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
@@ -97,6 +112,7 @@ class PatchesJsonLoadError(ValueError):
         super().__init__(*args)
         self.file_name = kwargs.get("file_name", None)
 
-
-class UnknownError(Exception):
-    """Some unknown error."""
+    def __str__(self: Self) -> str:
+        """Exception message."""
+        base_message = super().__str__()
+        return f"Message - {base_message} Url - {self.file_name}"

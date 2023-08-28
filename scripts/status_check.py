@@ -24,7 +24,7 @@ from src.exceptions import (
     APKMirrorIconScrapError,
     APKMonkIconScrapError,
     APKPureIconScrapError,
-    UnknownError,
+    BuilderError,
 )
 from src.patches import Patches
 from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header
@@ -47,7 +47,7 @@ def apkcombo_scrapper(package_name: str) -> str:
             raise APKComboIconScrapError(url=apkcombo_url)
         url = icon_element.get("data-src")
         return re.sub(r"=.*$", "", url)  # type: ignore[arg-type]
-    except UnknownError as e:
+    except BuilderError as e:
         raise APKComboIconScrapError(url=apkcombo_url) from e
 
 
@@ -123,7 +123,7 @@ def gplay_icon_scrapper(package_name: str) -> str:
                 package_name,
             )["icon"]
         )
-    except UnknownError as e:
+    except BuilderError as e:
         raise GooglePlayScraperException from e
 
 
@@ -139,7 +139,7 @@ def apkpure_scrapper(package_name: str) -> str:
             if icon_element:
                 return str(icon_element.get("src"))
         raise APKPureIconScrapError(url=apkpure_url)
-    except UnknownError as e:
+    except BuilderError as e:
         raise APKPureIconScrapError(url=apkpure_url) from e
 
 
