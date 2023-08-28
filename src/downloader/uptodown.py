@@ -8,7 +8,7 @@ from loguru import logger
 from src.app import APP
 from src.downloader.download import Downloader
 from src.exceptions import UptoDownAPKDownloadError
-from src.utils import bs4_parser, request_header
+from src.utils import bs4_parser, handle_request_response, request_header, request_timeout
 
 
 class UptoDown(Downloader):
@@ -16,7 +16,8 @@ class UptoDown(Downloader):
 
     def extract_download_link(self: Self, page: str, app: str) -> Tuple[str, str]:
         """Extract download link from uptodown url."""
-        r = requests.get(page, headers=request_header, allow_redirects=True, timeout=60)
+        r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
+        handle_request_response(r, page)
         soup = BeautifulSoup(r.text, bs4_parser)
         download_button = soup.find(id="detail-download-button")
         if not download_button:

@@ -27,7 +27,7 @@ from src.exceptions import (
     BuilderError,
 )
 from src.patches import Patches
-from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header
+from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header, request_timeout
 
 no_of_col = 8
 combo_headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/116.0"}
@@ -37,7 +37,8 @@ def apkcombo_scrapper(package_name: str) -> str:
     """Apkcombo scrapper."""
     apkcombo_url = APK_COMBO_GENERIC_URL.format(package_name)
     try:
-        r = requests.get(apkcombo_url, headers=combo_headers, allow_redirects=True, timeout=60)
+        r = requests.get(apkcombo_url, headers=combo_headers, allow_redirects=True, timeout=request_timeout)
+        handle_request_response(r, apkcombo_url)
         soup = BeautifulSoup(r.text, bs4_parser)
         avatar = soup.find(class_="avatar")
         if not isinstance(avatar, Tag):
@@ -74,7 +75,8 @@ def apkmonk_scrapper(package_name: str) -> str:
     """APKMonk scrapper."""
     apkmonk_url = APK_MONK_APK_URL.format(package_name)
     icon_logo = APK_MONK_ICON_URL.format(package_name)
-    r = requests.get(apkmonk_url, headers=combo_headers, allow_redirects=True, timeout=60)
+    r = requests.get(apkmonk_url, headers=combo_headers, allow_redirects=True, timeout=request_timeout)
+    handle_request_response(r, apkmonk_url)
     if head := BeautifulSoup(r.text, bs4_parser).head:
         parsed_head = BeautifulSoup(str(head), bs4_parser)
         href_elements = parsed_head.find_all(href=True)
@@ -98,7 +100,8 @@ def apkmirror_scrapper(package_name: str) -> str:
 
 
 def _extracted_from_apkmirror_scrapper(search_url: str) -> str:
-    r = requests.get(search_url, headers=request_header, timeout=60)
+    r = requests.get(search_url, headers=request_header, timeout=request_timeout)
+    handle_request_response(r, search_url)
     soup = BeautifulSoup(r.text, bs4_parser)
     icon_element = soup.select_one("div.bubble-wrap > img")
     if not icon_element:
@@ -131,7 +134,8 @@ def apkpure_scrapper(package_name: str) -> str:
     """Scrap Icon from apkpure."""
     apkpure_url = APK_PURE_ICON_URL.format(package_name)
     try:
-        r = requests.get(apkpure_url, headers=combo_headers, allow_redirects=True, timeout=60)
+        r = requests.get(apkpure_url, headers=combo_headers, allow_redirects=True, timeout=request_timeout)
+        handle_request_response(r, apkpure_url)
         soup = BeautifulSoup(r.text, bs4_parser)
         search_result = soup.find_all(class_="brand-info-top")
         for brand_info in search_result:
@@ -182,8 +186,8 @@ def generate_markdown_table(data: List[List[str]]) -> str:
 
 def main() -> None:
     """Entrypoint."""
-    response = requests.get(revanced_api, timeout=10)
-    handle_request_response(response)
+    response = requests.get(revanced_api, timeout=request_timeout)
+    handle_request_response(response, revanced_api)
 
     patches = response.json()
 

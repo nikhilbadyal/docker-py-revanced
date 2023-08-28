@@ -44,7 +44,7 @@ class Downloader(object):
             stream=True,
             headers=headers,
         )
-        handle_request_response(response)
+        handle_request_response(response, url)
         total = int(response.headers.get("content-length", 0))
         bar = tqdm(
             desc=file_name,
