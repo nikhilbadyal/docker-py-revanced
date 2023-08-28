@@ -5,7 +5,7 @@ from environs import Env
 from loguru import logger
 
 from src.config import RevancedConfig
-from src.exceptions import AppNotFoundError, PatchesJsonLoadError, PatchingFailedError, UnknownError
+from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
 from src.patches import Patches
 from src.utils import check_java, extra_downloads
@@ -40,8 +40,8 @@ def main() -> None:
             logger.exception("Patches.json not found")
         except PatchingFailedError as e:
             logger.exception(e)
-        except UnknownError as e:
-            logger.exception(f"Failed to build {app} because of {e}")
+        except BuilderError as e:
+            logger.exception(f"Failed to build {possible_app} because of {e}")
 
 
 if __name__ == "__main__":
