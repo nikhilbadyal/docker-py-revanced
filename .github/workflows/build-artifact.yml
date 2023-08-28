@@ -78,7 +78,7 @@ jobs:
           detached: true
 
       - name: Build Revanced APKs
-        if: ${{ github.event_name != 'workflow_dispatch' && !inputs.DEBUG_ENABLED }}
+        if: ${{ true && !inputs.DEBUG_ENABLED }}
         run: |
           if [[ "${{ inputs.CI_TEST }}" =~ ^(true|True|1)$ ]]; then
               echo "In CI Testing. Using local compose file."
@@ -89,7 +89,7 @@ jobs:
           fi
       - name: Upload Build APKS
         uses: actions/upload-artifact@main
-        if: ${{ github.event_name != 'workflow_dispatch' && !inputs.DEBUG_ENABLED }}
+        if: ${{ true && !inputs.DEBUG_ENABLED }}
         with:
           name: Built-APKs
           path: |
