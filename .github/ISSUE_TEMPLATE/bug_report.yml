@@ -26,7 +26,7 @@ body:
     attributes:
       label: Error log or link to the logs if using Github Action
       description: |
-        Please provide the error log or link to the error log if using Github Action
+        Please provide the error log or Github Action URL if building on GitHub
     validations:
       required: true
 
