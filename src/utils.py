@@ -13,7 +13,7 @@ from requests import Response
 from src.config import RevancedConfig
 from src.downloader.sources import APK_MIRROR_APK_CHECK
 from src.downloader.utils import status_code_200
-from src.exceptions import DownloadError
+from src.exceptions import ScrapingError
 
 default_build = [
     "youtube",
@@ -115,7 +115,7 @@ def handle_request_response(response: Response, url: str) -> None:
     response_code = response.status_code
     if response_code != status_code_200:
         msg = f"Unable to downloaded assets. Reason - {response.text}"
-        raise DownloadError(msg, url=url)
+        raise ScrapingError(msg, url=url)
 
 
 def slugify(string: str) -> str:

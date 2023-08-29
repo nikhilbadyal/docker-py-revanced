@@ -25,6 +25,7 @@ from src.exceptions import (
     APKMonkIconScrapError,
     APKPureIconScrapError,
     BuilderError,
+    ScrapingError,
 )
 from src.patches import Patches
 from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header, request_timeout
@@ -161,6 +162,8 @@ def icon_scrapper(package_name: str) -> str:
             return str(globals()[scraper_name](package_name))
         except error_type:
             pass
+        except ScrapingError:
+            pass
 
     return not_found_icon
 
@@ -189,7 +192,7 @@ def main() -> None:
     response = requests.get(revanced_api, timeout=request_timeout)
     handle_request_response(response, revanced_api)
 
-    patches = response.json()
+    patches = response.json()["patches"]
 
     possible_apps = set()
     for patch in patches:
