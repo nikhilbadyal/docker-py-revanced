@@ -17,8 +17,8 @@ class BuilderError(Exception):
         return self.message
 
 
-class APKMirrorIconScrapError(BuilderError):
-    """Exception raised when the icon cannot be scraped from apkmirror."""
+class ScrapingError(BuilderError):
+    """Exception raised when the url cannot be scraped."""
 
     def __init__(self: Self, *args: Any, **kwargs: Any) -> None:
         """Initialize the APKMirrorIconScrapFailure exception.
@@ -33,15 +33,19 @@ class APKMirrorIconScrapError(BuilderError):
         self.url = kwargs.get("url", None)
 
 
-class APKComboIconScrapError(APKMirrorIconScrapError):
+class APKMirrorIconScrapError(ScrapingError):
+    """Exception raised when the icon cannot be scraped from apkmirror."""
+
+
+class APKComboIconScrapError(ScrapingError):
     """Exception raised when the icon cannot be scraped from apkcombo."""
 
 
-class APKPureIconScrapError(APKMirrorIconScrapError):
+class APKPureIconScrapError(ScrapingError):
     """Exception raised when the icon cannot be scraped from apkpure."""
 
 
-class APKMonkIconScrapError(APKMirrorIconScrapError):
+class APKMonkIconScrapError(ScrapingError):
     """Exception raised when the icon cannot be scraped from apkmonk."""
 
 
