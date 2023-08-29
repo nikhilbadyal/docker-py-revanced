@@ -13,6 +13,8 @@ concurrency:
 jobs:
   build-apk-pr-check:
     uses: ./.github/workflows/build-artifact.yml
+    with:
+      CI_TEST: true
     secrets:
       ENVS: |
         CI_TEST=True

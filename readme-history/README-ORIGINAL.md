@@ -4,8 +4,8 @@ A little python script that will help you in building Revanced [apps](#patch-app
 
 **`Note`** - If you are a root user and want magisk module (Extended). Get them [here](https://github.com/nikhilbadyal/revanced-magisk-module)
 
-This is just a builder for revanced and not a revanced support. Please be understanding and refrain from asking
-about revanced features/bugs. Discuss those on proper relevant forums.
+ <a id="only-builder-support"></a>This is just a builder for revanced and not a revanced support. Please be
+ understanding and refrain from asking about revanced features/bugs. Discuss those on proper relevant forums.
 
 ## Pre-Built APKs
 
@@ -112,7 +112,7 @@ You can use any of the following methods to build.
 | [GLOBAL_CLI_DL*](#global-resources)                      |     DL for CLI to be used for patching apps.      | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                 |
 | [GLOBAL_PATCHES_DL*](#global-resources)                  |   DL for Patches to be used for patching apps.    | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
 | [GLOBAL_PATCHES_JSON_DL*](#global-resources)             | DL for Patches Json to be used for patching apps. | [Revanced Patches](https://github.com/revanced/revanced-patches)                                         |
-| [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced Integrations](https://github.com/revanced/revanced-integrations)                                        |
+| [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced Integrations](https://github.com/revanced/revanced-integrations)                               |
 | [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |       Key file to be used for signing apps        | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
 | [GLOBAL_ARCHS_TO_BUILD*](#global-archs-to-build)         |         Arch to keep in the patched apk.          | All                                                                                                      |
 | REDDIT_CLIENT_ID                                         |       Reddit Client ID to patch reddit apps       | None                                                                                                     |
@@ -149,46 +149,59 @@ You can use any of the following methods to build.
 
 1. <a id="any-patch-apps"></a>**Officially** Supported values for **APP_NAME**** are :
 
-    1. [youtube](https://www.apkmirror.com/apk/google-inc/youtube/)
-    2. [youtube_music](https://www.apkmirror.com/apk/google-inc/youtube-music/)
-    3. [twitter](https://www.apkmirror.com/apk/twitter-inc/twitter/)
-    4. [reddit](https://www.apkmirror.com/apk/redditinc/reddit/)
-    5. [tiktok](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
-    6. [warnwetter](https://www.apkmirror.com/apk/deutscher-wetterdienst/warnwetter/)
-    7. [spotify](https://spotify.en.uptodown.com/android)
-    8. [nyx-music-player](https://nyx-music-player.en.uptodown.com/android)
-    9. [icon_pack_studio](https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio/)
-    10. [ticktick](https://www.apkmirror.com/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/)
-    11. [twitch](https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/)
-    12. [hex-editor](https://m.apkpure.com/hex-editor/com.myprog.hexedit)
-    13. [windy](https://www.apkmirror.com/apk/windy-weather-world-inc/windy-wind-weather-forecast/)
-    14. [my-expenses](https://my-expenses.en.uptodown.com/android)
-    15. [backdrops](https://backdrops.en.uptodown.com/android)
-    16. [expensemanager](https://apksos.com/app/com.ithebk.expensemanager)
-    17. [tasker](https://www.apkmirror.com/apk/joaomgcd/tasker-crafty-apps-eu/)
-    18. [irplus](https://irplus.en.uptodown.com/android)
-    19. [vsco](https://www.apkmirror.com/apk/vsco/vsco-cam/)
-    20. [meme-generator-free](https://meme-generator-free.en.uptodown.com/android)
-    21. [nova_launcher](https://www.apkmirror.com/apk/teslacoil-software/nova-launcher/)
-    22. [netguard](https://www.apkmirror.com/apk/marcel-bokhorst/netguard-no-root-firewall/)
-    23. [instagram](https://www.apkmirror.com/apk/instagram/instagram-instagram/)
-    24. [inshorts](https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/)
-    25. [messenger](https://www.apkmirror.com/apk/facebook-2/messenger/)
-    26. [grecorder](https://opnemer.en.uptodown.com/android)
-    27. [trakt](https://www.apkmirror.com/apk/trakt/trakt/)
-    28. [candyvpn](https://www.apkmirror.com/apk/liondev-io/candylink-vpn/)
-    29. [sonyheadphone](https://www.apkmirror.com/apk/sony-corporation/sony-headphones-connect/)
-    30. [androidtwelvewidgets](https://m.apkpure.com/android-12-widgets-twelve/com.dci.dev.androidtwelvewidgets)
-    31. [yuka](https://yuka.en.uptodown.com/android)
-    32. [relay](https://www.apkmirror.com/apk/dbrady/relay-for-reddit-2/)
-    33. [boost](https://www.apkmirror.com/apk/ruben-mayayo/boost-for-reddit/)
-    34. [rif](https://www.apkmirror.com/apk/talklittle/reddit-is-fun/)
-    35. [sync](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
-    36. [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
-    37. [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
-    38. [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
-    39. [microg](https://github.com/inotia00/mMicroG/releases)
-    40. [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
+    - [youtube](https://www.apkmirror.com/apk/google-inc/youtube/)
+    - [youtube_music](https://www.apkmirror.com/apk/google-inc/youtube-music/)
+    - [twitter](https://www.apkmirror.com/apk/twitter-inc/twitter/)
+    - [reddit](https://www.apkmirror.com/apk/redditinc/reddit/)
+    - [tiktok](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
+    - [warnwetter](https://www.apkmirror.com/apk/deutscher-wetterdienst/warnwetter/)
+    - [spotify](https://spotify.en.uptodown.com/android)
+    - [nyx-music-player](https://nyx-music-player.en.uptodown.com/android)
+    - [icon_pack_studio](https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio/)
+    - [ticktick](https://www.apkmirror.com/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/)
+    - [twitch](https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/)
+    - [hex-editor](https://m.apkpure.com/hex-editor/com.myprog.hexedit)
+    - [windy](https://www.apkmirror.com/apk/windy-weather-world-inc/windy-wind-weather-forecast/)
+    - [my-expenses](https://my-expenses.en.uptodown.com/android)
+    - [backdrops](https://backdrops.en.uptodown.com/android)
+    - [expensemanager](https://apksos.com/app/com.ithebk.expensemanager)
+    - [tasker](https://www.apkmirror.com/apk/joaomgcd/tasker-crafty-apps-eu/)
+    - [irplus](https://irplus.en.uptodown.com/android)
+    - [vsco](https://www.apkmirror.com/apk/vsco/vsco-cam/)
+    - [meme-generator-free](https://meme-generator-free.en.uptodown.com/android)
+    - [nova_launcher](https://www.apkmirror.com/apk/teslacoil-software/nova-launcher/)
+    - [netguard](https://www.apkmirror.com/apk/marcel-bokhorst/netguard-no-root-firewall/)
+    - [instagram](https://www.apkmirror.com/apk/instagram/instagram-instagram/)
+    - [inshorts](https://www.apkmirror.com/apk/inshorts-formerly-news-in-shorts/)
+    - [messenger](https://www.apkmirror.com/apk/facebook-/messenger/)
+    - [grecorder](https://opnemer.en.uptodown.com/android)
+    - [trakt](https://www.apkmirror.com/apk/trakt/trakt/)
+    - [candyvpn](https://www.apkmirror.com/apk/liondev-io/candylink-vpn/)
+    - [sonyheadphone](https://www.apkmirror.com/apk/sony-corporation/sony-headphones-connect/)
+    - [androidtwelvewidgets](https://m.apkpure.com/android--widgets-twelve/com.dci.dev.androidtwelvewidgets)
+    - [yuka](https://yuka.en.uptodown.com/android)
+    - [relay](https://www.apkmirror.com/apk/dbrady/relay-for-reddit-/)
+    - [boost](https://www.apkmirror.com/apk/ruben-mayayo/boost-for-reddit/)
+    - [rif](https://www.apkmirror.com/apk/talklittle/reddit-is-fun/)
+    - [sync](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
+    - [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
+    - [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
+    - [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
+    - [microg](https://github.com/inotia-/mMicroG/releases)
+    - [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
+    - [strava](https://www.apkmirror.com/apk/strava-inc/strava-running-and-cycling-gps/)
+    - [solidexplorer](https://www.apkmirror.com/apk/neatbytes/solid-explorer-beta/)
+    - [lightroom](https://www.apkmirror.com/apk/adobe/lightroom/)
+    - [duolingo](https://www.apkmirror.com/apk/duolingo/duolingo-duolingo/)
+    - [musically](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
+    - [photomath](https://www.apkmonk.com/app/com.microblink.photomath/)
+    - [joey](https://www.apkmonk.com/app/o.o.joey/)
+    - [vanced](https://www.apkmirror.com/apk/team-vanced/youtube-vanced/)
+    - [spotify-lite](https://www.apkmonk.com/app/com.spotify.lite/)
+    - [digitales](https://www.apkmonk.com/app/at.gv.oe.app/)
+    - [scbeasy](https://www.apkmonk.com/app/com.scb.phone/)
+    - [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
+    - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below.
    ```ini
@@ -197,18 +210,21 @@ You can use any of the following methods to build.
    ```
    You can also provide DL to the clean apk instead of providing DL_SOURCES as mentioned in this [note](#app-dl).
    Supported Scrappers are:
-   1. APKMIRROR - Supports downloading any versions
+   1. APKMIRROR - Supports downloading any available version
         1. Link Format - https://www.apkmirror.com/apk/<organisation-name>/app-name/
         2. Example Link - https://www.apkmirror.com/apk/google-inc/youtube/
-   2. UPTODOWN - Supports downloading any versions
+   2. UPTODOWN - Supports downloading any available version
         1. Link Format - https://<app-name>.en.uptodown.com/android
         2. Example Link - https://spotify.en.uptodown.com/android
-   3. APKSOS - Supports downloading any versions
+   3. APKSOS - Supports downloading any available version
        1. Link Format - https://apksos.com/download-app/<package-name>
        2. Example Link - https://apksos.com/download-app/com.expensemanager
    4. APKPURE - Supports downloading only latest version
        1. Link Format - https://d.apkpure.com/b/APK/<package-name>?version=latest
        2. Example Link - https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
+   5. APKMonk - Supports downloading any available version
+       1. Link Format - https://www.apkmonk.com/app/<package-name>/
+       2. Example Link - https://www.apkmonk.com/app/<package-name>/
 
    <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
     caused.If you know any better/safe source to download clean. Open a discussion.

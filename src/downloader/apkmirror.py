@@ -8,9 +8,8 @@ from loguru import logger
 from src.app import APP
 from src.downloader.download import Downloader
 from src.downloader.sources import APK_MIRROR_BASE_URL
-from src.downloader.utils import status_code_200
 from src.exceptions import APKMirrorAPKDownloadError
-from src.utils import bs4_parser, contains_any_word, request_header
+from src.utils import bs4_parser, contains_any_word, handle_request_response, request_header, request_timeout
 
 
 class ApkMirror(Downloader):
@@ -77,13 +76,8 @@ class ApkMirror(Downloader):
     @staticmethod
     def _extracted_search_div(url: str, search_class: str) -> Tag:
         """Extract search div."""
-        r = requests.get(url, headers=request_header, timeout=60)
-        if r.status_code != status_code_200:
-            msg = f"Unable to connect with {url}. Are you blocked by APKMirror or abused apkmirror ?.Reason - {r.text}"
-            raise APKMirrorAPKDownloadError(
-                msg,
-                url=url,
-            )
+        r = requests.get(url, headers=request_header, timeout=request_timeout)
+        handle_request_response(r, url)
         soup = BeautifulSoup(r.text, bs4_parser)
         return soup.find(class_=search_class)  # type: ignore[return-value]
 

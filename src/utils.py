@@ -11,6 +11,7 @@ from loguru import logger
 from requests import Response
 
 from src.config import RevancedConfig
+from src.downloader.sources import APK_MIRROR_APK_CHECK
 from src.downloader.utils import status_code_200
 from src.exceptions import DownloadError
 
@@ -19,7 +20,6 @@ default_build = [
     "youtube_music",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
-apk_mirror_base_url = "https://www.apkmirror.com"
 request_header = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (HTML, like Gecko)"
@@ -29,6 +29,7 @@ request_header = {
 }
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
+request_timeout = 60
 
 
 def update_changelog(name: str, response: Dict[str, str]) -> None:
@@ -99,7 +100,7 @@ def get_parent_repo() -> str:
     return "https://github.com/nikhilbadyal/docker-py-revanced"
 
 
-def handle_request_response(response: Response) -> None:
+def handle_request_response(response: Response, url: str) -> None:
     """The function handles the response of a GET request and raises an exception if the response code is not 200.
 
     Parameters
@@ -108,11 +109,13 @@ def handle_request_response(response: Response) -> None:
         The parameter `response` is of type `Response`, which is likely referring to a response object from
     an HTTP request. This object typically contains information about the response received from the
     server, such as the status code, headers, and response body.
+    url: str
+        The url on which request was made
     """
     response_code = response.status_code
     if response_code != status_code_200:
         msg = f"Unable to downloaded assets. Reason - {response.text}"
-        raise DownloadError(msg)
+        raise DownloadError(msg, url=url)
 
 
 def slugify(string: str) -> str:
@@ -212,9 +215,8 @@ def apkmirror_status_check(package_name: str) -> Any:
     -------
         the response from the APKMirror API as a JSON object.
     """
-    api_url = f"{apk_mirror_base_url}/wp-json/apkm/v1/app_exists/"
     body = {"pnames": [package_name]}
-    response = requests.post(api_url, json=body, headers=request_header, timeout=60)
+    response = requests.post(APK_MIRROR_APK_CHECK, json=body, headers=request_header, timeout=60)
     return response.json()
 
 

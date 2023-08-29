@@ -1,0 +1,46 @@
+name: Bug Report
+description: Encountered some issue while building?
+labels:
+  - "bug🐞"
+assignees:
+  - nikhilbadyal
+
+body:
+  - type: checkboxes
+    attributes:
+      label: Request guidelines
+      description: Please read the request guidelines before proceeding.
+      options:
+        - label: I've read the [issue guidelines](https://github.com/nikhilbadyal/docker-py-revanced#only-builder-support)
+          required: true
+
+  - type: input
+    attributes:
+      label: Name
+      description: |
+        Name of the app which failed to build.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Error log or link to the logs if using Github Action
+      description: |
+        Please provide the error log or Github Action URL if building on GitHub
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: ENVS
+      description: |
+        Please provide the ENVS used for building. If not using any write NA.
+      render: Dotenv
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional info
+      description: |
+        Please provide any additional information that seems useful.
