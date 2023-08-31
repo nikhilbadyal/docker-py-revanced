@@ -4,6 +4,7 @@ import sys
 from environs import Env
 from loguru import logger
 
+from src.app import APP
 from src.config import RevancedConfig
 from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
@@ -11,10 +12,15 @@ from src.patches import Patches
 from src.utils import check_java, extra_downloads
 
 
+def get_app(config: RevancedConfig, app_name: str) -> APP:
+    """Get App object."""
+    env_package_name = config.env.str(f"{app_name}_PACKAGE_NAME".upper(), None)
+    package_name = env_package_name or Patches.get_package_name(app_name)
+    return APP(app_name=app_name, package_name=package_name, config=config)
+
+
 def main() -> None:
     """Entry point."""
-    from src.app import APP
-
     env = Env()
     env.read_env()
     config = RevancedConfig(env)
@@ -26,7 +32,7 @@ def main() -> None:
     for possible_app in config.apps:
         logger.info(f"Trying to build {possible_app}")
         try:
-            app = APP(app_name=possible_app, config=config)
+            app = get_app(config, possible_app)
             patcher = Patches(config, app)
             parser = Parser(patcher, config)
             app_all_patches = patcher.get_app_configs(app)
