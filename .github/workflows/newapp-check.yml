@@ -40,7 +40,7 @@ jobs:
 
       - name: Update Check
         run: |
-          run: echo "${{ steps.status.outputs.changelog }}"
+          echo "${{ steps.status.outputs.changelog }}"
 
       - name: Upload status file
         uses: actions/upload-artifact@main
