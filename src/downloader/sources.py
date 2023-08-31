@@ -1,4 +1,5 @@
 """APK Sources used."""
+
 APK_MIRROR_BASE_URL = "https://www.apkmirror.com"
 APK_MIRROR_BASE_APK_URL = f"{APK_MIRROR_BASE_URL}/apk"
 APK_MIRROR_PACKAGE_URL = f"{APK_MIRROR_BASE_URL}/?s=" + "{}"
@@ -21,7 +22,7 @@ APK_MONK_BASE_URL = "https://www.apkmonk.com"
 APK_MONK_APK_URL = APK_MONK_BASE_URL + "/app/{}/"
 APK_MONK_ICON_URL = "https://cdn.apkmonk.com/logos/{}"
 DRIVE_BASE_URL = "https://drive.google.com"
-DRIVE_DOWNLOAD_BASE_URL = DRIVE_BASE_URL + "/uc?id="
+DRIVE_DOWNLOAD_BASE_URL = f"{DRIVE_BASE_URL}/uc?id="
 DRIVE_DOWNLOAD_URL = DRIVE_DOWNLOAD_BASE_URL + "{}"
 apk_sources = {
     "backdrops": f"{APK_MIRROR_BASE_APK_URL}/backdrops/backdrops-wallpapers/",
