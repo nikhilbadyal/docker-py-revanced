@@ -16,10 +16,10 @@ class RevancedConfig(object):
 
     def __init__(self: Self, env: Env) -> None:
         self.env = env
-        self.temp_folder = Path("apks")
+        self.temp_folder_name = "apks"
+        self.temp_folder = Path(self.temp_folder_name)
         self.session = Session()
         self.ci_test = env.bool("CI_TEST", False)
-
         self.rip_libs_apps: List[str] = []
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
