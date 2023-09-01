@@ -16,7 +16,7 @@ ARG ZULU_REPO_VER=1.0.0-3
 
 # Update package lists and install required packages
 RUN apt-get -qq update && \
-    apt-get -qq -y --no-install-recommends install gnupg software-properties-common locales curl tzdata && \
+    apt-get -qq -y --no-install-recommends install gnupg software-properties-common locales curl tzdata git && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9 && \
