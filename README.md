@@ -21,7 +21,10 @@ You can use any of the following methods to build.
        <img src="https://i.imgur.com/FFyXaWY.png" width="400" style="left"><br>
      2. Fork the project.<br>
      <img src="https://i.imgur.com/R5HdByI.png" width="400" style="left"><br>
-     3. Add `ENVS` (**optional**) secret to the repo. Required only if you want to cook specific apps/versions.
+     3. Make sure your Action has write access.Go to repo settings and go the bottom give read and write access to
+        Actions. Click [here](https://stackoverflow.com/a/76199390) to see more.
+     <img src="https://i.imgur.com/STSv2D3.png" width="400"><br>
+     4. Add `ENVS` (**optional**) secret to the repo. Required only if you want to cook specific apps/versions.
          <details>
            <summary>🚶Detailed step by step guide</summary>
 
@@ -32,7 +35,7 @@ You can use any of the following methods to build.
 
         </details>
 
-     4. Go to actions tab. Select `Build & Release`.Click on `Run Workflow`.
+     5. Go to actions tab. Select `Build & Release`.Click on `Run Workflow`.
 
         <details>
           <summary>🚶Detailed step by step guide</summary>
@@ -44,7 +47,7 @@ You can use any of the following methods to build.
 
         </details>
 
-     5. If the building process is successful, you’ll get your APKs in the<br>
+     6. If the building process is successful, you’ll get your APKs in the<br>
         <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
 
 - 🐳 **_Docker Compose_**<br>
@@ -389,7 +392,3 @@ You can use any of the following methods to build.
     once. Add it in `GitHub secrets`.<br>
 17. Sample Envs<br>
     <img src="https://i.imgur.com/FxOtiGs.png" width="600" style="left">
-18. Make sure your Action has write access. If not click
-    [here](https://github.com/nikhilbadyal/docker-py-revanced/settings/actions).
-    In the bottom give read and write access to Actions.
-    <img src="https://i.imgur.com/STSv2D3.png" width="400">
