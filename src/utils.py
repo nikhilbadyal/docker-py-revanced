@@ -8,7 +8,7 @@ from typing import Any, Dict, List
 
 import requests
 from loguru import logger
-from requests import Response
+from requests import Response, Session
 
 from src.config import RevancedConfig
 from src.downloader.sources import APK_MIRROR_APK_CHECK
@@ -30,6 +30,8 @@ request_header = {
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
 request_timeout = 60
+session = Session()
+session.headers["User-Agent"] = request_header["User-Agent"]
 
 
 def update_changelog(name: str, response: Dict[str, str]) -> None:

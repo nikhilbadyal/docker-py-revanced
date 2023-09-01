@@ -8,7 +8,7 @@ from loguru import logger
 from src.app import APP
 from src.downloader.download import Downloader
 from src.exceptions import UptoDownAPKDownloadError
-from src.utils import bs4_parser, handle_request_response, request_header, request_timeout
+from src.utils import bs4_parser, handle_request_response, request_header, request_timeout, session
 
 
 class UptoDown(Downloader):
@@ -43,7 +43,7 @@ class UptoDown(Downloader):
         """
         logger.debug("downloading specified version of app from uptodown.")
         url = f"{app.download_source}/versions"
-        html = self.config.session.get(url).text
+        html = session.get(url).text
         soup = BeautifulSoup(html, bs4_parser)
         versions_list = soup.find("section", {"id": "versions"})
         download_url = None
