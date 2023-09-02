@@ -4,6 +4,8 @@ from typing import List, Self
 
 from environs import Env
 
+from src.utils import default_build
+
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
 default_patches_json = default_patches
@@ -31,13 +33,4 @@ class RevancedConfig(object):
         self.extra_download_files: List[str] = env.list("EXTRA_FILES", [])
         self.apk_editor = "apkeditor-output.jar"
         self.extra_download_files.append("https://github.com/REAndroid/APKEditor@apkeditor.jar")
-        self._fetch_or_default(env)
-
-    def _fetch_or_default(self: Self, env: Env) -> None:
-        """Get config from env or use default."""
-        from src.utils import default_build
-
-        self.apps = env.list(
-            "PATCH_APPS",
-            default_build,
-        )
+        self.apps = env.list("PATCH_APPS", default_build)
