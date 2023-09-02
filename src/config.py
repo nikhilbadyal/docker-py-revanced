@@ -3,7 +3,6 @@ from pathlib import Path
 from typing import List, Self
 
 from environs import Env
-from requests import Session
 
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
@@ -18,7 +17,6 @@ class RevancedConfig(object):
         self.env = env
         self.temp_folder_name = "apks"
         self.temp_folder = Path(self.temp_folder_name)
-        self.session = Session()
         self.ci_test = env.bool("CI_TEST", False)
         self.rip_libs_apps: List[str] = []
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
@@ -37,10 +35,9 @@ class RevancedConfig(object):
 
     def _fetch_or_default(self: Self, env: Env) -> None:
         """Get config from env or use default."""
-        from src.utils import default_build, request_header
+        from src.utils import default_build
 
         self.apps = env.list(
             "PATCH_APPS",
             default_build,
         )
-        self.session.headers["User-Agent"] = request_header["User-Agent"]

@@ -13,7 +13,7 @@ from src.app import APP
 from src.config import RevancedConfig
 from src.downloader.utils import implement_method
 from src.exceptions import DownloadError
-from src.utils import handle_request_response
+from src.utils import handle_request_response, session
 
 
 class Downloader(object):
@@ -39,7 +39,7 @@ class Downloader(object):
         if self.config.personal_access_token and "github" in url:
             logger.debug("Using personal access token")
             headers["Authorization"] = f"token {self.config.personal_access_token}"
-        response = self.config.session.get(
+        response = session.get(
             url,
             stream=True,
             headers=headers,
