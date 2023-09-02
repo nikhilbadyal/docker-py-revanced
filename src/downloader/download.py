@@ -132,3 +132,27 @@ class Downloader(object):
     def direct_download(self: Self, dl: str, file_name: str) -> None:
         """Download from DL."""
         self._download(dl, file_name)
+
+    @staticmethod
+    def extra_downloads(config: RevancedConfig) -> None:
+        """The function `extra_downloads` downloads extra files specified.
+
+        Parameters
+        ----------
+        config : RevancedConfig
+            The `config` parameter is an instance of the `RevancedConfig` class. It is used to provide
+        configuration settings for the download process.
+        """
+        try:
+            for extra in config.extra_download_files:
+                url, file_name = extra.split("@")
+                file_name_without_extension, file_extension = os.path.splitext(file_name)
+                new_file_name = f"{file_name_without_extension}-output{file_extension}"
+                APP.download(
+                    url,
+                    config,
+                    assets_filter=f".*{file_extension}",
+                    file_name=new_file_name,
+                )
+        except (ValueError, IndexError):
+            logger.info("Unable to download extra file. Provide input in url@name.apk format.")
