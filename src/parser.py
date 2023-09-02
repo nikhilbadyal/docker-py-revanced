@@ -2,7 +2,7 @@
 from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
-from typing import List, Self
+from typing import Dict, List, Self
 
 from loguru import logger
 
@@ -102,6 +102,18 @@ class Parser(object):
         for idx, item in enumerate(self._PATCHES):
             if item == "-i":
                 self._PATCHES[idx] = "-e"
+
+    def include_exclude_patch(
+        self: Self, app: APP, patches: List[Dict[str, str]], patches_dict: Dict[str, str]
+    ) -> None:
+        """The function `include_exclude_patch` includes and excludes patches for a given app."""
+        for patch in patches:
+            normalized_patch = patch["name"].lower().replace(" ", "-")
+            self.include(normalized_patch) if normalized_patch not in app.exclude_request else self.exclude(
+                normalized_patch
+            )
+        for normalized_patch in app.include_request:
+            self.include(normalized_patch) if normalized_patch not in patches_dict["universal_patch"] else ()
 
     @staticmethod
     def is_new_cli(cli_path: Path) -> bool:

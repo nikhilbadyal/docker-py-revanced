@@ -37,7 +37,7 @@ def main() -> None:
             parser = Parser(patcher, config)
             app_all_patches = patcher.get_app_configs(app)
             app.download_apk_for_patching(config)
-            patcher.include_exclude_patch(app, parser, app_all_patches)
+            parser.include_exclude_patch(app, app_all_patches, patcher.patches_dict)
             logger.info(app)
             parser.patch_app(app)
         except AppNotFoundError as e:
