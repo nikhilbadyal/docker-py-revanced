@@ -1,5 +1,4 @@
 """Utilities."""
-import os
 import re
 import subprocess
 import sys
@@ -8,9 +7,8 @@ from typing import Any, Dict, List
 
 import requests
 from loguru import logger
-from requests import Response
+from requests import Response, Session
 
-from src.config import RevancedConfig
 from src.downloader.sources import APK_MIRROR_APK_CHECK
 from src.downloader.utils import status_code_200
 from src.exceptions import ScrapingError
@@ -30,6 +28,8 @@ request_header = {
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
 request_timeout = 60
+session = Session()
+session.headers["User-Agent"] = request_header["User-Agent"]
 
 
 def update_changelog(name: str, response: Dict[str, str]) -> None:
@@ -169,32 +169,6 @@ def check_java() -> None:
     except subprocess.CalledProcessError:
         logger.error("Java>= 17 must be installed")
         sys.exit(-1)
-
-
-def extra_downloads(config: RevancedConfig) -> None:
-    """The function `extra_downloads` downloads extra files specified.
-
-    Parameters
-    ----------
-    config : RevancedConfig
-        The `config` parameter is an instance of the `RevancedConfig` class. It is used to provide
-    configuration settings for the download process.
-    """
-    from src.app import APP
-
-    try:
-        for extra in config.extra_download_files:
-            url, file_name = extra.split("@")
-            file_name_without_extension, file_extension = os.path.splitext(file_name)
-            new_file_name = f"{file_name_without_extension}-output{file_extension}"
-            APP.download(
-                url,
-                config,
-                assets_filter=f".*{file_extension}",
-                file_name=new_file_name,
-            )
-    except (ValueError, IndexError):
-        logger.info("Unable to download extra file. Provide input in url@name.apk format.")
 
 
 def delete_old_changelog() -> None:

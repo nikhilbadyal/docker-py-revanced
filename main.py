@@ -6,10 +6,11 @@ from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
+from src.downloader.download import Downloader
 from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import check_java, extra_downloads
+from src.utils import check_java
 
 
 def get_app(config: RevancedConfig, app_name: str) -> APP:
@@ -24,7 +25,7 @@ def main() -> None:
     env = Env()
     env.read_env()
     config = RevancedConfig(env)
-    extra_downloads(config)
+    Downloader.extra_downloads(config)
     if not config.dry_run:
         check_java()
 
@@ -37,7 +38,7 @@ def main() -> None:
             parser = Parser(patcher, config)
             app_all_patches = patcher.get_app_configs(app)
             app.download_apk_for_patching(config)
-            patcher.include_exclude_patch(app, parser, app_all_patches)
+            parser.include_exclude_patch(app, app_all_patches, patcher.patches_dict)
             logger.info(app)
             parser.patch_app(app)
         except AppNotFoundError as e:

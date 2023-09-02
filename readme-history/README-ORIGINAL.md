@@ -389,7 +389,3 @@ You can use any of the following methods to build.
     once. Add it in `GitHub secrets`.<br>
 17. Sample Envs<br>
     <img src="https://i.imgur.com/FxOtiGs.png" width="600" style="left">
-18. Make sure your Action has write access. If not click
-    [here](https://github.com/nikhilbadyal/docker-py-revanced/settings/actions).
-    In the bottom give read and write access to Actions.
-    <img src="https://i.imgur.com/STSv2D3.png" width="400">

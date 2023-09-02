@@ -156,29 +156,6 @@ class Patches(object):
             version = next(i["version"] for i in patches if i["version"] != "all")
         return patches, version
 
-    def include_exclude_patch(self: Self, app: APP, parser: Any, patches: List[Dict[str, str]]) -> None:
-        """The function `include_exclude_patch` includes and excludes patches for a given app.
-
-        Parameters
-        ----------
-        app : APP
-            The "app" parameter is the name of the app for which the patches are being included or
-        excluded.
-        parser : Any
-            The `parser` parameter is an object of type `Any`, which means it can be any type of object. It
-        is used to perform parsing operations.
-        patches : List[Dict[str, str]]
-            A list of dictionaries, where each dictionary represents a patch and contains the following
-        keys:
-        """
-        for patch in patches:
-            normalized_patch = patch["name"].lower().replace(" ", "-")
-            parser.include(normalized_patch) if normalized_patch not in app.exclude_request else parser.exclude(
-                normalized_patch
-            )
-        for normalized_patch in app.include_request:
-            parser.include(normalized_patch) if normalized_patch not in self.patches_dict["universal_patch"] else ()
-
     def get_app_configs(self: Self, app: "APP") -> List[Dict[str, str]]:
         """The function `get_app_configs` returns configurations for a given app.
 
