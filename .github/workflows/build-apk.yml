@@ -31,11 +31,11 @@ on:
         required: false
         type: boolean
         default: false
-      CLEANUP:
-        description: "Clear GitHub (Useful if Telegram upload is enabled)"
-        required: false
-        type: boolean
-        default: false
+#      CLEANUP:
+#        description: "Clear GitHub (Useful if Telegram upload is enabled)"
+#        required: false
+#        type: boolean
+#        default: false
       COMMIT_CHANGELOG:
         description: "Update Changelog"
         type: boolean
@@ -139,10 +139,10 @@ jobs:
       SEND_MESSAGE: ${{ secrets.SEND_MESSAGE }}
       MESSAGE: ${{ secrets.MESSAGE_ROOT }}
 
-  cleanup:
-    name: GitHub Cleanup
-    if: inputs.CLEANUP
-    needs: [upload-to-telegram]
-    uses: ./.github/workflows/github-cleanup.yml
-    secrets:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#  cleanup:
+#    name: GitHub Cleanup
+#    if: inputs.CLEANUP
+#    needs: [upload-to-telegram]
+#    uses: ./.github/workflows/github-cleanup.yml
+#    secrets:
+#      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
