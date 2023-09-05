@@ -3,7 +3,7 @@ environs==9.5.0
 gdown @ git+https://github.com/nikhilbadyal/gdown
 google-play-scraper==1.2.4
 lastversion==3.0.1
-loguru==0.7.0
+loguru==0.7.1
 pre-commit==3.4.0
 requests==2.31.0
 tqdm==4.66.1
