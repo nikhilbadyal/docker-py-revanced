@@ -202,8 +202,9 @@ You can use any of the following methods to build.
     - [scbeasy](https://www.apkmonk.com/app/com.scb.phone/)
     - [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
     - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
+
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
-   few more inputs to the tool which are mentioned below.
+   few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
    ```ini
    <APP_NAME>_DL_SOURCE=<apk-link-to-any-of-the-suppored-scrapper>
    <APP_NAME>_PACKAGE_NAME=<package-name-of-the-application>
