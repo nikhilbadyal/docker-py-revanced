@@ -4,7 +4,7 @@ import subprocess
 from pathlib import Path
 from queue import PriorityQueue
 from time import perf_counter
-from typing import Any, Self, Tuple
+from typing import Any, Self
 
 from loguru import logger
 from tqdm import tqdm
@@ -21,7 +21,7 @@ class Downloader(object):
 
     def __init__(self: Self, config: RevancedConfig) -> None:
         self._CHUNK_SIZE = 10485760
-        self._QUEUE: PriorityQueue[Tuple[float, str]] = PriorityQueue()
+        self._QUEUE: PriorityQueue[tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
         self.config = config
 
@@ -61,11 +61,11 @@ class Downloader(object):
         self._QUEUE.put((perf_counter() - start, file_name))
         logger.debug(f"Downloaded {file_name}")
 
-    def extract_download_link(self: Self, page: str, app: str) -> Tuple[str, str]:
+    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
         """Extract download link from web page."""
         raise NotImplementedError(implement_method)
 
-    def specific_version(self: Self, app: APP, version: str) -> Tuple[str, str]:
+    def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -74,7 +74,7 @@ class Downloader(object):
         """
         raise NotImplementedError(implement_method)
 
-    def latest_version(self: Self, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download the latest version of app.
 
         :param app: Name of the application
@@ -112,7 +112,7 @@ class Downloader(object):
         base_name, _ = os.path.splitext(filename)
         return base_name + new_extension
 
-    def download(self: Self, version: str, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def download(self: Self, version: str, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Public function to download apk to patch.
 
         :param version: version to download

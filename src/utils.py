@@ -3,7 +3,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import requests
 from loguru import logger
@@ -32,7 +32,7 @@ session = Session()
 session.headers["User-Agent"] = request_header["User-Agent"]
 
 
-def update_changelog(name: str, response: Dict[str, str]) -> None:
+def update_changelog(name: str, response: dict[str, str]) -> None:
     """The function `update_changelog` updates the changelog file.
 
     Parameters
@@ -49,7 +49,7 @@ def update_changelog(name: str, response: Dict[str, str]) -> None:
     write_to_file(change_log)
 
 
-def format_changelog(name: str, response: Dict[str, str], parent_repo: str) -> str:
+def format_changelog(name: str, response: dict[str, str], parent_repo: str) -> str:
     """The `format_changelog` returns formatted changelog string.
 
     Parameters
@@ -194,6 +194,6 @@ def apkmirror_status_check(package_name: str) -> Any:
     return response.json()
 
 
-def contains_any_word(string: str, words: List[str]) -> bool:
+def contains_any_word(string: str, words: list[str]) -> bool:
     """Checks if a string contains any word."""
     return any(word in string for word in words)

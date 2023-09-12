@@ -3,7 +3,7 @@ import concurrent
 import hashlib
 import pathlib
 from concurrent.futures import ThreadPoolExecutor
-from typing import Dict, List, Self
+from typing import Self
 
 from loguru import logger
 
@@ -31,9 +31,9 @@ class APP(object):
         self.patches_dl = config.env.str(f"{app_name}_PATCHES_DL".upper(), config.global_patches_dl)
         self.integrations_dl = config.env.str(f"{app_name}_INTEGRATIONS_DL".upper(), config.global_integrations_dl)
         self.patches_json_dl = config.env.str(f"{app_name}_PATCHES_JSON_DL".upper(), config.global_patches_json_dl)
-        self.exclude_request: List[str] = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
-        self.include_request: List[str] = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
-        self.resource: Dict[str, str] = {}
+        self.exclude_request: list[str] = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
+        self.include_request: list[str] = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
+        self.resource: dict[str, str] = {}
         self.no_of_patches: int = 0
         self.keystore_name = config.env.str(f"{app_name}_KEYSTORE_FILE_NAME".upper(), config.global_keystore_name)
         self.archs_to_build = config.env.list(f"{app_name}_ARCHS_TO_BUILD".upper(), config.global_archs_to_build)
