@@ -1,5 +1,5 @@
 """Google Drive downloader Class."""
-from typing import Any, Self, Tuple
+from typing import Any, Self
 
 import gdown
 
@@ -10,7 +10,7 @@ from src.downloader.download import Downloader
 class GoogleDrive(Downloader):
     """Google Driver downloader."""
 
-    def specific_version(self: Self, app: APP, version: str) -> Tuple[str, str]:
+    def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -19,7 +19,7 @@ class GoogleDrive(Downloader):
         """
         return self.latest_version(app)
 
-    def latest_version(self: Self, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download whatever the latest version of app from Google Driver.
 
         :param app: Name of the application

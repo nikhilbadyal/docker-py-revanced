@@ -1,6 +1,6 @@
 """Github Downloader."""
 import re
-from typing import Dict, Self, Tuple
+from typing import Self
 from urllib.parse import urlparse
 
 import requests
@@ -16,7 +16,7 @@ from src.utils import handle_request_response, request_timeout, update_changelog
 class Github(Downloader):
     """Files downloader."""
 
-    def latest_version(self: Self, app: APP, **kwargs: Dict[str, str]) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: dict[str, str]) -> tuple[str, str]:
         """Function to download files from GitHub repositories.
 
         :param app: App to download
@@ -45,7 +45,7 @@ class Github(Downloader):
         return app.app_name, download_url
 
     @staticmethod
-    def _extract_repo_owner_and_tag(url: str) -> Tuple[str, str, str]:
+    def _extract_repo_owner_and_tag(url: str) -> tuple[str, str, str]:
         """Extract repo owner and url from github url."""
         parsed_url = urlparse(url)
         path_segments = parsed_url.path.strip("/").split("/")

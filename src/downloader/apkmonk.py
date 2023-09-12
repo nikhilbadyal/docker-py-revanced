@@ -1,6 +1,6 @@
 """APK Monk Downloader Class."""
 import re
-from typing import Any, Self, Tuple
+from typing import Any, Self
 
 import requests
 from bs4 import BeautifulSoup
@@ -16,7 +16,7 @@ from src.utils import bs4_parser, handle_request_response, request_header, reque
 class ApkMonk(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self: Self, page: str, app: str) -> Tuple[str, str]:
+    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
         """Function to extract the download link from apkmonk html page.
 
         :param page: Url of the page
@@ -48,7 +48,7 @@ class ApkMonk(Downloader):
         self._download(final_download_url, file_name)
         return file_name, final_download_url
 
-    def specific_version(self: Self, app: APP, version: str, main_page: str = "") -> Tuple[str, str]:
+    def specific_version(self: Self, app: APP, version: str, main_page: str = "") -> tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -73,7 +73,7 @@ class ApkMonk(Downloader):
             url=app.download_source,
         )
 
-    def latest_version(self: Self, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download whatever the latest version of app from apkmonkP.
 
         :param app: Name of the application

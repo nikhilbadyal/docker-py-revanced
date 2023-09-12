@@ -1,5 +1,5 @@
 """Upto Down Downloader."""
-from typing import Any, Self, Tuple
+from typing import Any, Self
 
 import requests
 from bs4 import BeautifulSoup
@@ -14,7 +14,7 @@ from src.utils import bs4_parser, handle_request_response, request_header, reque
 class UptoDown(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self: Self, page: str, app: str) -> Tuple[str, str]:
+    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
         """Extract download link from uptodown url."""
         r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
         handle_request_response(r, page)
@@ -34,7 +34,7 @@ class UptoDown(Downloader):
         msg = f"Unable to download {app} from uptodown."
         raise UptoDownAPKDownloadError(msg, url=page)
 
-    def specific_version(self: Self, app: APP, version: str) -> Tuple[str, str]:
+    def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
 
         :param app: Name of the application
@@ -57,7 +57,7 @@ class UptoDown(Downloader):
             raise UptoDownAPKDownloadError(msg, url=url)
         return self.extract_download_link(download_url, app.app_name)
 
-    def latest_version(self: Self, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download the latest version of app from uptodown."""
         logger.debug("downloading latest version of app from uptodown.")
         page = f"{app.download_source}/download"

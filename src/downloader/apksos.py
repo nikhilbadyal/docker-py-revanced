@@ -1,5 +1,5 @@
 """APK SOS Downloader Class."""
-from typing import Any, Self, Tuple
+from typing import Any, Self
 
 import requests
 from bs4 import BeautifulSoup
@@ -13,7 +13,7 @@ from src.utils import bs4_parser, handle_request_response, request_header, reque
 class ApkSos(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self: Self, page: str, app: str) -> Tuple[str, str]:
+    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
         """Function to extract the download link from apkmirror html page.
 
         :param page: Url of the page
@@ -32,7 +32,7 @@ class ApkSos(Downloader):
         msg = f"Unable to download {app}"
         raise APKSosAPKDownloadError(msg, url=page)
 
-    def latest_version(self: Self, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download whatever the latest version of app from apkmirror.
 
         :param app: Name of the application

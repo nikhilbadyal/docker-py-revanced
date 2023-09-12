@@ -2,7 +2,7 @@
 from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
-from typing import Dict, List, Self
+from typing import Self
 
 from loguru import logger
 
@@ -26,8 +26,8 @@ class Parser(object):
     OPTIONS_ARG = "--options"
 
     def __init__(self: Self, patcher: Patches, config: RevancedConfig) -> None:
-        self._PATCHES: List[str] = []
-        self._EXCLUDED: List[str] = []
+        self._PATCHES: list[str] = []
+        self._EXCLUDED: list[str] = []
         self.patcher = patcher
         self.config = config
 
@@ -52,7 +52,7 @@ class Parser(object):
         self._PATCHES.extend(["-e", name])
         self._EXCLUDED.append(name)
 
-    def get_excluded_patches(self: Self) -> List[str]:
+    def get_excluded_patches(self: Self) -> list[str]:
         """The function `get_excluded_patches` is a getter method that returns a list of excluded patches.
 
         Returns
@@ -61,7 +61,7 @@ class Parser(object):
         """
         return self._EXCLUDED
 
-    def get_all_patches(self: Self) -> List[str]:
+    def get_all_patches(self: Self) -> list[str]:
         """The function "get_all_patches" is a getter method that returns a ist of all patches.
 
         Returns
@@ -104,13 +104,16 @@ class Parser(object):
                 self._PATCHES[idx] = "-e"
 
     def include_exclude_patch(
-        self: Self, app: APP, patches: List[Dict[str, str]], patches_dict: Dict[str, str]
+        self: Self,
+        app: APP,
+        patches: list[dict[str, str]],
+        patches_dict: dict[str, str],
     ) -> None:
         """The function `include_exclude_patch` includes and excludes patches for a given app."""
         for patch in patches:
             normalized_patch = patch["name"].lower().replace(" ", "-")
             self.include(normalized_patch) if normalized_patch not in app.exclude_request else self.exclude(
-                normalized_patch
+                normalized_patch,
             )
         for normalized_patch in app.include_request:
             self.include(normalized_patch) if normalized_patch not in patches_dict["universal_patch"] else ()

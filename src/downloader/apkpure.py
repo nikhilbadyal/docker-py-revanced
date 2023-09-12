@@ -1,5 +1,5 @@
 """APK Pure Downloader Class."""
-from typing import Any, Self, Tuple
+from typing import Any, Self
 
 from src.app import APP
 from src.downloader.download import Downloader
@@ -8,7 +8,7 @@ from src.downloader.download import Downloader
 class ApkPure(Downloader):
     """Files downloader."""
 
-    def latest_version(self: Self, app: APP, **kwargs: Any) -> Tuple[str, str]:
+    def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download whatever the latest version of app from apkmirror.
 
         :param app: Name of the application
