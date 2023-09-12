@@ -34,10 +34,10 @@ Let the 'forkception' begin!
 2. Download your patched applications.
 
 #### Set up to build:
-* ReVanced Extended **YouTube** (latest supported).
-* ReVanced Extended **YouTube Music** (latest) in the **arm64-v8a** architecture.
-* ReVanced Extended **Reddit** (latest).
-* ReVanced **Sync for Reddit** (latest).
+* [ReVanced Extended](https://github.com/inotia00/revanced-patches/releases/latest) **YouTube** (latest supported).
+* [ReVanced Extended](https://github.com/inotia00/revanced-patches/releases/latest) **YouTube Music** (latest) in the **arm64-v8a** architecture.
+* [ReVanced Extended](https://github.com/inotia00/revanced-patches/releases/latest) **Reddit** (latest).
+* [ReVanced](https://github.com/revanced/revanced-patches/releases/latest) **Sync for Reddit** (latest).
 
 ###### Check [.env](https://github.com/Spacellary/docker-py-revanced/blob/main/.env) for a list of excluded patches and [options.json](https://github.com/Spacellary/docker-py-revanced/blob/main/apks/options.json) for patch options.
 ###### Complete and original README can be found [here](https://github.com/Spacellary/ReVanced-Extended-Automated-Builds/blob/main/readme-history/README-ORIGINAL.md).
