@@ -3,7 +3,7 @@
 import contextlib
 import json
 from pathlib import Path
-from typing import Any, ClassVar, Dict, List, Self, Tuple
+from typing import Any, ClassVar, Self
 
 from loguru import logger
 
@@ -15,7 +15,7 @@ from src.exceptions import AppNotFoundError, PatchesJsonLoadError
 class Patches(object):
     """Revanced Patches."""
 
-    revanced_package_names: ClassVar[Dict[str, str]] = {
+    revanced_package_names: ClassVar[dict[str, str]] = {
         "com.reddit.frontpage": "reddit",
         "com.duolingo": "duolingo",
         "com.ss.android.ugc.trill": "tiktok",
@@ -91,7 +91,7 @@ class Patches(object):
         raise AppNotFoundError(msg)
 
     @staticmethod
-    def support_app() -> Dict[str, str]:
+    def support_app() -> dict[str, str]:
         """The function returns a dictionary of supported app IDs.
 
         Returns
@@ -132,10 +132,10 @@ class Patches(object):
         app.no_of_patches = len(self.patches_dict[app.app_name])
 
     def __init__(self: Self, config: RevancedConfig, app: APP) -> None:
-        self.patches_dict: Dict[str, Any] = {"universal_patch": []}
+        self.patches_dict: dict[str, Any] = {"universal_patch": []}
         self.fetch_patches(config, app)
 
-    def get(self: Self, app: str) -> Tuple[List[Dict[str, str]], str]:
+    def get(self: Self, app: str) -> tuple[list[dict[str, str]], str]:
         """The function `get` returns all patches and version for a given application.
 
         Parameters
@@ -156,7 +156,7 @@ class Patches(object):
             version = next(i["version"] for i in patches if i["version"] != "all")
         return patches, version
 
-    def get_app_configs(self: Self, app: "APP") -> List[Dict[str, str]]:
+    def get_app_configs(self: Self, app: "APP") -> list[dict[str, str]]:
         """The function `get_app_configs` returns configurations for a given app.
 
         Parameters

@@ -1,48 +1,6 @@
 [tool.ruff]
 line-length = 120
-select = [
-    "F",  # pyflakes
-    "E",  # pycodestyle Error
-    "W",  # pycodestyle Warning
-    "C90", #mccabe
-    "I", #isort
-    "N", #isort
-    "D", #isort
-    "UP", # pyupgrade
-    "ANN", # flake8-annotations
-    "ASYNC", # flake8-async
-    "S", # flake8-bandit
-    "BLE", # flake8-blind-except
-    "FBT", #flake8-boolean-trap
-    "B", #flake8-bugbear
-    "A" , #flake8-builtins
-    "C4" , #flake8-comprehensions
-    "DTZ" , #flake8-datetimez
-    "T10" , #flake8-debugger
-    "EM" , #flake8-errmsg
-    "EXE" , #flake8-executable
-    "ISC" , #flake8-implicit-str-concat
-    "ICN" , #flake8-import-conventions
-    "G" , #flake8-logging-format
-    "INP" , #flake8-no-pep420
-    "PIE" , #flake8-pie
-    "PYI" , #flake8-pyi
-    "RSE" , #flake8-raise
-    "RET" , #flake8-return
-    "SLF" , #flake8-self
-    "SIM" , #flake8-simplify
-    "TCH" , #flake8-type-checking
-    "INT" , #flake8-gettext
-    "ARG" , #flake8-unused-arguments
-    "PTH" , #flake8-use-pathlib
-    "ERA" , #eradicate
-    "PGH" , #pygrep-hooks
-    "PL" , #Pylint
-    "TRY" , #tryceratops
-    "FLY" , #flynt
-    "PERF" , #flynt
-    "RUF" , #Ruff-specific rules
-]
+select = [ "ALL"]
 ignore = [
     "D401",
     "ANN401",
@@ -55,6 +13,7 @@ ignore = [
     "UP004", #useless-object-inheritance
     "PLR0911" #too many returns
 ]
+target-version = "py311"
 fix = true
 show-fixes = true
 [tool.ruff.pydocstyle]
