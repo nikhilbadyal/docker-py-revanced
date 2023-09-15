@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Trigger Build & Release Workflow
-        uses: actions/trigger-workflow@v1
+        uses: benc-uk/workflow-dispatch@v1.1
         with:
           workflow: "Build & Release"
           token: ${{ secrets.GITHUB_TOKEN }}
