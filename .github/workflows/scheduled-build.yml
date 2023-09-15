@@ -3,12 +3,12 @@ name: Scheduled Build Task
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"   # Every 5 minutes
+    #- cron: "*/5 * * * *"   # Every 5 minutes
     #- cron: "0 * * * *"     # Every 1 hour
     #- cron: "0 */2 * * *"   # Every 2 hours
     #- cron: "0 */6 * * *"   # Every 6 hours
     #- cron: "0 */8 * * *"   # Every 8 hours
-    #- cron: "0 */12 * * *"  # Every 12 hours
+    - cron: "0 */12 * * *"  # Every 12 hours
     #- cron: "0 */16 * * *"  # Every 16 hours
     #- cron: "0 */24 * * *"  # Every 24 hours
     #- cron: "0 */48 * * *"  # Every 48 hours
