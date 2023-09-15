@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
 #    - cron: "0 * * * *" # Every hour
-    - cron: "/5 * * * *"
+    - cron: "/5 * * * *" # Every 5 minutes
 
 jobs:
   trigger_build_release:
