@@ -1,0 +1,19 @@
+name: Schedule Build Task
+
+on:
+  workflow_dispatch:
+  schedule:
+#    - cron: "0 * * * *" # Every hour
+    - cron: "/5 * * * *"
+
+jobs:
+  trigger_build_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Build & Release Workflow
+        uses: actions/trigger-workflow@v1
+        with:
+          workflow: "Build & Release"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
