@@ -24,7 +24,7 @@ Let the 'forkception' begin!
 
 1. Go to the Actions page at the top.
 2. Select the "Build & Release" action.
-3. Click the "Run Workflow" drop-down button and run it. <br> <br> Optionally, select the "Update Checker" action, and **enable** it. It will periodically check for new `inotia00/revanced-patches` releases and trigger a new Build & Release when a new version is found. <br> <br> *As ReVanced Extended has been [discontinued](https://github.com/inotia00/revanced-documentation/wiki/Announcement) new patches aren't expected to be released. You may change the repository to watch for updates in the [update.yml [line 25]](.github/workflows/update.yml) workflow file.*
+3. Click the "Run Workflow" drop-down button and run it. <br> <br> Optionally, select the "Update Checker" action, and **enable** it. It will periodically check for new `inotia00/revanced-patches` releases and trigger a new Build & Release when a new version is found. <br> <br> *As You may change the repository to watch for updates in the [update.yml [line 25]](.github/workflows/update.yml) workflow file.*
 
 <br>
 
@@ -35,7 +35,7 @@ Let the 'forkception' begin!
 
 #### Set up to build:
 * [ReVanced Extended](https://github.com/inotia00/revanced-patches/releases/latest) **YouTube** (latest supported).
-* [ReVanced Extended](https://github.com/inotia00/revanced-patches/releases/latest) **YouTube Music** (latest) in the **arm64-v8a** architecture.
+* [ReVanced Extended](https://github.com/inotia00/revanced-patches/releases/latest) **YouTube Music** (latest supported) in the **arm64-v8a** architecture.
 * [ReVanced Extended](https://github.com/inotia00/revanced-patches/releases/latest) **Reddit** (latest).
 * [ReVanced](https://github.com/revanced/revanced-patches/releases/latest) **Sync for Reddit** (latest).
 
