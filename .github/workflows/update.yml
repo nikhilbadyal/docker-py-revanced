@@ -2,10 +2,8 @@ name: Update Checker
 on:
   workflow_dispatch:
   schedule:
-#    - cron: "0 * * * *" # 1 hour
-    - cron: "*/30 * * * *" # 30 minutes
+    - cron: "*/30 * * * *"
 
-    
 jobs:
   check-update:
     runs-on: ubuntu-latest
@@ -37,20 +35,12 @@ jobs:
           if [ "$LOCAL_VERSION" == "${{ steps.latest-release.outputs.tag_name }}" ]; then
             echo "Already up-to-date!"
           else
-            if ! [[ "${{ steps.latest-release.outputs.tag_name }}" =~ [0-9]+ ]]; then
-              echo "Latest release tag doesn't contain any numbers. Workflow halted!"
-              exit 0
-            elif [ "${{ steps.latest-release.outputs.tag_name }}" == "null" ] || [ -z "${{ steps.latest-release.outputs.tag_name }}" ]; then
-              echo "Latest release tag is null or empty. Workflow halted!"
-              exit 0
-            else
-              echo "Local reported version doesn't match fetched version, updating local version and running new Build action!"
-              echo "${{ steps.latest-release.outputs.tag_name }}" > latest-parsed-version.md
-              git add latest-parsed-version.md
-              git commit -m "Update latest-parsed-version.md"
-              git push
-              echo "::set-output name=trigger_build::true"
-            fi
+            echo "Local reported version doesn't match fetched version, updating local version."
+            echo "${{ steps.latest-release.outputs.tag_name }}" > apks/latest-parsed-version.md
+            git add apks/latest-parsed-version.md
+            git commit -m "Update latest-parsed-version.md"
+            git push
+            echo "::set-output name=trigger_build::true"
           fi
         id: compare-version
       - name: Verify local version update
@@ -67,5 +57,5 @@ jobs:
         if: ${{ steps.compare-version.outputs.trigger_build == 'true' }}
         uses: benc-uk/workflow-dispatch@v1.1
         with:
-          workflow: "Build & Release" # build-apk.yml
+          workflow: "Build & Release"
           token: ${{ secrets.GITHUB_TOKEN }}
