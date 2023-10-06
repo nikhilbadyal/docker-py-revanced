@@ -42,6 +42,11 @@ class APP(object):
         self.download_patch_resources(config)
         self.download_source = config.env.str(f"{app_name}_DL_SOURCE".upper(), "")
         self.package_name = package_name
+        self.old_key = config.env.bool(f"{app_name}_OLD_KEY".upper(), config.global_old_key)
+        self.space_formatted = config.env.bool(
+            f"{app_name}_SPACE_FORMATTED_PATCHES".upper(),
+            config.global_space_formatted,
+        )
 
     def download_apk_for_patching(self: Self, config: RevancedConfig) -> None:
         """Download apk to be patched."""
