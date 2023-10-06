@@ -110,16 +110,27 @@ class Parser(object):
         patches_dict: dict[str, str],
     ) -> None:
         """The function `include_exclude_patch` includes and excludes patches for a given app."""
-        for patch in patches:
-            normalized_patch = patch["name"].lower().replace(" ", "-")
-            self.include(normalized_patch) if normalized_patch not in app.exclude_request else self.exclude(
-                normalized_patch,
-            )
-        for normalized_patch in app.include_request:
-            self.include(normalized_patch) if normalized_patch not in patches_dict["universal_patch"] else ()
+        if app.space_formatted:
+            for patch in patches:
+                normalized_patch = patch["name"].lower().replace(" ", "-")
+                self.include(patch["name"]) if normalized_patch not in app.exclude_request else self.exclude(
+                    patch["name"],
+                )
+            for normalized_patch in app.include_request:
+                self.include(normalized_patch.lower().replace("-", " ")) if normalized_patch not in patches_dict[
+                    "universal_patch"
+                ] else ()
+        else:
+            for patch in patches:
+                normalized_patch = patch["name"].lower().replace(" ", "-")
+                self.include(normalized_patch) if normalized_patch not in app.exclude_request else self.exclude(
+                    normalized_patch,
+                )
+            for normalized_patch in app.include_request:
+                self.include(normalized_patch) if normalized_patch not in patches_dict["universal_patch"] else ()
 
     @staticmethod
-    def is_new_cli(cli_path: Path) -> bool:
+    def is_new_cli(cli_path: Path) -> tuple[bool, str]:
         """Check if new cli is being used."""
         process = Popen(["java", "-jar", cli_path, "-V"], stdout=PIPE)
         output = process.stdout
@@ -127,11 +138,11 @@ class Parser(object):
             msg = "Failed to send request for patching."
             raise PatchingFailedError(msg)
         combined_result = "".join(line.decode() for line in output)
-        if "v3" in combined_result:
+        if "v3" in combined_result or "v4" in combined_result:
             logger.debug("New cli")
-            return True
+            return True, combined_result
         logger.debug("Old cli")
-        return False
+        return False, combined_result
 
     # noinspection IncorrectFormatting
     def patch_app(
@@ -146,7 +157,8 @@ class Parser(object):
             The `app` parameter is an instance of the `APP` class. It represents an application that needs
         to be patched.
         """
-        if self.is_new_cli(self.config.temp_folder.joinpath(app.resource["cli"])):
+        is_new, version = self.is_new_cli(self.config.temp_folder.joinpath(app.resource["cli"]))
+        if is_new:
             apk_arg = self.NEW_APK_ARG
             exp = "--force"
         else:
@@ -172,6 +184,10 @@ class Parser(object):
             logger.debug("Using experimental features")
             args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
+        if app.old_key and "v4" in version:
+            # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
+            old_key_flags = ["--alias=alias", "--keystore-entry-password=ReVanced", "--keystore-password=ReVanced"]
+            args.extend(old_key_flags)
         if self.config.ci_test:
             self.exclude_all_patches()
         if self._PATCHES:

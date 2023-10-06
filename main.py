@@ -6,7 +6,6 @@ from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
-from src.downloader.download import Downloader
 from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
 from src.patches import Patches
@@ -25,7 +24,6 @@ def main() -> None:
     env = Env()
     env.read_env()
     config = RevancedConfig(env)
-    Downloader.extra_downloads(config)
     if not config.dry_run:
         check_java()
 
