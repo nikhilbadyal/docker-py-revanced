@@ -130,7 +130,6 @@ class Parser(object):
         to be patched.
         """
         apk_arg = self.APK_ARG
-        exp = "--force"
         args = [
             self.CLI_JAR,
             app.resource["cli"],
@@ -149,6 +148,7 @@ class Parser(object):
         ]
         if app.experiment:
             logger.debug("Using experimental features")
+            exp = "--force"
             args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
         if self.config.ci_test:
