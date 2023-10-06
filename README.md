@@ -300,6 +300,11 @@ You can use any of the following methods to build.
    ```dotenv
     YOUTUBE_KEYSTORE_FILE_NAME=youtube.keystore
    ```
+   Note - If you are using your own keystore. Add
+   Example:
+   ```dotenv
+    OLD_KEY=False
+   ```
 9. <a id="global-archs-to-build"></a>You can build only for a particular arch in order to get smaller apk files.This
    can be done with by adding comma separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the
    format.

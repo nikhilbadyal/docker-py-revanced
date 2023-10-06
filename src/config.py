@@ -34,3 +34,4 @@ class RevancedConfig(object):
         self.apk_editor = "apkeditor-output.jar"
         self.extra_download_files.append("https://github.com/REAndroid/APKEditor@apkeditor.jar")
         self.apps = env.list("PATCH_APPS", default_build)
+        self.old_key = env.bool("OLD_KEY", True)

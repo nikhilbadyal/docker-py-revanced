@@ -127,7 +127,7 @@ class Parser(object):
             msg = "Failed to send request for patching."
             raise PatchingFailedError(msg)
         combined_result = "".join(line.decode() for line in output)
-        if "v3" in combined_result:
+        if "v3" in combined_result or "v4" in combined_result:
             logger.debug("New cli")
             return True
         logger.debug("Old cli")
@@ -172,6 +172,10 @@ class Parser(object):
             logger.debug("Using experimental features")
             args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
+        if self.config.old_key:
+            # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
+            old_key_flags = ["--alias=alias", "--keystore-entry-password=ReVanced", "--keystore-password=ReVanced"]
+            args.extend(old_key_flags)
         if self.config.ci_test:
             self.exclude_all_patches()
         if self._PATCHES:
