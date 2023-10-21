@@ -114,7 +114,6 @@ jobs:
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       TELEGRAM_STICKER_ID: ${{ secrets.TELEGRAM_STICKER_ID }}
       MESSAGE: ${{ secrets.MESSAGE_NON_ROOT }}
-      SEND_STICKER: ${{ secrets.SEND_STICKER }}
 
   upload-to-telegram-root:
     needs: [ upload-to-telegram ]
