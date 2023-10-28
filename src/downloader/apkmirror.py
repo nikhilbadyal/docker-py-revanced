@@ -1,4 +1,5 @@
 """Downloader Class."""
+import time
 from typing import Any, Self
 
 import requests
@@ -76,6 +77,8 @@ class ApkMirror(Downloader):
     @staticmethod
     def _extracted_search_div(url: str, search_class: str) -> Tag:
         """Extract search div."""
+        logger.info("Pausing for 15 seconds...")
+        time.sleep(15)
         r = requests.get(url, headers=request_header, timeout=request_timeout)
         handle_request_response(r, url)
         soup = BeautifulSoup(r.text, bs4_parser)
