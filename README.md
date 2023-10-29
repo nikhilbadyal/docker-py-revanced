@@ -191,7 +191,7 @@ You can use any of the following methods to build.
     - [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
     - [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
     - [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
-    - [microg](https://github.com/inotia-/mMicroG/releases)
+    - [microg](https://github.com/inotia00/mMicroG/releases/)
     - [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
     - [strava](https://www.apkmirror.com/apk/strava-inc/strava-running-and-cycling-gps/)
     - [solidexplorer](https://www.apkmirror.com/apk/neatbytes/solid-explorer-beta/)
