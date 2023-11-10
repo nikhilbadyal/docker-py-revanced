@@ -2,10 +2,8 @@
 *.jar
 *.keystore
 *venv
-*/__pycache__*
 *.pyc
-/revanced-cache/
-/revanced-resource-cache/
+**cache**
 changelog.md
 .idea
 *.json
