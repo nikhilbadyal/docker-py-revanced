@@ -195,8 +195,9 @@ def main() -> None:
 
     possible_apps = set()
     for patch in patches:
-        for compatible_package in patch["compatiblePackages"]:
-            possible_apps.add(compatible_package["name"])
+        if patch.get("compatiblePackages", None):
+            for compatible_package in patch["compatiblePackages"]:
+                possible_apps.add(compatible_package["name"])
 
     supported_app = set(Patches.support_app().keys())
     missing_support = sorted(possible_apps.difference(supported_app))
