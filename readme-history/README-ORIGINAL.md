@@ -191,7 +191,7 @@ You can use any of the following methods to build.
     - [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
     - [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
     - [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
-    - [microg](https://github.com/inotia-/mMicroG/releases)
+    - [microg](https://github.com/inotia00/mMicroG/releases/)
     - [pixiv](https://www.apkmirror.com/apk/pixiv-inc/pixiv/)
     - [strava](https://www.apkmirror.com/apk/strava-inc/strava-running-and-cycling-gps/)
     - [solidexplorer](https://www.apkmirror.com/apk/neatbytes/solid-explorer-beta/)
@@ -206,6 +206,7 @@ You can use any of the following methods to build.
     - [scbeasy](https://www.apkmonk.com/app/com.scb.phone/)
     - [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
     - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
+    - [tumblr](https://www.apkmirror.com/apk/tumblr-inc/tumblr/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
