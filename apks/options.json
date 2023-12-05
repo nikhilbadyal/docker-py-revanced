@@ -1,61 +1,104 @@
-[ {
-  "patchName" : "Custom branding Microg name",
-  "options" : [ {
-    "key" : "MicroGAppName",
-    "value" : "MicroG"
-  } ]
-}, {
-  "patchName" : "Custom branding Music name",
-  "options" : [ {
-    "key" : "MusicLongName",
-    "value" : "ReVanced Music Extended"
-  }, {
-    "key" : "MusicShortName",
-    "value" : "YTM Extended"
-  } ]
-}, {
-  "patchName" : "Custom branding YouTube name",
-  "options" : [ {
-    "key" : "YouTubeAppName",
-    "value" : "ReVanced Extended"
-  } ]
-}, {
-  "patchName" : "Custom double tap length",
-  "options" : [ {
-    "key" : "DoubleTapLengthArrays",
-    "value" : "1, 3, 5, 10, 15, 20, 30, 60, 120, 180"
-  } ]
-}, {
-  "patchName" : "Custom package name",
-  "options" : [ {
-    "key" : "YouTubePackageName",
-    "value" : "app.rvx.android.youtube"
-  }, {
-    "key" : "MusicPackageName",
-    "value" : "app.rvx.android.apps.youtube.music"
-  } ]
-}, {
-  "patchName" : "Reddit settings",
-  "options" : [ {
-    "key" : "RedditSettings",
-    "value" : true
-  } ]
-}, {
-  "patchName" : "Spoof player parameters",
-  "options" : [ {
-    "key" : "SpoofPlayerParameterShorts",
-    "value" : true
-  } ]
-}, {
-  "patchName" : "Theme",
-  "options" : [ {
-    "key" : "darkThemeBackgroundColor",
-    "value" : "@android:color/black"
-  } ]
-}, {
-  "patchName" : "Spoof client",
-  "options" : [ {
-    "key" : "client-id",
-    "value" : null
-  } ]
-} ]
+[
+  {
+    "patchName": "Custom branding icon YouTube Music",
+    "options": [
+      {
+        "key": "AppIcon",
+        "value": "MMT"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding name YouTube Music",
+    "options": [
+      {
+        "key": "AppNameNotification",
+        "value": "ReVanced Extended Music"
+      },
+      {
+        "key": "AppNameLauncher",
+        "value": "RVX Music"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom package name",
+    "options": [
+      {
+        "key": "PackageNameYouTube",
+        "value": "app.rvx.android.youtube"
+      },
+      {
+        "key": "PackageNameYouTubeMusic",
+        "value": "app.rvx.android.apps.youtube.music"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding icon YouTube",
+    "options": [
+      {
+        "key": "AppIcon",
+        "value": "MMT"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom branding name YouTube",
+    "options": [
+      {
+        "key": "AppName",
+        "value": "ReVanced Extended"
+      }
+    ]
+  },
+  {
+    "patchName": "Custom double tap length",
+    "options": [
+      {
+        "key": "DoubleTapLengthArrays",
+        "value": "3, 5, 10, 15, 20, 30, 60, 120, 180"
+      }
+    ]
+  },
+  {
+    "patchName": "Premium heading",
+    "options": [
+      {
+        "key": "UsePremiumHeading",
+        "value": true
+      }
+    ]
+  },
+  {
+    "patchName": "Theme",
+    "options": [
+      {
+        "key": "DarkThemeBackgroundColor",
+        "value": "@android:color/black"
+      },
+      {
+        "key": "LightThemeBackgroundColor",
+        "value": "@android:color/white"
+      }
+    ]
+  },
+  {
+    "patchName": "Overlay buttons",
+    "options": [
+      {
+        "key": "OutlineIcon",
+        "value": false
+      }
+    ]
+  },
+  {
+    "patchName": "SponsorBlock",
+    "options": [
+      {
+        "key": "OutlineIcon",
+        "value": false
+      }
+    ]
+  }
+]
