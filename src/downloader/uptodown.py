@@ -18,27 +18,20 @@ class UptoDown(Downloader):
         """Extract download link from uptodown url."""
         r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
         handle_request_response(r, page)
-        soup = BeautifulSoup(r.text, bs4_parser)
-        file_id = soup.find(id="detail-app-name").get("data-file-id")
-        app_name = app.app_name
-
-        if not file_id:
-            msg = f"Unable to download {app_name} from uptodown."
-            raise UptoDownAPKDownloadError(msg, url=page)
-
-        download_page_url = f"{app.download_source}/post-download/{file_id}"
-        download_page_html = requests.get(download_page_url, headers=request_header).text
+        download_page_url = page.replace("/download", "/post-download")
+        download_page_html = requests.get(download_page_url, headers=request_header, timeout=request_timeout).text
         soup = BeautifulSoup(download_page_html, bs4_parser)
-        data_url = soup.find("div", class_="post-download").get("data-url")
+        post_download = soup.find("div", class_="post-download")
 
-        if not data_url:
-            msg = f"Unable to download {app_name} from uptodown."
+        if not post_download:
+            msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=page)
 
+        data_url = post_download.get("data-url")
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
-        file_name = f"{app_name}.apk"
+        file_name = f"{app}.apk"
         self._download(download_url, file_name)
-
+        
         return file_name, download_url
 
     def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
@@ -50,15 +43,21 @@ class UptoDown(Downloader):
         """
         logger.debug("downloading specified version of app from uptodown.")
         url = f"{app.download_source}/versions"
-        html = requests.get(url, headers=request_header).text
+        html = requests.get(url, headers=request_header, timeout=request_timeout).text
         soup = BeautifulSoup(html, bs4_parser)
-        app_code = soup.find(id="detail-app-name").get("code")
+        detail_app_name = soup.find(id="detail-app-name")
+
+        if not detail_app_name:
+            msg = f"Unable to download {app} from uptodown."
+            raise UptoDownAPKDownloadError(msg, url=page)
+
+        app_code = detail_app_name.get("code")
         page = 1
         download_url = None
 
         while True:
             version_url = f"{app.download_source}/apps/{app_code}/versions/{page}"
-            r = requests.get(version_url)
+            r = requests.get(version_url, timeout=request_timeout)
             handle_request_response(r, version_url)
             json = r.json()
 
@@ -76,7 +75,7 @@ class UptoDown(Downloader):
             msg = f"Unable to download {app.app_name} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=url)
 
-        return self.extract_download_link(download_url, app)
+        return self.extract_download_link(download_url, app.app_name)
 
     def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download the latest version of app from uptodown."""
