@@ -14,7 +14,7 @@ from src.utils import bs4_parser, handle_request_response, request_header, reque
 class UptoDown(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self: Self, page: str, app: APP) -> tuple[str, str]:
+    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
         """Extract download link from uptodown url."""
         r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
         handle_request_response(r, page)
@@ -31,7 +31,7 @@ class UptoDown(Downloader):
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
         file_name = f"{app}.apk"
         self._download(download_url, file_name)
-
+        
         return file_name, download_url
 
     def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
@@ -45,18 +45,18 @@ class UptoDown(Downloader):
         url = f"{app.download_source}/versions"
         html = requests.get(url, headers=request_header, timeout=request_timeout).text
         soup = BeautifulSoup(html, bs4_parser)
-        detail_app_name = soup.find(id="detail-app-name")
+        detail_app_name = soup.find("h1", id="detail-app-name")
 
         if not detail_app_name:
             msg = f"Unable to download {app} from uptodown."
-            raise UptoDownAPKDownloadError(msg, url=page)
+            raise UptoDownAPKDownloadError(msg, url=url)
 
         app_code = detail_app_name.get("code")
-        page = 1
+        version_page = 1
         download_url = None
 
         while True:
-            version_url = f"{app.download_source}/apps/{app_code}/versions/{page}"
+            version_url = f"{app.download_source}/apps/{app_code}/versions/{version_page}"
             r = requests.get(version_url, timeout=request_timeout)
             handle_request_response(r, version_url)
             json = r.json()
@@ -69,7 +69,7 @@ class UptoDown(Downloader):
                     download_url = item["versionURL"]
                     break
 
-            page += 1
+            version_page += 1
 
         if download_url is None:
             msg = f"Unable to download {app.app_name} from uptodown."
