@@ -8,7 +8,7 @@ from loguru import logger
 from src.app import APP
 from src.downloader.download import Downloader
 from src.exceptions import UptoDownAPKDownloadError
-from src.utils import bs4_parser, handle_request_response, request_header, request_timeout, session
+from src.utils import bs4_parser, handle_request_response, request_header, request_timeout
 
 
 class UptoDown(Downloader):
@@ -38,7 +38,7 @@ class UptoDown(Downloader):
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
         file_name = f"{app_name}.apk"
         self._download(download_url, file_name)
-        
+
         return file_name, download_url
 
     def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
