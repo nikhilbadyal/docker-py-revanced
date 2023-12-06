@@ -2,7 +2,7 @@
 from typing import Any, Self
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from loguru import logger
 
 from src.app import APP
@@ -23,7 +23,7 @@ class UptoDown(Downloader):
         soup = BeautifulSoup(download_page_html, bs4_parser)
         post_download = soup.find("div", class_="post-download")
 
-        if not post_download:
+        if not isinstance(post_download, Tag):
             msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=page)
 
@@ -47,7 +47,7 @@ class UptoDown(Downloader):
         soup = BeautifulSoup(html, bs4_parser)
         detail_app_name = soup.find("h1", id="detail-app-name")
 
-        if not detail_app_name:
+        if not isinstance(detail_app_name, Tag):
             msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=url)
 
@@ -81,4 +81,4 @@ class UptoDown(Downloader):
         """Function to download the latest version of app from uptodown."""
         logger.debug("downloading latest version of app from uptodown.")
         page = f"{app.download_source}/download"
-        return self.extract_download_link(page, app)
+        return self.extract_download_link(page, app.app_name)
