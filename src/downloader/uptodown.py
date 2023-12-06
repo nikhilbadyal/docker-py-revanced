@@ -31,7 +31,7 @@ class UptoDown(Downloader):
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
         file_name = f"{app}.apk"
         self._download(download_url, file_name)
-        
+
         return file_name, download_url
 
     def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
