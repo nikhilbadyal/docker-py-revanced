@@ -54,8 +54,9 @@ class UptoDown(Downloader):
         app_code = detail_app_name.get("code")
         version_page = 1
         download_url = None
+        version_found = False
 
-        while True:
+        while not version_found:
             version_url = f"{app.download_source}/apps/{app_code}/versions/{version_page}"
             r = requests.get(version_url, timeout=request_timeout)
             handle_request_response(r, version_url)
@@ -67,6 +68,7 @@ class UptoDown(Downloader):
             for item in json["data"]:
                 if item["version"] == version:
                     download_url = item["versionURL"]
+                    version_found = True
                     break
 
             version_page += 1
