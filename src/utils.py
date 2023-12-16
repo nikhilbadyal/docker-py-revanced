@@ -134,7 +134,7 @@ def slugify(string: str) -> str:
     modified_string = string.lower()
 
     # Remove special characters
-    modified_string = re.sub(r"[^\w\s-]", "", modified_string)
+    modified_string = re.sub(r"[^\w\s-]", "-", modified_string)
 
     # Replace spaces with dashes
     modified_string = re.sub(r"\s+", "-", modified_string)
