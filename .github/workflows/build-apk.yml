@@ -127,6 +127,40 @@ jobs:
       DOWNLOAD_GITHUB_REPOSITORY: ${{ secrets.ROOT_DOWNLOAD_GITHUB_REPOSITORY }}
       MESSAGE: ${{ secrets.MESSAGE_ROOT }}
 
+  apprise-notifier:
+    needs: build-apk
+    name: Apprise Notifier
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Download Already Built APKs
+        uses: actions/download-artifact@main
+        with:
+          name: Built-APKs
+
+      - name: Find all built apks
+        id: ff
+        run: |
+          apk_list=""
+          for filename in $(find . -name "*-output.apk" -type f); do
+            apk_list="$apk_list,$filename"
+          done
+          apk_list=${apk_list:1}
+          echo "apks=$apk_list" >> "$GITHUB_OUTPUT"
+          is_present=$([ -n "${{ secrets.APPRISE_URL }}" ] && echo true || echo false );
+          echo "has_apprise_url=$is_present"  >> $GITHUB_OUTPUT
+      - name: Print files
+        run: echo "${{ steps.ff.outputs.apks }} ${{ steps.ff.outputs.has_apprise_url }}"
+
+      - name: Upload to Telegram
+        uses: nikhilbadyal/ghaction-apprise@main
+        if: ${{ steps.ff.outputs.has_apprise_url }} == 'true'
+        with:
+          APPRISE_URL: ${{ secrets.APPRISE_URL }}
+          APPRISE_NOTIFICATION_BODY: ${{ secrets.APPRISE_NOTIFICATION_BODY }}
+          APPRISE_NOTIFICATION_TITLE: ${{ secrets.APPRISE_NOTIFICATION_TITLE }}
+          APPRISE_ATTACHMENTS: ${{ steps.ff.outputs.apks }}
 
   cleanup:
     name: GitHub Cleanup
