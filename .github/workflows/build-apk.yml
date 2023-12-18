@@ -21,6 +21,11 @@ on:
         required: false
         type: boolean
         default: false
+      APPRISE_NOTIFY:
+        description: "Use Apprise to Notify"
+        required: false
+        type: boolean
+        default: false
       VIRUSTOTAL_SCAN:
         description: "Scan apks with VirusTotal"
         required: false
@@ -132,6 +137,7 @@ jobs:
     name: Apprise Notifier
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    if: inputs.APPRISE_NOTIFY
 
     steps:
       - name: Download Already Built APKs
@@ -155,7 +161,6 @@ jobs:
 
       - name: Upload to Telegram
         uses: nikhilbadyal/ghaction-apprise@main
-        if: ${{ steps.ff.outputs.has_apprise_url }} == 'true'
         with:
           APPRISE_URL: ${{ secrets.APPRISE_URL }}
           APPRISE_NOTIFICATION_BODY: ${{ secrets.APPRISE_NOTIFICATION_BODY }}
