@@ -133,7 +133,7 @@ class Patches(object):
         app.no_of_patches = len(self.patches_dict[app.app_name])
 
     def __init__(self: Self, config: RevancedConfig, app: APP) -> None:
-        self.patches_dict: dict[str, Any] = {"universal_patch": []}
+        self.patches_dict: dict[str, list[dict[str, str]]] = {"universal_patch": []}
         self.fetch_patches(config, app)
 
     def get(self: Self, app: str) -> tuple[list[dict[str, str]], str]:
