@@ -9,6 +9,24 @@
     ]
   },
   {
+    "patchName": "Custom branding name Reddit",
+    "options": [
+      {
+        "key": "AppName",
+        "value": "Reddit"
+      }
+    ]
+  },
+  {
+    "patchName": "Change package name",
+    "options": [
+      {
+        "key": "PackageNameReddit",
+        "value": "com.reddit.frontpage.rvx"
+      }
+    ]
+  },
+  {
     "patchName": "Custom double tap length",
     "options": [
       {
@@ -23,6 +41,15 @@
       {
         "key": "RedditSettings",
         "value": true
+      }
+    ]
+  },
+  {
+    "patchName": "Premium heading",
+    "options": [
+      {
+        "key": "UsePremiumHeading",
+        "value": false
       }
     ]
   },
