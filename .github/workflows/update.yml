@@ -2,8 +2,9 @@ name: Update Checker
 on:
   workflow_dispatch:
   schedule:
-#    - cron: "*/30 * * * *"
-    - cron: "0 */2 * * *"
+#    - cron: "*/30 * * * *" # Every 30 minutes
+#    - cron: "0 */2 * * *" # Every 2 hours
+    - cron: "0 */12 * * *" # Every 12 hours
 
 jobs:
   check-update:
