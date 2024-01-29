@@ -1,4 +1,5 @@
 """APK Pure Downloader Class."""
+
 from typing import Any, Self
 
 from src.app import APP

@@ -1,4 +1,5 @@
 """Downloader Class."""
+
 from typing import Any, Self
 
 import requests

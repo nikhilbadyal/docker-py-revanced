@@ -1,4 +1,5 @@
 """Revanced Parser."""
+
 from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
@@ -113,16 +114,24 @@ class Parser(object):
         if app.space_formatted:
             for patch in patches:
                 normalized_patch = patch["name"].lower().replace(" ", "-")
-                self.include(patch["name"]) if normalized_patch not in app.exclude_request else self.exclude(
-                    patch["name"],
+                (
+                    self.include(patch["name"])
+                    if normalized_patch not in app.exclude_request
+                    else self.exclude(
+                        patch["name"],
+                    )
                 )
             for patch in patches_dict["universal_patch"]:
                 normalized_patch = patch["name"].lower().replace(" ", "-")
                 self.include(patch["name"]) if normalized_patch in app.include_request else ()
         else:
             for patch in patches:
-                self.include(patch["name"]) if patch["name"] not in app.exclude_request else self.exclude(
-                    patch["name"],
+                (
+                    self.include(patch["name"])
+                    if patch["name"] not in app.exclude_request
+                    else self.exclude(
+                        patch["name"],
+                    )
                 )
             for patch in patches_dict["universal_patch"]:
                 self.include(patch["name"]) if patch["name"] in app.include_request else ()

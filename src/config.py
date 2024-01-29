@@ -1,4 +1,5 @@
 """Revanced Configurations."""
+
 from pathlib import Path
 from typing import Self
 

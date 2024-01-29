@@ -1,4 +1,5 @@
 """Upto Down Downloader."""
+
 from typing import Any, Self
 
 import requests
