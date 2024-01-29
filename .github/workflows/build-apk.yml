@@ -26,6 +26,11 @@ on:
         required: false
         type: boolean
         default: false
+      APPRISE_NOTIFY:
+        description: "Use Apprise to Notify"
+        required: false
+        type: boolean
+        default: false
       VIRUSTOTAL_SCAN:
         description: "Scan apks with VirusTotal"
         required: false
@@ -63,7 +68,7 @@ jobs:
   upload-to-github:
     name: GitHub Upload
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     needs: build-apk
     if: inputs.GITHUB_UPLOAD
 

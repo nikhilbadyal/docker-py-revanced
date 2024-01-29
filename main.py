@@ -10,7 +10,7 @@ from src.downloader.download import Downloader
 from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import check_java
+from src.utils import check_java, delete_old_changelog
 
 
 def get_app(config: RevancedConfig, app_name: str) -> APP:
@@ -28,6 +28,7 @@ def main() -> None:
     Downloader.extra_downloads(config)
     if not config.dry_run:
         check_java()
+        delete_old_changelog()
 
     logger.info(f"Will Patch only {config.apps}")
     for possible_app in config.apps:

@@ -1,3 +1,7 @@
+###### 29/JANUARY/2024:
+### As of the 26th of this month, RVX has been discontinued...
+* Repo can still be used as a base to patch the original ReVanced applications, existing versions of Extended or any other fork by editing the [.env](https://github.com/Spacellary/docker-py-revanced/blob/main/.env) file for example.
+
 ###### 07/AUGUST/2023:
 ### Merged new upstream features...
 * [Custom patch resources](https://github.com/nikhilbadyal/docker-py-revanced/issues/230) are now supported, with per-app configuration options available! For more information about this, [check here](https://github.com/Spacellary/ReVanced-Extended-Automated-Builder/blob/main/readme-history/README-ORIGINAL.md#global-config).

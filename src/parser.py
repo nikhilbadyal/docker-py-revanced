@@ -107,7 +107,7 @@ class Parser(object):
         self: Self,
         app: APP,
         patches: list[dict[str, str]],
-        patches_dict: dict[str, str],
+        patches_dict: dict[str, list[dict[str, str]]],
     ) -> None:
         """The function `include_exclude_patch` includes and excludes patches for a given app."""
         if app.space_formatted:
@@ -116,18 +116,16 @@ class Parser(object):
                 self.include(patch["name"]) if normalized_patch not in app.exclude_request else self.exclude(
                     patch["name"],
                 )
-            for normalized_patch in app.include_request:
-                self.include(normalized_patch.lower().replace("-", " ")) if normalized_patch not in patches_dict[
-                    "universal_patch"
-                ] else ()
+            for patch in patches_dict["universal_patch"]:
+                normalized_patch = patch["name"].lower().replace(" ", "-")
+                self.include(patch["name"]) if normalized_patch in app.include_request else ()
         else:
             for patch in patches:
-                normalized_patch = patch["name"].lower().replace(" ", "-")
-                self.include(normalized_patch) if normalized_patch not in app.exclude_request else self.exclude(
-                    normalized_patch,
+                self.include(patch["name"]) if patch["name"] not in app.exclude_request else self.exclude(
+                    patch["name"],
                 )
-            for normalized_patch in app.include_request:
-                self.include(normalized_patch) if normalized_patch not in patches_dict["universal_patch"] else ()
+            for patch in patches_dict["universal_patch"]:
+                self.include(patch["name"]) if patch["name"] in app.include_request else ()
 
     @staticmethod
     def is_new_cli(cli_path: Path) -> tuple[bool, str]:
