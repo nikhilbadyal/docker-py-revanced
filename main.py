@@ -1,4 +1,5 @@
 """Entry point."""
+
 import sys
 
 from environs import Env

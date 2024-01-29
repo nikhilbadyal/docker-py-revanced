@@ -1,4 +1,5 @@
 """Downloader Factory."""
+
 from src.config import RevancedConfig
 from src.downloader.apkmirror import ApkMirror
 from src.downloader.apkmonk import ApkMonk
