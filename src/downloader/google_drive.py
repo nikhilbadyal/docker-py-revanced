@@ -1,4 +1,5 @@
 """Google Drive downloader Class."""
+
 from typing import Any, Self
 
 import gdown

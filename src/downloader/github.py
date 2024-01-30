@@ -1,4 +1,5 @@
 """Github Downloader."""
+
 import re
 from typing import Self
 from urllib.parse import urlparse

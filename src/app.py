@@ -1,4 +1,5 @@
 """Class to represent apk to be patched."""
+
 import concurrent
 import hashlib
 import pathlib
