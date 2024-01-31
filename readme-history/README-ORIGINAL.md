@@ -1,6 +1,6 @@
 # 🤓Docker-Py-ReVanced
 
-A little python script that will help you in building Revanced [apps](#patch-apps).
+A little python script that will help you in building Revanced [apps](#patch-apps) and sharing them anywhere.
 
 **`Note`** - If you are a root user and want magisk module (Extended). Get them [here](https://github.com/nikhilbadyal/revanced-magisk-module)
 
@@ -124,6 +124,9 @@ You can use any of the following methods to build.
 | [TELEGRAM_API_ID](#telegram-support)                     |         Used for telegram Authentication          | None                                                                                                                  |
 | [TELEGRAM_API_HASH](#telegram-support)                   |         Used for telegram Authentication          | None                                                                                                                  |
 | [EXTRA_FILES](#extra-files)                              |    Extra files apk to upload in GitHub upload.    | None                                                                                                                  |
+| [APPRISE_URL](#apprise)                                  |                   Apprise URL .                   | None                                                                                                                  |
+| [APPRISE_NOTIFICATION_TITLE](#apprise)                   |           Apprise Notification Title .            | None                                                                                                                  |
+| [APPRISE_NOTIFICATION_BODY](#apprise)                    |            Apprise Notification Body .            | None                                                                                                                  |
 
 `*` - Can be overridden for individual app.
 ### App Level Config
@@ -407,3 +410,11 @@ You can use any of the following methods to build.
     once. Add it in `GitHub secrets`.<br>
 17. Sample Envs<br>
     <img src="https://i.imgur.com/FxOtiGs.png" width="600" style="left">
+18. <a id="apprise"></a>[Apprise](https://github.com/caronc/apprise)<br>
+    We also have apprise support to upload built apk anywhere.To use apprise. Add belows envs in `.env` file
+    or in `ENVS` in `GitHub secrets` (Recommended) in the format
+    ```ini
+    APPRISE_URL=tgram://bot-token/chat-id
+    APPRISE_NOTIFICATION_BODY=What a great Body
+    APPRISE_NOTIFICATION_TITLE=What a great title
+    ```
