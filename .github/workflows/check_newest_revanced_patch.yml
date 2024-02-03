@@ -22,7 +22,7 @@ jobs:
           pip install requests    	
       
       - name: Download artifact
-        uses: actions/github-script@v6
+        uses: actions/github-script@main
         continue-on-error: true
         env:
           WORKFLOW_FILENAME: check_newest_revanced_patch.yml
@@ -54,7 +54,7 @@ jobs:
           path: latest_revanced_patch.txt
 
       - name: Trigger build-apk workflow
-        if: env.changed == 'true'
+        if: env.changed == 'false'
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: build-apk.yml
