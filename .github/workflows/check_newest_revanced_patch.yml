@@ -21,12 +21,36 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
+      - name: Download previous artifact
+        uses: actions/download-artifact@main
+        with:
+          name: latest_revanced_patch
+          path: old_patch
+        continue-on-error: true # This step will fail if there's no previous artifact, so we continue on error
+
       - name: Run script and save output
         run: |
           python scripts/check_patches.py > latest_revanced_patch.txt
+
+      - name: Compare with previous output
+        id: compare
+        run: |
+          echo "::set-output name=changed::false"
+          if [ -f old_patch/latest_revanced_patch.txt ]; then
+            diff old_patch/latest_revanced_patch.txt latest_revanced_patch.txt && echo "The patch has not changed." || echo "::set-output name=changed::true"
+          else
+            echo "This is the first run, so there's no previous patch to compare with."
+          fi
 
       - name: Upload output
         uses: actions/upload-artifact@main
         with:
           name: latest_revanced_patch
           path: latest_revanced_patch.txt
+
+      - name: Trigger build-apk workflow
+        if: steps.compare.outputs.changed == 'true'
+        uses: benc-uk/workflow-dispatch@main
+        with:
+          workflow: build-apk.yml
+          token: ${{ secrets.PAT }}
