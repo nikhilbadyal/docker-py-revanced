@@ -50,7 +50,7 @@ jobs:
 
       - name: Trigger build-apk workflow
         if: steps.compare.outputs.changed == 'true'
-        uses: actions/workflow-dispatch@main
+        uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: build-apk.yml
           token: ${{ secrets.PAT }}
