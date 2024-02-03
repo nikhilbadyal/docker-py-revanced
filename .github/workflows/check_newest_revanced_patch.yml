@@ -19,14 +19,20 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests
-
-      - name: Download previous artifact
-        uses: actions/download-artifact@main
+          pip install requests    	
+      
+      - name: Download artifact
+        uses: actions/github-script@v6
+        continue-on-error: true
+        env:
+          WORKFLOW_FILENAME: check_newest_revanced_patch.yml
+          ARTIFACT_NAME: latest_revanced_patch
+          ARTIFACT_FILENAME: latest_revanced_patch.zip
+          UNZIP_DIR: old_patch
         with:
-          name: latest_revanced_patch
-          path: old_patch
-        continue-on-error: true # This step will fail if there's no previous artifact, so we continue on error
+          script: |
+            const script = require('./scripts/download-previous-artifact')
+            await script({github, context, core})      
 
       - name: Run script and save output
         run: |
