@@ -1,4 +1,5 @@
 """APK Monk Downloader Class."""
+
 import re
 from typing import Any, Self
 

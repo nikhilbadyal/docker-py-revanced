@@ -1,4 +1,5 @@
 """Possible Exceptions."""
+
 from typing import Any, Self
 
 

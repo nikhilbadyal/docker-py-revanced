@@ -1,4 +1,5 @@
 """Upto Down Downloader."""
+
 from typing import Any, Self
 
 import requests
@@ -58,7 +59,7 @@ class UptoDown(Downloader):
 
         while not version_found:
             version_url = f"{app.download_source}/apps/{app_code}/versions/{version_page}"
-            r = requests.get(version_url, timeout=request_timeout)
+            r = requests.get(version_url, headers=request_header, timeout=request_timeout)
             handle_request_response(r, version_url)
             json = r.json()
 
