@@ -35,9 +35,8 @@ jobs:
       - name: Compare with previous output
         id: compare
         run: |
-          echo "::set-output name=changed::false"
           if [ -f old_patch/latest_revanced_patch.txt ]; then
-            diff old_patch/latest_revanced_patch.txt latest_revanced_patch.txt && echo "The patch has not changed." || echo "::set-output name=changed::true"
+            diff old_patch/latest_revanced_patch.txt latest_revanced_patch.txt && echo "The patch has not changed." || echo "changed=true" >> $GITHUB_ENV
           else
             echo "This is the first run, so there's no previous patch to compare with."
           fi
@@ -49,7 +48,7 @@ jobs:
           path: latest_revanced_patch.txt
 
       - name: Trigger build-apk workflow
-        if: steps.compare.outputs.changed == 'true'
+        if: env.changed == 'true'
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: build-apk.yml
