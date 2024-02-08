@@ -54,7 +54,7 @@ jobs:
           path: latest_revanced_patch.txt
 
       - name: Trigger build-apk workflow
-        if: env.changed != 'true'
+        if: env.changed == 'true'
         uses: benc-uk/workflow-dispatch@master
         with:
           workflow: build-apk.yml
