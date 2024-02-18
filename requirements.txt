@@ -4,6 +4,6 @@ gdown @ git+https://github.com/nikhilbadyal/gdown
 google-play-scraper==1.2.6
 lastversion==3.5.0
 loguru==0.7.2
-pre-commit==3.6.0
+pre-commit==3.6.1
 requests==2.31.0
-tqdm==4.66.1
+tqdm==4.66.2
