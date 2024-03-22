@@ -71,6 +71,7 @@ class Patches(object):
         "at.gv.bmf.bmf2go": "finanz-online",
         "com.tumblr": "tumblr",
         "com.myfitnesspal.android": "fitnesspal",
+        "com.facebook.katana": "facebook",
     }
 
     @staticmethod

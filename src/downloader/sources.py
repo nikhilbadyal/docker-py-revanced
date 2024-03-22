@@ -67,6 +67,7 @@ apk_sources = {
     "vanced": f"{APK_MIRROR_BASE_APK_URL}/team-vanced/youtube-vanced/",
     "tumblr": f"{APK_MIRROR_BASE_APK_URL}/tumblr-inc/tumblr/",
     "fitnesspal": f"{APK_MIRROR_BASE_APK_URL}/myfitnesspal-inc/calorie-counter-myfitnesspal/",
+    "facebook": f"{APK_MIRROR_BASE_APK_URL}/facebook-2/facebook/",
     "my-expenses": UPTODOWN_BASE_URL.format("my-expenses"),
     "spotify": UPTODOWN_BASE_URL.format("spotify"),
     "androidtwelvewidgets": APK_PURE_URL,
