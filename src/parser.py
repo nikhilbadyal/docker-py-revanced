@@ -193,7 +193,11 @@ class Parser(object):
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
         if app.old_key and "v4" in version:
             # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
-            old_key_flags = ["--alias=alias", "--keystore-entry-password=ReVanced", "--keystore-password=ReVanced"]
+            old_key_flags = [
+                "--keystore-entry-alias=alias",
+                "--keystore-entry-password=ReVanced",
+                "--keystore-password=ReVanced",
+            ]
             args.extend(old_key_flags)
         if self.config.ci_test:
             self.exclude_all_patches()
