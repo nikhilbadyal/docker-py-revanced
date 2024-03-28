@@ -31,7 +31,7 @@ class APP(object):
         self.cli_dl = config.env.str(f"{app_name}_CLI_DL".upper(), config.global_cli_dl)
         self.patches_dl = config.env.str(f"{app_name}_PATCHES_DL".upper(), config.global_patches_dl)
         self.integrations_dl = config.env.str(f"{app_name}_INTEGRATIONS_DL".upper(), config.global_integrations_dl)
-        self.patches_json_dl = config.env.str(f"{app_name}_PATCHES_JSON_DL".upper(), config.global_patches_json_dl)
+        self.patches_json_dl = config.env.str(f"{app_name}_PATCHES_JSON_DL".upper(), self.patches_dl)
         self.exclude_request: list[str] = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
         self.include_request: list[str] = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
         self.resource: dict[str, str] = {}
