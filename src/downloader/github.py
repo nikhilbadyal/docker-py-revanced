@@ -5,6 +5,7 @@ from typing import Self
 from urllib.parse import urlparse
 
 import requests
+from lastversion import latest
 from loguru import logger
 
 from src.app import APP
@@ -53,11 +54,16 @@ class Github(Downloader):
 
         github_repo_owner = path_segments[0]
         github_repo_name = path_segments[1]
-
-        release_tag = next(
-            (f"tags/{path_segments[i + 1]}" for i, segment in enumerate(path_segments) if segment == "tag"),
-            "latest",
-        )
+        tag_position = 3
+        if len(path_segments) > tag_position and path_segments[3] == "latest-prerelease":
+            logger.info(f"Including pre-releases/beta for {github_repo_name} selection.")
+            latest_tag = str(latest(f"{github_repo_owner}/{github_repo_name}", output_format="tag", pre_ok=True))
+            release_tag = f"tags/{latest_tag}"
+        else:
+            release_tag = next(
+                (f"tags/{path_segments[i + 1]}" for i, segment in enumerate(path_segments) if segment == "tag"),
+                "latest",
+            )
         return github_repo_owner, github_repo_name, release_tag
 
     @staticmethod
