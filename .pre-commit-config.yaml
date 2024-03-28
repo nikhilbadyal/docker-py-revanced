@@ -67,7 +67,7 @@ repos:
         args:
           - '--strict'
           - "--config=pyproject.toml"
-        additional_dependencies: [ types-requests,types-beautifulsoup4 ]
+        additional_dependencies: [ types-requests,types-beautifulsoup4,types-pytz ]
 
 ci:
     autofix_commit_msg: |
