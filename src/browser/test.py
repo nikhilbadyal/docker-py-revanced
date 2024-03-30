@@ -7,10 +7,10 @@ from bs4 import BeautifulSoup
 from loguru import logger
 
 sys.path.append(str(Path.cwd()))
-from src.browser import source as page_source
+from src.browser.site import source as page_source
 
 
-async def main():  # noqa: ANN201, D103
+async def main() -> None:  # noqa: D103
     # display = Display(visible=False, size=(800, 600))  # noqa: ERA001
     # display.start()  # noqa: ERA001
     # logger.info("Started display")  # noqa: ERA001
@@ -19,7 +19,7 @@ async def main():  # noqa: ANN201, D103
     url = "https://nowsecure.nl"  ## Cloudflare
     url = "https://bot.sannysoft.com/"  ## AntiBot validator
     url = "https://fingerprintjs.github.io/BotD"  ## AntiBot validator
-    url = "https://community.cloudflare.com/t/bot-traffic-managed-to-bypass-cloudflare-interactive-challenge-captcha/541364"  ## Cloudflare
+    url = "https://community.cloudflare.com/t/bot-traffic-managed-to-bypass-cloudflare-interactive-challenge-captcha/541364"  ## Cloudflare  # noqa: E501
     url = "https://nopecha.com/demo"  ## Cloudflare
 
     try:

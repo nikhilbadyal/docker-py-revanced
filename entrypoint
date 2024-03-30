@@ -15,7 +15,7 @@ function keepUpScreen() {
         sleep .25
         if [ -z $(pidof Xvfb) ]; then
                 Xvfb $DISPLAY -screen $DISPLAY 1280x1024x24 -ac +extension GLX +render -noreset &
-                ## PyVirtualDisplay is another alternative to manage 
+                ## PyVirtualDisplay is another alternative to manage
                 ## running the server from the code itself.
         fi;
   done;

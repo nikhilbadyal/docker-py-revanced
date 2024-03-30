@@ -7,8 +7,7 @@ from src.browser.site import Site, Source
 
 
 class APKMirror(Site):
-    """
-    Sample class to implement methods for APKMirror.
+    """Sample class to implement methods for APKMirror.
 
     Implementing these would do the work.
     """

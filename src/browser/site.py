@@ -21,8 +21,7 @@ from src.browser.exceptions import JSONExtractError, PageLoadError
 
 
 class Source:
-    """
-    The `Response` like object from the browser request.
+    """The `Response` like object from the browser request.
 
     Major purpose is to denote the page's html content
     hence, `text` attribute will contain the source html content.
@@ -60,8 +59,7 @@ class Source:
         return self._text
 
     def json(self: Self, **kwargs) -> Any:  # noqa: ANN003
-        r"""
-        Returns the json-encoded content of a response, if any.
+        r"""Returns the json-encoded content of a response, if any.
 
         :param \*\*kwargs: Optional arguments that ``json.loads`` takes.
         :raises JSONDecodeError: If the response body does not
@@ -96,8 +94,7 @@ class Site:
         self.user_agent = None
 
     async def get(self: Self, url: str, timeout: float) -> Source:
-        """
-        Loads the url.
+        """Loads the url.
 
         Waits for the page to load until timeout is hit.
         Raises `PageLoadError` on load failure.
@@ -142,12 +139,10 @@ class Site:
             raise PageLoadError(msg) from e
 
     async def check_if_loaded(self: Self) -> bool:
-        """
-        Checks if the page was loaded.
+        """Checks if the page was loaded.
 
-        Better to Implement it explicitly for any site based on
-        element visibility or any other mechanism.
-        Used with Browsers's Network Monitor (CDP).
+        Better to Implement it explicitly for any site based on element visibility or any other mechanism. Used with
+        Browsers's Network Monitor (CDP).
         """
         try:
             while not self.response_found and self.timeout > time.perf_counter() - self.start:
@@ -332,8 +327,7 @@ async def find_and_click(driver: webdriver.Chrome, *, check: bool = True) -> boo
 
 
 async def source(url: str, timeout: float = 60) -> Source:
-    """
-    Wrapper to return html source of the url on successful loading.
+    """Wrapper to return html source of the url on successful loading.
 
     Waits for the page to load until timeout is hit.
     Raises `PageLoadError` on load failure.

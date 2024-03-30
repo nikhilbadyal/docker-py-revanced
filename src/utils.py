@@ -44,8 +44,7 @@ session.headers.update(_headers)
 
 
 def update_session_data(user_agent: str | None = None) -> None:
-    """
-    Update the session related data such as user-agent, headers, cookies.
+    """Update the session related data such as user-agent, headers, cookies.
 
     Aimed to be used in conjuction with browser. For example,
     browser would store cookies which can be reused in `Session`.
@@ -188,8 +187,9 @@ def load_page_in_browser(url: str, timeout: float = request_timeout) -> Source |
             source = pool.submit(lambda: asyncio.run(page_source(url, timeout))).result()
     except RuntimeError:
         return asyncio.run(page_source(url, timeout))
-    except Exception as e:
-        logger.error(f"failed to load url in the browser => {e!r}")
+    except Exception as e:  # noqa: BLE001
+        logger.exception(f"failed to load url in the browser => {e!r}")
+        return None
     else:
         return source
 

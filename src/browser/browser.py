@@ -22,8 +22,7 @@ class Browser:
 
     @classmethod
     async def create(cls: type[Self]) -> Self:
-        """
-        Creates the browser instance.
+        """Creates the browser instance.
 
         Exceptions are raised by the `webdriver.Chrome()` impls.
         """
@@ -36,8 +35,7 @@ class Browser:
         return await self.driver.quit(clean_dirs=True)
 
     async def get(self: Self, url: str, timeout: float = 60):  # noqa: ANN201
-        """
-        Loads the url.
+        """Loads the url.
 
         Waits for the page to load until timeout is hit.
         Raises `PageLoadError` on load failure.
@@ -46,8 +44,7 @@ class Browser:
         return await site.get(url, timeout)
 
     def map_url(self: Self, url: str):  # noqa: ANN201
-        """
-        Maps the url, to their site implementation based on the pattern matching.
+        """Maps the url, to their site implementation based on the pattern matching.
 
         Returns default `Site` on no match.
         """
@@ -61,11 +58,9 @@ class Browser:
         return site
 
     def setup_dependencies(self: Self) -> bool:
-        """
-        not implemented yet for all (linux only for now).
+        """Not implemented yet for all (linux only for now).
 
-        Setups the browser dependencies based on systems
-        and returns the bool result.
+        Setups the browser dependencies based on systems and returns the bool result.
         """
         import platform
 
@@ -82,8 +77,7 @@ class Browser:
 
     @staticmethod
     def setup_dependencies_on_linux() -> bool:
-        """
-        Setups the browser dependencies on linux.
+        """Setups the browser dependencies on linux.
 
         Returns the bool result.
         """
@@ -101,8 +95,7 @@ class Browser:
 
     @staticmethod
     def setup_dependencies_on_windows() -> bool:
-        """
-        not implemented yet.
+        """Not implemented yet.
 
         Setups the browser dependencies on windows.
 
@@ -120,8 +113,7 @@ class Browser:
 
     @staticmethod
     def setup_dependencies_on_mac() -> bool:
-        """
-        not implemented yet.
+        """Not implemented yet.
 
         Setups the browser dependencies on mac.
 
@@ -139,8 +131,7 @@ class Browser:
 
     @staticmethod
     def setup_dependencies_on_unknown(system: str) -> bool:
-        """
-        not implemented yet.
+        """Not implemented yet.
 
         Setups the browser dependencies on unknown.
 
@@ -164,12 +155,12 @@ class BrowserOptions:
 
         cls.rand_ua()
         options = webdriver.ChromeOptions()
-        # options.add_argument("--headless=new")
+        """# options.add_argument("--headless=new")"""
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--log-level=3")
         options.add_argument("--disable-blink-features=AutomationControlled")
-        # options.add_argument(f"--user-agent={cls.user_agent}")
+        """# options.add_argument(f"--user-agent={cls.user_agent}")"""
         return options
 
     @classmethod
@@ -178,8 +169,11 @@ class BrowserOptions:
         import secrets
 
         user_agents = [
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Config/91.2.3711.12",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/120.0.0.0 Safari/537.36 Config/91.2.3711.12",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/121.0.0.0 Safari/537.36",
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/122.0.0.0 Safari/537.36",
         ]
         cls.user_agent = secrets.choice(user_agents)

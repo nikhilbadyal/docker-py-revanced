@@ -1,4 +1,5 @@
 beautifulsoup4==4.12.3
+browserforge==1.1.1
 environs==11.0.0
 gdown @ git+https://github.com/nikhilbadyal/gdown
 google-play-scraper==1.2.6
@@ -7,6 +8,5 @@ loguru==0.7.2
 pre-commit==3.7.0
 pytz==2024.1
 requests==2.31.0
-tqdm==4.66.2
-browserforge==1.1.1
 selenium-driverless==1.8.0.2
+tqdm==4.66.2
