@@ -18,8 +18,9 @@ class ApkMirror(Downloader):
 
     def _extract_force_download_link(self: Self, link: str, app: str) -> tuple[str, str]:
         """Extract force download link."""
-        notes_divs = self._extracted_search_div(link, "tab-pane")
-        apk_type = self._extracted_search_div(link, "apkm-badge").get_text()
+        link_page_source = self._extract_source(link)
+        notes_divs = self._extracted_search_source_div(link_page_source, "tab-pane")
+        apk_type = self._extracted_search_source_div(link_page_source, "apkm-badge").get_text()
         extension = "zip" if apk_type == "BUNDLE" else "apk"
         possible_links = notes_divs.find_all("a")
         for possible_link in possible_links:
@@ -75,12 +76,21 @@ class ApkMirror(Downloader):
         raise APKMirrorAPKDownloadError(msg, url=main_page)
 
     @staticmethod
-    def _extracted_search_div(url: str, search_class: str) -> Tag:
-        """Extract search div."""
-        r = requests.get(url, headers=request_header, timeout=request_timeout)
-        handle_request_response(r, url)
-        soup = BeautifulSoup(r.text, bs4_parser)
+    def _extract_source(url: str) -> str:
+        """Extracts the source from the url incase of reuse."""
+        response = requests.get(url, headers=request_header, timeout=request_timeout)
+        handle_request_response(response, url)
+        return response.text
+
+    @staticmethod
+    def _extracted_search_source_div(source: str, search_class: str) -> Tag:
+        """Extract search div from source."""
+        soup = BeautifulSoup(source, bs4_parser)
         return soup.find(class_=search_class)  # type: ignore[return-value]
+
+    def _extracted_search_div(self: Self, url: str, search_class: str) -> Tag:
+        """Extract search div from url."""
+        return self._extracted_search_source_div(self._extract_source(url), search_class)
 
     def specific_version(self: Self, app: APP, version: str, main_page: str = "") -> tuple[str, str]:
         """Function to download the specified version of app from  apkmirror.
