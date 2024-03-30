@@ -2,14 +2,13 @@
 
 from typing import Any, Self
 
-import requests
 from bs4 import BeautifulSoup, Tag
 from loguru import logger
 
 from src.app import APP
 from src.downloader.download import Downloader
 from src.exceptions import UptoDownAPKDownloadError
-from src.utils import bs4_parser, handle_request_response, request_header, request_timeout
+from src.utils import bs4_parser, handle_request_response, make_request, request_header
 
 
 class UptoDown(Downloader):
@@ -17,10 +16,10 @@ class UptoDown(Downloader):
 
     def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
         """Extract download link from uptodown url."""
-        r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
+        r = make_request(page, headers=request_header)
         handle_request_response(r, page)
         download_page_url = page.replace("/download", "/post-download")
-        download_page_html = requests.get(download_page_url, headers=request_header, timeout=request_timeout).text
+        download_page_html = make_request(download_page_url, headers=request_header).text
         soup = BeautifulSoup(download_page_html, bs4_parser)
         post_download = soup.find("div", class_="post-download")
 
@@ -44,7 +43,7 @@ class UptoDown(Downloader):
         """
         logger.debug("downloading specified version of app from uptodown.")
         url = f"{app.download_source}/versions"
-        html = requests.get(url, headers=request_header, timeout=request_timeout).text
+        html = make_request(url, headers=request_header).text
         soup = BeautifulSoup(html, bs4_parser)
         detail_app_name = soup.find("h1", id="detail-app-name")
 
@@ -59,7 +58,7 @@ class UptoDown(Downloader):
 
         while not version_found:
             version_url = f"{app.download_source}/apps/{app_code}/versions/{version_page}"
-            r = requests.get(version_url, headers=request_header, timeout=request_timeout)
+            r = make_request(version_url, headers=request_header)
             handle_request_response(r, version_url)
             json = r.json()
 

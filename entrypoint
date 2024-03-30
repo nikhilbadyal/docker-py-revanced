@@ -5,4 +5,25 @@ set -o pipefail
 set -o nounset
 
 
+## Ref: https://github.com/Ulyssedev/Rust-undetected-chromedriver/blob/7da3bea/xvfb.sh
+## Set up the Display for XVFB server,
+## to support running Chrome in headful mode
+export DISPLAY=:99
+function keepUpScreen() {
+  echo "Running keepUpScreen() [Xvfb Server]"
+  while true; do
+        sleep .25
+        if [ -z $(pidof Xvfb) ]; then
+                Xvfb $DISPLAY -screen $DISPLAY 1280x1024x24 -ac +extension GLX +render -noreset &
+                ## PyVirtualDisplay is another alternative to manage 
+                ## running the server from the code itself.
+        fi;
+  done;
+}
+
+## Starting the XVFB server in background
+keepUpScreen &
+
+## Browser tests
+# python src/browser/test.py
 python main.py

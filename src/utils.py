@@ -3,13 +3,18 @@
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 from typing import Any
 
 import requests
+from browserforge.headers import Browser, HeaderGenerator
 from loguru import logger
 from requests import Response, Session
 
+from src.browser.cookies import Cookies
+from src.browser.site import Source
+from src.browser.site import source as page_source
 from src.downloader.sources import APK_MIRROR_APK_CHECK
 from src.downloader.utils import status_code_200
 from src.exceptions import ScrapingError
@@ -29,8 +34,29 @@ request_header = {
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
 request_timeout = 60
+request_retries = 15
 session = Session()
-session.headers["User-Agent"] = request_header["User-Agent"]
+_browsers = [Browser("chrome", min_version=119, max_version=122)]
+_headers = HeaderGenerator(browser=_browsers, os="linux", device="desktop").generate()
+_headers.pop("Accept-Encoding", None)
+request_header.update(_headers)
+session.headers.update(_headers)
+
+
+def update_session_data(user_agent: str | None = None) -> None:
+    """
+    Update the session related data such as user-agent, headers, cookies.
+
+    Aimed to be used in conjuction with browser. For example,
+    browser would store cookies which can be reused in `Session`.
+    """
+    if user_agent:
+        _headers.update({"User-Agent": user_agent})
+    _headers.pop("Accept-Encoding", None)
+    request_header.update(_headers)
+    session.headers.update(_headers)
+    cookie_jar = Cookies().load_to_cookie_jar()
+    session.cookies.update(cookie_jar)
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
@@ -101,7 +127,74 @@ def get_parent_repo() -> str:
     return "https://github.com/nikhilbadyal/docker-py-revanced"
 
 
-def handle_request_response(response: Response, url: str) -> None:
+def make_request(url: str, headers: dict[str, str] | None = None) -> Response | Source:
+    """The `start_request()` function makes the GET request with the possible retrying methods.
+
+    Parameters
+    ----------
+    url: str
+        The url on which to make request.
+    headers: dict[str, str]
+        The request headers to be used while making the request.
+
+    Returns
+    -------
+    response: Response
+        The response object from the HTTP request.
+    """
+    i = 0
+    update_session_data()
+    response = session.get(url, headers=headers, allow_redirects=True, timeout=request_timeout)
+    while (not response or response.status_code != status_code_200) and i < request_retries:
+        i += 1
+        logger.info(f"Retrying ({i})...")
+        if i % 5 == 0:
+            sleep_duration = 15 * (i // 5)
+            logger.info(f"Sleeping for {sleep_duration}s...")
+            time.sleep(sleep_duration)
+            response = session.get(url, headers=headers, allow_redirects=True, timeout=request_timeout)
+        else:
+            response = load_page_in_browser(url, timeout=request_timeout)
+            if response:
+                update_session_data(response.user_agent)
+    if not response:
+        response = session.get(url, headers=headers, allow_redirects=True, timeout=request_timeout)
+    return response
+
+
+def load_page_in_browser(url: str, timeout: float = request_timeout) -> Source | None:
+    """The `load_page_in_browser()` function loads the url in a browser.
+
+    Parameters
+    ----------
+    url: str
+        The url on which to make request.
+    timeout: float
+        Max wait duration in secs that'll allow the page to be loaded.
+
+    Returns
+    -------
+    source: Source | None
+        The `Response` like object from the browser request.
+        `text` attribute will contain the source html content.
+        Note that the source would be None if encountered exceptions.
+    """
+    try:
+        import asyncio
+        from concurrent.futures import ThreadPoolExecutor
+
+        asyncio.get_running_loop()
+        with ThreadPoolExecutor(1) as pool:
+            source = pool.submit(lambda: asyncio.run(page_source(url, timeout))).result()
+    except RuntimeError:
+        return asyncio.run(page_source(url, timeout))
+    except Exception as e:
+        logger.error(f"failed to load url in the browser => {e!r}")
+    else:
+        return source
+
+
+def handle_request_response(response: Response | Source, url: str) -> None:
     """The function handles the response of a GET request and raises an exception if the response code is not 200.
 
     Parameters

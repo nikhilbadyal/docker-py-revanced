@@ -40,11 +40,7 @@ class Downloader(object):
         if self.config.personal_access_token and "github" in url:
             logger.debug("Using personal access token")
             headers["Authorization"] = f"token {self.config.personal_access_token}"
-        response = session.get(
-            url,
-            stream=True,
-            headers=headers,
-        )
+        response = session.get(url, headers=headers, stream=True)
         handle_request_response(response, url)
         total = int(response.headers.get("content-length", 0))
         bar = tqdm(
