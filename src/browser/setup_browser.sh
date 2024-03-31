@@ -27,17 +27,18 @@ install_browser() {
 
 ## Install Chrome
 install_chrome() {
-    sudo apt remove google-chrome-stable
+    sudo apt-get remove google-chrome-stable
     sudo curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
     echo "deb http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google-chrome.list
-    sudo apt -y update
-    sudo apt -y install google-chrome-stable
+    sudo apt-get -y update
+    sudo apt-get -y --no-install-recommends install google-chrome-stable
     echo "Installed $(google-chrome --version)"
 }
 
 ## Install Chromium
 install_chromium() {
-    sudo apt -y install chromium
+    sudo apt-get -y update
+    sudo apt-get -y --no-install-recommends install chromium
     echo "Installed $(chromium --version)"
 }
 
