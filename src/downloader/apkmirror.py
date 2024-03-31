@@ -9,8 +9,8 @@ from loguru import logger
 from src.app import APP
 from src.downloader.download import Downloader
 from src.downloader.sources import APK_MIRROR_BASE_URL
-from src.exceptions import APKMirrorAPKDownloadError
-from src.utils import bs4_parser, contains_any_word, handle_request_response, request_header, request_timeout
+from src.exceptions import APKMirrorAPKDownloadError, ScrapingError
+from src.utils import bs4_parser, contains_any_word, handle_request_response, request_header, request_timeout, slugify
 
 
 class ApkMirror(Downloader):
@@ -96,6 +96,15 @@ class ApkMirror(Downloader):
             version_page = apk_main_page + apk_main_page.split("/")[-2]
             main_page = f"{version_page}-{version}-release/"
         download_page = self.get_download_page(main_page)
+        if app.app_version == "latest":
+            try:
+                logger.info(f"Trying to guess {app.app_name} version.")
+                appsec_val = self._extracted_search_div(download_page, "appspec-value")
+                appsec_version = str(appsec_val.find(text=lambda text: "Version" in text))
+                app.app_version = slugify(appsec_version.split(":")[-1].strip())
+                logger.info(f"Guessed {app.app_version} for {app.app_name}")
+            except ScrapingError:
+                pass
         return self.extract_download_link(download_page, app.app_name)
 
     def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:

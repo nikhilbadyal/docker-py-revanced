@@ -4,9 +4,11 @@ import concurrent
 import hashlib
 import pathlib
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
 from typing import Self
 
 from loguru import logger
+from pytz import timezone
 
 from src.config import RevancedConfig
 from src.downloader.sources import apk_sources
@@ -31,7 +33,7 @@ class APP(object):
         self.cli_dl = config.env.str(f"{app_name}_CLI_DL".upper(), config.global_cli_dl)
         self.patches_dl = config.env.str(f"{app_name}_PATCHES_DL".upper(), config.global_patches_dl)
         self.integrations_dl = config.env.str(f"{app_name}_INTEGRATIONS_DL".upper(), config.global_integrations_dl)
-        self.patches_json_dl = config.env.str(f"{app_name}_PATCHES_JSON_DL".upper(), config.global_patches_json_dl)
+        self.patches_json_dl = config.env.str(f"{app_name}_PATCHES_JSON_DL".upper(), self.patches_dl)
         self.exclude_request: list[str] = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
         self.include_request: list[str] = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
         self.resource: dict[str, str] = {}
@@ -78,7 +80,9 @@ class APP(object):
         -------
             a string that represents the output file name for an APK file.
         """
-        return f"Re-{self.app_name}-{slugify(self.app_version)}-output.apk"
+        current_date = datetime.now(timezone("Asia/Kolkata"))
+        formatted_date = current_date.strftime("%Y%b%d_%I%M%p").upper()
+        return f"Re-{self.app_name}-{slugify(self.app_version)}-{formatted_date}-output.apk"
 
     def __str__(self: "APP") -> str:
         """Returns the str representation of the app."""

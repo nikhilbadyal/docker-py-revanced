@@ -210,6 +210,8 @@ You can use any of the following methods to build.
     - [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
     - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
     - [tumblr](https://www.apkmirror.com/apk/tumblr-inc/tumblr/)
+    - [fitnesspal](https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal/)
+    - [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
@@ -294,9 +296,21 @@ You can use any of the following methods to build.
    With the config tool will try to patch YouTube with resources from inotia00 while other global resource will used
    for patching other apps.<br>
    If you have want to provide resource locally in the apks folder. You can specify that by mentioning filename
-   prefixed with `local://`.
-   *Note* - The link provided must be DLs. Unless they are from GitHub.
-   *Note* - Some of the patch source like inotia00 still provides **-** seperated patches while revanced shifted to
+   prefixed with `local://`.<br>
+   *Note* - The link provided must be DLs. Unless they are from GitHub.<br>
+   *Note* - If your patches resource are available on GitHub and you want to select latest resource without excluding
+    pre-release you can add `latest-prerelease` to the URL.
+    Example:
+   ```dotenv
+    YOUTUBE_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest-prerelease
+   ```
+   For above example tool while selecting latest patches will consider pre-releases/beta too.
+    ```dotenv
+    YOUTUBE_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest
+   ```
+   For above example tool while selecting latest patches will exclude any pre-release/beta ie. will consider only
+    stable releases..<br>
+   *Note* - Some of the patch source like inotia00 still provides **-** separated patches while revanced shifted to
    Space formatted patches. Use `SPACE_FORMATTED_PATCHES` to define the type of patches.
 
 8. <a id="global-keystore-file-name"></a>If you don't want to use default keystore. You can provide your own by
