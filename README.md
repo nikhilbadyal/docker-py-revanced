@@ -61,7 +61,7 @@ You can use any of the following methods to build.
     4. Update `.env` file if you want some customization(See notes)
     5. Run script with
        ```shell
-       docker-compose up --build
+       docker compose up --build
        ```
 
 - 🐳With Docker

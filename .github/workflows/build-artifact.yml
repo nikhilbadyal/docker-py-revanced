@@ -83,10 +83,10 @@ jobs:
         run: |
           if [[ "${{ inputs.CI_TEST }}" =~ ^(true|True|1)$ ]]; then
               echo "In CI Testing. Using local compose file."
-              docker-compose -f docker-compose-local.yml up --build
+              docker compose -f docker-compose-local.yml up --build
           else
               echo "Using Prod compose file."
-              docker-compose up --build
+              docker compose up --build
           fi
       - name: Upload Build APKS
         uses: actions/upload-artifact@main
