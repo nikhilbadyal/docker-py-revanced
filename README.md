@@ -11,6 +11,7 @@ A little python script that will help you in building Revanced [apps](#patch-app
 
 You can get pre-built apks [here](https://revanced_apkss.t.me/)
 
+## Facing issues? Click [here](https://github.com/nikhilbadyal/docker-py-revanced/issues/new/choose).<br>
 ## Build Yourself
 
 You can use any of the following methods to build.
@@ -46,6 +47,8 @@ You can use any of the following methods to build.
 
      5. If the building process is successful, you’ll get your APKs in the<br>
         <img src="https://i.imgur.com/S5d7qAO.png" width="700" style="left">
+     6. Make sure to do below steps once in a while(daily or weekly) to keep the builder bug free.<br>
+        <img src="https://i.imgur.com/CbdH7vM.png" width="700" style="left">
 
 - 🐳 **_Docker Compose_**<br>
 
