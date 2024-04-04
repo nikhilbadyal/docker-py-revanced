@@ -40,6 +40,7 @@ class APP(object):
         self.no_of_patches: int = 0
         self.keystore_name = config.env.str(f"{app_name}_KEYSTORE_FILE_NAME".upper(), config.global_keystore_name)
         self.archs_to_build = config.env.list(f"{app_name}_ARCHS_TO_BUILD".upper(), config.global_archs_to_build)
+        self.options_file = config.env.str(f"{app_name}_OPTIONS_FILE".upper(), config.global_options_file)
         self.download_file_name = ""
         self.download_dl = config.env.str(f"{app_name}_DL".upper(), "")
         self.download_patch_resources(config)
