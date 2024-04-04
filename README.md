@@ -119,6 +119,7 @@ You can use any of the following methods to build.
 | [GLOBAL_INTEGRATIONS_DL*](#global-resources)             | DL for Integrations to be used for patching apps. | [Revanced Integrations](https://github.com/revanced/revanced-integrations)                                            |
 | [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |       Key file to be used for signing apps        | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore)              |
 | [GLOBAL_OLD_KEY*](#global-keystore-file-name)            | Whether key was generated with cli v4(new) or not | <br/>[Builder's v3(old) own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
+| [GLOBAL_OPTIONS_FILE*](#global-options-file)             |              Options file to be used              | [Builder's default file](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/options.json)              |
 | [GLOBAL_ARCHS_TO_BUILD*](#global-archs-to-build)         |         Arch to keep in the patched apk.          | All                                                                                                                   |
 | REDDIT_CLIENT_ID                                         |       Reddit Client ID to patch reddit apps       | None                                                                                                                  |
 | VT_API_KEY                                               |           Virus Total Key to scan APKs            | None                                                                                                                  |
@@ -337,22 +338,34 @@ You can use any of the following methods to build.
     ```dotenv
     YOUTUBE_OLD_KEY=False
    ```
-9. <a id="global-archs-to-build"></a>You can build only for a particular arch in order to get smaller apk files.This
-   can be done with by adding comma separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the
-   format.
+9. <a id="global-options-file"></a>If you don't want to use default options.json file. You can provide your own by
+   placing it inside `apks` folder. And adding the name of `options-file` in `.env` file or in `ENVS` in `GitHub
+   secrets` (Recommended) in the format
    ```dotenv
-    GLOABAL_ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
+    GLOBAL_OPTIONS_FILE=my_options.json
    ```
-   Tool also support configuring at app level.<br>
+   Tool also support providing secret key at app level. You can sign A app with X key while signing B with Y
+   key.<br>
+    Example:
+   ```dotenv
+    YOUTUBE_OPTIONS_FILE=my_cool_yt_options.json
+   ```
+10. <a id="global-archs-to-build"></a>You can build only for a particular arch in order to get smaller apk files.This
+    can be done with by adding comma separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the
+    format.
+    ```dotenv
+     GLOABAL_ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
+    ```
+    Tool also support configuring at app level.<br>
 
-   Example:
-   ```dotenv
-    YOUTUBE_ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
-   ```
-   *Note* -
-   1. Possible values are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
-   2. Make sure the patching resource(CLI) support this feature.
-10. <a id="extra-files"></a>If you want to include any extra file to the Github upload. Set comma arguments
+    Example:
+    ```dotenv
+     YOUTUBE_ARCHS_TO_BUILD=arm64-v8a,armeabi-v7a
+    ```
+    *Note* -
+    1. Possible values are: `armeabi-v7a`,`x86`,`x86_64`,`arm64-v8a`
+    2. Make sure the patching resource(CLI) support this feature.
+11. <a id="extra-files"></a>If you want to include any extra file to the Github upload. Set comma arguments
      in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
     EXTRA_FILES=<url>@<appName>.apk
@@ -361,7 +374,7 @@ You can use any of the following methods to build.
     ```dotenv
      EXTRA_FILES=https://github.com/inotia00/mMicroG/releases/latest@mmicrog.apk,https://github.com/revanced/revanced-integrations@integrations.apk
     ```
-11. <a id="custom-exclude-patching"></a>If you want to exclude any patch. Set comma separated patch in `.env` file
+12. <a id="custom-exclude-patching"></a>If you want to exclude any patch. Set comma separated patch in `.env` file
     or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
     <APP_NAME>_EXCLUDE_PATCH=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
@@ -375,7 +388,7 @@ You can use any of the following methods to build.
     1. **All** the patches for an app are **included** by default.<br>
     2. Revanced patches are provided as space separated, make sure you type those **-** separated here.
     It means a patch named _**Hey There**_ must be entered as **_hey-there_** in the above example.
-12. <a id="custom-include-patching"></a>If you want to include any universal patch. Set comma separated patch in `.env`
+13. <a id="custom-include-patching"></a>If you want to include any universal patch. Set comma separated patch in `.env`
     file or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
     <APP_NAME>_INCLUDE_PATCH=<PATCH_TO_EXCLUDE-1,PATCH_TO_EXCLUDE-2>
@@ -387,7 +400,7 @@ You can use any of the following methods to build.
     Note -
     1. Revanced patches are provided as space separated, make sure you type those **-** separated here.
        It means a patch named _**Hey There**_ must be entered as **_hey-there_** in the above example.
-13. <a id="app-version"></a>If you want to build a specific version or latest version. Add `version` in `.env` file
+14. <a id="app-version"></a>If you want to build a specific version or latest version. Add `version` in `.env` file
     or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
     <APP_NAME>_VERSION=<VERSION>
@@ -398,7 +411,7 @@ You can use any of the following methods to build.
     YOUTUBE_MUSIC_VERSION=X.X.X
     TWITTER_VERSION=latest
     ```
-14. <a id="app-dl"></a>If you have your personal source for apk to be downloaded. You can also provide that and tool
+15. <a id="app-dl"></a>If you have your personal source for apk to be downloaded. You can also provide that and tool
     will not scarp links from apk sources.Add `dl` in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in
     the format
     ```ini
@@ -408,7 +421,7 @@ You can use any of the following methods to build.
     ```ini
     YOUTUBE_DL=https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
     ```
-15. <a id="telegram-support"></a>For Telegram Upload.
+16. <a id="telegram-support"></a>For Telegram Upload.
      1. Set up a telegram channel, send a message to it and forward the message to
         this telegram [bot](https://t.me/username_to_id_bot)
      2. Copy `id` and save it to `TELEGRAM_CHAT_ID`<br>
@@ -422,12 +435,12 @@ You can use any of the following methods to build.
         <img src="https://i.imgur.com/7n5k1mp.png" width="300" style="left"><br>
      6. After Everything done successfully a part of the actions secrets of the repository may look like<br>
         <img src="https://i.imgur.com/Cjifz1M.png" width="400">
-16. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
+17. Configuration defined in `ENVS` in `GitHub secrets` will override the configuration in `.env` file. You can use this
     fact to define your normal configurations in `.env` file and sometimes if you want to build something different just
     once. Add it in `GitHub secrets`.<br>
-17. Sample Envs<br>
+18. Sample Envs<br>
     <img src="https://i.imgur.com/FxOtiGs.png" width="600" style="left">
-18. <a id="apprise"></a>[Apprise](https://github.com/caronc/apprise)<br>
+19. <a id="apprise"></a>[Apprise](https://github.com/caronc/apprise)<br>
     We also have apprise support to upload built apk anywhere.To use apprise. Add belows envs in `.env` file
     or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
