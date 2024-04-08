@@ -28,7 +28,7 @@ class ApkMonk(Downloader):
         handle_request_response(r, page)
         soup = BeautifulSoup(r.text, bs4_parser)
         download_scripts = soup.find_all("script", type="text/javascript")
-        key_value_pattern = r'\{"pkg":"([^"]+)","key":"([^"]+)"\}'
+        key_value_pattern = r"pkg=([^&]+)&key=([^']+)"
         url = None
         for script in download_scripts:
             if match := re.search(key_value_pattern, script.text):
