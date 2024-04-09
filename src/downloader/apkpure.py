@@ -15,6 +15,8 @@ from src.utils import bs4_parser, handle_request_response, request_header, reque
 class ApkPure(Downloader):
     """Files downloader."""
 
+    default_archs_priority: tuple[str, ...] = ("arm64-v8a", "armeabi-v7a", "x86_64", "x86")
+
     @staticmethod
     def _select_preferred_dl(app: str, apk_dls: list[str], xapk_dls: list[str]) -> tuple[str | None, str | None]:
         file_name = None
@@ -27,8 +29,12 @@ class ApkPure(Downloader):
             app_dl = xapk_dls[0]
         return file_name, app_dl
 
+    def _sort_by_priority(self: Self, arch_list: list[str] | tuple[str]) -> list[str]:
+        """Specifically used to sort the arch list based on order of elements of default archs priority list."""
+        return [darch for darch in self.default_archs_priority if darch in arch_list]
+
     def _compare_dls(self: Self, dl1: str, dl2: str) -> int:
-        """Compare two dls of same type (apk or xapk) to prioritise the archs."""
+        """Compare two dls of same type (apk or xapk) to prioritise the archs on lower indices."""
         from urllib.parse import parse_qs, urlparse
 
         apk_type1 = parse_qs(urlparse(dl1).query).get("nc")
@@ -42,9 +48,7 @@ class ApkPure(Downloader):
             if l1 < l2:
                 return 1
             # Arrange based on priority list
-            default_priority = ["arm64-v8a", "armeabi-v7a", "x86_64", "x86"]
-            global_priority = self._archs_to_select
-            priority = global_priority or default_priority
+            priority = self.global_archs_priority or self.default_archs_priority
             for arch in priority:
                 if arch in apk_type1 and arch not in apk_type2:
                     return -1
@@ -96,7 +100,7 @@ class ApkPure(Downloader):
         :param version: Version of the application to download
         :return: Tuple of filename and app direct download link
         """
-        self._archs_to_select = app.archs_to_build
+        self.global_archs_priority = tuple(self._sort_by_priority(app.archs_to_build))
         version_page = app.download_source + "/versions"
         r = requests.get(version_page, headers=request_header, timeout=request_timeout)
         handle_request_response(r, version_page)
@@ -123,7 +127,7 @@ class ApkPure(Downloader):
         :param app: Name of the application
         :return: Tuple of filename and app direct download link
         """
-        self._archs_to_select = app.archs_to_build
+        self.global_archs_priority = tuple(self._sort_by_priority(app.archs_to_build))
         download_page = app.download_source + "/download"
         file_name, download_source = self.extract_download_link(download_page, app.app_name)
         app.app_version = self.app_version
