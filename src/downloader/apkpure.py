@@ -1,6 +1,6 @@
 """APK Pure Downloader Class."""
 
-from typing import Any, Literal, Self
+from typing import Any, Self
 
 import requests
 from bs4 import BeautifulSoup
@@ -9,7 +9,7 @@ from loguru import logger
 from src.app import APP
 from src.downloader.download import Downloader
 from src.exceptions import APKPureAPKDownloadError
-from src.utils import bs4_parser, handle_request_response, request_header, request_timeout
+from src.utils import bs4_parser, handle_request_response, request_header, request_timeout, slugify
 
 
 class ApkPure(Downloader):
@@ -27,7 +27,7 @@ class ApkPure(Downloader):
             app_dl = xapk_dls[0]
         return file_name, app_dl
 
-    def _compare_dls(self: Self, dl1: str, dl2: str) -> Literal[-1, 0, 1]:
+    def _compare_dls(self: Self, dl1: str, dl2: str) -> int:
         """Compare two dls of same type (apk or xapk) to prioritise the archs."""
         from urllib.parse import parse_qs, urlparse
 
@@ -70,14 +70,14 @@ class ApkPure(Downloader):
         handle_request_response(r, page)
         soup = BeautifulSoup(r.text, bs4_parser)
         apks = soup.select("#version-list a.download-btn")
-        _apk_dls = []
-        _xapk_dls = []
+        _apk_dls: list[str] = []
+        _xapk_dls: list[str] = []
         for apk in apks:
             if _apk_dl := apk.get("href"):
                 if "/b/XAPK/" in _apk_dl:
-                    _xapk_dls.append(_apk_dl)
+                    _xapk_dls.append(_apk_dl)  # type: ignore  # noqa: PGH003
                 else:
-                    _apk_dls.append(_apk_dl)
+                    _apk_dls.append(_apk_dl)  # type: ignore  # noqa: PGH003
         _apk_dls.sort(key=cmp_to_key(self._compare_dls))
         _xapk_dls.sort(key=cmp_to_key(self._compare_dls))
         file_name, app_dl = self._select_preferred_dl(app, _apk_dls, _xapk_dls)
@@ -85,7 +85,8 @@ class ApkPure(Downloader):
             msg = f"Unable to extract link from {app} version list"
             raise APKPureAPKDownloadError(msg, url=page)
         if app_version := soup.select_one("span.info-sdk > span"):
-            logger.info(f"Will be downloading {app}'s {app_version.get_text(strip=True)}...")
+            self.app_version = slugify(app_version.get_text(strip=True))
+            logger.info(f"Will be downloading {app}'s version {self.app_version}...")
         return file_name, app_dl
 
     def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
@@ -109,6 +110,8 @@ class ApkPure(Downloader):
             ):
                 download_page = _data.get("href")
                 file_name, download_source = self.extract_download_link(download_page, app.app_name)  # type: ignore  # noqa: PGH003
+                app.app_version = self.app_version
+                logger.info(f"Guessed {app.app_version} for {app.app_name}")
                 self._download(download_source, file_name)
                 return file_name, download_source
         msg = f"Unable to find specific version '{version}' for {app} from version list"
@@ -123,5 +126,7 @@ class ApkPure(Downloader):
         self._archs_to_select = app.archs_to_build
         download_page = app.download_source + "/download"
         file_name, download_source = self.extract_download_link(download_page, app.app_name)
+        app.app_version = self.app_version
+        logger.info(f"Guessed {app.app_version} for {app.app_name}")
         self._download(download_source, file_name)
         return file_name, download_source
