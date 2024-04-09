@@ -104,7 +104,7 @@ class ApkPure(Downloader):
         version_page = app.download_source + "/versions"
         r = requests.get(version_page, headers=request_header, timeout=request_timeout)
         handle_request_response(r, version_page)
-        soup = BeautifulSoup(r.text, "html.parser")
+        soup = BeautifulSoup(r.text, bs4_parser)
         version_box_list = soup.select("ul.ver-wrap > *")
         for box in version_box_list:
             if (
