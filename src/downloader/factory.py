@@ -11,10 +11,12 @@ from src.downloader.google_drive import GoogleDrive
 from src.downloader.sources import (
     APK_MIRROR_BASE_URL,
     APK_MONK_BASE_URL,
+    APK_PURE_BASE_APK_URL,
     APK_PURE_BASE_URL,
     APKS_SOS_BASE_URL,
     DRIVE_DOWNLOAD_BASE_URL,
     GITHUB_BASE_URL,
+    UPTODOWN_SUFFIX,
 )
 from src.downloader.uptodown import UptoDown
 from src.exceptions import DownloadError
@@ -34,11 +36,11 @@ class DownloaderFactory(object):
         """
         if apk_source.startswith(GITHUB_BASE_URL):
             return Github(config)
-        if apk_source.startswith(APK_PURE_BASE_URL):
+        if apk_source.startswith((APK_PURE_BASE_URL, APK_PURE_BASE_APK_URL)):
             return ApkPure(config)
         if apk_source.startswith(APKS_SOS_BASE_URL):
             return ApkSos(config)
-        if apk_source.endswith("en.uptodown.com/android"):
+        if apk_source.endswith(UPTODOWN_SUFFIX):
             return UptoDown(config)
         if apk_source.startswith(APK_MIRROR_BASE_URL):
             return ApkMirror(config)
