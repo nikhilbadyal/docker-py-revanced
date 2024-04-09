@@ -6,17 +6,27 @@ from loguru import logger
 from selenium_driverless import webdriver
 from selenium_driverless.utils.utils import find_chrome_executable
 
+BROWSER_SETUP_TRIALS = 0
+
 
 class Browser:
     """Convenient class to load urls in the browser opposed to HTTPRequest."""
 
-    def __init__(self: Self) -> None:
-        """Initialises the browser by setting up the dependencies and async the webdriver.
+    setup_max_trials = 2
 
-        Not meant to be invoked directly instead `create()` when using outside of async context manager.
+    def __init__(self: Self) -> None:
+        """Initialises the browser by setting up the dependencies and init the webdriver.
+
+        Not meant to be invoked directly instead with `Browser.create()`.
         """
         if not find_chrome_executable():
-            self.setup_dependencies()
+            if self.under_max_setup_trial():
+                self.setup_dependencies()
+                self.increment_setup_trial()
+            else:
+                # It's unnecessary to run setup everytime.
+                msg = "Max trials for the Browser setup was hit and yet the browser setup isn't complete."
+                raise ValueError(msg)
         self.options = BrowserOptions()
         self.driver = webdriver.Chrome(options=self.options)
 
@@ -56,6 +66,16 @@ class Browser:
             site = APKMirror(self)
 
         return site
+
+    @staticmethod
+    def increment_setup_trial(by: int = 1) -> None:
+        """Increment the setup trial count by 1 or any number."""
+        global BROWSER_SETUP_TRIALS  # noqa: PLW0603
+        BROWSER_SETUP_TRIALS += by
+
+    def under_max_setup_trial(self: Self) -> bool:
+        """Check if the current trial count is less the max trial count."""
+        return self.setup_max_trials > BROWSER_SETUP_TRIALS
 
     def setup_dependencies(self: Self) -> bool:
         """Not implemented yet for all (linux only for now).
@@ -155,12 +175,12 @@ class BrowserOptions:
 
         cls.rand_ua()
         options = webdriver.ChromeOptions()
-        """# options.add_argument("--headless=new")"""
+        # options.add_argument("--headless=new")  # noqa: ERA001
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--log-level=3")
         options.add_argument("--disable-blink-features=AutomationControlled")
-        """# options.add_argument(f"--user-agent={cls.user_agent}")"""
+        # options.add_argument(f"--user-agent={cls.user_agent}")  # noqa: ERA001
         return options
 
     @classmethod
