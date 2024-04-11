@@ -26,8 +26,10 @@ class ApkSos(Downloader):
         download_button = soup.find(class_="col-sm-12 col-md-8 text-center")
         possible_links = download_button.find_all("a")  # type: ignore[union-attr]
         for possible_link in possible_links:
-            if possible_link.get("href"):
+            if possible_link.get("href") and (_title := possible_link.get("title")):
                 file_name = f"{app}.apk"
+                if _title.endswith("Bundle"):
+                    file_name = f"{app}.zip"
                 self._download(possible_link["href"], file_name)
                 return file_name, possible_link["href"]
         msg = f"Unable to download {app}"
