@@ -234,7 +234,7 @@ You can use any of the following methods to build.
    3. APKSOS - Supports downloading any available version
        1. Link Format - https://apksos.com/download-app/<package-name>
        2. Example Link - https://apksos.com/download-app/com.expensemanager
-   4. APKPURE - Supports downloading only latest version
+   4. APKPURE - Supports downloading any available version
        1. Link Format - https://apkpure.net/-/<package-name>
        2. Example Link - https://apkpure.net/-/com.google.android.youtube
    5. APKMonk - Supports downloading any available version
