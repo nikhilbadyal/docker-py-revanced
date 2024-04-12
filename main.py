@@ -11,7 +11,7 @@ from src.downloader.download import Downloader
 from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import check_java, delete_old_changelog, save_patch_info
+from src.utils import check_java, delete_old_changelog, save_patch_info, write_changelog_to_file
 
 
 def get_app(config: RevancedConfig, app_name: str) -> APP:
@@ -52,6 +52,7 @@ def main() -> None:
             logger.exception(e)
         except BuilderError as e:
             logger.exception(f"Failed to build {possible_app} because of {e}")
+    write_changelog_to_file()
 
 
 if __name__ == "__main__":
