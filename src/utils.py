@@ -71,23 +71,22 @@ def format_changelog(name: str, response: dict[str, str]) -> dict[str, str]:
     """
     final_name = f"[{name}]({response['html_url']})"
     return {
-        "Name": final_name,
+        "ResourceName": final_name,
         "Version": response["tag_name"],
         "Changelog": response["body"],
-        "Published at": response["published_at"],
+        "Published On": response["published_at"],
     }
 
 
 def write_changelog_to_file() -> None:
     """The function `write_changelog_to_file` writes a given changelog json to a file."""
-    markdown_table = (
-        "| AppName | Version | Changelog | Published At |\n" + "|---------|---------|-----------|--------------|\n"
-    )
+    markdown_table = """| Resource Name | Version | Changelog | Published On |\n
+    "|---------|---------|-----------|--------------|\n"""
     for app_data in changelogs.values():
-        name_link = app_data["Name"]
+        name_link = app_data["ResourceName"]
         version = app_data["Version"]
         changelog = app_data["Changelog"]
-        published_at = app_data["Published at"]
+        published_at = app_data["PublishedOn"]
 
         # Clean up changelog for markdown
         changelog = changelog.replace("\r\n", "<br>")
