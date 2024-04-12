@@ -1,8 +1,10 @@
 """Utilities."""
 
+import json
 import re
 import subprocess
 import sys
+from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
 
@@ -31,6 +33,7 @@ changelog_file = "changelog.md"
 request_timeout = 60
 session = Session()
 session.headers["User-Agent"] = request_header["User-Agent"]
+updates_file = "updates.json"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
@@ -198,3 +201,22 @@ def apkmirror_status_check(package_name: str) -> Any:
 def contains_any_word(string: str, words: list[str]) -> bool:
     """Checks if a string contains any word."""
     return any(word in string for word in words)
+
+
+def save_patch_info(app: Any) -> None:
+    """Save version info a patching resources used to a file."""
+    try:
+        with Path(updates_file).open() as file:
+            old_version = json.load(file)
+    except (JSONDecodeError, FileNotFoundError):
+        # Handle the case when the file is empty
+        old_version = {}  # or any default value you want to assign
+
+    old_version[app.app_name] = {
+        "version": app.app_version,
+        "integrations_version": app.resource["integrations"]["version"],
+        "patches_version": app.resource["patches"]["version"],
+        "cli_version": app.resource["cli"]["version"],
+        "patches_json_version": app.resource["patches_json"]["version"],
+    }
+    Path(updates_file).write_text(json.dumps(old_version, indent=4) + "\n")
