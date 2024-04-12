@@ -164,7 +164,7 @@ class Parser(object):
             The `app` parameter is an instance of the `APP` class. It represents an application that needs
         to be patched.
         """
-        is_new, version = self.is_new_cli(self.config.temp_folder.joinpath(app.resource["cli"]))
+        is_new, version = self.is_new_cli(self.config.temp_folder.joinpath(app.resource["cli"]["file_name"]))
         if is_new:
             apk_arg = self.NEW_APK_ARG
             exp = "--force"
@@ -173,13 +173,13 @@ class Parser(object):
             exp = "--experimental"
         args = [
             self.CLI_JAR,
-            app.resource["cli"],
+            app.resource["cli"]["file_name"],
             apk_arg,
             app.download_file_name,
             self.PATCHES_ARG,
-            app.resource["patches"],
+            app.resource["patches"]["file_name"],
             self.INTEGRATIONS_ARG,
-            app.resource["integrations"],
+            app.resource["integrations"]["file_name"],
             self.OUTPUT_ARG,
             app.get_output_file_name(),
             self.KEYSTORE_ARG,
