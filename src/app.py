@@ -36,7 +36,7 @@ class APP(object):
         self.patches_json_dl = config.env.str(f"{app_name}_PATCHES_JSON_DL".upper(), self.patches_dl)
         self.exclude_request: list[str] = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
         self.include_request: list[str] = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])
-        self.resource: dict[str, str] = {}
+        self.resource: dict[str, dict[str, str]] = {}
         self.no_of_patches: int = 0
         self.keystore_name = config.env.str(f"{app_name}_KEYSTORE_FILE_NAME".upper(), config.global_keystore_name)
         self.archs_to_build = config.env.list(f"{app_name}_ARCHS_TO_BUILD".upper(), config.global_archs_to_build)
@@ -91,7 +91,7 @@ class APP(object):
         return ", ".join([f"{key}: {value}" for key, value in attrs.items()])
 
     @staticmethod
-    def download(url: str, config: RevancedConfig, assets_filter: str, file_name: str = "") -> str:
+    def download(url: str, config: RevancedConfig, assets_filter: str, file_name: str = "") -> tuple[str, str]:
         """The `download` function downloads a file from a given URL & filters the assets based on a given filter.
 
         Parameters
@@ -118,17 +118,18 @@ class APP(object):
         from src.downloader.download import Downloader
 
         url = url.strip()
+        tag = "latest"
         if url.startswith("https://github"):
             from src.downloader.github import Github
 
-            url = Github.patch_resource(url, assets_filter, config)
+            tag, url = Github.patch_resource(url, assets_filter, config)
         elif url.startswith("local://"):
-            return url.split("/")[-1]
+            return tag, url.split("/")[-1]
         if not file_name:
             extension = pathlib.Path(url).suffix
             file_name = APP.generate_filename(url) + extension
         Downloader(config).direct_download(url, file_name)
-        return file_name
+        return tag, file_name
 
     def download_patch_resources(self: Self, config: RevancedConfig) -> None:
         """The function `download_patch_resources` downloads various resources req. for patching.
@@ -158,7 +159,11 @@ class APP(object):
             # Retrieve results from completed tasks
             for resource_name, future in futures.items():
                 try:
-                    self.resource[resource_name] = future.result()
+                    tag, file_name = future.result()
+                    self.resource[resource_name] = {
+                        "file_name": file_name,
+                        "version": tag,
+                    }
                 except BuilderError as e:
                     msg = "Failed to download resource."
                     raise PatchingFailedError(msg) from e

@@ -57,13 +57,10 @@ class Github(Downloader):
         tag_position = 3
         if len(path_segments) > tag_position and path_segments[3] == "latest-prerelease":
             logger.info(f"Including pre-releases/beta for {github_repo_name} selection.")
-            latest_tag = str(latest(f"{github_repo_owner}/{github_repo_name}", output_format="tag", pre_ok=True))
-            release_tag = f"tags/{latest_tag}"
+            pre_ok = True
         else:
-            release_tag = next(
-                (f"tags/{path_segments[i + 1]}" for i, segment in enumerate(path_segments) if segment == "tag"),
-                "latest",
-            )
+            pre_ok = False
+        release_tag = str(latest(f"{github_repo_owner}/{github_repo_name}", output_format="tag", pre_ok=pre_ok))
         return github_repo_owner, github_repo_name, release_tag
 
     @staticmethod
@@ -99,7 +96,8 @@ class Github(Downloader):
         return ""
 
     @staticmethod
-    def patch_resource(repo_url: str, assets_filter: str, config: RevancedConfig) -> str:
+    def patch_resource(repo_url: str, assets_filter: str, config: RevancedConfig) -> tuple[str, str]:
         """Fetch patch resource from repo url."""
-        repo_owner, repo_name, tag = Github._extract_repo_owner_and_tag(repo_url)
-        return Github._get_release_assets(repo_owner, repo_name, tag, assets_filter, config)
+        repo_owner, repo_name, latest_tag = Github._extract_repo_owner_and_tag(repo_url)
+        tag = f"tags/{latest_tag}"
+        return latest_tag, Github._get_release_assets(repo_owner, repo_name, tag, assets_filter, config)
