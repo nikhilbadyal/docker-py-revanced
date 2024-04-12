@@ -123,6 +123,8 @@ class APP(object):
             from src.downloader.github import Github
 
             tag, url = Github.patch_resource(url, assets_filter, config)
+            if tag.startswith("tags/"):
+                tag = tag.split("/")[-1]
         elif url.startswith("local://"):
             return tag, url.split("/")[-1]
         if not file_name:
