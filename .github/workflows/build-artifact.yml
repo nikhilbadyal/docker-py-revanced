@@ -18,7 +18,7 @@ on:
       COMMIT_CHANGELOG:
         type: boolean
         required: false
-        default: false
+        default: true
       DEBUG_ENABLED:
         type: boolean
         description: 'Run the build with tmate debugging enabled.'
