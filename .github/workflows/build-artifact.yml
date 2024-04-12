@@ -104,6 +104,6 @@ jobs:
         with:
           branch: changelogs
           skip_checkout: true
-          file_pattern: changelog.md
+          file_pattern: 'changelog.md updates.json'
           commit_message: 🚀New Build
           push_options: '--force'

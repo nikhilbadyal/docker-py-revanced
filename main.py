@@ -11,7 +11,7 @@ from src.downloader.download import Downloader
 from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import check_java, delete_old_changelog
+from src.utils import check_java, delete_old_changelog, save_patch_info
 
 
 def get_app(config: RevancedConfig, app_name: str) -> APP:
@@ -42,6 +42,7 @@ def main() -> None:
             app.download_apk_for_patching(config)
             parser.include_exclude_patch(app, app_all_patches, patcher.patches_dict)
             logger.info(app)
+            save_patch_info(app)
             parser.patch_app(app)
         except AppNotFoundError as e:
             logger.info(e)
