@@ -74,26 +74,27 @@ def format_changelog(name: str, response: dict[str, str]) -> dict[str, str]:
         "ResourceName": final_name,
         "Version": response["tag_name"],
         "Changelog": response["body"],
-        "Published On": response["published_at"],
+        "PublishedOn": response["published_at"],
     }
 
 
 def write_changelog_to_file() -> None:
     """The function `write_changelog_to_file` writes a given changelog json to a file."""
-    markdown_table = """| Resource Name | Version | Changelog | Published On |\n
-    "|---------|---------|-----------|--------------|\n"""
+    markdown_table = """| Resource Name | Version | Changelog | Published On | Build By\n
+    "|---------|---------|-----------|--------------|--------------|\n"""
     for app_data in changelogs.values():
         name_link = app_data["ResourceName"]
         version = app_data["Version"]
         changelog = app_data["Changelog"]
         published_at = app_data["PublishedOn"]
+        built_by = get_parent_repo()
 
         # Clean up changelog for markdown
         changelog = changelog.replace("\r\n", "<br>")
         changelog = changelog.replace("\n", "<br>")
 
         # Add row to the Markdown table string
-        markdown_table += f"| {name_link} | {version} | {changelog} | {published_at} |\n"
+        markdown_table += f"| {name_link} | {version} | {changelog} | {published_at} | {built_by}\n"
     with Path(changelog_file).open("w", encoding="utf_8") as file1:
         file1.write(markdown_table)
 
@@ -105,7 +106,8 @@ def get_parent_repo() -> str:
     -------
         the URL of the parent repository, which is "https://github.com/nikhilbadyal/docker-py-revanced".
     """
-    return "https://github.com/nikhilbadyal/docker-py-revanced"
+    project_url = "https://github.com/nikhilbadyal/docker-py-revanced"
+    return f"[Docker-py-revanced]({project_url})"
 
 
 def handle_request_response(response: Response, url: str) -> None:
