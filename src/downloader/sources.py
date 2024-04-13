@@ -68,6 +68,8 @@ apk_sources = {
     "tumblr": f"{APK_MIRROR_BASE_APK_URL}/tumblr-inc/tumblr/",
     "fitnesspal": f"{APK_MIRROR_BASE_APK_URL}/myfitnesspal-inc/calorie-counter-myfitnesspal/",
     "facebook": f"{APK_MIRROR_BASE_APK_URL}/facebook-2/facebook/",
+    "lemmy-sync": f"{APK_MIRROR_BASE_APK_URL}/sync-apps-ltd/sync-for-lemmy/",
+    "xiaomi-wearable": f"{APK_MIRROR_BASE_APK_URL}/beijing-xiaomi-mobile-software-co-ltd/mi-wear-小米穿戴/",
     "my-expenses": UPTODOWN_BASE_URL.format("my-expenses"),
     "spotify": UPTODOWN_BASE_URL.format("spotify"),
     "joey": UPTODOWN_BASE_URL.format("joey-for-reddit"),

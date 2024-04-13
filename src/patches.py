@@ -72,6 +72,7 @@ class Patches(object):
         "com.tumblr": "tumblr",
         "com.myfitnesspal.android": "fitnesspal",
         "com.facebook.katana": "facebook",
+        "io.syncapps.lemmy_sync": "lemmy-sync",
     }
 
     @staticmethod
