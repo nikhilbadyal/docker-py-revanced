@@ -216,6 +216,7 @@ You can use any of the following methods to build.
     - [tumblr](https://www.apkmirror.com/apk/tumblr-inc/tumblr/)
     - [fitnesspal](https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal/)
     - [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
+    - [lemmy-sync](https://www.apkmirror.com/apk/sync-apps-ltd/sync-for-lemmy/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
