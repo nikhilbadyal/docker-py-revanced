@@ -1,5 +1,6 @@
 """Utilities."""
 
+import inspect
 import json
 import re
 import subprocess
@@ -30,6 +31,7 @@ request_header = {
 }
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
+changelog_json_file = "changelog.json"
 request_timeout = 60
 session = Session()
 session.headers["User-Agent"] = request_header["User-Agent"]
@@ -80,10 +82,12 @@ def format_changelog(name: str, response: dict[str, str]) -> dict[str, str]:
 
 def write_changelog_to_file() -> None:
     """The function `write_changelog_to_file` writes a given changelog json to a file."""
-    markdown_table = """
-    | Resource Name | Version | Changelog | Published On | Build By|\n
-    |---------------|---------|-----------|--------------|---------|\n
-    """
+    markdown_table = inspect.cleandoc(
+        """
+    | Resource Name | Version | Changelog | Published On | Build By|
+    |---------------|---------|-----------|--------------|---------|
+    """,
+    )
     for app_data in changelogs.values():
         name_link = app_data["ResourceName"]
         version = app_data["Version"]
@@ -94,11 +98,13 @@ def write_changelog_to_file() -> None:
         # Clean up changelog for markdown
         changelog = changelog.replace("\r\n", "<br>")
         changelog = changelog.replace("\n", "<br>")
+        changelog = changelog.replace("|", "\\|")
 
         # Add row to the Markdown table string
-        markdown_table += f"| {name_link} | {version} | {changelog} | {published_at} | {built_by} |\n"
+        markdown_table += f"\n| {name_link} | {version} | {changelog} | {published_at} | {built_by} |"
     with Path(changelog_file).open("w", encoding="utf_8") as file1:
         file1.write(markdown_table)
+    Path(changelog_json_file).write_text(json.dumps(changelogs, indent=4) + "\n")
 
 
 def get_parent_repo() -> str:
