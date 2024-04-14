@@ -13,7 +13,7 @@ from pytz import timezone
 from src.config import RevancedConfig
 from src.downloader.sources import apk_sources
 from src.exceptions import BuilderError, DownloadError, PatchingFailedError
-from src.utils import slugify
+from src.utils import slugify, time_zone
 
 
 class APP(object):
@@ -81,7 +81,7 @@ class APP(object):
         -------
             a string that represents the output file name for an APK file.
         """
-        current_date = datetime.now(timezone("Asia/Kolkata"))
+        current_date = datetime.now(timezone(time_zone))
         formatted_date = current_date.strftime("%Y%b%d_%I%M%p").upper()
         return f"Re-{self.app_name}-{slugify(self.app_version)}-{formatted_date}-output.apk"
 

@@ -5,12 +5,15 @@ import json
 import re
 import subprocess
 import sys
+import time
+from datetime import datetime
 from json import JSONDecodeError
 from pathlib import Path
 from typing import Any
 
 import requests
 from loguru import logger
+from pytz import timezone
 from requests import Response, Session
 
 from src.downloader.sources import APK_MIRROR_APK_CHECK
@@ -37,6 +40,7 @@ session = Session()
 session.headers["User-Agent"] = request_header["User-Agent"]
 updates_file = "updates.json"
 changelogs: dict[str, dict[str, str]] = {}
+time_zone = "Asia/Kolkata"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
@@ -217,6 +221,12 @@ def contains_any_word(string: str, words: list[str]) -> bool:
     return any(word in string for word in words)
 
 
+def datetime_to_ms_epoch(dt: datetime) -> int:
+    """Returns millis since epoch."""
+    microseconds = time.mktime(dt.timetuple()) * 1000000 + dt.microsecond
+    return int(round(microseconds / float(1000)))
+
+
 def save_patch_info(app: Any) -> None:
     """Save version info a patching resources used to a file."""
     try:
@@ -232,5 +242,7 @@ def save_patch_info(app: Any) -> None:
         "patches_version": app.resource["patches"]["version"],
         "cli_version": app.resource["cli"]["version"],
         "patches_json_version": app.resource["patches_json"]["version"],
+        "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(timezone(time_zone))),
+        "date_patched": datetime.now(timezone(time_zone)),
     }
-    Path(updates_file).write_text(json.dumps(old_version, indent=4) + "\n")
+    Path(updates_file).write_text(json.dumps(old_version, indent=4, default=str) + "\n")
