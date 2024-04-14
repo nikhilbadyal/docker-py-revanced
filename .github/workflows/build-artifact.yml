@@ -99,11 +99,11 @@ jobs:
           if-no-files-found: error
 
       - name: Commit Update file
-        if: ${{ inputs.COMMIT_CHANGELOG }}
+        if: ${{ inputs.COMMIT_CHANGELOG && !inputs.CI_TEST}}
         uses: stefanzweifel/git-auto-commit-action@master
         with:
           branch: changelogs
           skip_checkout: true
-          file_pattern: 'changelog.md updates.json'
+          file_pattern: 'changelog.md changelog.json updates.json'
           commit_message: 🚀New Build
           push_options: '--force'
