@@ -5,7 +5,7 @@ import hashlib
 import pathlib
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from typing import Self
+from typing import Any, Self
 
 from loguru import logger
 from pytz import timezone
@@ -90,6 +90,10 @@ class APP(object):
         attrs = vars(self)
         return ", ".join([f"{key}: {value}" for key, value in attrs.items()])
 
+    def for_dump(self: Self) -> dict[str, Any]:
+        """Convert the instance of this class to json."""
+        return self.__dict__
+
     @staticmethod
     def download(url: str, config: RevancedConfig, assets_filter: str, file_name: str = "") -> tuple[str, str]:
         """The `download` function downloads a file from a given URL & filters the assets based on a given filter.
@@ -113,7 +117,7 @@ class APP(object):
 
         Returns
         -------
-            a string, which is the file name of the downloaded file.
+            tuple of strings, which is the tag,file name of the downloaded file.
         """
         from src.downloader.download import Downloader
 

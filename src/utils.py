@@ -9,12 +9,15 @@ import time
 from datetime import datetime
 from json import JSONDecodeError
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import requests
 from loguru import logger
 from pytz import timezone
 from requests import Response, Session
+
+if TYPE_CHECKING:
+    from src.app import APP
 
 from src.downloader.sources import APK_MIRROR_APK_CHECK
 from src.downloader.utils import status_code_200
@@ -227,7 +230,7 @@ def datetime_to_ms_epoch(dt: datetime) -> int:
     return int(round(microseconds / float(1000)))
 
 
-def save_patch_info(app: Any) -> None:
+def save_patch_info(app: "APP") -> None:
     """Save version info a patching resources used to a file."""
     try:
         with Path(updates_file).open() as file:
@@ -237,12 +240,13 @@ def save_patch_info(app: Any) -> None:
         old_version = {}  # or any default value you want to assign
 
     old_version[app.app_name] = {
-        "version": app.app_version,
+        "app_version": app.app_version,
         "integrations_version": app.resource["integrations"]["version"],
         "patches_version": app.resource["patches"]["version"],
         "cli_version": app.resource["cli"]["version"],
         "patches_json_version": app.resource["patches_json"]["version"],
         "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(timezone(time_zone))),
         "date_patched": datetime.now(timezone(time_zone)),
+        "app_dump": app.for_dump(),
     }
     Path(updates_file).write_text(json.dumps(old_version, indent=4, default=str) + "\n")
