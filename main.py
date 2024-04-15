@@ -36,6 +36,7 @@ def main() -> None:
         logger.info(f"Trying to build {possible_app}")
         try:
             app = get_app(config, possible_app)
+            app.download_patch_resources(config)
             patcher = Patches(config, app)
             parser = Parser(patcher, config)
             app_all_patches = patcher.get_app_configs(app)

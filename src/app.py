@@ -43,7 +43,6 @@ class APP(object):
         self.options_file = config.env.str(f"{app_name}_OPTIONS_FILE".upper(), config.global_options_file)
         self.download_file_name = ""
         self.download_dl = config.env.str(f"{app_name}_DL".upper(), "")
-        self.download_patch_resources(config)
         self.download_source = config.env.str(f"{app_name}_DL_SOURCE".upper(), "")
         self.package_name = package_name
         self.old_key = config.env.bool(f"{app_name}_OLD_KEY".upper(), config.global_old_key)
