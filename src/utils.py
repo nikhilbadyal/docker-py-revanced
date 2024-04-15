@@ -20,7 +20,6 @@ if TYPE_CHECKING:
     from src.app import APP
 
 from src.downloader.sources import APK_MIRROR_APK_CHECK
-from src.downloader.utils import status_code_200
 from src.exceptions import ScrapingError
 
 default_build = [
@@ -35,6 +34,10 @@ request_header = {
     "Authorization": "Basic YXBpLWFwa3VwZGF0ZXI6cm01cmNmcnVVakt5MDRzTXB5TVBKWFc4",
     "Content-Type": "application/json",
 }
+default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
+default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
+default_patches_json = default_patches
+default_integrations = "https://github.com/revanced/revanced-integrations/releases/latest"
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
 changelog_json_file = "changelog.json"
@@ -49,6 +52,9 @@ integration_version_key = "integrations_version"
 patches_version_key = "patches_version"
 cli_version_key = "cli_version"
 patches_json_version_key = "patches_json_version"
+implement_method = "Please implement the method"
+status_code_200 = 200
+resource_folder = "apks"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
