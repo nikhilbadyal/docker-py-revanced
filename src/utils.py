@@ -44,6 +44,11 @@ session.headers["User-Agent"] = request_header["User-Agent"]
 updates_file = "updates.json"
 changelogs: dict[str, dict[str, str]] = {}
 time_zone = "Asia/Kolkata"
+app_version_key = "app_version"
+integration_version_key = "integrations_version"
+patches_version_key = "patches_version"
+cli_version_key = "cli_version"
+patches_json_version_key = "patches_json_version"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
@@ -240,11 +245,11 @@ def save_patch_info(app: "APP") -> None:
         old_version = {}  # or any default value you want to assign
 
     old_version[app.app_name] = {
-        "app_version": app.app_version,
-        "integrations_version": app.resource["integrations"]["version"],
-        "patches_version": app.resource["patches"]["version"],
-        "cli_version": app.resource["cli"]["version"],
-        "patches_json_version": app.resource["patches_json"]["version"],
+        app_version_key: app.app_version,
+        integration_version_key: app.resource["integrations"]["version"],
+        patches_version_key: app.resource["patches"]["version"],
+        cli_version_key: app.resource["cli"]["version"],
+        patches_json_version_key: app.resource["patches_json"]["version"],
         "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(timezone(time_zone))),
         "date_patched": datetime.now(timezone(time_zone)),
         "app_dump": app.for_dump(),
