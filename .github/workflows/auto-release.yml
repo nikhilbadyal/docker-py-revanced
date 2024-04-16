@@ -33,6 +33,11 @@ jobs:
         run: |
           echo "${{ secrets.ENVS }}" >> .env
 
+      - name: setup python
+        uses: actions/setup-python@main
+        with:
+          python-version: '3.12.3'
+
       - name: Install Requirements
         run: |
           python -m pip install --upgrade pip
