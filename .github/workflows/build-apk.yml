@@ -6,6 +6,11 @@ env:
 on:
   workflow_call:
     inputs:
+      GITHUB_UPLOAD:
+        description: "Upload to GitHub"
+        required: false
+        type: boolean
+        default: true
       TELEGRAM_NO_ROOT_UPLOAD:
         description: "Upload Non Rooted APKs to Telegram"
         required: false
@@ -15,6 +20,31 @@ on:
         description: "Upload Magisk Module from nikhilbadyal/revanced-magisk-module to Telegram"
         required: false
         type: boolean
+        default: false
+      APPRISE_NOTIFY:
+        description: "Use Apprise to Notify"
+        required: false
+        type: boolean
+        default: false
+      VIRUSTOTAL_SCAN:
+        description: "Scan apks with VirusTotal"
+        required: false
+        type: boolean
+        default: false
+      CLEANUP:
+        description: "Clear GitHub(Useful if Telegram upload is enabled)"
+        required: false
+        type: boolean
+        default: false
+      COMMIT_CHANGELOG:
+        description: "Update Changelog"
+        type: boolean
+        required: false
+        default: true
+      DEBUG_ENABLED:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled.'
+        required: false
         default: false
   workflow_dispatch:
     inputs:
