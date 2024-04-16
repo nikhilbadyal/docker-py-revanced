@@ -1,0 +1,46 @@
+name: Auto Build & Release
+env:
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+  HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}
+on:
+  schedule:
+    - cron: '0 * * * *'
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  release-check:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update Env for custom build
+        run: |
+          echo "${{ secrets.ENVS }}" >> .env
+      - name: Should build?
+        id: should_build
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          should_build=$(python check_resource_updates.py)
+          if [ "should_build" = "True" ]; then
+              echo "SHOULD_BUILD=1" >> $GITHUB_OUTPUT
+          else
+              echo "SHOULD_BUILD=0" >> $GITHUB_OUTPUT
+          fi
+    outputs:
+      SHOULD_BUILD: ${{ steps.should_build.outputs.SHOULD_BUILD }}
+
+  build-release:
+    permissions: write-all
+    needs: release-check
+    uses: ./.github/workflows/build-apk.yml
+    if: ${{ needs.release-check.outputs.SHOULD_BUILD == 1 }}
+    secrets: inherit
+    with:
+      TELEGRAM_NO_ROOT_UPLOAD: true
+      TELEGRAM_ROOT_UPLOAD: true

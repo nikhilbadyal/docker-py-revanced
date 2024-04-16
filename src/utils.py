@@ -55,6 +55,7 @@ patches_json_version_key = "patches_json_version"
 implement_method = "Please implement the method"
 status_code_200 = 200
 resource_folder = "apks"
+branch_name = "changelogs"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
