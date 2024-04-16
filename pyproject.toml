@@ -15,7 +15,8 @@ ignore = [
     "TRY301", #raise-within-try
     "PERF203", #try-except-in-loop
     "UP004", #useless-object-inheritance
-    "PLR0911" #too many returns
+    "PLR0911", #too many returns
+    "S310" # Audit URL open for permitted schemes.
 ]
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"

@@ -4,6 +4,18 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
   HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}
 on:
+  workflow_call:
+    inputs:
+      TELEGRAM_NO_ROOT_UPLOAD:
+        description: "Upload Non Rooted APKs to Telegram"
+        required: false
+        type: boolean
+        default: false
+      TELEGRAM_ROOT_UPLOAD:
+        description: "Upload Magisk Module from nikhilbadyal/revanced-magisk-module to Telegram"
+        required: false
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
       GITHUB_UPLOAD:

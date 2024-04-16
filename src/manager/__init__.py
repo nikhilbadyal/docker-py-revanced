@@ -1,0 +1,1 @@
+"""Release patch resource manager."""
