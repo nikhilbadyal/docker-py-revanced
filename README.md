@@ -259,6 +259,8 @@ You can use any of the following methods to build.
    ```ini
    PATCH_APPS=youtube,twitter,reddit
    ```
+   Tip - If for some reason you want to patch app but want to go through all this .env while running you can enter app
+   name in <img src="https://i.imgur.com/DwhBH9H.png" width="300" style="left"><br> to be patched box.
 5. <a id="existing-downloaded-apks"></a>If APKMirror or other apk sources are blocked in your region or script
    somehow is unable to download from apkmirror. You can download apk manually from any source. Place them in
    `/apks` directory and provide environment variable in `.env` file or in `ENVS` in `GitHub secrets`(Recommended)

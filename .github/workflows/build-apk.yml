@@ -88,6 +88,10 @@ on:
         description: 'Run the build with tmate debugging enabled.'
         required: false
         default: false
+      PREFERRED_PATCH_APPS:
+        description: "Apps to be patched. Overrides any env set"
+        required: false
+        type: string
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -98,6 +102,7 @@ jobs:
     with:
       COMMIT_CHANGELOG: ${{ inputs.COMMIT_CHANGELOG }}
       DEBUG_ENABLED: ${{ inputs.DEBUG_ENABLED }}
+      PREFERRED_PATCH_APPS: ${{ inputs.PREFERRED_PATCH_APPS }}
     secrets:
       ENVS: ${{ secrets.ENVS }}
       REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}

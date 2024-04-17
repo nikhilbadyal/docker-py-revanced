@@ -24,6 +24,10 @@ on:
         description: 'Run the build with tmate debugging enabled.'
         required: false
         default: false
+      PREFERRED_PATCH_APPS:
+        description: "Apps to be patched. Overrides any env set"
+        required: false
+        type: string
 
 jobs:
   build-apk:
@@ -40,6 +44,20 @@ jobs:
         run: |
           echo "${{ secrets.ENVS }}" >> .env
 
+      - name: Install Dot-Env
+        if: ${{ inputs.PREFERRED_PATCH_APPS }}
+        env:
+          PREFERRED_PATCH_APPS: ${{ inputs.PREFERRED_PATCH_APPS }}
+        run: |
+          pip install python-dotenv
+          pip install loguru
+
+      - name: Override Patch apps
+        if: ${{ inputs.PREFERRED_PATCH_APPS }}
+        env:
+          PREFERRED_PATCH_APPS: ${{ inputs.PREFERRED_PATCH_APPS }}
+        run: |
+          python -m scripts.prefered_apps
 
       - name: Inject Reddit Client ID
         env:
