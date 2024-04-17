@@ -66,3 +66,4 @@ jobs:
     with:
       TELEGRAM_NO_ROOT_UPLOAD: true
       TELEGRAM_ROOT_UPLOAD: true
+      PREFERRED_PATCH_APPS: ${{ needs.release-check.outputs.SHOULD_BUILD }}

@@ -41,6 +41,7 @@ def check_if_build_is_required() -> bool:
             }
             logger.info(f"New build can be triggered caused by {caused_by}")
             needs_to_repatched.append(app_name)
+    logger.info(f"{needs_to_repatched} are need to repatched.")
     if len(needs_to_repatched) > 0:
         print(",".join(needs_to_repatched))  # noqa: T201
         return True
