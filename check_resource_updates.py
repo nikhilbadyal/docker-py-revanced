@@ -14,6 +14,7 @@ def check_if_build_is_required() -> bool:
     env = Env()
     env.read_env()
     config = RevancedConfig(env)
+    needs_to_repatched = []
     for app_name in env.list("PATCH_APPS", default_build):
         logger.info(f"Checking {app_name}")
         app_obj = get_app(config, app_name)
@@ -39,9 +40,11 @@ def check_if_build_is_required() -> bool:
                 },
             }
             logger.info(f"New build can be triggered caused by {caused_by}")
-            print(True)  # noqa: FBT003,T201
-            return True
-    print(False)  # noqa: FBT003,T201
+            needs_to_repatched.append(app_name)
+    logger.info(f"{needs_to_repatched} are need to repatched.")
+    if len(needs_to_repatched) > 0:
+        print(",".join(needs_to_repatched))  # noqa: T201
+        return True
     return False
 
 
