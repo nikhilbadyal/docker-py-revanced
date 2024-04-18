@@ -6,12 +6,14 @@ import re
 import subprocess
 import sys
 import time
+import urllib.error
+import urllib.request
 from datetime import datetime
-from json import JSONDecodeError
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import requests
+from environs import Env
 from loguru import logger
 from pytz import timezone
 from requests import Response, Session
@@ -45,6 +47,7 @@ request_timeout = 60
 session = Session()
 session.headers["User-Agent"] = request_header["User-Agent"]
 updates_file = "updates.json"
+updates_file_url = "https://raw.githubusercontent.com/{github_repository}/{branch_name}/{updates_file}"
 changelogs: dict[str, dict[str, str]] = {}
 time_zone = "Asia/Kolkata"
 app_version_key = "app_version"
@@ -99,7 +102,7 @@ def format_changelog(name: str, response: dict[str, str]) -> dict[str, str]:
     }
 
 
-def write_changelog_to_file() -> None:
+def write_changelog_to_file(updates_info: dict[str, Any]) -> None:
     """The function `write_changelog_to_file` writes a given changelog json to a file."""
     markdown_table = inspect.cleandoc(
         """
@@ -124,6 +127,7 @@ def write_changelog_to_file() -> None:
     with Path(changelog_file).open("w", encoding="utf_8") as file1:
         file1.write(markdown_table)
     Path(changelog_json_file).write_text(json.dumps(changelogs, indent=4) + "\n")
+    Path(updates_file).write_text(json.dumps(updates_info, indent=4, default=str) + "\n")
 
 
 def get_parent_repo() -> str:
@@ -242,16 +246,24 @@ def datetime_to_ms_epoch(dt: datetime) -> int:
     return int(round(microseconds / float(1000)))
 
 
-def save_patch_info(app: "APP") -> None:
-    """Save version info a patching resources used to a file."""
+def load_older_updates(env: Env) -> dict[str, Any]:
+    """Load older updated from updates.json."""
+    update_file_url = updates_file_url.format(
+        github_repository=env.str("GITHUB_REPOSITORY"),
+        branch_name=branch_name,
+        updates_file=updates_file,
+    )
     try:
-        with Path(updates_file).open() as file:
-            old_version = json.load(file)
-    except (JSONDecodeError, FileNotFoundError):
-        # Handle the case when the file is empty
-        old_version = {}  # or any default value you want to assign
+        with urllib.request.urlopen(update_file_url) as url:
+            return json.load(url)  # type: ignore[no-any-return]
+    except urllib.error.URLError as e:
+        logger.error(f"Failed to retrieve update file: {e}")
+        return {}
 
-    old_version[app.app_name] = {
+
+def save_patch_info(app: "APP", updates_info: dict[str, Any]) -> dict[str, Any]:
+    """Save version info a patching resources used to a file."""
+    updates_info[app.app_name] = {
         app_version_key: app.app_version,
         integration_version_key: app.resource["integrations"]["version"],
         patches_version_key: app.resource["patches"]["version"],
@@ -261,4 +273,4 @@ def save_patch_info(app: "APP") -> None:
         "date_patched": datetime.now(timezone(time_zone)),
         "app_dump": app.for_dump(),
     }
-    Path(updates_file).write_text(json.dumps(old_version, indent=4, default=str) + "\n")
+    return updates_info
