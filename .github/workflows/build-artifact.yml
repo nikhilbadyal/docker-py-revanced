@@ -43,6 +43,7 @@ jobs:
       - name: Update Env for custom build
         run: |
           echo "${{ secrets.ENVS }}" >> .env
+          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> .env
 
       - name: Install Dot-Env
         if: ${{ inputs.PREFERRED_PATCH_APPS }}

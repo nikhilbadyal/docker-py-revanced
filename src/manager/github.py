@@ -10,15 +10,17 @@ from environs import Env
 
 from src.app import APP
 from src.manager.release_manager import ReleaseManager
-from src.utils import branch_name, updates_file
+from src.utils import branch_name, updates_file, updates_file_url
 
 
 class GitHubManager(ReleaseManager):
     """Release manager with GitHub."""
 
     def __init__(self: Self, env: Env) -> None:
-        self.update_file_url = (
-            f"https://raw.githubusercontent.com/{env.str('GITHUB_REPOSITORY')}/{branch_name}/{updates_file}"
+        self.update_file_url = updates_file_url.format(
+            github_repository=env.str("GITHUB_REPOSITORY"),
+            branch_name=branch_name,
+            updates_file=updates_file,
         )
 
     def get_last_version(self: Self, app: APP, resource_name: str) -> str:
