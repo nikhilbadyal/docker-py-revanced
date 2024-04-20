@@ -45,7 +45,12 @@ jobs:
           echo "${{ secrets.ENVS }}" >> .env
           echo "GITHUB_REPOSITORY=${{ github.repository }}" >> .env
 
-      - name: Install Dot-Env
+      - name: Setup python
+        uses: actions/setup-python@main
+        with:
+          python-version: '3.12.3'
+
+      - name: Install Requirements
         if: ${{ inputs.PREFERRED_PATCH_APPS }}
         env:
           PREFERRED_PATCH_APPS: ${{ inputs.PREFERRED_PATCH_APPS }}

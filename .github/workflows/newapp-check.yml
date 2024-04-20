@@ -19,7 +19,7 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@main
 
-      - name: setup python
+      - name: Setup python
         uses: actions/setup-python@main
         with:
           python-version: '3.12.3'

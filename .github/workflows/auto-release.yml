@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "${{ secrets.ENVS }}" >> .env
 
-      - name: setup python
+      - name: Setup python
         uses: actions/setup-python@main
         with:
           python-version: '3.12.3'
