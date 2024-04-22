@@ -3,7 +3,7 @@
 from typing import Self
 
 from loguru import logger
-from packaging.version import Version
+from packaging.version import InvalidVersion, Version
 
 from src.app import APP
 
@@ -18,4 +18,8 @@ class ReleaseManager(object):
     def should_trigger_build(self: Self, old_version: str, new_version: str) -> bool:
         """Function to check if we should trigger a build."""
         logger.info(f"New version {new_version}, Old version {old_version}")
-        return Version(new_version) > Version(old_version)  # type: ignore[no-any-return]
+        try:
+            return Version(new_version) > Version(old_version)  # type: ignore[no-any-return]
+        except InvalidVersion:
+            logger.error("unable to parse version.")
+        return False
