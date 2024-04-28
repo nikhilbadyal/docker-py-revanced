@@ -251,15 +251,15 @@ def datetime_to_ms_epoch(dt: datetime) -> int:
 
 def load_older_updates(env: Env) -> dict[str, Any]:
     """Load older updated from updates.json."""
-    update_file_url = updates_file_url.format(
-        github_repository=env.str("GITHUB_REPOSITORY"),
-        branch_name=branch_name,
-        updates_file=updates_file,
-    )
     try:
+        update_file_url = updates_file_url.format(
+            github_repository=env.str("GITHUB_REPOSITORY"),
+            branch_name=branch_name,
+            updates_file=updates_file,
+        )
         with urllib.request.urlopen(update_file_url) as url:
             return json.load(url)  # type: ignore[no-any-return]
-    except urllib.error.URLError as e:
+    except Exception as e:  # noqa: BLE001
         logger.error(f"Failed to retrieve update file: {e}")
         return {}
 
