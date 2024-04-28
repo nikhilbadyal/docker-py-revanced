@@ -27,12 +27,12 @@ def check_if_build_is_required() -> bool:
             old_integration_version,
             old_integration_source,
             app_obj.resource["integrations"]["version"],
-            app_obj.patches_dl,
+            app_obj.integrations_dl,
         ) or GitHubManager(env).should_trigger_build(
             old_patches_version,
             old_patches_source,
             app_obj.resource["patches"]["version"],
-            app_obj.integrations_dl,
+            app_obj.patches_dl,
         ):
             caused_by = {
                 "app_name": app_name,
