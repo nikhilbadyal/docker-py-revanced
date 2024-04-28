@@ -59,6 +59,9 @@ implement_method = "Please implement the method"
 status_code_200 = 200
 resource_folder = "apks"
 branch_name = "changelogs"
+app_dump_key = "app_dump"
+patches_dl_key = "patches_dl"
+integrations_dl_key = "integrations_dl"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:

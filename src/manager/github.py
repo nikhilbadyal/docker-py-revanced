@@ -10,7 +10,7 @@ from environs import Env
 
 from src.app import APP
 from src.manager.release_manager import ReleaseManager
-from src.utils import branch_name, updates_file, updates_file_url
+from src.utils import app_dump_key, branch_name, updates_file, updates_file_url
 
 
 class GitHubManager(ReleaseManager):
@@ -33,4 +33,16 @@ class GitHubManager(ReleaseManager):
                 data = json.load(url)
         if data.get(app.app_name):
             return str(data[app.app_name][resource_name])
+        return "0"
+
+    def get_last_version_source(self: Self, app: APP, resource_name: str) -> str:
+        """Get last patched version."""
+        if os.getenv("DRY_RUN", default=None):
+            with Path(updates_file).open() as url:
+                data = json.load(url)
+        else:
+            with urllib.request.urlopen(self.update_file_url) as url:
+                data = json.load(url)
+        if data.get(app.app_name):
+            return str(data[app.app_name][app_dump_key][resource_name])
         return "0"
