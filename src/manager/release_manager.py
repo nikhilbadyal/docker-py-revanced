@@ -15,8 +15,11 @@ class ReleaseManager(object):
         """Get last patched version."""
         raise NotImplementedError
 
-    def should_trigger_build(self: Self, old_version: str, new_version: str) -> bool:
+    def should_trigger_build(self: Self, old_version: str, old_source: str, new_version: str, new_source: str) -> bool:
         """Function to check if we should trigger a build."""
+        if old_source != new_source:
+            logger.info(f"Trigger build because old source {old_source}, is different from new source {new_source}")
+            return True
         logger.info(f"New version {new_version}, Old version {old_version}")
         try:
             return Version(new_version) > Version(old_version)  # type: ignore[no-any-return]
