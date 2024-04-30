@@ -1,4 +1,4 @@
-FROM nikhilbadyaldevelops/docker-py-revanced-base
+FROM nikhilbadyal/docker-py-revanced-base
 
 # Copy and install Python dependencies
 COPY requirements.txt .

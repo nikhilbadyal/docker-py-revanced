@@ -16,7 +16,7 @@ jobs:
     uses: nikhilbadyal/ghactions/.github/workflows/dockerhub-push.yml@main
     if: github.repository == 'nikhilbadyal/docker-py-revanced'
     with:
-      IMAGE_TAG: nikhilbadyaldevelops/docker-py-revanced-base:latest
+      IMAGE_TAG: ${{ github.repository }}-base:latest
       FILE: Dockerfile-base
     secrets:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
