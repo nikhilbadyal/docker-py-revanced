@@ -76,7 +76,7 @@ You can use any of the following methods to build.
        ```
     2. Run script with
        ```shell
-       docker run -v "$(pwd)"/apks:/app/apks/  nikhilbadyaldevelops/docker-py-revanced
+       docker run -v "$(pwd)"/apks:/app/apks/  nikhilbadyal/docker-py-revanced
        ```
        You can pass the below environment variables (See notes) with the `-e` flag or use the `--env-file`
        [flag](https://docs.docker.com/engine/reference/commandline/run/#options).

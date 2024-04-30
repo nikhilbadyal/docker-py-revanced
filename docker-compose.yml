@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   revanced:
-    image: nikhilbadyaldevelops/docker-py-revanced
+    image: nikhilbadyal/docker-py-revanced
     container_name: revanced-builder
     env_file:
       - .env
