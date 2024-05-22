@@ -27,11 +27,77 @@
     ]
   },
   {
+    "patchName": "Overlay buttons",
+    "options": [
+      {
+        "key": "OutlineIcon",
+        "value": true
+      },
+      {
+        "key": "BottomMargin",
+        "value": "0.0dip"
+      }
+    ]
+  },
+  {
+    "patchName": "Shorts overlay buttons",
+    "options": [
+      {
+        "key": "IconType",
+        "value": "TikTok"
+      }
+    ]
+  },
+  {
+    "patchName": "SponsorBlock",
+    "options": [
+      {
+        "key": "OutlineIcon",
+        "value": true
+      }
+    ]
+  },
+  {
+    "patchName": "Visual preferences icons",
+    "options": [
+      {
+        "key": "MainSettings",
+        "value": true
+      },
+      {
+        "key": "ExtendedSettings",
+        "value": true
+      },
+      {
+        "key": "ExtendedIcon",
+        "value": "Extension"
+      }
+    ]
+  },
+  {
+    "patchName": "Settings",
+    "options": [
+      {
+        "key": "InsertPosition",
+        "value": "About"
+      }
+    ]
+  },
+  {
     "patchName": "Custom double tap length",
     "options": [
       {
         "key": "DoubleTapLengthArrays",
         "value": "3, 5, 10, 15, 20, 30, 60, 120, 180"
+      }
+    ]
+  },
+  {
+    "patchName": "Tuck away preferences",
+    "options": [
+      {
+        "key": "SettingElements",
+        "value": "Data saving, Video quality preferences, Manage all history, Privacy, Try experimental new features, Purchases and memberships, Billing & payments, Connected apps, Live chat, Captions, About"
       }
     ]
   },
@@ -45,11 +111,20 @@
     ]
   },
   {
+    "patchName": "Custom branding wordmark header",
+    "options": [
+      {
+        "key": "header",
+        "value": "yt_premium_wordmark_header"
+      }
+    ]
+  },
+  {
     "patchName": "Premium heading",
     "options": [
       {
         "key": "UsePremiumHeading",
-        "value": false
+        "value": true
       }
     ]
   },
