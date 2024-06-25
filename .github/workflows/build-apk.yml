@@ -4,6 +4,52 @@ env:
   COMPOSE_DOCKER_CLI_BUILD: 1
   HAVE_TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID != '' }}
 on:
+  workflow_call:
+    inputs:
+      GITHUB_UPLOAD:
+        description: "Upload to GitHub"
+        required: false
+        type: boolean
+        default: true
+      TELEGRAM_NO_ROOT_UPLOAD:
+        description: "Upload Non Rooted APKs to Telegram"
+        required: false
+        type: boolean
+        default: false
+      TELEGRAM_ROOT_UPLOAD:
+        description: "Upload Magisk Module from nikhilbadyal/revanced-magisk-module to Telegram"
+        required: false
+        type: boolean
+        default: false
+      APPRISE_NOTIFY:
+        description: "Use Apprise to Notify"
+        required: false
+        type: boolean
+        default: false
+      VIRUSTOTAL_SCAN:
+        description: "Scan apks with VirusTotal"
+        required: false
+        type: boolean
+        default: false
+      CLEANUP:
+        description: "Clear GitHub(Useful if Telegram upload is enabled)"
+        required: false
+        type: boolean
+        default: false
+      COMMIT_CHANGELOG:
+        description: "Update Changelog"
+        type: boolean
+        required: false
+        default: true
+      DEBUG_ENABLED:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled.'
+        required: false
+        default: false
+      PREFERRED_PATCH_APPS:
+        description: "Apps to be patched. Overrides any env set"
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       GITHUB_UPLOAD:
@@ -40,12 +86,16 @@ on:
         description: "Update Changelog"
         type: boolean
         required: false
-        default: false
+        default: true
       DEBUG_ENABLED:
         type: boolean
         description: 'Run the build with tmate debugging enabled.'
         required: false
         default: false
+      PREFERRED_PATCH_APPS:
+        description: "Apps to be patched. Overrides any env set"
+        required: false
+        type: string
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
@@ -56,6 +106,7 @@ jobs:
     with:
       COMMIT_CHANGELOG: ${{ inputs.COMMIT_CHANGELOG }}
       DEBUG_ENABLED: ${{ inputs.DEBUG_ENABLED }}
+      PREFERRED_PATCH_APPS: ${{ inputs.PREFERRED_PATCH_APPS }}
     secrets:
       ENVS: ${{ secrets.ENVS }}
       REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
@@ -76,7 +127,6 @@ jobs:
         id: get-date
         run: |
           echo "date=$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
-          curl https://github.com/nikhilbadyal/docker-py-revanced/blob/changelogs/changelog.md > changelog.md
 
       - name: Delete Older Releases
         uses: nikhilbadyal/ghaction-rm-releases@v0.0.5

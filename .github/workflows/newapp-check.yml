@@ -19,10 +19,10 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@main
 
-      - name: setup python
+      - name: Setup python
         uses: actions/setup-python@main
         with:
-          python-version: '3.11.5'
+          python-version: '3.12.3'
 
       - name: Install Requirements
         run: |

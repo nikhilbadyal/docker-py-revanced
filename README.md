@@ -1,6 +1,6 @@
 # 🤓Docker-Py-ReVanced
 
-A little python script that will help you in building Revanced [apps](#any-patch-apps) and sharing them anywhere.
+A little python script that will help you in building [Revanced](https://revanced.app/) [apps](#any-patch-apps) and sharing them anywhere.
 
 **`Note`** - If you are a root user and want magisk module (Extended). Get them [here](https://github.com/nikhilbadyal/revanced-magisk-module)
 
@@ -216,6 +216,7 @@ You can use any of the following methods to build.
     - [tumblr](https://www.apkmirror.com/apk/tumblr-inc/tumblr/)
     - [fitnesspal](https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal/)
     - [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
+    - [lemmy-sync](https://www.apkmirror.com/apk/sync-apps-ltd/sync-for-lemmy/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
@@ -234,9 +235,9 @@ You can use any of the following methods to build.
    3. APKSOS - Supports downloading any available version
        1. Link Format - https://apksos.com/download-app/<package-name>
        2. Example Link - https://apksos.com/download-app/com.expensemanager
-   4. APKPURE - Supports downloading only latest version
-       1. Link Format - https://d.apkpure.com/b/APK/<package-name>?version=latest
-       2. Example Link - https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
+   4. APKPURE - Supports downloading any available version
+       1. Link Format - https://apkpure.net/-/<package-name>
+       2. Example Link - https://apkpure.net/-/com.google.android.youtube
    5. APKMonk - Supports downloading any available version
        1. Link Format - https://www.apkmonk.com/app/<package-name>/
        2. Example Link - https://www.apkmonk.com/app/<package-name>/
@@ -258,6 +259,8 @@ You can use any of the following methods to build.
    ```ini
    PATCH_APPS=youtube,twitter,reddit
    ```
+   Tip - If for some reason you want to patch app but want to go through all this .env while running you can enter app
+   name in <img src="https://i.imgur.com/DwhBH9H.png" width="300" style="left"><br> to be patched box.
 5. <a id="existing-downloaded-apks"></a>If APKMirror or other apk sources are blocked in your region or script
    somehow is unable to download from apkmirror. You can download apk manually from any source. Place them in
    `/apks` directory and provide environment variable in `.env` file or in `ENVS` in `GitHub secrets`(Recommended)

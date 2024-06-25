@@ -1,5 +1,9 @@
 [tool.ruff]
 line-length = 120
+target-version = "py311"
+fix = true
+show-fixes = true
+[tool.ruff.lint]
 select = [ "ALL"]
 ignore = [
     "D401",
@@ -11,12 +15,10 @@ ignore = [
     "TRY301", #raise-within-try
     "PERF203", #try-except-in-loop
     "UP004", #useless-object-inheritance
-    "PLR0911" #too many returns
+    "PLR0911", #too many returns
+    "S310" # Audit URL open for permitted schemes.
 ]
-target-version = "py311"
-fix = true
-show-fixes = true
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "numpy"
 
 [tool.docformatter]

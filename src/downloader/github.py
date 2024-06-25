@@ -73,7 +73,7 @@ class Github(Downloader):
         release_tag: str,
         asset_filter: str,
         config: RevancedConfig,
-    ) -> str:
+    ) -> tuple[str, str]:
         """Get assets from given tag."""
         api_url = f"https://api.github.com/repos/{github_repo_owner}/{github_repo_name}/releases/{release_tag}"
         headers = {
@@ -95,11 +95,11 @@ class Github(Downloader):
             assets_name = asset["name"]
             if match := filter_pattern.search(assets_url):
                 logger.debug(f"Found {assets_name} to be downloaded from {assets_url}")
-                return match.group()
-        return ""
+                return response.json()["tag_name"], match.group()
+        return "", ""
 
     @staticmethod
-    def patch_resource(repo_url: str, assets_filter: str, config: RevancedConfig) -> str:
+    def patch_resource(repo_url: str, assets_filter: str, config: RevancedConfig) -> tuple[str, str]:
         """Fetch patch resource from repo url."""
-        repo_owner, repo_name, tag = Github._extract_repo_owner_and_tag(repo_url)
-        return Github._get_release_assets(repo_owner, repo_name, tag, assets_filter, config)
+        repo_owner, repo_name, latest_tag = Github._extract_repo_owner_and_tag(repo_url)
+        return Github._get_release_assets(repo_owner, repo_name, latest_tag, assets_filter, config)
