@@ -1,1 +1,32 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.3.8)",
+        "Version": "V1.3.8",
+        "Changelog": "## What's Changed\r\n* Support dex versions upto 40 #100 \r\n* Fix: Correct order of resource config flags: https://github.com/REAndroid/ARSCLib/commit/3c31e3e37f19227b7957621a6c82dc7385da6c64\r\n* Fix: Keep original namespace prefix for non android schemas: https://github.com/REAndroid/ARSCLib/commit/0a401700ce4568f13f7c2a39ec91ac8656409a91\r\n* Support multiple document elements on xml: https://github.com/REAndroid/ARSCLib/commit/db925e86d4cbf51497f35f41a6aae33289a4e9fc\r\n* Smali decompiler flag to exclude debug information: #102 by @Kirlif and: https://github.com/REAndroid/smali-lib/commit/39511f916fa845dae344a2f59a66bccdaba8de93\r\n* Dump and build dex markers: https://github.com/REAndroid/smali-lib/commit/8d2a0c479190f657cb59f64a74835ab430fb6326",
+        "PublishedOn": "2024-05-01T21:44:39Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v4.6.1)",
+        "Version": "v4.6.1",
+        "Changelog": "- build: update dependencies\r\n- feat: rollback the default values of keystore alias and password to CLI v3.0 (compatible with old keystore)\r\n- rollback: move ReVanced Library subproject to another repository\r\n\r\n\u203b support `--unsigned` and `--rip-lib` commands #[j-hc/revanced-cli](https://github.com/j-hc/revanced-cli)",
+        "PublishedOn": "2024-05-08T17:59:05Z"
+    },
+    "inotia00/revanced-integrations": {
+        "ResourceName": "[inotia00/revanced-integrations](https://github.com/inotia00/revanced-integrations/releases/tag/v1.11.1-dev.1)",
+        "Version": "v1.11.1-dev.1",
+        "Changelog": "bump v1.11.1-dev.1",
+        "PublishedOn": "2024-06-27T15:09:34Z"
+    },
+    "inotia00/revanced-patches": {
+        "ResourceName": "[inotia00/revanced-patches](https://github.com/inotia00/revanced-patches/releases/tag/v4.10.1-dev.1)",
+        "Version": "v4.10.1-dev.1",
+        "Changelog": "YouTube\r\n==\r\n- feat(YouTube): integrate `Hide animated button background`, `Hide double tap to like animations` patch into the `Shorts components` patch\r\n- feat(YouTube): integrate `Hide double tap overlay filter` patch into the `Player components` patch\r\n- feat(YouTube/Custom Shorts action buttons): add `YouTube` (unchanged) to selectable patch options\r\n- feat(YouTube/Hide feed components): update known issue (Close https://github.com/inotia00/ReVanced_Extended/issues/2195)\r\n- feat(YouTube/Settings): restyle search view https://github.com/inotia00/revanced-patches/pull/58\r\n- feat(YouTube/Settings): show AlertDialog when changing some settings value (matches ReVanced)\r\n- feat(YouTube/Shorts components): add `Double-tap animation` settings\r\n- feat(YouTube/Toolbar components): add `Hide image search button` settings https://github.com/inotia00/ReVanced_Extended/issues/2188\r\n- feat(YouTube/Visual preferences icons): RVX settings icon now changes even when the `Custom branding icon for YouTube` patch option is set to `YouTube` (unchanged)\r\n- fix(YouTube/Custom header for YouTube): custom headers do not change (A/B tests)\r\n- fix(YouTube/Hide feed components): detect if a keyword filter hides all videos https://github.com/ReVanced/revanced-patches/pull/3365\r\n- fix(YouTube/Shorts components): `Hide sound button` doesn't work (A/B tests) https://github.com/inotia00/ReVanced_Extended/issues/2193\r\n- fix(YouTube/Theme): reverts background color of `More comments` icon in live chats https://github.com/inotia00/ReVanced_Extended/issues/2197\r\n- feat(YouTube/Translations): update translation\r\n\r\n\r\nYouTube Music\r\n==\r\n- feat(YouTube Music): add support versions `7.06.54` ~ `7.07.51`\r\n- feat(YouTube Music): integrate `Hide double tap overlay filter` patch into the `Player components` patch\r\n- feat(YouTube Music/Translations): update translation\r\n\r\n\r\nReddit\r\n==\r\n- fix(Reddit/Change version code): `Version code` option is not available in RVX Manager\r\n\r\n\r\nAnnouncement\r\n==\r\n- **There is a change in `options.json`. If you see warnings related to patch options, remove the `options.json` file or `Patch options`.**\r\n- `Restore old seekbar thumbnails` setting has been deprecated in `YouTube v19.17.41+`.\r\n- If you want to use the `Restore old seekbar thumbnails` setting, just patch `YouTube v18.29.38 ~ v19.16.39`.\r\n- Reddit 2024.18.0+ can only be patched via [CLI](https://github.com/inotia00/revanced-documentation/blob/main/docs/latest-reddit-patch-info.md).\r\n- Compatible ReVanced Manager: [RVX Manager v1.20.4 (fork)](https://github.com/inotia00/revanced-manager/releases/tag/v1.20.4), [RVX Manager v1.18.1 (fork)](https://github.com/inotia00/revanced-manager/releases/tag/v1.18.1)\r\n\r\n\r\nContribute to translation\r\n==\r\n- [YouTube](https://crowdin.com/project/revancedextended)\r\n- [YT Music](https://crowdin.com/project/revancedmusicextended)",
+        "PublishedOn": "2024-06-27T15:09:39Z"
+    }
+}
