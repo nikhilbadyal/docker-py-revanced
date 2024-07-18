@@ -19,16 +19,14 @@ class UptoDown(Downloader):
         """Extract download link from uptodown url."""
         r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
         handle_request_response(r, page)
-        download_page_url = page.replace("/download", "/post-download")
-        download_page_html = requests.get(download_page_url, headers=request_header, timeout=request_timeout).text
-        soup = BeautifulSoup(download_page_html, bs4_parser)
-        post_download = soup.find("div", class_="post-download")
+        soup = BeautifulSoup(r.text, bs4_parser)
+        detail_download_button = soup.find("button", id="detail-download-button")
 
-        if not isinstance(post_download, Tag):
+        if not isinstance(detail_download_button, Tag):
             msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=page)
 
-        data_url = post_download.get("data-url")
+        data_url = detail_download_button.get("data-url")
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
         file_name = f"{app}.apk"
         self._download(download_url, file_name)
