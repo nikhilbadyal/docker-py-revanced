@@ -1,1 +1,44 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.3.8)",
+        "Version": "V1.3.8",
+        "Changelog": "## What's Changed\r\n* Support dex versions upto 40 #100 \r\n* Fix: Correct order of resource config flags: https://github.com/REAndroid/ARSCLib/commit/3c31e3e37f19227b7957621a6c82dc7385da6c64\r\n* Fix: Keep original namespace prefix for non android schemas: https://github.com/REAndroid/ARSCLib/commit/0a401700ce4568f13f7c2a39ec91ac8656409a91\r\n* Support multiple document elements on xml: https://github.com/REAndroid/ARSCLib/commit/db925e86d4cbf51497f35f41a6aae33289a4e9fc\r\n* Smali decompiler flag to exclude debug information: #102 by @Kirlif and: https://github.com/REAndroid/smali-lib/commit/39511f916fa845dae344a2f59a66bccdaba8de93\r\n* Dump and build dex markers: https://github.com/REAndroid/smali-lib/commit/8d2a0c479190f657cb59f64a74835ab430fb6326",
+        "PublishedOn": "2024-05-01T21:44:39Z"
+    },
+    "revanced/revanced-cli": {
+        "ResourceName": "[revanced/revanced-cli](https://github.com/ReVanced/revanced-cli/releases/tag/v4.6.0)",
+        "Version": "v4.6.0",
+        "Changelog": "# [4.6.0](https://github.com/ReVanced/revanced-cli/compare/v4.5.0...v4.6.0) (2024-04-01)\n\n\n### Bug Fixes\n\n* Copy APK to output path when it is not being signed ([366f400](https://github.com/ReVanced/revanced-cli/commit/366f400c5a46491f3f262c7ff4b0df1ae3721f74))\n* Use correct option description ([45a2ffa](https://github.com/ReVanced/revanced-cli/commit/45a2ffa2dd95ee8ac3c4d466463c9a5b869b8da1))\n\n\n### Features\n\n* Use more consistent option name ([223629c](https://github.com/ReVanced/revanced-cli/commit/223629c663dcd94d237110e09e4e152aa03867f9))\n\n\n\n",
+        "PublishedOn": "2024-04-01T14:57:09Z"
+    },
+    "revanced/revanced-integrations": {
+        "ResourceName": "[revanced/revanced-integrations](https://github.com/ReVanced/revanced-integrations/releases/tag/v1.11.1)",
+        "Version": "v1.11.1",
+        "Changelog": "## [1.11.1](https://github.com/ReVanced/revanced-integrations/compare/v1.11.0...v1.11.1) (2024-07-11)\n\n\n### Bug Fixes\n\n* **YouTube - Hide ads:** Hide new types of home feed button ads ([#662](https://github.com/ReVanced/revanced-integrations/issues/662)) ([ff2637c](https://github.com/ReVanced/revanced-integrations/commit/ff2637cb4c9c396f626cd7ee912953b22525baef))\n* **YouTube - Hide layout components:** Detect if a keyword filter hides all videos ([#657](https://github.com/ReVanced/revanced-integrations/issues/657)) ([3a3ceec](https://github.com/ReVanced/revanced-integrations/commit/3a3ceec4b596354dcccbf3516ef1634bd8819b90))\n* **YouTube - Hide layout components:** Hide new kind of community post ([#659](https://github.com/ReVanced/revanced-integrations/issues/659)) ([c237e3c](https://github.com/ReVanced/revanced-integrations/commit/c237e3c02c971fb1801663cb662096d319c04928))\n* **YouTube - Settings:** Move some settings to different menus, adjust default setting values ([#661](https://github.com/ReVanced/revanced-integrations/issues/661)) ([77533cf](https://github.com/ReVanced/revanced-integrations/commit/77533cf3d68b9c748e1d4f3a85cd0544afc7ce48))\n* **YouTube - SponsorBlock:** Skip segments when casting ([#655](https://github.com/ReVanced/revanced-integrations/issues/655)) ([5ce16ee](https://github.com/ReVanced/revanced-integrations/commit/5ce16eedc6e27560b97ab982408ac697146105e9))\n\n\n\n",
+        "PublishedOn": "2024-07-11T18:54:52Z"
+    },
+    "revanced/revanced-patches": {
+        "ResourceName": "[revanced/revanced-patches](https://github.com/ReVanced/revanced-patches/releases/tag/v4.11.0)",
+        "Version": "v4.11.0",
+        "Changelog": "# [4.11.0](https://github.com/ReVanced/revanced-patches/compare/v4.10.0...v4.11.0) (2024-07-11)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* **Boost for reddit - Fix missing audio in video downloads:** Replace correct strings ([#3379](https://github.com/ReVanced/revanced-patches/issues/3379)) ([b43db98](https://github.com/ReVanced/revanced-patches/commit/b43db98e8483e2939d8fb9cd02443f24aeaae3c3))\r\n* **YouTube - Hide layout components:** Detect if a keyword filter hides all videos ([#3365](https://github.com/ReVanced/revanced-patches/issues/3365)) ([6aa47ec](https://github.com/ReVanced/revanced-patches/commit/6aa47ec1050cf32158ab608441c0649501184971))\r\n* **YouTube - Settings:** Move some settings to different menus, adjust default setting values ([#3415](https://github.com/ReVanced/revanced-patches/issues/3415)) ([7201ac4](https://github.com/ReVanced/revanced-patches/commit/7201ac45c158682413c8584aac7bb37b770fc924))\r\n* **YouTube - SponsorBlock:** Skip segments when casting ([#3331](https://github.com/ReVanced/revanced-patches/issues/3331)) ([d9395fd](https://github.com/ReVanced/revanced-patches/commit/d9395fdbca45cf68fbc63469e228eefbd6c2bf2e))\r\n\r\n\r\n### Features\r\n\r\n* Add `Remove share targets` patch ([#3334](https://github.com/ReVanced/revanced-patches/issues/3334)) ([9414122](https://github.com/ReVanced/revanced-patches/commit/94141228163aee8d051491db51fc1e4c8b86f0e6))\r\n* Add translations ([#2963](https://github.com/ReVanced/revanced-patches/issues/2963)) ([69ea6f3](https://github.com/ReVanced/revanced-patches/commit/69ea6f3bc2b5f419320f17c150489dcb9eed76ce))\r\n* **Bandcamp:** Add `Remove play limits` patch ([#3366](https://github.com/ReVanced/revanced-patches/issues/3366)) ([ad8d3bb](https://github.com/ReVanced/revanced-patches/commit/ad8d3bb1c86f1324234e890f1171ec4a18e56dd9))\r\n* **Instagram:** Add `Hide ads` patch ([#3380](https://github.com/ReVanced/revanced-patches/issues/3380)) ([c6b2f8c](https://github.com/ReVanced/revanced-patches/commit/c6b2f8c0172b4fd142927d9448ed855831c86ae4))\r\n* **RAR:** Add `Hide purchase reminder` patch ([#3321](https://github.com/ReVanced/revanced-patches/issues/3321)) ([8fbe7e3](https://github.com/ReVanced/revanced-patches/commit/8fbe7e3d38c43adfa0755bcbe87f8c6b7696da3a))\r\n* **Soundcloud:** Add `Hide ads` and `Disable telemetry` patch ([#3386](https://github.com/ReVanced/revanced-patches/issues/3386)) ([3c79f3d](https://github.com/ReVanced/revanced-patches/commit/3c79f3d34d978aead60de19e64d05fbebc1bc73a))\r\n* **Stocard:** Add `Hide offers tab` and `Hide story bubbles` patch ([#3359](https://github.com/ReVanced/revanced-patches/issues/3359)) ([fbd0507](https://github.com/ReVanced/revanced-patches/commit/fbd0507ce5cdeb93a1f661aa8097139c61e643a0))\r\n\r\n\r\n\r\n",
+        "PublishedOn": "2024-07-11T18:57:54Z"
+    },
+    "anddea/revanced-patches": {
+        "ResourceName": "[anddea/revanced-patches](https://github.com/anddea/revanced-patches/releases/tag/v2.227.0-dev.24)",
+        "Version": "v2.227.0-dev.24",
+        "Changelog": "# [2.227.0-dev.24](https://github.com/anddea/revanced-patches/compare/v2.227.0-dev.23...v2.227.0-dev.24) (2024-07-22)\n\n\n### Features\n\n* **YouTube - Bypass image region restrictions:** Bring back setting to change alternative domain ([a037281](https://github.com/anddea/revanced-patches/commit/a037281dd1da76fd55ee5e3f537e99c8ffe1199f))\n* **YouTube - Force player buttons background:** Add an option to change the color and opacity of the player buttons' background ([eab9795](https://github.com/anddea/revanced-patches/commit/eab979534b5b98fb532a3c6ad79d338e8f23ab4c))\n\n\n\n",
+        "PublishedOn": "2024-07-22T06:08:21Z"
+    },
+    "anddea/revanced-integrations": {
+        "ResourceName": "[anddea/revanced-integrations](https://github.com/anddea/revanced-integrations/releases/tag/v0.154.0-dev.9)",
+        "Version": "v0.154.0-dev.9",
+        "Changelog": "# [0.154.0-dev.9](https://github.com/anddea/revanced-integrations/compare/v0.154.0-dev.8...v0.154.0-dev.9) (2024-07-22)\n\n\n### Features\n\n* **YouTube - Bypass image region restrictions:** Bring back setting to change alternative domain ([df5d392](https://github.com/anddea/revanced-integrations/commit/df5d3921cdb529540d3e41fc4e102da3cd6f1150))\n\n\n\n",
+        "PublishedOn": "2024-07-22T06:08:39Z"
+    }
+}
