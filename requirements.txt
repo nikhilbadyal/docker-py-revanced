@@ -5,7 +5,7 @@ google-play-scraper==1.2.7
 lastversion==3.5.3
 loguru==0.7.2
 packaging==24.1
-pre-commit==3.7.1
+pre-commit==3.8.0
 python-dotenv==1.0.1
 pytz==2024.1
 requests==2.32.3
