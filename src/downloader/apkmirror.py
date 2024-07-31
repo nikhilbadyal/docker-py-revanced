@@ -58,8 +58,8 @@ class ApkMirror(Downloader):
         :param main_page: Main Download Page in APK mirror(Index)
         :return:
         """
-        list_widget = self._extracted_search_div(main_page, "listWidget")
-        table_rows = list_widget.find_all(class_="table-row")
+        list_widget = self._extracted_search_div(main_page, "tab-pane noPadding")
+        table_rows = list_widget.find_all(class_="table-row headerFont")
         links: dict[str, str] = {}
         apk_archs = ["arm64-v8a", "universal", "noarch"]
         for row in table_rows:
