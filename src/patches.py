@@ -73,6 +73,7 @@ class Patches(object):
         "com.myfitnesspal.android": "fitnesspal",
         "com.facebook.katana": "facebook",
         "io.syncapps.lemmy_sync": "lemmy-sync",
+        "com.xiaomi.wearable": "xiaomi-wearable",
     }
 
     @staticmethod
