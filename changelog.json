@@ -1,1 +1,32 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.3.9)",
+        "Version": "V1.3.9",
+        "Changelog": "## What's Changed\r\n* Using ARSCLib-1.3.5\r\n* Version logging by @Kirlif in https://github.com/REAndroid/APKEditor/pull/108\r\n* Use DEFAULT compression level : https://github.com/REAndroid/ARSCLib/commit/dfc558d6bf76c20c84c82fc3ba404a95b1afe7c6\r\n* Fix: resource config flag qualifiers encoding : https://github.com/REAndroid/ARSCLib/commit/85c171884d467a9086527ee4ceb5bdac3a11caea\r\n* Fix: Clean `requiredSplitTypes` & `splitTypes` from manifest with resource id #114\r\n* Fix: Support compile/decompile apks to xml without resource table (e.g. split bundles) : https://github.com/REAndroid/ARSCLib/commit/4fa8e676d8a16307c006565ec9e79538e70b519c\r\n* Update internal framework version to API-35\r\n* Detect and warn incompatible bundle apks during merging : https://github.com/REAndroid/ARSCLib/commit/22a581663b28a9050eb2163e70137758fee58f89\r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.3.8...V1.3.9",
+        "PublishedOn": "2024-08-02T19:26:33Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v4.6.1)",
+        "Version": "v4.6.1",
+        "Changelog": "- build: update dependencies\r\n- feat: rollback the default values of keystore alias and password to CLI v3.0 (compatible with old keystore)\r\n- rollback: move ReVanced Library subproject to another repository\r\n\r\n\u203b support `--unsigned` and `--rip-lib` commands #[j-hc/revanced-cli](https://github.com/j-hc/revanced-cli)",
+        "PublishedOn": "2024-05-08T17:59:05Z"
+    },
+    "anddea/revanced-patches": {
+        "ResourceName": "[anddea/revanced-patches](https://github.com/anddea/revanced-patches/releases/tag/v2.228.0-dev.11)",
+        "Version": "v2.228.0-dev.11",
+        "Changelog": "# [2.228.0-dev.11](https://github.com/anddea/revanced-patches/compare/v2.228.0-dev.10...v2.228.0-dev.11) (2024-08-08)\n\n\n### Bug Fixes\n\n* **YouTube - Translations:** Update Italian translation ([936c740](https://github.com/anddea/revanced-patches/commit/936c74067d896cc779fc15eec61116eb20862f09))\n\n\n\n",
+        "PublishedOn": "2024-08-08T06:48:28Z"
+    },
+    "anddea/revanced-integrations": {
+        "ResourceName": "[anddea/revanced-integrations](https://github.com/anddea/revanced-integrations/releases/tag/v0.155.0-dev.6)",
+        "Version": "v0.155.0-dev.6",
+        "Changelog": "# [0.155.0-dev.6](https://github.com/anddea/revanced-integrations/compare/v0.155.0-dev.5...v0.155.0-dev.6) (2024-08-07)\n\n\n### Bug Fixes\n\n* **YouTube - Hook download actions:** `Override playlist download button` setting does not work in `Download playlist` menu of flyout panel ([a9e7305](https://github.com/anddea/revanced-integrations/commit/a9e7305e9b16951ad9f52155052daf503008eeef))\n* **YouTube - Overlay buttons:** `Always repeat` button doesn't work when the video is minimized ([82e84f8](https://github.com/anddea/revanced-integrations/commit/82e84f803f94dfd0637088063fbbf691e28f8d82))\n\n\n\n",
+        "PublishedOn": "2024-08-07T18:00:29Z"
+    }
+}

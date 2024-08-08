@@ -1,1 +1,208 @@
-{}
+{
+    "youtube": {
+        "app_version": "19.16.39",
+        "integrations_version": "v0.155.0-dev.6",
+        "patches_version": "v2.228.0-dev.11",
+        "cli_version": "v4.6.1",
+        "patches_json_version": "v2.228.0-dev.11",
+        "ms_epoch_since_patched": 1723121353304,
+        "date_patched": "2024-08-08 12:49:13.304035+05:30",
+        "app_dump": {
+            "app_name": "youtube",
+            "app_version": "19.16.39",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "integrations_dl": "https://github.com/anddea/revanced-integrations/releases/latest-prerelease",
+            "patches_json_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube",
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "9c384aebb3e559204327e7e650ce3a6226477f40c4eb18a0e3b6057e4b9961f7.jar",
+                    "version": "v4.6.1"
+                },
+                "integrations": {
+                    "file_name": "11e2023472f0a7de1fc5c55e895066f834b8eba6d5650c2bdcbab4bfc6f6c4e7.apk",
+                    "version": "v0.155.0-dev.6"
+                },
+                "patches": {
+                    "file_name": "b82fa352136cd911880edbee36f06d5164ff147685b4d99bfc5cd1c31715d5ed.jar",
+                    "version": "v2.228.0-dev.11"
+                },
+                "patches_json": {
+                    "file_name": "f36634f510b4193f3a6d2043ff48795453f796f8f8e83262a544dadd50d6a136.json",
+                    "version": "v2.228.0-dev.11"
+                }
+            },
+            "no_of_patches": 58,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "youtube.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=6148753&key=c3c72a5aee081c4edbff9bd4d7cd28f36ba7793f&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "space_formatted": true
+        }
+    },
+    "youtube_music": {
+        "app_version": "7.13.52",
+        "integrations_version": "v0.155.0-dev.6",
+        "patches_version": "v2.228.0-dev.11",
+        "cli_version": "v4.6.1",
+        "patches_json_version": "v2.228.0-dev.11",
+        "ms_epoch_since_patched": 1723121411695,
+        "date_patched": "2024-08-08 12:50:11.694671+05:30",
+        "app_dump": {
+            "app_name": "youtube_music",
+            "app_version": "7.13.52",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "integrations_dl": "https://github.com/anddea/revanced-integrations/releases/latest-prerelease",
+            "patches_json_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-for-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-debug-logging"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "9c384aebb3e559204327e7e650ce3a6226477f40c4eb18a0e3b6057e4b9961f7.jar",
+                    "version": "v4.6.1"
+                },
+                "integrations": {
+                    "file_name": "11e2023472f0a7de1fc5c55e895066f834b8eba6d5650c2bdcbab4bfc6f6c4e7.apk",
+                    "version": "v0.155.0-dev.6"
+                },
+                "patches": {
+                    "file_name": "b82fa352136cd911880edbee36f06d5164ff147685b4d99bfc5cd1c31715d5ed.jar",
+                    "version": "v2.228.0-dev.11"
+                },
+                "patches_json": {
+                    "file_name": "f36634f510b4193f3a6d2043ff48795453f796f8f8e83262a544dadd50d6a136.json",
+                    "version": "v2.228.0-dev.11"
+                }
+            },
+            "no_of_patches": 36,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "youtube_music.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=6793307&key=1412b76abd6b234ca6ec2a5417be9ddef6ed6439&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "space_formatted": true
+        }
+    },
+    "reddit": {
+        "app_version": "2024-32-0-1809095",
+        "integrations_version": "v0.155.0-dev.6",
+        "patches_version": "v2.228.0-dev.11",
+        "cli_version": "v4.6.1",
+        "patches_json_version": "v2.228.0-dev.11",
+        "ms_epoch_since_patched": 1723121456541,
+        "date_patched": "2024-08-08 12:50:56.541364+05:30",
+        "app_dump": {
+            "app_name": "reddit",
+            "app_version": "2024-32-0-1809095",
+            "experiment": true,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "integrations_dl": "https://github.com/anddea/revanced-integrations/releases/latest-prerelease",
+            "patches_json_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "change-package-name"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "9c384aebb3e559204327e7e650ce3a6226477f40c4eb18a0e3b6057e4b9961f7.jar",
+                    "version": "v4.6.1"
+                },
+                "integrations": {
+                    "file_name": "11e2023472f0a7de1fc5c55e895066f834b8eba6d5650c2bdcbab4bfc6f6c4e7.apk",
+                    "version": "v0.155.0-dev.6"
+                },
+                "patches": {
+                    "file_name": "b82fa352136cd911880edbee36f06d5164ff147685b4d99bfc5cd1c31715d5ed.jar",
+                    "version": "v2.228.0-dev.11"
+                },
+                "patches_json": {
+                    "file_name": "f36634f510b4193f3a6d2043ff48795453f796f8f8e83262a544dadd50d6a136.json",
+                    "version": "v2.228.0-dev.11"
+                }
+            },
+            "no_of_patches": 13,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "reddit.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=6804532&key=3c88137affaa754512cb911643f8ca3c3ac2088f",
+            "download_source": "https://www.apkmirror.com/apk/redditinc/reddit/",
+            "package_name": "com.reddit.frontpage",
+            "old_key": true,
+            "space_formatted": true
+        }
+    },
+    "twitter": {
+        "app_version": "10-52-0-release-0-310520000",
+        "integrations_version": "v1.23.0",
+        "patches_version": "v1.34.1",
+        "cli_version": "v4.6.1",
+        "patches_json_version": "v1.34.1",
+        "ms_epoch_since_patched": 1722967764579,
+        "date_patched": "2024-08-06 18:09:24.579195+05:30",
+        "app_dump": {
+            "app_name": "twitter",
+            "app_version": "10-52-0-release-0-310520000",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/crimera/piko/releases/latest",
+            "integrations_dl": "https://github.com/crimera/revanced-integrations/releases/latest",
+            "patches_json_dl": "https://github.com/crimera/piko/releases/latest",
+            "exclude_request": [],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "9c384aebb3e559204327e7e650ce3a6226477f40c4eb18a0e3b6057e4b9961f7.jar",
+                    "version": "v4.6.1"
+                },
+                "integrations": {
+                    "file_name": "2b63e565b1e3282a15a2f849b6155a07589c8d0ca1c659e2e30eaca33e3f6eeb.apk",
+                    "version": "v1.23.0"
+                },
+                "patches": {
+                    "file_name": "13e534801e0d62b3185ccc2dcf35c8b1061695fd6c8bf1b99c4223dd3cb09cd9.jar",
+                    "version": "v1.34.1"
+                },
+                "patches_json": {
+                    "file_name": "baac874a7a6cf8b27a84c7a1fc49b39757df87b26e57c97714293e943e55052a.json",
+                    "version": "v1.34.1"
+                }
+            },
+            "no_of_patches": 54,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "twitter.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=6757080&key=663cf1deee684c652cfc675e778cce80e9030fcf",
+            "download_source": "https://www.apkmirror.com/apk/x-corp/twitter/",
+            "package_name": "com.twitter.android",
+            "old_key": true,
+            "space_formatted": true
+        }
+    }
+}
