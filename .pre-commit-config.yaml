@@ -23,7 +23,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.5.5'
+    rev: 'v0.5.7'
     hooks:
       - id: ruff
         args:
@@ -31,7 +31,7 @@ repos:
           - "--fix"
 
   - repo: https://github.com/psf/black
-    rev: 24.4.2
+    rev: 24.8.0
     hooks:
       - id: black
         args:
@@ -61,7 +61,7 @@ repos:
 
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.11.0
+    rev: v1.11.1
     hooks:
       - id: mypy
         args:
