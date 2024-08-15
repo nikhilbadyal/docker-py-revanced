@@ -162,6 +162,7 @@ You can use any of the following methods to build.
 
     - [youtube](https://www.apkmirror.com/apk/google-inc/youtube/)
     - [youtube_music](https://www.apkmirror.com/apk/google-inc/youtube-music/)
+    - [photos](https://www.apkmirror.com/apk/google-inc/photos)
     - [twitter](https://www.apkmirror.com/apk/twitter-inc/twitter/)
     - [reddit](https://www.apkmirror.com/apk/redditinc/reddit/)
     - [tiktok](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
