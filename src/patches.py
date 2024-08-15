@@ -74,6 +74,7 @@ class Patches(object):
         "com.facebook.katana": "facebook",
         "io.syncapps.lemmy_sync": "lemmy-sync",
         "com.xiaomi.wearable": "xiaomi-wearable",
+        "com.google.android.apps.photos": "photos",
     }
 
     @staticmethod
