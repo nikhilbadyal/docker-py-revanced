@@ -82,4 +82,5 @@ apk_sources = {
     "spotify-lite": APK_PURE_URL,
     "digitales": APK_PURE_URL,
     "finanz-online": APK_SOS_URL,
+    "photos": f"{APK_MIRROR_BASE_APK_URL}/google-inc/photos/",
 }
