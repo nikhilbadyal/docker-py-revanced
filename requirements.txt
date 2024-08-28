@@ -2,7 +2,7 @@ beautifulsoup4==4.12.3
 environs==11.0.0
 gdown @ git+https://github.com/nikhilbadyal/gdown
 google-play-scraper==1.2.7
-lastversion==3.5.4
+lastversion==3.5.5
 loguru==0.7.2
 packaging==24.1
 pre-commit==3.8.0
