@@ -7,6 +7,6 @@ loguru==0.7.2
 packaging==24.1
 pre-commit==3.8.0
 python-dotenv==1.0.1
-pytz==2024.1
+pytz==2024.2
 requests==2.32.3
 tqdm==4.66.5
