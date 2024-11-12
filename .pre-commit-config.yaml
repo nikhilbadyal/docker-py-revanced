@@ -51,13 +51,13 @@ repos:
         args:
           - "--config=pyproject.toml"
 
-  - repo: https://github.com/PyCQA/docformatter
-    rev: master
-    hooks:
-      - id: docformatter
-        args:
-          - "--config=pyproject.toml"
-          - "--in-place"
+#  - repo: https://github.com/PyCQA/docformatter
+#    rev: master
+#    hooks:
+#      - id: docformatter
+#        args:
+#          - "--config=pyproject.toml"
+#          - "--in-place"
 
 
   - repo: https://github.com/pre-commit/mirrors-mypy

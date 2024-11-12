@@ -5,14 +5,7 @@ from typing import Self
 
 from environs import Env
 
-from src.utils import (
-    default_build,
-    default_cli,
-    default_integrations,
-    default_patches,
-    default_patches_json,
-    resource_folder,
-)
+from src.utils import default_build, default_cli, default_patches, default_patches_json, resource_folder
 
 
 class RevancedConfig(object):
@@ -30,7 +23,6 @@ class RevancedConfig(object):
         self.global_cli_dl = env.str("GLOBAL_CLI_DL", default_cli)
         self.global_patches_dl = env.str("GLOBAL_PATCHES_DL", default_patches)
         self.global_patches_json_dl = env.str("GLOBAL_PATCHES_JSON_DL", default_patches_json)
-        self.global_integrations_dl = env.str("GLOBAL_INTEGRATIONS_DL", default_integrations)
         self.global_keystore_name = env.str("GLOBAL_KEYSTORE_FILE_NAME", "revanced.keystore")
         self.global_options_file = env.str("GLOBAL_OPTIONS_FILE", "options.json")
         self.global_archs_to_build = env.list("GLOBAL_ARCHS_TO_BUILD", [])
