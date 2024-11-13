@@ -81,6 +81,7 @@ class Patches(object):
         "com.rarlab.rar": "winrar",
         "com.soundcloud.android": "soundcloud",
         "de.stocard.stocard": "stocard",
+        "at.willhaben": "willhaben",
     }
 
     @staticmethod
