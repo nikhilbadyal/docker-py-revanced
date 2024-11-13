@@ -75,6 +75,7 @@ class Patches(object):
         "io.syncapps.lemmy_sync": "lemmy-sync",
         "com.xiaomi.wearable": "xiaomi-wearable",
         "com.google.android.apps.photos": "photos",
+        "com.amazon.mShop.android.shopping": "amazon",
     }
 
     @staticmethod

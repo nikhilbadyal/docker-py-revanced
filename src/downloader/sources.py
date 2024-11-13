@@ -83,4 +83,5 @@ apk_sources = {
     "digitales": APK_PURE_URL,
     "finanz-online": APK_SOS_URL,
     "photos": f"{APK_MIRROR_BASE_APK_URL}/google-inc/photos/",
+    "amazon": f"{APK_MIRROR_BASE_APK_URL}/amazon-mobile-llc/amazon-shopping/",
 }
