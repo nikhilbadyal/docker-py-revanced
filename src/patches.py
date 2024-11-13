@@ -80,6 +80,7 @@ class Patches(object):
         "com.google.android.apps.magazines": "magazines",
         "com.rarlab.rar": "winrar",
         "com.soundcloud.android": "soundcloud",
+        "de.stocard.stocard": "stocard",
     }
 
     @staticmethod

@@ -88,4 +88,5 @@ apk_sources = {
     "magazines": f"{APK_MIRROR_BASE_APK_URL}/google-inc/google-news/",
     "winrar": f"{APK_MIRROR_BASE_APK_URL}/rarlab-published-by-win-rar-gmbh/rar/",
     "soundcloud": f"{APK_MIRROR_BASE_APK_URL}/soundcloud/soundcloud-soundcloud/",
+    "stocard": f"{APK_MIRROR_BASE_APK_URL}/stocard-gmbh/stocard-rewards-cards-wallet/",
 }
