@@ -77,6 +77,7 @@ class Patches(object):
         "com.google.android.apps.photos": "photos",
         "com.amazon.mShop.android.shopping": "amazon",
         "com.bandcamp.android": "bandcamp",
+        "com.google.android.apps.magazines": "magazines",
     }
 
     @staticmethod
