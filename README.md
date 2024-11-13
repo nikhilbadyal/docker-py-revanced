@@ -291,7 +291,7 @@ You can use any of the following methods to build.
    ```dotenv
     GLOBAL_CLI_DL=https://github.com/revanced/revanced-cli
     GLOBAL_PATCHES_DL=https://github.com/revanced/revanced-patches
-    GLOBAL_PATCHES_JSON_DL=https://github.com/revanced/revanced-patches
+    GLOBAL_PATCHES_JSON_DL=https://api.revanced.app/v4/patches/list
    ```
    Resources downloaded from envs and will be used for patching for any **APP_NAME**.
    Unless provided different resource for the individual app.<br><br>
