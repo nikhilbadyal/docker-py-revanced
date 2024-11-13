@@ -86,4 +86,5 @@ apk_sources = {
     "amazon": f"{APK_MIRROR_BASE_APK_URL}/amazon-mobile-llc/amazon-shopping/",
     "bandcamp": f"{APK_MIRROR_BASE_APK_URL}/bandcamp-inc/bandcamp/",
     "magazines": f"{APK_MIRROR_BASE_APK_URL}/google-inc/google-news/",
+    "winrar": f"{APK_MIRROR_BASE_APK_URL}/rarlab-published-by-win-rar-gmbh/rar/",
 }

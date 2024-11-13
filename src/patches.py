@@ -78,6 +78,7 @@ class Patches(object):
         "com.amazon.mShop.android.shopping": "amazon",
         "com.bandcamp.android": "bandcamp",
         "com.google.android.apps.magazines": "magazines",
+        "com.rarlab.rar": "winrar",
     }
 
     @staticmethod

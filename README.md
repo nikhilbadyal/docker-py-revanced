@@ -219,6 +219,7 @@ You can use any of the following methods to build.
     - [amazon](https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/)
     - [bandcamp](https://www.apkmirror.com/apk/bandcamp-inc/bandcamp/)
     - [magazines](https://www.apkmirror.com/apk/bandcamp-inc/bandcamp/)
+    - [winrar](https://www.apkmirror.com/apk/rarlab-published-by-win-rar-gmbh/rar/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
