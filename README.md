@@ -217,6 +217,7 @@ You can use any of the following methods to build.
     - [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
     - [lemmy-sync](https://www.apkmirror.com/apk/sync-apps-ltd/sync-for-lemmy/)
     - [amazon](https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-shopping/)
+    - [bandcamp](https://www.apkmirror.com/apk/bandcamp-inc/bandcamp/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.

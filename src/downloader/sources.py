@@ -84,4 +84,5 @@ apk_sources = {
     "finanz-online": APK_SOS_URL,
     "photos": f"{APK_MIRROR_BASE_APK_URL}/google-inc/photos/",
     "amazon": f"{APK_MIRROR_BASE_APK_URL}/amazon-mobile-llc/amazon-shopping/",
+    "bandcamp": f"{APK_MIRROR_BASE_APK_URL}/bandcamp-inc/bandcamp/",
 }

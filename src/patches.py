@@ -76,6 +76,7 @@ class Patches(object):
         "com.xiaomi.wearable": "xiaomi-wearable",
         "com.google.android.apps.photos": "photos",
         "com.amazon.mShop.android.shopping": "amazon",
+        "com.bandcamp.android": "bandcamp",
     }
 
     @staticmethod
