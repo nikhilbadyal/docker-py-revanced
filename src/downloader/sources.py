@@ -87,4 +87,5 @@ apk_sources = {
     "bandcamp": f"{APK_MIRROR_BASE_APK_URL}/bandcamp-inc/bandcamp/",
     "magazines": f"{APK_MIRROR_BASE_APK_URL}/google-inc/google-news/",
     "winrar": f"{APK_MIRROR_BASE_APK_URL}/rarlab-published-by-win-rar-gmbh/rar/",
+    "soundcloud": f"{APK_MIRROR_BASE_APK_URL}/soundcloud/soundcloud-soundcloud/",
 }

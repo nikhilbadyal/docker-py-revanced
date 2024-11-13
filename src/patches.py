@@ -79,6 +79,7 @@ class Patches(object):
         "com.bandcamp.android": "bandcamp",
         "com.google.android.apps.magazines": "magazines",
         "com.rarlab.rar": "winrar",
+        "com.soundcloud.android": "soundcloud",
     }
 
     @staticmethod
