@@ -1,5 +1,5 @@
 beautifulsoup4==4.12.3
-environs==11.1.0
+environs==11.2.0
 gdown @ git+https://github.com/nikhilbadyal/gdown
 google-play-scraper==1.2.7
 lastversion==3.5.7
