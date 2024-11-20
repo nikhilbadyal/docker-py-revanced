@@ -15,18 +15,37 @@ from src.utils import bs4_parser, handle_request_response, request_header, reque
 class UptoDown(Downloader):
     """Files downloader."""
 
-    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
+    def _resolve_download_url(self, soup: BeautifulSoup, app: str, page: str) -> str:
+        """Extract the download URL from the page, handling both direct and deeplink cases."""
+        button = soup.find("button", id="detail-download-button")
+        if not isinstance(button, Tag):
+            msg = f"Unable to download {app} from uptodown."
+            raise UptoDownAPKDownloadError(msg, url=page)
+
+        # Handle deeplink case by fetching expanded page
+        if "download-link-deeplink" in button.get("onclick", ""):
+            expanded_page = page + "-x"
+            r = requests.get(expanded_page, headers=request_header, allow_redirects=True, timeout=request_timeout)
+            handle_request_response(r, expanded_page)
+            button = BeautifulSoup(r.text, bs4_parser).find("button", id="detail-download-button")
+            if not isinstance(button, Tag):
+                msg = f"Unable to download {app} from uptodown after updating URL."
+                raise UptoDownAPKDownloadError(msg, url=expanded_page)
+
+        data_url = button.get("data-url")
+        if not data_url:
+            msg = f"Failed to retrieve download URL for {app}."
+            raise UptoDownAPKDownloadError(msg, url=page)
+
+        return data_url
+
+    def extract_download_link(self, page: str, app: str) -> tuple[str, str]:
         """Extract download link from uptodown url."""
         r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
         handle_request_response(r, page)
         soup = BeautifulSoup(r.text, bs4_parser)
-        detail_download_button = soup.find("button", id="detail-download-button")
 
-        if not isinstance(detail_download_button, Tag):
-            msg = f"Unable to download {app} from uptodown."
-            raise UptoDownAPKDownloadError(msg, url=page)
-
-        data_url = detail_download_button.get("data-url")
+        data_url = self._resolve_download_url(soup, app, page)
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
         file_name = f"{app}.apk"
         self._download(download_url, file_name)
