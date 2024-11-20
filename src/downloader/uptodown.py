@@ -66,7 +66,7 @@ class UptoDown(Downloader):
 
             for item in json["data"]:
                 if item["version"] == version:
-                    download_url = item["versionURL"]
+                    download_url = f"{item["versionURL"]}-x"
                     version_found = True
                     break
 
