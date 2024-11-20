@@ -26,7 +26,23 @@ class UptoDown(Downloader):
             msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=page)
 
+        if "download-link-deeplink" in detail_download_button.get("onclick", ""):
+            logger.debug("Detected Uptodown Store data-url link. Adding '-x' to the URL to redirect to the expanded download page.")
+            page += "-x"
+            r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
+            handle_request_response(r, page)
+            soup = BeautifulSoup(r.text, bs4_parser)
+            detail_download_button = soup.find("button", id="detail-download-button")
+
+            if not isinstance(detail_download_button, Tag):
+                msg = f"Unable to download {app} from uptodown after updating URL."
+                raise UptoDownAPKDownloadError(msg, url=page)
+
         data_url = detail_download_button.get("data-url")
+        if not data_url:
+            msg = f"Failed to retrieve download URL for {app}."
+            raise UptoDownAPKDownloadError(msg, url=page)
+
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
         file_name = f"{app}.apk"
         self._download(download_url, file_name)
@@ -40,7 +56,7 @@ class UptoDown(Downloader):
         :param version: Version of the application to download
         :return: Version of downloaded apk
         """
-        logger.debug("downloading specified version of app from uptodown.")
+        logger.debug("Downloading specified version of app from uptodown.")
         url = f"{app.download_source}/versions"
         html = requests.get(url, headers=request_header, timeout=request_timeout).text
         soup = BeautifulSoup(html, bs4_parser)
@@ -66,7 +82,7 @@ class UptoDown(Downloader):
 
             for item in json["data"]:
                 if item["version"] == version:
-                    download_url = f"{item["versionURL"]}-x"
+                    download_url = item["versionURL"]
                     version_found = True
                     break
 
@@ -80,6 +96,6 @@ class UptoDown(Downloader):
 
     def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download the latest version of app from uptodown."""
-        logger.debug("downloading latest version of app from uptodown.")
+        logger.debug("Downloading latest version of app from uptodown.")
         page = f"{app.download_source}/download"
         return self.extract_download_link(page, app.app_name)
