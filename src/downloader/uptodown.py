@@ -28,7 +28,7 @@ class UptoDown(Downloader):
 
         if "download-link-deeplink" in detail_download_button.get("onclick", ""):
             logger.debug(
-                "Detected Uptodown Store data-url link. Adding '-x' to the URL to redirect to the expanded download page."
+                "Detected Uptodown Store data-url link. Adding '-x' to the URL to redirect to the expanded download page.",
             )
             page += "-x"
             r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
