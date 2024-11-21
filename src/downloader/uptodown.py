@@ -21,6 +21,12 @@ class UptoDown(Downloader):
         handle_request_response(r, page)
         soup = BeautifulSoup(r.text, bs4_parser)
         detail_download_button = soup.find("button", id="detail-download-button")
+        if "download-link-deeplink" in detail_download_button.get("onclick"):
+            page = f"{page}-x"
+            r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
+            handle_request_response(r, page)
+            soup = BeautifulSoup(r.text, bs4_parser)
+            detail_download_button = soup.find("button", id="detail-download-button")
 
         if not isinstance(detail_download_button, Tag):
             msg = f"Unable to download {app} from uptodown."
