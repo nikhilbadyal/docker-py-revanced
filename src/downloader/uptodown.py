@@ -21,7 +21,7 @@ class UptoDown(Downloader):
         handle_request_response(r, page)
         soup = BeautifulSoup(r.text, bs4_parser)
         detail_download_button = soup.find("button", id="detail-download-button")
-        if "download-link-deeplink" in detail_download_button['onclick']:
+        if "download-link-deeplink" in detail_download_button["onclick"]:
             handle_request_response(r, f"{page} +x")
             soup = BeautifulSoup(r.text, bs4_parser)
             detail_download_button = soup.find("button", id="detail-download-button")
