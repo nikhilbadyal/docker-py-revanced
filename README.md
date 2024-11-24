@@ -222,7 +222,7 @@ You can use any of the following methods to build.
     - [winrar](https://www.apkmirror.com/apk/rarlab-published-by-win-rar-gmbh/rar/)
     - [soundcloud](https://www.apkmirror.com/apk/soundcloud/soundcloud-soundcloud/)
     - [stocard](https://www.apkmirror.com/apk/stocard-gmbh/stocard-rewards-cards-wallet/)
-    - [stocard](https://www.apkmirror.com/apk/willhaben/willhaben/)
+    - [willhaben](https://www.apkmirror.com/apk/willhaben/willhaben/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
