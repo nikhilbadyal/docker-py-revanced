@@ -9,4 +9,4 @@ pre-commit==4.0.1
 python-dotenv==1.0.1
 pytz==2024.2
 requests==2.32.3
-tqdm==4.67.0
+tqdm==4.67.1
