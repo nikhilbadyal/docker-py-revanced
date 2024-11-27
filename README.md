@@ -302,7 +302,7 @@ You can use any of the following methods to build.
    ```dotenv
     YOUTUBE_CLI_DL=https://github.com/inotia00/revanced-cli
     YOUTUBE_PATCHES_DL=https://github.com/inotia00/revanced-patches
-    YOUTUBE_PATCHES_JSON_DL=https://github.com/inotia00/revanced-patches
+    YOUTUBE_PATCHES_JSON_DL=https://api.revanced.app/v4/patches/list
    ```
    With the config tool will try to patch YouTube with resources from inotia00 while other global resource will used
    for patching other apps.<br>
