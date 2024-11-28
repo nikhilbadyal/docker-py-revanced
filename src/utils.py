@@ -38,8 +38,7 @@ request_header = {
 }
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
-default_patches_json = default_patches
-default_integrations = "https://github.com/revanced/revanced-integrations/releases/latest"
+default_patches_json = "https://api.revanced.app/v4/patches/list"
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
 changelog_json_file = "changelog.json"
@@ -51,7 +50,6 @@ updates_file_url = "https://raw.githubusercontent.com/{github_repository}/{branc
 changelogs: dict[str, dict[str, str]] = {}
 time_zone = "Asia/Kolkata"
 app_version_key = "app_version"
-integration_version_key = "integrations_version"
 patches_version_key = "patches_version"
 cli_version_key = "cli_version"
 patches_json_version_key = "patches_json_version"
@@ -61,7 +59,6 @@ resource_folder = "apks"
 branch_name = "changelogs"
 app_dump_key = "app_dump"
 patches_dl_key = "patches_dl"
-integrations_dl_key = "integrations_dl"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
@@ -268,7 +265,6 @@ def save_patch_info(app: "APP", updates_info: dict[str, Any]) -> dict[str, Any]:
     """Save version info a patching resources used to a file."""
     updates_info[app.app_name] = {
         app_version_key: app.app_version,
-        integration_version_key: app.resource["integrations"]["version"],
         patches_version_key: app.resource["patches"]["version"],
         cli_version_key: app.resource["cli"]["version"],
         patches_json_version_key: app.resource["patches_json"]["version"],

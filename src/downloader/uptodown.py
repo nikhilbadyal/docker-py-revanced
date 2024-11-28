@@ -50,7 +50,7 @@ class UptoDown(Downloader):
             msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=url)
 
-        app_code = detail_app_name.get("code")
+        app_code = detail_app_name.get("data-code")
         version_page = 1
         download_url = None
         version_found = False
@@ -66,7 +66,7 @@ class UptoDown(Downloader):
 
             for item in json["data"]:
                 if item["version"] == version:
-                    download_url = item["versionURL"]
+                    download_url = f"{item["versionURL"]}-x"
                     version_found = True
                     break
 

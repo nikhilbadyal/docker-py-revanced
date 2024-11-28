@@ -1,6 +1,5 @@
 """Revanced Parser."""
 
-from pathlib import Path
 from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import Self
@@ -20,8 +19,7 @@ class Parser(object):
     CLI_JAR = "-jar"
     APK_ARG = "-a"
     NEW_APK_ARG = "patch"
-    PATCHES_ARG = "-b"
-    INTEGRATIONS_ARG = "-m"
+    PATCHES_ARG = "-p"
     OUTPUT_ARG = "-o"
     KEYSTORE_ARG = "--keystore"
     OPTIONS_ARG = "--options"
@@ -40,7 +38,7 @@ class Parser(object):
         name : str
             The `name` parameter is a string that represents the name of the patch to be included.
         """
-        self._PATCHES.extend(["-i", name])
+        self._PATCHES.extend(["-e", name])
 
     def exclude(self: Self, name: str) -> None:
         """The `exclude` function adds a given patch to the list of excluded patches.
@@ -50,7 +48,7 @@ class Parser(object):
         name : str
             The `name` parameter is a string that represents the name of the patch to be excluded.
         """
-        self._PATCHES.extend(["-e", name])
+        self._PATCHES.extend(["-d", name])
         self._EXCLUDED.append(name)
 
     def get_excluded_patches(self: Self) -> list[str]:
@@ -137,19 +135,9 @@ class Parser(object):
                 self.include(patch["name"]) if patch["name"] in app.include_request else ()
 
     @staticmethod
-    def is_new_cli(cli_path: Path) -> tuple[bool, str]:
+    def is_new_cli() -> bool:
         """Check if new cli is being used."""
-        process = Popen(["java", "-jar", cli_path, "-V"], stdout=PIPE)
-        output = process.stdout
-        if not output:
-            msg = "Failed to send request for patching."
-            raise PatchingFailedError(msg)
-        combined_result = "".join(line.decode() for line in output)
-        if "v3" in combined_result or "v4" in combined_result:
-            logger.debug("New cli")
-            return True, combined_result
-        logger.debug("Old cli")
-        return False, combined_result
+        return True
 
     # noinspection IncorrectFormatting
     def patch_app(
@@ -164,7 +152,7 @@ class Parser(object):
             The `app` parameter is an instance of the `APP` class. It represents an application that needs
         to be patched.
         """
-        is_new, version = self.is_new_cli(self.config.temp_folder.joinpath(app.resource["cli"]["file_name"]))
+        is_new = self.is_new_cli()
         if is_new:
             apk_arg = self.NEW_APK_ARG
             exp = "--force"
@@ -178,8 +166,6 @@ class Parser(object):
             app.download_file_name,
             self.PATCHES_ARG,
             app.resource["patches"]["file_name"],
-            self.INTEGRATIONS_ARG,
-            app.resource["integrations"]["file_name"],
             self.OUTPUT_ARG,
             app.get_output_file_name(),
             self.KEYSTORE_ARG,
@@ -191,7 +177,7 @@ class Parser(object):
             logger.debug("Using experimental features")
             args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
-        if app.old_key and "v4" in version:
+        if app.old_key:
             # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
             old_key_flags = [
                 "--keystore-entry-alias=alias",

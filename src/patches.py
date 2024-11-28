@@ -75,6 +75,13 @@ class Patches(object):
         "io.syncapps.lemmy_sync": "lemmy-sync",
         "com.xiaomi.wearable": "xiaomi-wearable",
         "com.google.android.apps.photos": "photos",
+        "com.amazon.mShop.android.shopping": "amazon",
+        "com.bandcamp.android": "bandcamp",
+        "com.google.android.apps.magazines": "magazines",
+        "com.rarlab.rar": "winrar",
+        "com.soundcloud.android": "soundcloud",
+        "de.stocard.stocard": "stocard",
+        "at.willhaben": "willhaben",
     }
 
     @staticmethod
@@ -129,11 +136,11 @@ class Patches(object):
                 p["version"] = "all"
                 self.patches_dict["universal_patch"].append(p)
             else:
-                for compatible_package, version in [(x["name"], x["versions"]) for x in patch["compatiblePackages"]]:
+                for compatible_package, versions in patch["compatiblePackages"].items():
                     if app.package_name == compatible_package:
-                        p = {x: patch[x] for x in ["name", "description"]}
+                        p = {x: patch[x] for x in ["name", "description", "use"]}
                         p["app"] = compatible_package
-                        p["version"] = version[-1] if version else "all"
+                        p["version"] = versions[-1] if versions else "all"
                         self.patches_dict[app.app_name].append(p)
 
         app.no_of_patches = len(self.patches_dict[app.app_name])

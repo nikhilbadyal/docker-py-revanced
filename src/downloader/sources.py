@@ -83,4 +83,11 @@ apk_sources = {
     "digitales": APK_PURE_URL,
     "finanz-online": APK_SOS_URL,
     "photos": f"{APK_MIRROR_BASE_APK_URL}/google-inc/photos/",
+    "amazon": f"{APK_MIRROR_BASE_APK_URL}/amazon-mobile-llc/amazon-shopping/",
+    "bandcamp": f"{APK_MIRROR_BASE_APK_URL}/bandcamp-inc/bandcamp/",
+    "magazines": f"{APK_MIRROR_BASE_APK_URL}/google-inc/google-news/",
+    "winrar": f"{APK_MIRROR_BASE_APK_URL}/rarlab-published-by-win-rar-gmbh/rar/",
+    "soundcloud": f"{APK_MIRROR_BASE_APK_URL}/soundcloud/soundcloud-soundcloud/",
+    "stocard": f"{APK_MIRROR_BASE_APK_URL}/stocard-gmbh/stocard-rewards-cards-wallet/",
+    "willhaben": f"{APK_MIRROR_BASE_APK_URL}/willhaben/willhaben/",
 }
