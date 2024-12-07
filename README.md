@@ -1,5 +1,7 @@
 # 🤓Docker-Py-ReVanced
 
+![Docker Pulls](https://img.shields.io/docker/pulls/nikhilbadyal/docker-py-revanced)
+
 A little python script that will help you in building [Revanced](https://revanced.app/) [apps](#any-patch-apps) and sharing them anywhere.
 
 **`Note`** - If you are a root user and want magisk module (Extended). Get them [here](https://github.com/nikhilbadyal/revanced-magisk-module)
