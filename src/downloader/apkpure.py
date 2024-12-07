@@ -91,6 +91,9 @@ class ApkPure(Downloader):
         if app_version := soup.select_one("span.info-sdk > span"):
             self.app_version = slugify(app_version.get_text(strip=True))
             logger.info(f"Will be downloading {app}'s version {self.app_version}...")
+        else:
+            self.app_version = "latest"
+            logger.info(f"Unable to guess latest version of {app}")
         return file_name, app_dl
 
     def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
@@ -131,6 +134,7 @@ class ApkPure(Downloader):
         download_page = app.download_source + "/download"
         file_name, download_source = self.extract_download_link(download_page, app.app_name)
         app.app_version = self.app_version
-        logger.info(f"Guessed {app.app_version} for {app.app_name}")
+        if self.app_version != "latest":
+            logger.info(f"Guessed {app.app_version} for {app.app_name}")
         self._download(download_source, file_name)
         return file_name, download_source
