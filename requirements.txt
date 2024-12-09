@@ -3,7 +3,7 @@ environs==11.2.1
 gdown @ git+https://github.com/nikhilbadyal/gdown
 google-play-scraper==1.2.7
 lastversion==3.5.7
-loguru==0.7.2
+loguru==0.7.3
 packaging==24.2
 pre-commit==4.0.1
 python-dotenv==1.0.1
