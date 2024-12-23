@@ -153,13 +153,8 @@ class Parser(object):
             The `app` parameter is an instance of the `APP` class. It represents an application that needs
         to be patched.
         """
-        is_new = self.is_new_cli()
-        if is_new:
-            apk_arg = self.NEW_APK_ARG
-            exp = "--force"
-        else:
-            apk_arg = self.APK_ARG
-            exp = "--experimental"
+        apk_arg = self.NEW_APK_ARG
+        exp = "--force"
         args = [
             self.CLI_JAR,
             app.resource["cli"]["file_name"],
@@ -174,9 +169,7 @@ class Parser(object):
             self.OPTIONS_ARG,
             app.options_file,
         ]
-        if app.experiment:
-            logger.debug("Using experimental features")
-            args.append(exp)
+        args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
         if app.old_key:
             # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
@@ -194,7 +187,6 @@ class Parser(object):
             excluded = set(possible_archs) - set(app.archs_to_build)
             for arch in excluded:
                 args.extend(("--rip-lib", arch))
-        args.extend(("-f",))
         start = perf_counter()
         logger.debug(f"Sending request to revanced cli for building with args java {args}")
         process = Popen(["java", *args], stdout=PIPE)
