@@ -31,14 +31,15 @@ class Parser(object):
         self.config = config
 
     def include(self: Self, name: str) -> None:
-        """The function `include` adds a given patch to a list of patches.
+        """
+        The function `include` adds a given patch to the front of a list of patches.
 
         Parameters
         ----------
         name : str
             The `name` parameter is a string that represents the name of the patch to be included.
         """
-        self._PATCHES.extend(["-e", name])
+        self._PATCHES[:0] = ["-e", name]
 
     def exclude(self: Self, name: str) -> None:
         """The `exclude` function adds a given patch to the list of excluded patches.
@@ -134,11 +135,6 @@ class Parser(object):
                 )
             for patch in patches_dict["universal_patch"]:
                 self.include(patch["name"]) if patch["name"] in app.include_request else ()
-
-    @staticmethod
-    def is_new_cli() -> bool:
-        """Check if new cli is being used."""
-        return True
 
     # noinspection IncorrectFormatting
     def patch_app(

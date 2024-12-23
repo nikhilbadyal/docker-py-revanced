@@ -124,12 +124,12 @@ class Patches(object):
             The `app` parameter is of type `APP`. It represents an instance of the `APP` class.
         """
         self.patches_dict[app.app_name] = []
-        app.patches = convert_command_output_to_json(
+        patches = convert_command_output_to_json(
             f"{config.temp_folder}/{app.resource["cli"]["file_name"]}",
             f"{config.temp_folder}/{app.resource["patches"]["file_name"]}",
         )
 
-        for patch in app.patches:
+        for patch in patches:
             if not patch["compatiblePackages"]:
                 p = {x: patch[x] for x in ["name", "description"]}
                 p["app"] = "universal"
