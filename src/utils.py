@@ -38,7 +38,6 @@ request_header = {
 }
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
 default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
-default_patches_json = "https://api.revanced.app/v4/patches/list"
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
 changelog_json_file = "changelog.json"
@@ -52,7 +51,6 @@ time_zone = "Asia/Kolkata"
 app_version_key = "app_version"
 patches_version_key = "patches_version"
 cli_version_key = "cli_version"
-patches_json_version_key = "patches_json_version"
 implement_method = "Please implement the method"
 status_code_200 = 200
 resource_folder = "apks"
@@ -267,7 +265,6 @@ def save_patch_info(app: "APP", updates_info: dict[str, Any]) -> dict[str, Any]:
         app_version_key: app.app_version,
         patches_version_key: app.resource["patches"]["version"],
         cli_version_key: app.resource["cli"]["version"],
-        patches_json_version_key: app.resource["patches_json"]["version"],
         "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(timezone(time_zone))),
         "date_patched": datetime.now(timezone(time_zone)),
         "app_dump": app.for_dump(),

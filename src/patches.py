@@ -1,15 +1,14 @@
 """Revanced Patches."""
 
 import contextlib
-import json
-from pathlib import Path
-from typing import Any, ClassVar, Self
+from typing import ClassVar, Self
 
 from loguru import logger
 
 from src.app import APP
 from src.config import RevancedConfig
-from src.exceptions import AppNotFoundError, PatchesJsonLoadError
+from src.exceptions import AppNotFoundError
+from src.patches_gen import convert_command_output_to_json
 
 
 class Patches(object):
@@ -125,22 +124,23 @@ class Patches(object):
             The `app` parameter is of type `APP`. It represents an instance of the `APP` class.
         """
         self.patches_dict[app.app_name] = []
-        patch_loader = PatchLoader()
-        patches_file = app.resource["patches_json"]["file_name"]
-        patches = patch_loader.load_patches(f"{config.temp_folder}/{patches_file}")
+        app.patches = convert_command_output_to_json(
+            f"{config.temp_folder}/{app.resource["cli"]["file_name"]}",
+            f"{config.temp_folder}/{app.resource["patches"]["file_name"]}",
+        )
 
-        for patch in patches:
+        for patch in app.patches:
             if not patch["compatiblePackages"]:
                 p = {x: patch[x] for x in ["name", "description"]}
                 p["app"] = "universal"
                 p["version"] = "all"
                 self.patches_dict["universal_patch"].append(p)
             else:
-                for compatible_package, versions in patch["compatiblePackages"].items():
+                for compatible_package, version in [(x["name"], x["versions"]) for x in patch["compatiblePackages"]]:
                     if app.package_name == compatible_package:
-                        p = {x: patch[x] for x in ["name", "description", "use"]}
+                        p = {x: patch[x] for x in ["name", "description"]}
                         p["app"] = compatible_package
-                        p["version"] = versions[-1] if versions else "all"
+                        p["version"] = version[-1] if version else "all"
                         self.patches_dict[app.app_name].append(p)
 
         app.no_of_patches = len(self.patches_dict[app.app_name])
@@ -199,28 +199,3 @@ class Patches(object):
         app.app_version = recommended_version
         app.experiment = experiment
         return total_patches
-
-
-class PatchLoader(object):
-    """Patch Loader."""
-
-    @staticmethod
-    def load_patches(file_name: str) -> Any:
-        """The function `load_patches` loads patches from a file and returns them.
-
-        Parameters
-        ----------
-        file_name : str
-            The `file_name` parameter is a string that represents the name or path of the file from which
-        the patches will be loaded.
-
-        Returns
-        -------
-            the patches loaded from the file.
-        """
-        try:
-            with Path(file_name).open() as f:
-                return json.load(f)
-        except FileNotFoundError as e:
-            msg = "File not found"
-            raise PatchesJsonLoadError(msg, file_name=file_name) from e

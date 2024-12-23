@@ -84,11 +84,10 @@ class Parser(object):
         """
         try:
             name = name.lower().replace(" ", "-")
-            patch_index = self._PATCHES.index(name)
             indices = [i for i in range(len(self._PATCHES)) if self._PATCHES[i] == name]
             for patch_index in indices:
                 if self._PATCHES[patch_index - 1] == "-e":
-                    self._PATCHES[patch_index - 1] = "-i"
+                    self._PATCHES[patch_index - 1] = "-d"
                 else:
                     self._PATCHES[patch_index - 1] = "-e"
         except ValueError:
@@ -99,8 +98,10 @@ class Parser(object):
     def exclude_all_patches(self: Self) -> None:
         """The function `exclude_all_patches` exclude all the patches."""
         for idx, item in enumerate(self._PATCHES):
-            if item == "-i":
-                self._PATCHES[idx] = "-e"
+            if idx == 0:
+                continue
+            if item == "-e":
+                self._PATCHES[idx] = "-d"
 
     def include_exclude_patch(
         self: Self,
@@ -193,6 +194,7 @@ class Parser(object):
             excluded = set(possible_archs) - set(app.archs_to_build)
             for arch in excluded:
                 args.extend(("--rip-lib", arch))
+        args.extend(("-f",))
         start = perf_counter()
         logger.debug(f"Sending request to revanced cli for building with args java {args}")
         process = Popen(["java", *args], stdout=PIPE)
