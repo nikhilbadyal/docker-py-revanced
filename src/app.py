@@ -80,8 +80,8 @@ class APP(object):
             a string that represents the output file name for an APK file.
         """
         current_date = datetime.now(timezone(time_zone))
-        formatted_date = current_date.strftime("%Y%b%d_%I%M%p").upper()
-        return f"Re-{self.app_name}-app-version{slugify(self.app_version)}-{formatted_date}-patch-version-{slugify(self.resource["patches"]["version"])}output.apk"
+        formatted_date = current_date.strftime("%Y%b%d.%I%M%p").upper()
+        return f"Re{self.app_name}-Version{slugify(self.app_version)}-PatchVersion{slugify(self.resource["patches"]["version"])}-{formatted_date}-output.apk"  # noqa: E501
 
     def __str__(self: "APP") -> str:
         """Returns the str representation of the app."""
