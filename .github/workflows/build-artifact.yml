@@ -118,6 +118,9 @@ jobs:
         with:
           name: Built-APKs
           path: |
+            changelog.md
+            changelog.json
+            updates.json
             apks/*-output.apk
             apks/VancedMicroG.apk"
           if-no-files-found: error
