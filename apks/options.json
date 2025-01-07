@@ -142,11 +142,11 @@
     "options": [
       {
         "key": "PackageNameYouTube",
-        "value": "app.rvx.android.youtube"
+        "value": "com.google.android.youtube.dockerpy"
       },
       {
         "key": "PackageNameYouTubeMusic",
-        "value": "app.rvx.android.apps.youtube.music"
+        "value": "com.google.android.apps.youtube.music.dockerpy"
       }
     ]
   },
@@ -160,6 +160,19 @@
       {
         "key": "LightThemeBackgroundColor",
         "value": "@android:color/white"
+      }
+    ]
+  },
+  {
+    "patchName": "GmsCore support",
+    "options": [
+      {
+        "key": "packageNameYouTube",
+        "value": "com.google.android.youtube.dockerpy"
+      },
+      {
+        "key": "packageNameYouTubeMusic",
+        "value": "com.google.android.apps.youtube.music.dockerpy"
       }
     ]
   }
