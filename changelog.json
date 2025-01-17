@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.1)",
+        "Version": "V1.4.1",
+        "Changelog": "## What's Changed\r\n* More `info` functions: locales, languages, configurations, strings by @REAndroid in https://github.com/REAndroid/APKEditor/pull/132\r\n* Strong resource protection by @REAndroid in https://github.com/REAndroid/APKEditor/pull/133\r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.0...V1.4.1",
+        "PublishedOn": "2024-10-01T21:32:59Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "- Based on ReVanced Cli [5.0.0](https://github.com/ReVanced/revanced-cli/tree/v5.0.0)\r\n- Added option command `options` (`options.json` file generator)\r\n- Added option command `patches` (`patches.json` file generator)\r\n- Added option command `--legacy-options` (set patch option via options.json file)\r\n- Added option command `--rip-libs` (remove native libs from apk)\r\n- Added option command `--unsigned` (disable signing of the final apk, regardless of whether it is mounted or not)\r\n- Added support anti-split (merged some [REAndroid/ARSCLib](https://github.com/REAndroid/ARSCLib) sources to implement anti-split)\r\n\r\n",
+        "PublishedOn": "2024-12-08T09:50:42Z"
+    },
+    "inotia00/revanced-patches": {
+        "ResourceName": "[inotia00/revanced-patches](https://github.com/inotia00/revanced-patches/releases/tag/v5.3.1-dev.2)",
+        "Version": "v5.3.1-dev.2",
+        "Changelog": "YouTube\r\n==\r\n- feat(YouTube): Add support version `20.02.38`\r\n- feat(YouTube - Hide layout components): Rename setting `Hide Autoplay menu` to `Hide Autoplay or Playback menu`\r\n- feat(YouTube - Settings): Add `RVX language` setting https://github.com/inotia00/ReVanced_Extended/issues/2680\r\n- feat(YouTube - Spoof streaming data): Add `VR default audio stream language` setting https://github.com/inotia00/ReVanced_Extended/issues/2670\r\n\r\n\r\nYouTube Music\r\n==\r\n- feat(YouTube Music): Add support version `8.02.53`\r\n\r\n\r\nReddit\r\n==\r\n- fix(Reddit - Remove subreddit dialog): Patch fails on older versions https://github.com/inotia00/ReVanced_Extended/issues/2688\r\n\r\n\r\nShared\r\n==\r\n- chore: Re-order and update strings https://github.com/inotia00/revanced-patches/pull/122\r\n- chore: Reflecting changes in Kotlin 2.0.21\r\n- fix(GmsCore support): Patched apps are not added to Cloud Messaging https://github.com/inotia00/ReVanced_Extended/issues/2686\r\n\r\n\r\nAnnouncement\r\n==\r\n- Added support for **2025 builds** for YouTube and YouTube Music. As this is an initial build, there may be unknown issues.\r\n- _Reuploaded due to an issue with patching failing on YouTube 19.16.39 or earlier._\r\n- YouTube Music's support version has been upgraded to **7.25.53 / 8.02.53**, but please read the following issue and upgrade only if necessary: https://github.com/inotia00/ReVanced_Extended/issues/2554.\r\n- Compatible ReVanced Manager: [RVX Manager v1.23.5 (fork)](https://github.com/inotia00/revanced-manager/releases/tag/v1.23.5).\r\n\r\n\r\nContribute to translation\r\n==\r\n- [YouTube](https://crowdin.com/project/revancedextended)\r\n- [YT Music](https://crowdin.com/project/revancedmusicextended)",
+        "PublishedOn": "2025-01-17T06:34:07Z"
+    }
+}
