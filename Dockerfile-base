@@ -1,5 +1,5 @@
 # Use a specific version of the base Python image
-ARG PYTHON_VERSION=3.12.3-slim-bullseye
+ARG PYTHON_VERSION=3.13.1-slim-bullseye
 
 FROM python:${PYTHON_VERSION} AS python
 
