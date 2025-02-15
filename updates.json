@@ -1,1 +1,391 @@
-{}
+{
+    "youtube": {
+        "app_version": "19.44.39",
+        "patches_version": "v5.4.1",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739570100038,
+        "date_patched": "2025-02-14 21:55:00.037948+05:30",
+        "app_dump": {
+            "app_name": "youtube",
+            "app_version": "19.44.39",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/inotia00/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging",
+                "hide-fullscreen-button",
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "0b813dcb3a4201007e5d83c9c7e9dbf9bd9ea076b487ab2f378229556e97ba2a.rvp",
+                    "version": "v5.4.1"
+                }
+            },
+            "no_of_patches": 66,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "youtube.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=7940257&key=4748fe68d20d1130c2ed729664b3690dc6b1d565&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "youtube_music": {
+        "app_version": "8.05.51",
+        "patches_version": "v5.4.1",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739570170973,
+        "date_patched": "2025-02-14 21:56:10.972778+05:30",
+        "app_dump": {
+            "app_name": "youtube_music",
+            "app_version": "8.05.51",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/inotia00/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-compact-dialog",
+                "enable-debug-logging",
+                "enable-old-player-layout",
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-name-for-youtube-music"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "0b813dcb3a4201007e5d83c9c7e9dbf9bd9ea076b487ab2f378229556e97ba2a.rvp",
+                    "version": "v5.4.1"
+                }
+            },
+            "no_of_patches": 41,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "youtube_music.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8372612&key=1f7e4009ae527a092540cdc737e03176d6df86ff&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "reddit": {
+        "app_version": "2025.05.1",
+        "patches_version": "v5.4.1",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739570221805,
+        "date_patched": "2025-02-14 21:57:01.805281+05:30",
+        "app_dump": {
+            "app_name": "reddit",
+            "app_version": "2025.05.1",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/inotia00/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "change-package-name",
+                "custom-branding-name-for-reddit"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "0b813dcb3a4201007e5d83c9c7e9dbf9bd9ea076b487ab2f378229556e97ba2a.rvp",
+                    "version": "v5.4.1"
+                }
+            },
+            "no_of_patches": 13,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "reddit.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8329515&key=a0160342ece23c351abc6ba6bbefab2b4e496246",
+            "download_source": "https://www.apkmirror.com/apk/redditinc/reddit/",
+            "package_name": "com.reddit.frontpage",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_INOTIA00": {
+        "app_version": "19.44.39",
+        "patches_version": "v5.4.1",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739620685636,
+        "date_patched": "2025-02-15 11:58:05.635838+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_INOTIA00",
+            "app_version": "19.44.39",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/inotia00/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging",
+                "hide-fullscreen-button",
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "0b813dcb3a4201007e5d83c9c7e9dbf9bd9ea076b487ab2f378229556e97ba2a.rvp",
+                    "version": "v5.4.1"
+                }
+            },
+            "no_of_patches": 66,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_INOTIA00.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=7940257&key=27b259303a1b9dc9b3b00af1468e13c232da4643&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_ANDEA": {
+        "app_version": "19.44.39",
+        "patches_version": "v3.4.0",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739620754989,
+        "date_patched": "2025-02-15 11:59:14.988814+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_ANDEA",
+            "app_version": "19.44.39",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging",
+                "hide-fullscreen-button",
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "680552c4ae3b0c5d3b93550a442a2984e7adbe6911d9a0918bc37c7eab6ed2a1.rvp",
+                    "version": "v3.4.0"
+                }
+            },
+            "no_of_patches": 66,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_ANDEA.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=7940257&key=27b259303a1b9dc9b3b00af1468e13c232da4643&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_MUSIC_INOTIA00": {
+        "app_version": "8.05.51",
+        "patches_version": "v5.4.1",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739620822931,
+        "date_patched": "2025-02-15 12:00:22.931324+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_MUSIC_INOTIA00",
+            "app_version": "8.05.51",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/inotia00/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-compact-dialog",
+                "enable-debug-logging",
+                "enable-old-player-layout",
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-name-for-youtube-music",
+                "custom-header-for-youtube-music"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "0b813dcb3a4201007e5d83c9c7e9dbf9bd9ea076b487ab2f378229556e97ba2a.rvp",
+                    "version": "v5.4.1"
+                }
+            },
+            "no_of_patches": 41,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_MUSIC_INOTIA00.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8372612&key=bb8b15ad349c90396555e83c92a29ccf25b41a13&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_MUSIC_ANDEA": {
+        "app_version": "8.05.51",
+        "patches_version": "v3.4.0",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739620859820,
+        "date_patched": "2025-02-15 12:00:59.820064+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_MUSIC_ANDEA",
+            "app_version": "8.05.51",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-compact-dialog",
+                "enable-debug-logging",
+                "enable-old-player-layout",
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-name-for-youtube-music",
+                "custom-header-for-youtube-music"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "680552c4ae3b0c5d3b93550a442a2984e7adbe6911d9a0918bc37c7eab6ed2a1.rvp",
+                    "version": "v3.4.0"
+                }
+            },
+            "no_of_patches": 41,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_MUSIC_ANDEA.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8372612&key=bb8b15ad349c90396555e83c92a29ccf25b41a13&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "REDDIT_INOTIA00": {
+        "app_version": "2025.05.1",
+        "patches_version": "v5.4.1",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739620913191,
+        "date_patched": "2025-02-15 12:01:53.191550+05:30",
+        "app_dump": {
+            "app_name": "REDDIT_INOTIA00",
+            "app_version": "2025.05.1",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/inotia00/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "change-package-name",
+                "custom-branding-name-for-reddit"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "0b813dcb3a4201007e5d83c9c7e9dbf9bd9ea076b487ab2f378229556e97ba2a.rvp",
+                    "version": "v5.4.1"
+                }
+            },
+            "no_of_patches": 13,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "REDDIT_INOTIA00.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8329515&key=28051e996ec5b90e2cbe102feb1a3d78391bd796",
+            "download_source": "https://www.apkmirror.com/apk/reddit-inc/reddit/",
+            "package_name": "com.reddit.frontpage",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "REDDIT_ANDEA": {
+        "app_version": "2025.05.1",
+        "patches_version": "v3.4.0",
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1739620980238,
+        "date_patched": "2025-02-15 12:03:00.238574+05:30",
+        "app_dump": {
+            "app_name": "REDDIT_ANDEA",
+            "app_version": "2025.05.1",
+            "experiment": false,
+            "cli_dl": "https://github.com/inotia00/revanced-cli/releases/latest",
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "change-package-name",
+                "custom-branding-name-for-reddit"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "0d2a23fb9ef1e59c91f16f35dac65a9b5f7032dae471da0de6dd23b57b3b2f0a.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "680552c4ae3b0c5d3b93550a442a2984e7adbe6911d9a0918bc37c7eab6ed2a1.rvp",
+                    "version": "v3.4.0"
+                }
+            },
+            "no_of_patches": 13,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "REDDIT_ANDEA.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8329515&key=28051e996ec5b90e2cbe102feb1a3d78391bd796",
+            "download_source": "https://www.apkmirror.com/apk/reddit-inc/reddit/",
+            "package_name": "com.reddit.frontpage",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    }
+}
