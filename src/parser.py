@@ -22,7 +22,7 @@ class Parser(object):
     PATCHES_ARG = "-p"
     OUTPUT_ARG = "-o"
     KEYSTORE_ARG = "--keystore"
-    OPTIONS_ARG = "--options"
+    OPTIONS_ARG = "--legacy-options"
 
     def __init__(self: Self, patcher: Patches, config: RevancedConfig) -> None:
         self._PATCHES: list[str] = []
