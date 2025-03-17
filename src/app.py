@@ -31,7 +31,7 @@ class APP(object):
         self.app_version = config.env.str(f"{app_name}_VERSION".upper(), None)
         self.experiment = False
         # Temp fix until i get time for new options support
-        self.cli_dl = "https://github.com/revanced/revanced-cli"
+        self.cli_dl = "https://github.com/inotia00/revanced-cli"
         self.patches_dl = config.env.str(f"{app_name}_PATCHES_DL".upper(), config.global_patches_dl)
         self.exclude_request: list[str] = config.env.list(f"{app_name}_EXCLUDE_PATCH".upper(), [])
         self.include_request: list[str] = config.env.list(f"{app_name}_INCLUDE_PATCH".upper(), [])

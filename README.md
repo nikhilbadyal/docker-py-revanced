@@ -108,50 +108,50 @@ You can use any of the following methods to build.
 
 ### Global Config
 
-| **Env Name**                                             |                  **Description**                  | **Default**                                                                                                           |
-|:---------------------------------------------------------|:-------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------|
-| [PATCH_APPS](#patch-apps)                                |                Apps to patch/build                | youtube                                                                                                               |
-| [EXISTING_DOWNLOADED_APKS ](#existing-downloaded-apks)   |           Already downloaded clean apks           | []                                                                                                                    |
-| [PERSONAL_ACCESS_TOKEN](#personal-access-token)          |              Github Token to be used              | None                                                                                                                  |
-| DRY_RUN                                                  |                   Do a dry run                    | False                                                                                                                 |
-| [GLOBAL_CLI_DL*](#global-resources)                      |     DL for CLI to be used for patching apps.      | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                              |
-| [GLOBAL_PATCHES_DL*](#global-resources)                  |   DL for Patches to be used for patching apps.    | [Revanced Patches](https://github.com/revanced/revanced-patches)                                                      |
-| [GLOBAL_SPACE_FORMATTED_PATCHES*](#global-resources)     |       Whether patches are space formatted.        | True                                                                                                                  |
-| [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |       Key file to be used for signing apps        | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore)              |
-| [GLOBAL_OLD_KEY*](#global-keystore-file-name)            | Whether key was generated with cli v4(new) or not | <br/>[Builder's v3(old) own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
-| [GLOBAL_OPTIONS_FILE*](#global-options-file)             |              Options file to be used              | [Builder's default file](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/options.json)              |
-| [GLOBAL_ARCHS_TO_BUILD*](#global-archs-to-build)         |         Arch to keep in the patched apk.          | All                                                                                                                   |
-| REDDIT_CLIENT_ID                                         |       Reddit Client ID to patch reddit apps       | None                                                                                                                  |
-| VT_API_KEY                                               |           Virus Total Key to scan APKs            | None                                                                                                                  |
-| [TELEGRAM_CHAT_ID](#telegram-support)                    |            Receiver in Telegram upload            | None                                                                                                                  |
-| [TELEGRAM_BOT_TOKEN](#telegram-support)                  |          APKs Sender for Telegram upload          | None                                                                                                                  |
-| [TELEGRAM_API_ID](#telegram-support)                     |         Used for telegram Authentication          | None                                                                                                                  |
-| [TELEGRAM_API_HASH](#telegram-support)                   |         Used for telegram Authentication          | None                                                                                                                  |
-| [EXTRA_FILES](#extra-files)                              |    Extra files apk to upload in GitHub upload.    | None                                                                                                                  |
-| [APPRISE_URL](#apprise)                                  |                   Apprise URL .                   | None                                                                                                                  |
-| [APPRISE_NOTIFICATION_TITLE](#apprise)                   |           Apprise Notification Title .            | None                                                                                                                  |
-| [APPRISE_NOTIFICATION_BODY](#apprise)                    |            Apprise Notification Body .            | None                                                                                                                  |
+| **Env Name**                                             |                     **Description**                     | **Default**                                                                                                           |
+|:---------------------------------------------------------|:-------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------|
+| [PATCH_APPS](#patch-apps)                                |                   Apps to patch/build                   | youtube                                                                                                               |
+| [EXISTING_DOWNLOADED_APKS ](#existing-downloaded-apks)   |              Already downloaded clean apks              | []                                                                                                                    |
+| [PERSONAL_ACCESS_TOKEN](#personal-access-token)          |                 Github Token to be used                 | None                                                                                                                  |
+| DRY_RUN                                                  |                      Do a dry run                       | False                                                                                                                 |
+| [~~GLOBAL_CLI_DL*~~](#global-resources)                  | DL for CLI to be used for patching apps.(Disabled Temp) | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                              |
+| [GLOBAL_PATCHES_DL*](#global-resources)                  |      DL for Patches to be used for patching apps.       | [Revanced Patches](https://github.com/revanced/revanced-patches)                                                      |
+| [GLOBAL_SPACE_FORMATTED_PATCHES*](#global-resources)     |          Whether patches are space formatted.           | True                                                                                                                  |
+| [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |          Key file to be used for signing apps           | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore)              |
+| [GLOBAL_OLD_KEY*](#global-keystore-file-name)            |    Whether key was generated with cli v4(new) or not    | <br/>[Builder's v3(old) own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
+| [GLOBAL_OPTIONS_FILE*](#global-options-file)             |                 Options file to be used                 | [Builder's default file](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/options.json)              |
+| [GLOBAL_ARCHS_TO_BUILD*](#global-archs-to-build)         |            Arch to keep in the patched apk.             | All                                                                                                                   |
+| REDDIT_CLIENT_ID                                         |          Reddit Client ID to patch reddit apps          | None                                                                                                                  |
+| VT_API_KEY                                               |              Virus Total Key to scan APKs               | None                                                                                                                  |
+| [TELEGRAM_CHAT_ID](#telegram-support)                    |               Receiver in Telegram upload               | None                                                                                                                  |
+| [TELEGRAM_BOT_TOKEN](#telegram-support)                  |             APKs Sender for Telegram upload             | None                                                                                                                  |
+| [TELEGRAM_API_ID](#telegram-support)                     |            Used for telegram Authentication             | None                                                                                                                  |
+| [TELEGRAM_API_HASH](#telegram-support)                   |            Used for telegram Authentication             | None                                                                                                                  |
+| [EXTRA_FILES](#extra-files)                              |       Extra files apk to upload in GitHub upload.       | None                                                                                                                  |
+| [APPRISE_URL](#apprise)                                  |                      Apprise URL .                      | None                                                                                                                  |
+| [APPRISE_NOTIFICATION_TITLE](#apprise)                   |              Apprise Notification Title .               | None                                                                                                                  |
+| [APPRISE_NOTIFICATION_BODY](#apprise)                    |               Apprise Notification Body .               | None                                                                                                                  |
 
 `*` - Can be overridden for individual app.
 ### App Level Config
 
-| Env Name                                                    |                                         Description                                          | Default                        |
-|:------------------------------------------------------------|:--------------------------------------------------------------------------------------------:|:-------------------------------|
-| [*APP_NAME*_CLI_DL](#global-resources)                      |                       DL for CLI to be used for patching **APP_NAME**.                       | GLOBAL_CLI_DL                  |
-| [*APP_NAME*_PATCHES_DL](#global-resources)                  |                     DL for Patches to be used for patching **APP_NAME**.                     | GLOBAL_PATCHES_DL              |
-| [*APP_NAME*_SPACE_FORMATTED_PATCHES](#global-resources)     |                     Whether patches are space formatted.   **APP_NAME**.                     | GLOBAL_SPACE_FORMATTED_PATCHES |
-| [*APP_NAME*_KEYSTORE_FILE_NAME](#global-keystore-file-name) |                        Key file to be used for signing **APP_NAME**.                         | GLOBAL_KEYSTORE_FILE_NAME      |
-| [*APP_NAME*_OLD_KEY](#global-keystore-file-name)            | Whether key used was generated with cli > v4(new) <br/><br/>**APP_NAME**.      <br/>   <br/> | GLOBAL_OLK_KEY                 |
-| [*APP_NAME*_ARCHS_TO_BUILD](#global-archs-to-build)         |                          Arch to keep in the patched **APP_NAME**.                           | GLOBAL_ARCHS_TO_BUILD          |
-| [*APP_NAME*_EXCLUDE_PATCH**](#custom-exclude-patching)      |                       Patches to exclude while patching  **APP_NAME**.                       | []                             |
-| [*APP_NAME*_INCLUDE_PATCH**](#custom-include-patching)      |                       Patches to include while patching  **APP_NAME**.                       | []                             |
-| [*APP_NAME*_VERSION](#app-version)                          |                          Version to use for download for patching.                           | Recommended by patch resources |
-| [*APP_NAME*_PACKAGE_NAME***](#any-patch-apps)               |                            Package name of the app to be patched                             | None                           |
-| [*APP_NAME*_DL_SOURCE***](#any-patch-apps)                  |                       Download source of any of the supported scrapper                       | None                           |
-| [*APP_NAME*_DL***](#app-dl)                                 |                              Direct download Link for clean apk                              | None                           |
+| Env Name                                                      |                                               Description                                               | Default                        |
+|:--------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------:|:-------------------------------|
+| [~~**APP_NAME**_CLI_DL~~](#global-resources)                  |                     DL for CLI to be used for patching **APP_NAME**.(Disabled Temp)                     | GLOBAL_CLI_DL                  |
+| [**APP_NAME**_PATCHES_DL](#global-resources)                  |                          DL for Patches to be used for patching **APP_NAME**.                           | GLOBAL_PATCHES_DL              |
+| [**APP_NAME**_SPACE_FORMATTED_PATCHES](#global-resources)     |                          Whether patches are space formatted.   **APP_NAME**.                           | GLOBAL_SPACE_FORMATTED_PATCHES |
+| [**APP_NAME**_KEYSTORE_FILE_NAME](#global-keystore-file-name) |                              Key file to be used for signing **APP_NAME**.                              | GLOBAL_KEYSTORE_FILE_NAME      |
+| [**APP_NAME**_OLD_KEY](#global-keystore-file-name)            |      Whether key used was generated with cli > v4(new) <br/><br/>**APP_NAME**.      <br/>   <br/>       | GLOBAL_OLK_KEY                 |
+| [**APP_NAME**_ARCHS_TO_BUILD](#global-archs-to-build)         |                                Arch to keep in the patched **APP_NAME**.                                | GLOBAL_ARCHS_TO_BUILD          |
+| [**APP_NAME**_EXCLUDE_PATCH**](#custom-exclude-patching)      |                            Patches to exclude while patching  **APP_NAME**.                             | []                             |
+| [**APP_NAME**_INCLUDE_PATCH**](#custom-include-patching)      |                            Patches to include while patching  **APP_NAME**.                             | []                             |
+| [**APP_NAME**_VERSION](#app-version)                          |                                Version to use for download for patching.                                | Recommended by patch resources |
+| [**APP_NAME**_PACKAGE_NAME***](#any-patch-apps)               |                                  Package name of the app to be patched                                  | None                           |
+| [**APP_NAME**_DL_SOURCE***](#any-patch-apps)                  |                            Download source of any of the supported scrapper                             | None                           |
+| [**APP_NAME**_DL***](#app-dl)                                 |                                   Direct download Link for clean apk                                    | None                           |
 
 `**` - By default all patches for a given app are included.<br>
-`**` - Can be used to included universal patch.
+`**` - Can be used to included universal patch.<br>
 `***` - Can be used for unavailable apps in the repository (unofficial apps).
 
 ## Note
