@@ -85,7 +85,7 @@ def convert_command_output_to_json(
         return result
 
     # Run the command
-    command = ["java", "-jar", jar_file_name, "list-patches", "-ipuv", patches_file]
+    command = ["java", "-jar", jar_file_name, "list-patches", "-ipuvo", patches_file]
     output = run_command_and_capture_output(command)
 
     parsed_data = parse_text_to_json(output)
