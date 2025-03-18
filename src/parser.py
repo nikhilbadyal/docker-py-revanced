@@ -1,8 +1,9 @@
 """Revanced Parser."""
 
+import json
 from subprocess import PIPE, Popen
 from time import perf_counter
-from typing import Self
+from typing import Any, Self
 
 from loguru import logger
 
@@ -30,7 +31,7 @@ class Parser(object):
         self.patcher = patcher
         self.config = config
 
-    def include(self: Self, name: str) -> None:
+    def include(self: Self, name: str, options: list[dict[str, Any]]) -> None:
         """
         The function `include` adds a given patch to the front of a list of patches.
 
@@ -38,8 +39,34 @@ class Parser(object):
         ----------
         name : str
             The `name` parameter is a string that represents the name of the patch to be included.
+        options : list[dict[str, str]]
+            The `options` parameter is a list of dictionary that represents the options of the patch to be included.
         """
+        if options:
+            for opt in options:
+                pair_builder = f"{opt['key']}"
+                if value := opt["value"]:
+                    if isinstance(value, bool):
+                        pair_builder += f'="{str(value).lower()}"'
+                    else:
+                        pair_builder += f'="{value}"'
+
+                self._PATCHES[:0] = ["-O", pair_builder]
         self._PATCHES[:0] = ["-e", name]
+
+    def include_with_options(self: Self, name: str, options_list: list[dict[str, Any]]) -> None:
+        """
+        The function `include_with_options` fetches and adds a given options to the front of the patch.
+
+        Parameters
+        ----------
+        name : str
+            The `name` parameter is a string that represents the name of the patch to be included.
+        options_list : list[dict[str, str]]
+            Then `options_list` parameter is a list of dictionary that represents the options for all patches.
+        """
+        options_dict: dict[str, Any] = self.fetch_patch_options(name, options_list)
+        self.include(name, options_dict["options"] if options_dict else [])
 
     def exclude(self: Self, name: str) -> None:
         """The `exclude` function adds a given patch to the list of excluded patches.
@@ -104,6 +131,21 @@ class Parser(object):
             if item == "-e":
                 self._PATCHES[idx] = "-d"
 
+    def fetch_patch_options(self: Self, name: str, options_list: list[dict[str, Any]]) -> dict[str, Any]:
+        """The function `fetch_patch_options` finds patch options for the patch.
+
+        Parameters
+        ----------
+        name : str
+            Then `name` parameter is a string that represents the name of the patch.
+        options_list : list[dict[str, str]]
+            Then `options_list` parameter is a list of dictionary that represents the options for all patches.
+        """
+        return next(
+            filter(lambda obj: obj.get("patchName") == name, options_list),
+            {},
+        )
+
     def include_exclude_patch(
         self: Self,
         app: APP,
@@ -111,11 +153,20 @@ class Parser(object):
         patches_dict: dict[str, list[dict[str, str]]],
     ) -> None:
         """The function `include_exclude_patch` includes and excludes patches for a given app."""
+        options_list: list[dict[str, Any]] = [{}]
+        try:
+            with self.config.temp_folder.joinpath(app.options_file).open() as file:
+                options_list = json.load(file)
+        # Not excepting on JSONDecodeError as it should error out if the file is not a valid JSON
+        except FileNotFoundError as e:
+            logger.warning(str(e))
+            logger.debug("Setting options to empty list.")
+
         if app.space_formatted:
             for patch in patches:
                 normalized_patch = patch["name"].lower().replace(" ", "-")
                 (
-                    self.include(patch["name"])
+                    self.include_with_options(patch["name"], options_list)
                     if normalized_patch not in app.exclude_request
                     else self.exclude(
                         patch["name"],
@@ -123,18 +174,25 @@ class Parser(object):
                 )
             for patch in patches_dict["universal_patch"]:
                 normalized_patch = patch["name"].lower().replace(" ", "-")
-                self.include(patch["name"]) if normalized_patch in app.include_request else ()
+                (
+                    self.include_with_options(
+                        patch["name"],
+                        options_list,
+                    )
+                    if normalized_patch in app.include_request
+                    else ()
+                )
         else:
             for patch in patches:
                 (
-                    self.include(patch["name"])
+                    self.include_with_options(patch["name"], options_list)
                     if patch["name"] not in app.exclude_request
                     else self.exclude(
                         patch["name"],
                     )
                 )
             for patch in patches_dict["universal_patch"]:
-                self.include(patch["name"]) if patch["name"] in app.include_request else ()
+                self.include_with_options(patch["name"], options_list) if patch["name"] in app.include_request else ()
 
     # noinspection IncorrectFormatting
     def patch_app(
@@ -162,8 +220,8 @@ class Parser(object):
             app.get_output_file_name(),
             self.KEYSTORE_ARG,
             app.keystore_name,
-            self.OPTIONS_ARG,
-            app.options_file,
+            # self.OPTIONS_ARG,
+            # app.options_file,
         ]
         args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
