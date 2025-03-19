@@ -24,6 +24,8 @@ class Downloader(object):
         self._QUEUE: PriorityQueue[tuple[float, str]] = PriorityQueue()
         self._QUEUE_LENGTH = 0
         self.config = config
+        self.global_archs_priority: Any = None
+        self.app_version: Any = None
 
     def _download(self: Self, url: str, file_name: str) -> None:
         if not url:

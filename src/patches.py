@@ -150,25 +150,27 @@ class Patches(object):
         self.fetch_patches(config, app)
 
     def get(self: Self, app: str) -> tuple[list[dict[str, str]], str]:
-        """The function `get` returns all patches and version for a given application.
+        """
+        Returns all patches and the latest version for a given application.
 
         Parameters
         ----------
         app : str
-            The `app` parameter is a string that represents the name of the application for which you want
-        to retrieve patches.
+            The name of the application for which patches need to be retrieved.
 
         Returns
         -------
-            a tuple containing two elements. The first element is a list of dictionaries representing
-        patches for the given app. The second element is a string representing the version of the
-        patches.
+        tuple[list[dict[str, str]], str]
+            A tuple containing:
+            - A list of dictionaries representing patches for the given app.
+            - A string representing the latest version of the patches.
         """
         patches = self.patches_dict[app]
-        version = "latest"
+
         with contextlib.suppress(StopIteration):
-            version = next(i["version"] for i in patches if i["version"] != "all")
-        return patches, version
+            return patches, next(i["version"] for i in patches if i["version"] != "all")
+
+        return patches, "latest"
 
     def get_app_configs(self: Self, app: "APP") -> list[dict[str, str]]:
         """The function `get_app_configs` returns configurations for a given app.
