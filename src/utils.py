@@ -241,7 +241,7 @@ def contains_any_word(string: str, words: list[str]) -> bool:
 def datetime_to_ms_epoch(dt: datetime) -> int:
     """Returns millis since epoch."""
     microseconds = time.mktime(dt.timetuple()) * 1000000 + dt.microsecond
-    return int(round(microseconds / float(1000)))
+    return round(microseconds / float(1000))
 
 
 def load_older_updates(env: Env) -> dict[str, Any]:
