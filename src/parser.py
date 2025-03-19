@@ -31,7 +31,7 @@ class Parser(object):
         self.patcher = patcher
         self.config = config
 
-    def include(self: Self, name: str, options: list[dict[str, Any]]) -> None:
+    def format_option(self: Self, opt: dict[str, Any]) -> str:
         """
         The function `include` adds a given patch to the front of a list of patches.
 
@@ -39,34 +39,36 @@ class Parser(object):
         ----------
         name : str
             The `name` parameter is a string that represents the name of the patch to be included.
-        options : list[dict[str, str]]
-            The `options` parameter is a list of dictionary that represents the options of the patch to be included.
+        opt : dict[str, Any]
+            The `opt` parameter is a dictionary that represents the key-value pair of options
+            of the patch to be included.
         """
-        if options:
-            for opt in options:
-                pair_builder = f"{opt['key']}"
-                if value := opt["value"]:
-                    if isinstance(value, bool):
-                        pair_builder += f'="{str(value).lower()}"'
-                    else:
-                        pair_builder += f'="{value}"'
+        pair: str = opt["key"]
+        if value := opt.get("value"):
+            if isinstance(value, bool):
+                pair += f'="{str(value).lower()}"'
+            else:
+                pair += f'="{value}"'
+        return pair
 
-                self._PATCHES[:0] = ["-O", pair_builder]
-        self._PATCHES[:0] = ["-e", name]
-
-    def include_with_options(self: Self, name: str, options_list: list[dict[str, Any]]) -> None:
+    def include(self: Self, name: str, options_list: list[dict[str, Any]]) -> None:
         """
-        The function `include_with_options` fetches and adds a given options to the front of the patch.
+        The function `include` adds a given patch to the front of a list of patches.
 
         Parameters
         ----------
         name : str
             The `name` parameter is a string that represents the name of the patch to be included.
-        options_list : list[dict[str, str]]
+        options_list : list[dict[str, Any]]
             Then `options_list` parameter is a list of dictionary that represents the options for all patches.
         """
         options_dict: dict[str, Any] = self.fetch_patch_options(name, options_list)
-        self.include(name, options_dict["options"] if options_dict else [])
+        options = options_dict.get("options", [])
+        if options:
+            for opt in options:
+                pair = self.format_option(opt)
+                self._PATCHES[:0] = ["-O", pair]
+        self._PATCHES[:0] = ["-e", name]
 
     def exclude(self: Self, name: str) -> None:
         """The `exclude` function adds a given patch to the list of excluded patches.
@@ -138,7 +140,7 @@ class Parser(object):
         ----------
         name : str
             Then `name` parameter is a string that represents the name of the patch.
-        options_list : list[dict[str, str]]
+        options_list : list[dict[str, Any]]
             Then `options_list` parameter is a list of dictionary that represents the options for all patches.
         """
         return next(
@@ -166,7 +168,7 @@ class Parser(object):
             for patch in patches:
                 normalized_patch = patch["name"].lower().replace(" ", "-")
                 (
-                    self.include_with_options(patch["name"], options_list)
+                    self.include(patch["name"], options_list)
                     if normalized_patch not in app.exclude_request
                     else self.exclude(
                         patch["name"],
@@ -175,7 +177,7 @@ class Parser(object):
             for patch in patches_dict["universal_patch"]:
                 normalized_patch = patch["name"].lower().replace(" ", "-")
                 (
-                    self.include_with_options(
+                    self.include(
                         patch["name"],
                         options_list,
                     )
@@ -185,14 +187,14 @@ class Parser(object):
         else:
             for patch in patches:
                 (
-                    self.include_with_options(patch["name"], options_list)
+                    self.include(patch["name"], options_list)
                     if patch["name"] not in app.exclude_request
                     else self.exclude(
                         patch["name"],
                     )
                 )
             for patch in patches_dict["universal_patch"]:
-                self.include_with_options(patch["name"], options_list) if patch["name"] in app.include_request else ()
+                self.include(patch["name"], options_list) if patch["name"] in app.include_request else ()
 
     # noinspection IncorrectFormatting
     def patch_app(
