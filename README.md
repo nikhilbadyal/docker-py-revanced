@@ -194,7 +194,7 @@ You can use any of the following methods to build.
     - [boost](https://www.apkmirror.com/apk/ruben-mayayo/boost-for-reddit/)
     - [rif](https://www.apkmirror.com/apk/talklittle/reddit-is-fun/)
     - [sync](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
-    - [infinity](https://www.apkmirror.com/apk/red-apps-ltd/sync-for-reddit/)
+    - [infinity](https://www.apkmirror.com/apk/docile-alligator/infinity-for-reddit/)
     - [slide](https://www.apkmirror.com/apk/haptic-apps/slide-for-reddit/)
     - [bacon](https://www.apkmirror.com/apk/onelouder-apps/baconreader-for-reddit/)
     - [microg](https://github.com/inotia00/mMicroG/releases/)
