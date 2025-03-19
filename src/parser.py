@@ -23,7 +23,7 @@ class Parser(object):
     PATCHES_ARG = "-p"
     OUTPUT_ARG = "-o"
     KEYSTORE_ARG = "--keystore"
-    OPTIONS_ARG = "--legacy-options"
+    OPTIONS_ARG = "-O"
 
     def __init__(self: Self, patcher: Patches, config: RevancedConfig) -> None:
         self._PATCHES: list[str] = []
@@ -67,7 +67,7 @@ class Parser(object):
         if options:
             for opt in options:
                 pair = self.format_option(opt)
-                self._PATCHES[:0] = ["-O", pair]
+                self._PATCHES[:0] = [self.OPTIONS_ARG, pair]
         self._PATCHES[:0] = ["-e", name]
 
     def exclude(self: Self, name: str) -> None:
@@ -222,8 +222,6 @@ class Parser(object):
             app.get_output_file_name(),
             self.KEYSTORE_ARG,
             app.keystore_name,
-            # self.OPTIONS_ARG,
-            # app.options_file,
         ]
         args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
