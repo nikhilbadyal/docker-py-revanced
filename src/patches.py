@@ -97,7 +97,7 @@ class Patches(object):
             a string, which is the package name corresponding to the given app name.
         """
         for package, app_name in Patches.revanced_package_names.items():
-            if app_name == app:
+            if app_name.upper() == app.upper():
                 return package
         msg = f"App {app} not supported officially yet. Please provide package name in env to proceed."
         raise AppNotFoundError(msg)
@@ -150,27 +150,25 @@ class Patches(object):
         self.fetch_patches(config, app)
 
     def get(self: Self, app: str) -> tuple[list[dict[str, str]], str]:
-        """
-        Returns all patches and the latest version for a given application.
+        """The function `get` returns all patches and version for a given application.
 
         Parameters
         ----------
         app : str
-            The name of the application for which patches need to be retrieved.
+            The `app` parameter is a string that represents the name of the application for which you want
+        to retrieve patches.
 
         Returns
         -------
-        tuple[list[dict[str, str]], str]
-            A tuple containing:
-            - A list of dictionaries representing patches for the given app.
-            - A string representing the latest version of the patches.
+            a tuple containing two elements. The first element is a list of dictionaries representing
+        patches for the given app. The second element is a string representing the version of the
+        patches.
         """
         patches = self.patches_dict[app]
-
+        version = "latest"
         with contextlib.suppress(StopIteration):
-            return patches, next(i["version"] for i in patches if i["version"] != "all")
-
-        return patches, "latest"
+            version = next(i["version"] for i in patches if i["version"] != "all")
+        return patches, version
 
     def get_app_configs(self: Self, app: "APP") -> list[dict[str, str]]:
         """The function `get_app_configs` returns configurations for a given app.
