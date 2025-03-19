@@ -97,28 +97,52 @@ class ApkPure(Downloader):
         return file_name, app_dl
 
     def specific_version(self: Self, app: APP, version: str) -> tuple[str, str]:
-        """Function to download the specified version of app from apkpure.
+        """
+        Downloads the specified version of an app from APKPure.
 
-        :param app: Name of the application
-        :param version: Version of the application to download
-        :return: Tuple of filename and app direct download link
+        Parameters
+        ----------
+        app : APP
+            The application object containing metadata.
+        version : str
+            The specific version of the application to download.
+
+        Returns
+        -------
+        tuple[str, str]
+            A tuple containing:
+            - The filename of the downloaded APK.
+            - The direct download link of the APK.
+
+        Raises
+        ------
+        APKPureAPKDownloadError
+            If the specified version is not found.
         """
         self.global_archs_priority = tuple(self._sort_by_priority(app.archs_to_build))
-        version_page = app.download_source + "/versions"
-        r = requests.get(version_page, headers=request_header, timeout=request_timeout)
-        handle_request_response(r, version_page)
-        soup = BeautifulSoup(r.text, bs4_parser)
-        version_box_list = soup.select("ul.ver-wrap > *")
-        for box in version_box_list:
-            if (
-                (_data := box.select_one("a.ver_download_link"))
-                and (found_version := _data.get("data-dt-version"))
-                and found_version == version
-            ):
-                download_page = _data.get("href")
-                file_name, download_source = self.extract_download_link(download_page, app.app_name)  # type: ignore  # noqa: PGH003
+        version_page = f"{app.download_source}/versions"
+
+        response = requests.get(version_page, headers=request_header, timeout=request_timeout)
+        handle_request_response(response, version_page)
+
+        soup = BeautifulSoup(response.text, bs4_parser)
+
+        for box in soup.select("ul.ver-wrap > *"):
+            download_link = box.select_one("a.ver_download_link")
+            if not download_link:
+                continue
+
+            found_version = download_link.get("data-dt-version")
+            if found_version == version:
+                download_page = download_link.get("href")
+                file_name, download_source = self.extract_download_link(
+                    str(download_page),
+                    app.app_name,
+                )
+
                 app.app_version = self.app_version
                 logger.info(f"Guessed {app.app_version} for {app.app_name}")
+
                 self._download(download_source, file_name)
                 return file_name, download_source
         msg = f"Unable to find specific version '{version}' for {app} from version list"

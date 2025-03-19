@@ -37,8 +37,6 @@ class Parser(object):
 
         Parameters
         ----------
-        name : str
-            The `name` parameter is a string that represents the name of the patch to be included.
         opt : dict[str, Any]
             The `opt` parameter is a dictionary that represents the key-value pair of options
             of the patch to be included.
@@ -91,7 +89,7 @@ class Parser(object):
         return self._EXCLUDED
 
     def get_all_patches(self: Self) -> list[str]:
-        """The function "get_all_patches" is a getter method that returns a ist of all patches.
+        """The function "get_all_patches" is a getter method that returns the list of all patches.
 
         Returns
         -------
@@ -222,8 +220,8 @@ class Parser(object):
             app.get_output_file_name(),
             self.KEYSTORE_ARG,
             app.keystore_name,
+            exp,
         ]
-        args.append(exp)
         args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
         if app.old_key:
             # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
