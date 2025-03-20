@@ -45,6 +45,11 @@ class Parser(object):
         if value := opt.get("value"):
             if isinstance(value, bool):
                 pair += f'="{str(value).lower()}"'
+            elif isinstance(value, (int, float)):
+                pair += f"={value}"  # Numbers should not be quoted
+            elif isinstance(value, list):
+                formatted_list = ",".join(map(str, value))
+                pair += f'="[ {formatted_list} ]"'  # Preserve list format
             else:
                 pair += f'="{value}"'
         return pair
