@@ -111,6 +111,13 @@
     ]
   },
   {
+	  "patchName" : "Custom branding",
+	  "options" : [ {
+		"key" : "appName",
+		"value" : "ReVanced"
+	  } ]
+  },
+  {
     "patchName": "Custom branding wordmark header",
     "options": [
       {
