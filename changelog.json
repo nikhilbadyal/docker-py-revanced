@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.2)",
+        "Version": "V1.4.2",
+        "Changelog": "## What's Changed\r\n* NEW: Using internal dex library.\r\n* Full support dex files upto version 042 (_for more see help by running `java -jar APKEditor.jar d -h`_ ).\r\n* Translation into Arabic by @Kirlif in https://github.com/REAndroid/APKEditor/pull/142\r\n* Fix: Consolidate JSON Info output into a single object by @AbhiTheModder in https://github.com/REAndroid/APKEditor/pull/149\r\n\r\n## New Contributors\r\n* @AbhiTheModder made their first contribution in https://github.com/REAndroid/APKEditor/pull/149\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.1...V1.4.2",
+        "PublishedOn": "2025-01-21T20:16:10Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "- Based on ReVanced Cli [5.0.0](https://github.com/ReVanced/revanced-cli/tree/v5.0.0)\r\n- Added option command `options` (`options.json` file generator)\r\n- Added option command `patches` (`patches.json` file generator)\r\n- Added option command `--legacy-options` (set patch option via options.json file)\r\n- Added option command `--rip-libs` (remove native libs from apk)\r\n- Added option command `--unsigned` (disable signing of the final apk, regardless of whether it is mounted or not)\r\n- Added support anti-split (merged some [REAndroid/ARSCLib](https://github.com/REAndroid/ARSCLib) sources to implement anti-split)\r\n\r\n",
+        "PublishedOn": "2024-12-08T09:50:42Z"
+    },
+    "anddea/revanced-patches": {
+        "ResourceName": "[anddea/revanced-patches](https://github.com/anddea/revanced-patches/releases/tag/v3.6.0-dev.7)",
+        "Version": "v3.6.0-dev.7",
+        "Changelog": "# [3.6.0-dev.7](https://github.com/anddea/revanced-patches/compare/v3.6.0-dev.6...v3.6.0-dev.7) (2025-04-04)\n\n\n### Bug Fixes\n\n* **Spotify - Custom theme:** Override more color resources ([0af8762](https://github.com/anddea/revanced-patches/commit/0af8762d14c3ee75b508c56ebd3f00782f9a7901))\n\n\n### Features\n\n* **GmsCore support:** Add `Patch all manifest components` patch option ([203a22f](https://github.com/anddea/revanced-patches/commit/203a22f06b33262fb73f0be6576cd420157da64f))\n* **YouTube - Swipe controls:** Add `Switch speed and seek gestures` setting ([71c8b5b](https://github.com/anddea/revanced-patches/commit/71c8b5b444b2cedb66c38be36da30ea2a1dd197a))\n\n\n\n",
+        "PublishedOn": "2025-04-04T16:33:18Z"
+    }
+}
