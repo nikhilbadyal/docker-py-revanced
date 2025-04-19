@@ -45,6 +45,10 @@ jobs:
           echo "${{ secrets.ENVS }}" >> .env
           echo "GITHUB_REPOSITORY=${{ github.repository }}" >> .env
 
+      - name: Update Env from secrets for custom build
+        run: |
+          echo "${{ secrets.SECRETS }}" >> .env
+
       - name: Setup python
         uses: actions/setup-python@main
         with:

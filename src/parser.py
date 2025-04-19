@@ -244,6 +244,7 @@ class Parser(object):
             excluded = set(possible_archs) - set(app.archs_to_build)
             for arch in excluded:
                 args.extend(("--rip-lib", arch))
+        args.extend(("--purge",))
         start = perf_counter()
         logger.debug(f"Sending request to revanced cli for building with args java {args}")
         process = Popen(["java", *args], stdout=PIPE)

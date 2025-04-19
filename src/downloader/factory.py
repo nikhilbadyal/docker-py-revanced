@@ -1,6 +1,7 @@
 """Downloader Factory."""
 
 from src.config import RevancedConfig
+from src.downloader.apkkeep import Apkeep
 from src.downloader.apkmirror import ApkMirror
 from src.downloader.apkmonk import ApkMonk
 from src.downloader.apkpure import ApkPure
@@ -12,6 +13,7 @@ from src.downloader.sources import (
     APK_MIRROR_BASE_URL,
     APK_MONK_BASE_URL,
     APK_PURE_BASE_URL,
+    APKEEP,
     APKS_SOS_BASE_URL,
     DRIVE_DOWNLOAD_BASE_URL,
     GITHUB_BASE_URL,
@@ -47,5 +49,7 @@ class DownloaderFactory(object):
             return ApkMonk(config)
         if apk_source.startswith(DRIVE_DOWNLOAD_BASE_URL):
             return GoogleDrive(config)
+        if apk_source.startswith(APKEEP):
+            return Apkeep(config)
         msg = "No download factory found."
         raise DownloadError(msg, url=apk_source)

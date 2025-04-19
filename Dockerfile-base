@@ -1,5 +1,5 @@
 # Use a specific version of the base Python image
-ARG PYTHON_VERSION=3.13.1-slim-bullseye
+ARG PYTHON_VERSION=3.13.1-slim-bookworm
 
 FROM python:${PYTHON_VERSION} AS python
 
@@ -32,5 +32,25 @@ RUN apt-get -qq update && \
 
 # Set Java home environment variable
 ENV JAVA_HOME=/usr/lib/jvm/zulu17-ca-amd64
+
+# Ensure curl and jq are available for the next step
+RUN apt-get update && \
+    apt-get install -y curl jq libssl3 && \
+    rm -rf /var/lib/apt/lists/*
+ENV PATH="/usr/local/bin:${PATH}"
+# Now use them safely
+RUN set -eux; \
+    ARCH="$(uname -m)"; \
+    case "$ARCH" in \
+        x86_64) ARCH_NAME="x86_64-unknown-linux-gnu" ;; \
+        aarch64) ARCH_NAME="aarch64-unknown-linux-gnu" ;; \
+        *) echo "Unsupported arch: $ARCH" && exit 1 ;; \
+    esac; \
+    URL=$(curl -s https://api.github.com/repos/EFForg/apkeep/releases/latest \
+        | jq -r ".assets[] | select(.name == \"apkeep-${ARCH_NAME}\") | .browser_download_url"); \
+    curl -L "$URL" -o /usr/local/bin/apkeep; \
+    chmod +x /usr/local/bin/apkeep; \
+    echo "Installed apkeep from $URL"; \
+    /usr/local/bin/apkeep --version
 
 CMD ["bash"]
