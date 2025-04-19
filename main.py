@@ -34,15 +34,26 @@ def main() -> None:
         updates_info = load_older_updates(env)
 
     logger.info(f"Will Patch only {config.apps}")
+
+    # Caches for reuse
+    download_cache: dict[str, tuple[str, str]] = {}
+    resource_cache: dict[str, tuple[str, str]] = {}
+
     for possible_app in config.apps:
         logger.info(f"Trying to build {possible_app}")
         try:
             app = get_app(config, possible_app)
-            app.download_patch_resources(config)
+
+            # Use shared resource cache
+            app.download_patch_resources(config, resource_cache)
+
             patcher = Patches(config, app)
             parser = Parser(patcher, config)
             app_all_patches = patcher.get_app_configs(app)
-            app.download_apk_for_patching(config)
+
+            # Use shared APK cache
+            app.download_apk_for_patching(config, download_cache)
+
             parser.include_exclude_patch(app, app_all_patches, patcher.patches_dict)
             logger.info(app)
             updates_info = save_patch_info(app, updates_info)
@@ -55,6 +66,7 @@ def main() -> None:
             logger.exception(e)
         except BuilderError as e:
             logger.exception(f"Failed to build {possible_app} because of {e}")
+
     write_changelog_to_file(updates_info)
 
 

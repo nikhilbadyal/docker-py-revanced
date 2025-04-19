@@ -50,8 +50,12 @@ class APP(object):
             config.global_space_formatted,
         )
 
-    def download_apk_for_patching(self: Self, config: RevancedConfig) -> None:
-        """Download apk to be patched."""
+    def download_apk_for_patching(
+        self: Self,
+        config: RevancedConfig,
+        download_cache: dict[str, tuple[str, str]],
+    ) -> None:
+        """Download apk to be patched, skipping if already downloaded."""
         from src.downloader.download import Downloader
         from src.downloader.factory import DownloaderFactory
 
@@ -63,14 +67,22 @@ class APP(object):
             logger.info("Downloading apk to be patched by scrapping")
             try:
                 if not self.download_source:
-                    self.download_source = apk_sources[self.app_name].format(self.package_name)
+                    self.download_source = apk_sources[self.app_name.lower()].format(self.package_name)
             except KeyError as key:
                 msg = f"App {self.app_name} not supported officially yet. Please provide download source in env."
-                raise DownloadError(
-                    msg,
-                ) from key
+                raise DownloadError(msg) from key
+
+            # Skip if already downloaded
+            if self.download_source in download_cache:
+                logger.info(f"Skipping download. Reusing APK from cache for {self.app_name}")
+                self.download_file_name, self.download_dl = download_cache[self.download_source]
+                return
+
             downloader = DownloaderFactory.create_downloader(config=config, apk_source=self.download_source)
             self.download_file_name, self.download_dl = downloader.download(self.app_version, self)
+
+            # Save to cache
+            download_cache[self.download_source] = (self.download_file_name, self.download_dl)
 
     def get_output_file_name(self: Self) -> str:
         """The function returns a string representing the output file name.
@@ -135,7 +147,11 @@ class APP(object):
         Downloader(config).direct_download(url, file_name)
         return tag, file_name
 
-    def download_patch_resources(self: Self, config: RevancedConfig) -> None:
+    def download_patch_resources(
+        self: Self,
+        config: RevancedConfig,
+        resource_cache: dict[str, tuple[str, str]],
+    ) -> None:
         """The function `download_patch_resources` downloads various resources req. for patching.
 
         Parameters
@@ -143,22 +159,33 @@ class APP(object):
         config : RevancedConfig
             The `config` parameter is an instance of the `RevancedConfig` class. It is used to provide
         configuration settings for the resource download tasks.
+        resource_cache: dict[str, tuple[str, str]]
         """
         logger.info("Downloading resources for patching.")
-        # Create a list of resource download tasks
+
         download_tasks = [
             ("cli", self.cli_dl, config, ".*jar"),
             ("patches", self.patches_dl, config, ".*rvp"),
         ]
 
-        # Using a ThreadPoolExecutor for parallelism
         with ThreadPoolExecutor(1) as executor:
-            futures = {resource_name: executor.submit(self.download, *args) for resource_name, *args in download_tasks}
+            futures: dict[str, concurrent.futures.Future[tuple[str, str]]] = {}
 
-            # Wait for all tasks to complete
+            for resource_name, raw_url, cfg, assets_filter in download_tasks:
+                url = raw_url.strip()
+                if url in resource_cache:
+                    logger.info(f"Skipping {resource_name} download, using cached resource: {url}")
+                    tag, file_name = resource_cache[url]
+                    self.resource[resource_name] = {
+                        "file_name": file_name,
+                        "version": tag,
+                    }
+                    continue
+
+                futures[resource_name] = executor.submit(self.download, url, cfg, assets_filter)
+
             concurrent.futures.wait(futures.values())
 
-            # Retrieve results from completed tasks
             for resource_name, future in futures.items():
                 try:
                     tag, file_name = future.result()
@@ -166,8 +193,12 @@ class APP(object):
                         "file_name": file_name,
                         "version": tag,
                     }
+                    resource_cache[download_tasks[["cli", "patches"].index(resource_name)][1].strip()] = (
+                        tag,
+                        file_name,
+                    )
                 except BuilderError as e:
-                    msg = "Failed to download resource."
+                    msg = f"Failed to download {resource_name} resource."
                     raise PatchingFailedError(msg) from e
 
     @staticmethod

@@ -15,12 +15,13 @@ def check_if_build_is_required() -> bool:
     env.read_env()
     config = RevancedConfig(env)
     needs_to_repatched = []
+    resource_cache: dict[str, tuple[str, str]] = {}
     for app_name in env.list("PATCH_APPS", default_build):
         logger.info(f"Checking {app_name}")
         app_obj = get_app(config, app_name)
         old_patches_version = GitHubManager(env).get_last_version(app_obj, patches_version_key)
         old_patches_source = GitHubManager(env).get_last_version_source(app_obj, patches_dl_key)
-        app_obj.download_patch_resources(config)
+        app_obj.download_patch_resources(config, resource_cache)
         if GitHubManager(env).should_trigger_build(
             old_patches_version,
             old_patches_source,

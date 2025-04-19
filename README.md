@@ -250,6 +250,10 @@ You can use any of the following methods to build.
    6. Google Drive - Supports downloading from Google Drive lint
        1. Link Format - https://drive.google.com/uc?<id>
        2. Example Link - https://drive.google.com/uc?id=1ad44UTghbDty8o36Nrp3ZMyUzkPckIqY
+   7. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
+      1. Link Format - apkeep
+      2. Example Link - apkeep
+      Note - You need to provide APKEEP_EMAIL and APKEEP_TOKEN in the SECRETS Env.
 
    <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
     caused.If you know any better/safe source to download clean. Open a discussion.

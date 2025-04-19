@@ -11,3 +11,4 @@ status.md
 *.zip
 apks/*
 *.rvp
+*.backup

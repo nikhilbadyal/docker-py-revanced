@@ -35,7 +35,7 @@ class Github(Downloader):
         }
         if self.config.personal_access_token:
             logger.debug("Using personal access token")
-            headers["Authorization"] = f"token {self.config.personal_access_token}"
+            headers["Authorization"] = f"Bearer {self.config.personal_access_token}"
         response = requests.get(repo_url, headers=headers, timeout=request_timeout)
         handle_request_response(response, repo_url)
         if repo_name == "revanced-patches":
@@ -80,7 +80,7 @@ class Github(Downloader):
             "Content-Type": "application/vnd.github.v3+json",
         }
         if config.personal_access_token:
-            headers["Authorization"] = f"token {config.personal_access_token}"
+            headers["Authorization"] = f"Bearer {config.personal_access_token}"
         response = requests.get(api_url, headers=headers, timeout=request_timeout)
         handle_request_response(response, api_url)
         update_changelog(f"{github_repo_owner}/{github_repo_name}", response.json())
