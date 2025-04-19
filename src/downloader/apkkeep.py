@@ -1,6 +1,6 @@
 """Apkeep Downloader Class."""
 
-import subprocess
+from subprocess import PIPE, Popen
 from time import perf_counter
 from typing import Any, Self
 
@@ -45,7 +45,7 @@ class Apkeep(Downloader):
         logger.debug(f"Running command: {cmd}")
 
         start = perf_counter()
-        process = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+        process = Popen(cmd, stdout=PIPE)
         output = process.stdout
         if not output:
             msg = "Failed to send request for patching."
