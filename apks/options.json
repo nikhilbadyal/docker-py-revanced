@@ -18,15 +18,6 @@
     ]
   },
   {
-    "patchName": "Change package name",
-    "options": [
-      {
-        "key": "PackageNameReddit",
-        "value": "com.reddit.frontpage.rvx"
-      }
-    ]
-  },
-  {
     "patchName": "Overlay buttons",
     "options": [
       {
