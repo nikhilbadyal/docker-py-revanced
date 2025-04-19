@@ -33,14 +33,14 @@ def main() -> None:
         delete_old_changelog()
         updates_info = load_older_updates(env)
 
-    logger.info(f"Will Patch only {config.apps}")
+    logger.info(f"Will Patch only {len(config.apps)} apps-:\n{config.apps}")
 
     # Caches for reuse
     download_cache: dict[tuple[str, str], tuple[str, str]] = {}
     resource_cache: dict[str, tuple[str, str]] = {}
 
     for possible_app in config.apps:
-        logger.info(f"Trying to build {len(possible_app)} apps-:\n{possible_app}")
+        logger.info(f"Trying to build {possible_app}")
         try:
             app = get_app(config, possible_app)
 
