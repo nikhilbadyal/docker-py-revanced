@@ -36,7 +36,7 @@ def main() -> None:
     logger.info(f"Will Patch only {config.apps}")
 
     # Caches for reuse
-    download_cache: dict[str, tuple[str, str]] = {}
+    download_cache: dict[tuple[str, str], tuple[str, str]] = {}
     resource_cache: dict[str, tuple[str, str]] = {}
 
     for possible_app in config.apps:

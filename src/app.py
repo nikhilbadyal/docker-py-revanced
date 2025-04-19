@@ -53,9 +53,9 @@ class APP(object):
     def download_apk_for_patching(
         self: Self,
         config: RevancedConfig,
-        download_cache: dict[str, tuple[str, str]],
+        download_cache: dict[tuple[str, str], tuple[str, str]],
     ) -> None:
-        """Download apk to be patched, skipping if already downloaded."""
+        """Download apk to be patched, skipping if already downloaded (matching source and version)."""
         from src.downloader.download import Downloader
         from src.downloader.factory import DownloaderFactory
 
@@ -72,17 +72,18 @@ class APP(object):
                 msg = f"App {self.app_name} not supported officially yet. Please provide download source in env."
                 raise DownloadError(msg) from key
 
-            # Skip if already downloaded
-            if self.download_source in download_cache:
-                logger.info(f"Skipping download. Reusing APK from cache for {self.app_name}")
-                self.download_file_name, self.download_dl = download_cache[self.download_source]
+            cache_key = (self.download_source, self.app_version)
+
+            if cache_key in download_cache:
+                logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
+                self.download_file_name, self.download_dl = download_cache[cache_key]
                 return
 
             downloader = DownloaderFactory.create_downloader(config=config, apk_source=self.download_source)
             self.download_file_name, self.download_dl = downloader.download(self.app_version, self)
 
-            # Save to cache
-            download_cache[self.download_source] = (self.download_file_name, self.download_dl)
+            # Save to cache using (source, version) tuple
+            download_cache[cache_key] = (self.download_file_name, self.download_dl)
 
     def get_output_file_name(self: Self) -> str:
         """The function returns a string representing the output file name.
