@@ -40,7 +40,7 @@ def main() -> None:
     resource_cache: dict[str, tuple[str, str]] = {}
 
     for possible_app in config.apps:
-        logger.info(f"Trying to build {possible_app}")
+        logger.info(f"Trying to build {len(possible_app)} apps-:\n{possible_app}")
         try:
             app = get_app(config, possible_app)
 
