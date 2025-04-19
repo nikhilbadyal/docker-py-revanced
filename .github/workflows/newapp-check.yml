@@ -22,7 +22,8 @@ jobs:
       - name: Setup python
         uses: actions/setup-python@main
         with:
-          python-version: '3.12.3'
+          python-version: '3.x'
+          cache: 'pip' # Enable caching for pip dependencies
 
       - name: Install Requirements
         run: |

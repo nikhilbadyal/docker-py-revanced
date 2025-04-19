@@ -8,6 +8,8 @@ on:
     secrets:
       ENVS:
         required: false
+      DOCKER_PY_REVANCED_SECRETS:
+        required: false
       REDDIT_CLIENT_ID:
         required: false
     inputs:
@@ -47,12 +49,13 @@ jobs:
 
       - name: Update Env from secrets for custom build
         run: |
-          echo "${{ secrets.SECRETS }}" >> .env
+          echo "${{ secrets.DOCKER_PY_REVANCED_SECRETS }}" >> .env
+          echo "Added envs"
 
       - name: Setup python
         uses: actions/setup-python@main
         with:
-          python-version: '3.12.3'
+          python-version: '3.x'
 
       - name: Install Requirements
         if: ${{ inputs.PREFERRED_PATCH_APPS }}

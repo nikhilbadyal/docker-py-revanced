@@ -253,7 +253,7 @@ You can use any of the following methods to build.
    7. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
       1. Link Format - apkeep
       2. Example Link - apkeep
-      Note - You need to provide APKEEP_EMAIL and APKEEP_TOKEN in the SECRETS Env.
+      Note - You need to provide APKEEP_EMAIL and APKEEP_TOKEN in the **DOCKER_PY_REVANCED_SECRETS** Github Secrets.
 
    <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
     caused.If you know any better/safe source to download clean. Open a discussion.
