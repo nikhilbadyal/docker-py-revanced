@@ -192,13 +192,13 @@ def main() -> None:
     response = requests.get(revanced_api, timeout=request_timeout)
     handle_request_response(response, revanced_api)
 
-    patches = response.json()["patches"]
+    patches = response.json()
 
     possible_apps = set()
     for patch in patches:
         if patch.get("compatiblePackages", None):
             for compatible_package in patch["compatiblePackages"]:
-                possible_apps.add(compatible_package["name"])
+                possible_apps.add(compatible_package)
 
     supported_app = set(Patches.support_app().keys())
     missing_support = sorted(possible_apps.difference(supported_app))
