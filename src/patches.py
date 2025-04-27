@@ -81,6 +81,7 @@ class Patches(object):
         "com.soundcloud.android": "soundcloud",
         "de.stocard.stocard": "stocard",
         "at.willhaben": "willhaben",
+        "ch.protonmail.android": "proton-mail",
     }
 
     @staticmethod

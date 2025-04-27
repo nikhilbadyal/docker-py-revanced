@@ -91,4 +91,5 @@ apk_sources = {
     "soundcloud": f"{APK_MIRROR_BASE_APK_URL}/soundcloud/soundcloud-soundcloud/",
     "stocard": f"{APK_MIRROR_BASE_APK_URL}/stocard-gmbh/stocard-rewards-cards-wallet/",
     "willhaben": f"{APK_MIRROR_BASE_APK_URL}/willhaben/willhaben/",
+    "proton-mail": f"{APK_MIRROR_BASE_APK_URL}/proton-technologies-ag/protonmail-encrypted-email/",
 }
