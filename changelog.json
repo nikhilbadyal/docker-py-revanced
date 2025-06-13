@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.3)",
+        "Version": "V1.4.3",
+        "Changelog": "## What's Changed\r\n * Add latest framework android-36 (Baklava)\r\n * Apply compression method of native library files based on attribute `android:extractNativeLibs` #77 #150 :https://github.com/REAndroid/APKEditor/commit/ea49069ddbaf14bddbd23836082c2794815b18d1\r\n * Auto-build `com.android.dynamic.apk.fused.modules` meta data value #186 :https://github.com/REAndroid/ARSCLib/commit/68f51ffb0806ea07aa6d07f307bcdcbcd7c46239\r\n * [Protect] Keep compatibility with latest android versions\r\n * Better error/throw messages\r\n * Detect console and disable same-line(verbose) logging\r\n * Fix: Detect bad dex file names (e.g classes0.dex) #173 \r\n * Better handling of styled strings\r\n * Proper encoding/decoding of xml comments & CDATA\r\n * [Advanced] Optional xml charset via system property `com.reandroid.xml.KeepCharsetEncoding`:https://github.com/REAndroid/ARSCLib/commit/3133bf3985eb3016a6e3f07afd8593a18e646ef3\r\n * Minor improvement on smali\r\n\r\n## Contributors\r\n* @Kirlif\r\n* @AbhiTheModder #173\r\n \r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.2...V1.4.3",
+        "PublishedOn": "2025-05-04T15:09:36Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "- Based on ReVanced Cli [5.0.0](https://github.com/ReVanced/revanced-cli/tree/v5.0.0)\r\n- Added option command `options` (`options.json` file generator)\r\n- Added option command `patches` (`patches.json` file generator)\r\n- Added option command `--legacy-options` (set patch option via options.json file)\r\n- Added option command `--rip-libs` (remove native libs from apk)\r\n- Added option command `--unsigned` (disable signing of the final apk, regardless of whether it is mounted or not)\r\n- Added support anti-split (merged some [REAndroid/ARSCLib](https://github.com/REAndroid/ARSCLib) sources to implement anti-split)\r\n\r\n",
+        "PublishedOn": "2024-12-08T09:50:42Z"
+    },
+    "anddea/revanced-patches": {
+        "ResourceName": "[anddea/revanced-patches](https://github.com/anddea/revanced-patches/releases/tag/v3.10.0-dev.4)",
+        "Version": "v3.10.0-dev.4",
+        "Changelog": "# [3.10.0-dev.4](https://github.com/anddea/revanced-patches/compare/v3.10.0-dev.3...v3.10.0-dev.4) (2025-06-13)\n\n\n### Bug Fixes\n\n* **YouTube - Toolbar components:** The `Replace Create button` setting did not update the icon in some versions ([3600699](https://github.com/anddea/revanced-patches/commit/3600699dddb73c6003cde12a419cabf1f71f7c75))\n\n\n### Features\n\n* **Spotify:** Add `Change lyrics provider` patch ([d3a7a69](https://github.com/anddea/revanced-patches/commit/d3a7a69f41a415f65a6ac9b3b996a545d6789b7e))\n* **YouTube - Hide player buttons:** Add `Hide player control buttons background` setting ([9e869e8](https://github.com/anddea/revanced-patches/commit/9e869e83787757041a32f4e15b3f34fcb25b6cc6))\n* **YouTube - Shorts Components:** Add `Hide hashtag button` setting ([b68d4f3](https://github.com/anddea/revanced-patches/commit/b68d4f350bc65ca5479a4320bfe93df649586204))\n\n\n\n",
+        "PublishedOn": "2025-06-13T14:15:45Z"
+    }
+}
