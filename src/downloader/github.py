@@ -18,6 +18,8 @@ from src.utils import handle_request_response, request_timeout, update_changelog
 class Github(Downloader):
     """Files downloader."""
 
+    MIN_PATH_SEGMENTS = 2  # Minimum path segments for valid GitHub URL
+
     def latest_version(self: Self, app: APP, **kwargs: dict[str, str]) -> tuple[str, str]:
         """Function to download files from GitHub repositories.
 
@@ -51,7 +53,7 @@ class Github(Downloader):
         """Extract repo owner and url from github url."""
         parsed_url = urlparse(url)
         path_segments = parsed_url.path.strip("/").split("/")
-        if len(path_segments) < 2:
+        if len(path_segments) < Github.MIN_PATH_SEGMENTS:
             msg = f"Invalid GitHub URL format: {url}"
             raise DownloadError(msg)
         github_repo_owner = path_segments[0]
