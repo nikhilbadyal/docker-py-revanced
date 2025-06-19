@@ -131,7 +131,8 @@ You can use any of the following methods to build.
 | [APPRISE_NOTIFICATION_TITLE](#apprise)                   |              Apprise Notification Title .               | None                                                                                                                  |
 | [APPRISE_NOTIFICATION_BODY](#apprise)                    |               Apprise Notification Body .               | None                                                                                                                  |
 | MAX_RESOURCE_WORKERS                                     |        Maximum workers for downloading resources        | 3                                                                                                                     |
-
+| MAX_PARALLEL_APPS                                        |      Maximum number of apps to process in parallel      | 4                                                                                                                     |
+| DISABLE_CACHING                                          |          Disable download and resource caching          | False                                                                                                                 |
 
 `*` - Can be overridden for individual app.
 ### App Level Config
