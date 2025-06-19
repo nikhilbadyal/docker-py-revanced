@@ -130,4 +130,4 @@ class PatchesJsonLoadError(BuilderError):
     def __str__(self: Self) -> str:
         """Exception message."""
         base_message = super().__str__()
-        return f"Message - {base_message} Url - {self.file_name}"
+        return f"Message - {base_message} File - {self.file_name}"
