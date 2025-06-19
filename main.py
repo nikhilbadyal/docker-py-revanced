@@ -1,6 +1,9 @@
 """Entry point."""
 
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
+from typing import Any
 
 from environs import Env
 from loguru import logger
@@ -21,6 +24,53 @@ def get_app(config: RevancedConfig, app_name: str) -> APP:
     return APP(app_name=app_name, package_name=package_name, config=config)
 
 
+def process_single_app(
+    app_name: str,
+    config: RevancedConfig,
+    caches: tuple[
+        dict[tuple[str, str], tuple[str, str]],
+        dict[str, tuple[str, str]],
+        Lock,
+        Lock,
+    ],
+) -> dict[str, Any]:
+    """Process a single app and return its update info."""
+    download_cache, resource_cache, download_lock, resource_lock = caches
+    logger.info(f"Trying to build {app_name}")
+    try:
+        app = get_app(config, app_name)
+
+        # Use shared resource cache with thread safety
+        app.download_patch_resources(config, resource_cache, resource_lock)
+
+        patcher = Patches(config, app)
+        parser = Parser(patcher, config)
+        app_all_patches = patcher.get_app_configs(app)
+
+        # Use shared APK cache with thread safety
+        app.download_apk_for_patching(config, download_cache, download_lock)
+
+        parser.include_exclude_patch(app, app_all_patches, patcher.patches_dict)
+        logger.info(app)
+        app_update_info = save_patch_info(app, {})
+        parser.patch_app(app)
+    except AppNotFoundError as e:
+        logger.info(e)
+        return {}
+    except PatchesJsonLoadError:
+        logger.exception("Patches.json not found")
+        return {}
+    except PatchingFailedError as e:
+        logger.exception(e)
+        return {}
+    except BuilderError as e:
+        logger.exception(f"Failed to build {app_name} because of {e}")
+        return {}
+    else:
+        logger.info(f"Successfully completed {app_name}")
+        return app_update_info
+
+
 def main() -> None:
     """Entry point."""
     env = Env()
@@ -35,37 +85,51 @@ def main() -> None:
 
     logger.info(f"Will Patch only {len(config.apps)} apps-:\n{config.apps}")
 
-    # Caches for reuse
+    # Shared caches for reuse across all apps (empty if caching disabled)
     download_cache: dict[tuple[str, str], tuple[str, str]] = {}
     resource_cache: dict[str, tuple[str, str]] = {}
 
-    for possible_app in config.apps:
-        logger.info(f"Trying to build {possible_app}")
-        try:
-            app = get_app(config, possible_app)
+    # Thread-safe locks for cache access
+    download_lock = Lock()
+    resource_lock = Lock()
 
-            # Use shared resource cache
-            app.download_patch_resources(config, resource_cache)
+    # Clear caches if caching is disabled
+    if config.disable_caching:
+        download_cache.clear()
+        resource_cache.clear()
 
-            patcher = Patches(config, app)
-            parser = Parser(patcher, config)
-            app_all_patches = patcher.get_app_configs(app)
+    # Determine optimal number of workers (don't exceed number of apps or CPU cores)
+    max_workers = min(len(config.apps), config.max_parallel_apps)
 
-            # Use shared APK cache
-            app.download_apk_for_patching(config, download_cache)
+    if len(config.apps) == 1 or config.ci_test:
+        # For single app or CI testing, use sequential processing
+        caches = (download_cache, resource_cache, download_lock, resource_lock)
+        for app_name in config.apps:
+            app_updates = process_single_app(app_name, config, caches)
+            updates_info.update(app_updates)
+    else:
+        # For multiple apps, use parallel processing
+        logger.info(f"Processing {len(config.apps)} apps in parallel with {max_workers} workers")
 
-            parser.include_exclude_patch(app, app_all_patches, patcher.patches_dict)
-            logger.info(app)
-            updates_info = save_patch_info(app, updates_info)
-            parser.patch_app(app)
-        except AppNotFoundError as e:
-            logger.info(e)
-        except PatchesJsonLoadError:
-            logger.exception("Patches.json not found")
-        except PatchingFailedError as e:
-            logger.exception(e)
-        except BuilderError as e:
-            logger.exception(f"Failed to build {possible_app} because of {e}")
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            # Submit all app processing tasks
+            caches = (download_cache, resource_cache, download_lock, resource_lock)
+            future_to_app = {
+                executor.submit(process_single_app, app_name, config, caches): app_name for app_name in config.apps
+            }
+
+            # Collect results as they complete
+            total_apps = len(config.apps)
+
+            for completed_count, future in enumerate(as_completed(future_to_app), 1):
+                app_name = future_to_app[future]
+                try:
+                    app_updates = future.result()
+                    updates_info.update(app_updates)
+                    logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name})")
+                except (AppNotFoundError, PatchesJsonLoadError, PatchingFailedError, BuilderError) as e:
+                    logger.exception(f"Error processing {app_name}: {e}")
+                    logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name} - FAILED)")
 
     write_changelog_to_file(updates_info)
 
