@@ -5,6 +5,7 @@ import hashlib
 import pathlib
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
+from threading import Lock
 from typing import Any, Self
 
 from loguru import logger
@@ -61,6 +62,7 @@ class APP(object):
         self: Self,
         config: RevancedConfig,
         download_cache: dict[tuple[str, str], tuple[str, str]],
+        download_lock: Lock,
     ) -> None:
         """Download apk to be patched, skipping if already downloaded (matching source and version)."""
         from src.downloader.download import Downloader  # noqa: PLC0415
@@ -81,16 +83,26 @@ class APP(object):
 
             cache_key = (self.download_source, self.app_version)
 
-            if cache_key in download_cache:
-                logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
-                self.download_file_name, self.download_dl = download_cache[cache_key]
-                return
+            # Thread-safe cache check and download
+            with download_lock:
+                if cache_key in download_cache:
+                    logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
+                    self.download_file_name, self.download_dl = download_cache[cache_key]
+                    return
 
-            downloader = DownloaderFactory.create_downloader(config=config, apk_source=self.download_source)
-            self.download_file_name, self.download_dl = downloader.download(self.app_version, self)
+                # Check again after acquiring lock to handle race conditions
+                if cache_key in download_cache:
+                    logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
+                    self.download_file_name, self.download_dl = download_cache[cache_key]
+                    return
 
-            # Save to cache using (source, version) tuple
-            download_cache[cache_key] = (self.download_file_name, self.download_dl)
+                logger.info(f"Cache miss for {self.app_name} ({self.app_version}). Proceeding with download.")
+                downloader = DownloaderFactory.create_downloader(config=config, apk_source=self.download_source)
+                self.download_file_name, self.download_dl = downloader.download(self.app_version, self)
+
+                # Save to cache using (source, version) tuple
+                download_cache[cache_key] = (self.download_file_name, self.download_dl)
+                logger.info(f"Added {self.app_name} ({self.app_version}) to download cache.")
 
     def get_output_file_name(self: Self) -> str:
         """The function returns a string representing the output file name.
@@ -211,6 +223,7 @@ class APP(object):
         self: Self,
         config: RevancedConfig,
         resource_cache: dict[str, tuple[str, str]],
+        resource_lock: Lock,
     ) -> None:
         """The function `download_patch_resources` downloads various resources req. for patching.
 
@@ -220,6 +233,8 @@ class APP(object):
             The `config` parameter is an instance of the `RevancedConfig` class. It is used to provide
              configuration settings for the resource download tasks.
         resource_cache: dict[str, tuple[str, str]]
+        resource_lock: Lock
+            Thread lock for safe access to resource_cache
         """
         logger.info("Downloading resources for patching.")
 
@@ -229,28 +244,59 @@ class APP(object):
             (name, url, config, filter_pattern) for name, url, _, filter_pattern in base_tasks
         ]
 
-        with ThreadPoolExecutor(config.max_resource_workers) as executor:  # Use configurable worker count
-            futures: dict[str, concurrent.futures.Future[tuple[str, str]]] = {}
+        # Track which resources need to be downloaded (outside of lock to minimize lock time)
+        resources_to_download: list[tuple[str, str, RevancedConfig, str]] = []
 
+        # Thread-safe cache check
+        with resource_lock:
             for resource_name, raw_url, cfg, assets_filter in download_tasks:
                 url = raw_url.strip()
                 if url in resource_cache:
                     logger.info(f"Skipping {resource_name} download, using cached resource: {url}")
                     tag, file_name = resource_cache[url]
                     self._handle_cached_resource(resource_name, tag, file_name)
-                    continue
+                else:
+                    resources_to_download.append((resource_name, url, cfg, assets_filter))
 
-                futures[resource_name] = executor.submit(self.download, url, cfg, assets_filter)
+        # Download resources that are not cached (outside of lock for parallel downloads)
+        if resources_to_download:
+            with ThreadPoolExecutor(config.max_resource_workers) as executor:
+                futures: dict[str, concurrent.futures.Future[tuple[str, str]]] = {}
 
-            concurrent.futures.wait(futures.values())
+                for resource_name, url, cfg, assets_filter in resources_to_download:
+                    futures[resource_name] = executor.submit(self.download, url, cfg, assets_filter)
 
-            for resource_name, future in futures.items():
-                try:
-                    tag, file_name = future.result()
-                    self._handle_downloaded_resource(resource_name, tag, file_name, download_tasks, resource_cache)
-                except BuilderError as e:
-                    msg = f"Failed to download {resource_name} resource."
-                    raise PatchingFailedError(msg) from e
+                concurrent.futures.wait(futures.values())
+
+                # Thread-safe cache update
+                with resource_lock:
+                    for resource_name, future in futures.items():
+                        try:
+                            tag, file_name = future.result()
+                            # Double-check cache in case another thread already added it
+                            corresponding_url = next(
+                                url for name, url, _, _ in resources_to_download if name == resource_name
+                            )
+                            if corresponding_url not in resource_cache:
+                                self._handle_downloaded_resource(
+                                    resource_name,
+                                    tag,
+                                    file_name,
+                                    download_tasks,
+                                    resource_cache,
+                                )
+                                logger.info(f"Added {resource_name} to resource cache: {corresponding_url}")
+                            else:
+                                logger.info(
+                                    f"Resource {resource_name} was already cached by another thread: "
+                                    f"{corresponding_url}",
+                                )
+                                # Still need to handle the resource for this app instance
+                                cached_tag, cached_file_name = resource_cache[corresponding_url]
+                                self._handle_cached_resource(resource_name, cached_tag, cached_file_name)
+                        except BuilderError as e:
+                            msg = f"Failed to download {resource_name} resource."
+                            raise PatchingFailedError(msg) from e
 
     @staticmethod
     def generate_filename(url: str) -> str:
