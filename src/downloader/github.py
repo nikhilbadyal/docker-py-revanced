@@ -51,7 +51,9 @@ class Github(Downloader):
         """Extract repo owner and url from github url."""
         parsed_url = urlparse(url)
         path_segments = parsed_url.path.strip("/").split("/")
-
+        if len(path_segments) < 2:
+            msg = f"Invalid GitHub URL format: {url}"
+            raise DownloadError(msg)
         github_repo_owner = path_segments[0]
         github_repo_name = path_segments[1]
         tag_position = 3

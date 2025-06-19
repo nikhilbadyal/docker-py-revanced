@@ -1,7 +1,7 @@
 """Revanced Patches."""
 
 import contextlib
-from typing import ClassVar, Self
+from typing import Any, ClassVar, Self
 
 from loguru import logger
 
@@ -125,11 +125,35 @@ class Patches(object):
             The `app` parameter is of type `APP`. It represents an instance of the `APP` class.
         """
         self.patches_dict[app.app_name] = []
-        patches = convert_command_output_to_json(
-            f"{config.temp_folder}/{app.resource["cli"]["file_name"]}",
-            f"{config.temp_folder}/{app.resource["patches"]["file_name"]}",
-        )
 
+        # Handle multiple patch bundles
+        if hasattr(app, "patch_bundles") and app.patch_bundles:
+            for bundle in app.patch_bundles:
+                patches = convert_command_output_to_json(
+                    f"{config.temp_folder}/{app.resource["cli"]["file_name"]}",
+                    f"{config.temp_folder}/{bundle["file_name"]}",
+                )
+                self._process_patches(patches, app)
+        elif "patches" in app.resource:
+            # Fallback to single bundle for backward compatibility
+            patches = convert_command_output_to_json(
+                f"{config.temp_folder}/{app.resource["cli"]["file_name"]}",
+                f"{config.temp_folder}/{app.resource["patches"]["file_name"]}",
+            )
+            self._process_patches(patches, app)
+
+        app.no_of_patches = len(self.patches_dict[app.app_name])
+
+    def _process_patches(self: Self, patches: list[dict[Any, Any]], app: APP) -> None:
+        """Process patches from a single bundle and add them to the patches dict.
+
+        Parameters
+        ----------
+        patches : list[dict[Any, Any]]
+            List of patches from a bundle
+        app : APP
+            The app instance
+        """
         for patch in patches:
             if not patch["compatiblePackages"]:
                 p = {x: patch[x] for x in ["name", "description"]}
@@ -142,9 +166,9 @@ class Patches(object):
                         p = {x: patch[x] for x in ["name", "description"]}
                         p["app"] = compatible_package
                         p["version"] = version[-1] if version else "all"
-                        self.patches_dict[app.app_name].append(p)
-
-        app.no_of_patches = len(self.patches_dict[app.app_name])
+                        # Avoid duplicate patches from multiple bundles
+                        if not any(existing["name"] == p["name"] for existing in self.patches_dict[app.app_name]):
+                            self.patches_dict[app.app_name].append(p)
 
     def __init__(self: Self, config: RevancedConfig, app: APP) -> None:
         self.patches_dict: dict[str, list[dict[str, str]]] = {"universal_patch": []}

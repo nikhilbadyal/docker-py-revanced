@@ -24,6 +24,9 @@ class Parser(object):
     OUTPUT_ARG = "-o"
     KEYSTORE_ARG = "--keystore"
     OPTIONS_ARG = "-O"
+    ENABLE_ARG = "-e"
+    DISABLE_ARG = "-d"
+    EXCLUSIVE_ARG = "--exclusive"
 
     def __init__(self: Self, patcher: Patches, config: RevancedConfig) -> None:
         self._PATCHES: list[str] = []
@@ -71,7 +74,7 @@ class Parser(object):
             for opt in options:
                 pair = self.format_option(opt)
                 self._PATCHES[:0] = [self.OPTIONS_ARG, pair]
-        self._PATCHES[:0] = ["-e", name]
+        self._PATCHES[:0] = [self.ENABLE_ARG, name]
 
     def exclude(self: Self, name: str) -> None:
         """The `exclude` function adds a given patch to the list of excluded patches.
@@ -81,7 +84,7 @@ class Parser(object):
         name : str
             The `name` parameter is a string that represents the name of the patch to be excluded.
         """
-        self._PATCHES.extend(["-d", name])
+        self._PATCHES.extend([self.DISABLE_ARG, name])
         self._EXCLUDED.append(name)
 
     def get_excluded_patches(self: Self) -> list[str]:
@@ -119,22 +122,27 @@ class Parser(object):
             name = name.lower().replace(" ", "-")
             indices = [i for i in range(len(self._PATCHES)) if self._PATCHES[i] == name]
             for patch_index in indices:
-                if self._PATCHES[patch_index - 1] == "-e":
-                    self._PATCHES[patch_index - 1] = "-d"
+                if self._PATCHES[patch_index - 1] == self.ENABLE_ARG:
+                    self._PATCHES[patch_index - 1] = self.DISABLE_ARG
                 else:
-                    self._PATCHES[patch_index - 1] = "-e"
+                    self._PATCHES[patch_index - 1] = self.ENABLE_ARG
         except ValueError:
             return False
         else:
             return True
 
-    def exclude_all_patches(self: Self) -> None:
-        """The function `exclude_all_patches` exclude all the patches."""
-        for idx, item in enumerate(self._PATCHES):
-            if idx == 0:
-                continue
-            if item == "-e":
-                self._PATCHES[idx] = "-d"
+    def enable_exclusive_mode(self: Self) -> None:
+        """Enable exclusive mode - only explicitly enabled patches will run, all others disabled by default."""
+        logger.info("Enabling exclusive mode for fast testing - only keeping one patch enabled.")
+        # Clear all patches and keep only the first one enabled
+        if self._PATCHES:
+            # Find the first enable argument and its patch name
+            for idx in range(0, len(self._PATCHES), 2):
+                if idx < len(self._PATCHES) and self._PATCHES[idx] == self.ENABLE_ARG and idx + 1 < len(self._PATCHES):
+                    first_patch = self._PATCHES[idx + 1]
+                    # Clear all patches and set only the first one
+                    self._PATCHES = [self.ENABLE_ARG, first_patch]
+                    break
 
     def fetch_patch_options(self: Self, name: str, options_list: list[dict[str, Any]]) -> dict[str, Any]:
         """The function `fetch_patch_options` finds patch options for the patch.
@@ -219,15 +227,27 @@ class Parser(object):
             app.resource["cli"]["file_name"],
             apk_arg,
             app.download_file_name,
-            self.PATCHES_ARG,
-            app.resource["patches"]["file_name"],
-            self.OUTPUT_ARG,
-            app.get_output_file_name(),
-            self.KEYSTORE_ARG,
-            app.keystore_name,
-            exp,
         ]
-        args[1::2] = map(self.config.temp_folder.joinpath, args[1::2])
+
+        # Add multiple patch bundles using -p argument
+        if hasattr(app, "patch_bundles") and app.patch_bundles:
+            # Use multiple -p arguments for multiple bundles
+            for bundle in app.patch_bundles:
+                args.extend([self.PATCHES_ARG, bundle["file_name"]])
+        else:
+            # Fallback to single bundle for backward compatibility
+            args.extend([self.PATCHES_ARG, app.resource["patches"]["file_name"]])
+
+        args.extend(
+            [
+                self.OUTPUT_ARG,
+                app.get_output_file_name(),
+                self.KEYSTORE_ARG,
+                app.keystore_name,
+                exp,
+            ],
+        )
+        args[1::2] = [str(self.config.temp_folder.joinpath(arg)) for arg in args[1::2]]
         if app.old_key:
             # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
             old_key_flags = [
@@ -237,7 +257,7 @@ class Parser(object):
             ]
             args.extend(old_key_flags)
         if self.config.ci_test:
-            self.exclude_all_patches()
+            self.enable_exclusive_mode()
         if self._PATCHES:
             args.extend(self._PATCHES)
         if app.app_name in self.config.rip_libs_apps:
