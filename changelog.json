@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.3)",
+        "Version": "V1.4.3",
+        "Changelog": "## What's Changed\r\n * Add latest framework android-36 (Baklava)\r\n * Apply compression method of native library files based on attribute `android:extractNativeLibs` #77 #150 :https://github.com/REAndroid/APKEditor/commit/ea49069ddbaf14bddbd23836082c2794815b18d1\r\n * Auto-build `com.android.dynamic.apk.fused.modules` meta data value #186 :https://github.com/REAndroid/ARSCLib/commit/68f51ffb0806ea07aa6d07f307bcdcbcd7c46239\r\n * [Protect] Keep compatibility with latest android versions\r\n * Better error/throw messages\r\n * Detect console and disable same-line(verbose) logging\r\n * Fix: Detect bad dex file names (e.g classes0.dex) #173 \r\n * Better handling of styled strings\r\n * Proper encoding/decoding of xml comments & CDATA\r\n * [Advanced] Optional xml charset via system property `com.reandroid.xml.KeepCharsetEncoding`:https://github.com/REAndroid/ARSCLib/commit/3133bf3985eb3016a6e3f07afd8593a18e646ef3\r\n * Minor improvement on smali\r\n\r\n## Contributors\r\n* @Kirlif\r\n* @AbhiTheModder #173\r\n \r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.2...V1.4.3",
+        "PublishedOn": "2025-05-04T15:09:36Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "- Based on ReVanced Cli [5.0.0](https://github.com/ReVanced/revanced-cli/tree/v5.0.0)\r\n- Added option command `options` (`options.json` file generator)\r\n- Added option command `patches` (`patches.json` file generator)\r\n- Added option command `--legacy-options` (set patch option via options.json file)\r\n- Added option command `--rip-libs` (remove native libs from apk)\r\n- Added option command `--unsigned` (disable signing of the final apk, regardless of whether it is mounted or not)\r\n- Added support anti-split (merged some [REAndroid/ARSCLib](https://github.com/REAndroid/ARSCLib) sources to implement anti-split)\r\n\r\n",
+        "PublishedOn": "2024-12-08T09:50:42Z"
+    },
+    "ReVanced/revanced-patches": {
+        "ResourceName": "[ReVanced/revanced-patches](https://github.com/ReVanced/revanced-patches/releases/tag/v5.28.0)",
+        "Version": "v5.28.0",
+        "Changelog": "# [5.28.0](https://github.com/ReVanced/revanced-patches/compare/v5.27.0...v5.28.0) (2025-06-20)\n\n\n### Bug Fixes\n\n* **Google Photos:** Resolve startup crash if MicroG GmsCore does not already have granted permissions ([a93d74d](https://github.com/ReVanced/revanced-patches/commit/a93d74d26e7ef87a3745df2b9fe82722d65a0e59))\n* **Messenger - Remove Meta AI:** Improve patch logic ([#5153](https://github.com/ReVanced/revanced-patches/issues/5153)) ([4ad4887](https://github.com/ReVanced/revanced-patches/commit/4ad488744d87543c31e453dc7b6d8182b3a7f440))\n* **Pandora - Disable ads:** Support latest app target ([#5185](https://github.com/ReVanced/revanced-patches/issues/5185)) ([ca83047](https://github.com/ReVanced/revanced-patches/commit/ca83047f5c4acbb267d5b98db80ad111999086e0))\n* **Spotify:** Fix `Hide Create button` and `Sanitize sharing links` for older but supported app targets ([#5159](https://github.com/ReVanced/revanced-patches/issues/5159)) ([e7dd061](https://github.com/ReVanced/revanced-patches/commit/e7dd061c513af90861c0ab0d7adc6ee43be57ce2))\n* **Threads - Hide ads:** Constrain patch to the last working app target ([#5189](https://github.com/ReVanced/revanced-patches/issues/5189)) ([3558c44](https://github.com/ReVanced/revanced-patches/commit/3558c44a05c13f19fefdbbf14b364181a79f17c0))\n* **YouTube:** Remove old app targets that are no longer supported by YouTube ([#5192](https://github.com/ReVanced/revanced-patches/issues/5192)) ([c9e54e1](https://github.com/ReVanced/revanced-patches/commit/c9e54e1d36243945ac1ec3108fe38edf0e15d772))\n\n\n### Features\n\n* **Spotify:** Add `Change lyrics provider` patch ([#4937](https://github.com/ReVanced/revanced-patches/issues/4937)) ([8736b6a](https://github.com/ReVanced/revanced-patches/commit/8736b6a80b48cb1f4562c9f9919804006ddb18bd))\n* Use modern style settings dialogs ([#5109](https://github.com/ReVanced/revanced-patches/issues/5109)) ([312b6dc](https://github.com/ReVanced/revanced-patches/commit/312b6dc04e01c2758cd304ca8606306027aa2f01))\n\n\n\n",
+        "PublishedOn": "2025-06-20T08:19:08Z"
+    }
+}
