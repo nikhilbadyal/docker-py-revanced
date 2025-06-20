@@ -207,6 +207,55 @@ class Parser(object):
             for patch in patches_dict["universal_patch"]:
                 self.include(patch["name"], options_list) if patch["name"] in app.include_request else ()
 
+    def _build_base_args(self: Self, app: APP) -> list[str]:
+        """Build base arguments for ReVanced CLI."""
+        return [
+            self.CLI_JAR,
+            app.resource["cli"]["file_name"],
+            self.NEW_APK_ARG,
+            app.download_file_name,
+        ]
+
+    def _add_patch_bundles(self: Self, args: list[str], app: APP) -> None:
+        """Add patch bundle arguments to the command."""
+        if hasattr(app, "patch_bundles") and app.patch_bundles:
+            # Use multiple -p arguments for multiple bundles
+            for bundle in app.patch_bundles:
+                args.extend([self.PATCHES_ARG, bundle["file_name"]])
+        else:
+            # Fallback to single bundle for backward compatibility
+            args.extend([self.PATCHES_ARG, app.resource["patches"]["file_name"]])
+
+    def _add_output_and_keystore_args(self: Self, args: list[str], app: APP) -> None:
+        """Add output file and keystore arguments."""
+        args.extend(
+            [
+                self.OUTPUT_ARG,
+                app.get_output_file_name(),
+                self.KEYSTORE_ARG,
+                app.keystore_name,
+                "--force",
+            ],
+        )
+
+    def _add_keystore_flags(self: Self, args: list[str], app: APP) -> None:
+        """Add keystore-specific flags if needed."""
+        if app.old_key:
+            # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
+            old_key_flags = [
+                "--keystore-entry-alias=alias",
+                "--keystore-entry-password=ReVanced",
+                "--keystore-password=ReVanced",
+            ]
+            args.extend(old_key_flags)
+
+    def _add_architecture_args(self: Self, args: list[str], app: APP) -> None:
+        """Add architecture-specific arguments."""
+        if app.app_name in self.config.rip_libs_apps:
+            excluded = set(possible_archs) - set(app.archs_to_build)
+            for arch in excluded:
+                args.extend(("--rip-lib", arch))
+
     # noinspection IncorrectFormatting
     def patch_app(
         self: Self,
@@ -220,51 +269,23 @@ class Parser(object):
             The `app` parameter is an instance of the `APP` class. It represents an application that needs
         to be patched.
         """
-        apk_arg = self.NEW_APK_ARG
-        exp = "--force"
-        args = [
-            self.CLI_JAR,
-            app.resource["cli"]["file_name"],
-            apk_arg,
-            app.download_file_name,
-        ]
+        args = self._build_base_args(app)
+        self._add_patch_bundles(args, app)
+        self._add_output_and_keystore_args(args, app)
 
-        # Add multiple patch bundles using -p argument
-        if hasattr(app, "patch_bundles") and app.patch_bundles:
-            # Use multiple -p arguments for multiple bundles
-            for bundle in app.patch_bundles:
-                args.extend([self.PATCHES_ARG, bundle["file_name"]])
-        else:
-            # Fallback to single bundle for backward compatibility
-            args.extend([self.PATCHES_ARG, app.resource["patches"]["file_name"]])
-
-        args.extend(
-            [
-                self.OUTPUT_ARG,
-                app.get_output_file_name(),
-                self.KEYSTORE_ARG,
-                app.keystore_name,
-                exp,
-            ],
-        )
+        # Convert paths to absolute paths
         args[1::2] = [str(self.config.temp_folder.joinpath(arg)) for arg in args[1::2]]
-        if app.old_key:
-            # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
-            old_key_flags = [
-                "--keystore-entry-alias=alias",
-                "--keystore-entry-password=ReVanced",
-                "--keystore-password=ReVanced",
-            ]
-            args.extend(old_key_flags)
+
+        self._add_keystore_flags(args, app)
+
         if self.config.ci_test:
             self.enable_exclusive_mode()
         if self._PATCHES:
             args.extend(self._PATCHES)
-        if app.app_name in self.config.rip_libs_apps:
-            excluded = set(possible_archs) - set(app.archs_to_build)
-            for arch in excluded:
-                args.extend(("--rip-lib", arch))
+
+        self._add_architecture_args(args, app)
         args.extend(("--purge",))
+
         start = perf_counter()
         logger.debug(f"Sending request to revanced cli for building with args java {args}")
         process = Popen(["java", *args], stdout=PIPE)
