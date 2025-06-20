@@ -229,7 +229,7 @@ class APP(object):
             (name, url, config, filter_pattern) for name, url, _, filter_pattern in base_tasks
         ]
 
-        with ThreadPoolExecutor(1) as executor:
+        with ThreadPoolExecutor(config.max_resource_workers) as executor:  # Use configurable worker count
             futures: dict[str, concurrent.futures.Future[tuple[str, str]]] = {}
 
             for resource_name, raw_url, cfg, assets_filter in download_tasks:

@@ -130,6 +130,8 @@ You can use any of the following methods to build.
 | [APPRISE_URL](#apprise)                                  |                      Apprise URL .                      | None                                                                                                                  |
 | [APPRISE_NOTIFICATION_TITLE](#apprise)                   |              Apprise Notification Title .               | None                                                                                                                  |
 | [APPRISE_NOTIFICATION_BODY](#apprise)                    |               Apprise Notification Body .               | None                                                                                                                  |
+| MAX_RESOURCE_WORKERS                                     |        Maximum workers for downloading resources        | 3                                                                                                                     |
+
 
 `*` - Can be overridden for individual app.
 ### App Level Config
