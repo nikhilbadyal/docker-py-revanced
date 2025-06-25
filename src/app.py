@@ -63,8 +63,8 @@ class APP(object):
         download_cache: dict[tuple[str, str], tuple[str, str]],
     ) -> None:
         """Download apk to be patched, skipping if already downloaded (matching source and version)."""
-        from src.downloader.download import Downloader
-        from src.downloader.factory import DownloaderFactory
+        from src.downloader.download import Downloader  # noqa: PLC0415
+        from src.downloader.factory import DownloaderFactory  # noqa: PLC0415
 
         if self.download_dl:
             logger.info("Downloading apk to be patched using provided dl")
@@ -137,12 +137,12 @@ class APP(object):
         -------
             tuple of strings, which is the tag,file name of the downloaded file.
         """
-        from src.downloader.download import Downloader
+        from src.downloader.download import Downloader  # noqa: PLC0415
 
         url = url.strip()
         tag = "latest"
         if url.startswith("https://github"):
-            from src.downloader.github import Github
+            from src.downloader.github import Github  # noqa: PLC0415
 
             tag, url = Github.patch_resource(url, assets_filter, config)
             if tag.startswith("tags/"):

@@ -1,5 +1,6 @@
 """Generate patches using cli."""
 
+import json
 import re
 import subprocess
 from pathlib import Path
@@ -97,7 +98,6 @@ def convert_command_output_to_json(
     parsed_data.sort(key=lambda x: x["name"])
 
     with Path("patches.json").open("w") as file:
-        import json
 
         json.dump(parsed_data, file, indent=2)
 
