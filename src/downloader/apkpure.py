@@ -1,6 +1,8 @@
 """APK Pure Downloader Class."""
 
+from functools import cmp_to_key
 from typing import Any, Self
+from urllib.parse import parse_qs, urlparse
 
 import requests
 from bs4 import BeautifulSoup
@@ -35,8 +37,6 @@ class ApkPure(Downloader):
 
     def _compare_dls(self: Self, dl1: str, dl2: str) -> int:
         """Compare two dls of same type (apk or xapk) to prioritise the archs on lower indices."""
-        from urllib.parse import parse_qs, urlparse
-
         apk_type1 = parse_qs(urlparse(dl1).query).get("nc")
         apk_type2 = parse_qs(urlparse(dl2).query).get("nc")
         if apk_type1 and apk_type2:
@@ -67,8 +67,6 @@ class ApkPure(Downloader):
         :param app: Name of the app
         :return: Tuple of filename and app direct download link
         """
-        from functools import cmp_to_key
-
         logger.debug(f"Extracting download link from\n{page}")
         r = requests.get(page, headers=request_header, timeout=request_timeout)
         handle_request_response(r, page)
