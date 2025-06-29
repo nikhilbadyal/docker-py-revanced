@@ -4,26 +4,28 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_dispatch:
-    inputs:
-      CREATE_ISSUE:
-        description: "Create GitHub issue"
-        required: false
-        type: boolean
-        default: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
 
 jobs:
   status_check:
     if: github.repository == 'nikhilbadyal/docker-py-revanced'
     runs-on: ubuntu-latest
     steps:
-      - name: checkout repo content
+      - name: Checkout repository
         uses: actions/checkout@main
 
       - name: Setup python
         uses: actions/setup-python@main
         with:
           python-version: '3.x'
-          cache: 'pip' # Enable caching for pip dependencies
+          cache: 'pip'
 
       - name: Install Requirements
         run: |
@@ -50,12 +52,69 @@ jobs:
           path: status.md
           if-no-files-found: error
 
-      - name: Create Issue Action
-        if: inputs.CREATE_ISSUE
-        uses: nashmaniac/create-issue-action@v1.2
+      - name: Update or Create Revanced Status Issue
+        uses: actions/github-script@v7.0.1
         with:
-          title: Revanced apps Status
-          token: ${{secrets.GITHUB_TOKEN}}
-          assignees: ${{ github.repository_owner }}
-          labels: 💁‍new-app
-          body: ${{ steps.status.outputs.changelog }}
+          script: |
+            const issueTitle = 'Revanced apps Status';
+            const statusContent = `${{ steps.status.outputs.changelog }}`;
+
+            // Search for existing issue with the specific title
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: '💁‍new-app'
+            });
+
+            const existingIssue = issues.data.find(issue =>
+              issue.title === issueTitle
+            );
+
+            if (existingIssue) {
+              // Update existing issue
+              const updateBody = [
+                statusContent,
+                '',
+                '---',
+                `*Last updated: ${new Date().toISOString().split('T')[0]} by automated workflow*`
+              ].join('\n');
+
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: updateBody
+              });
+
+              // Add a comment to show the update
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existingIssue.number,
+                body: `🔄 **Status Updated** - ${new Date().toISOString().split('T')[0]}\n\nThe Revanced apps status has been refreshed with the latest information.`
+              });
+
+              console.log(`Updated existing issue #${existingIssue.number}: ${issueTitle}`);
+            } else {
+              // Create new issue if none exists
+              const createBody = [
+                statusContent,
+                '',
+                '---',
+                `*Created: ${new Date().toISOString().split('T')[0]} by automated workflow*`,
+                '',
+                'This issue will be automatically updated daily with the latest Revanced apps status.'
+              ].join('\n');
+
+              const newIssue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issueTitle,
+                body: createBody,
+                assignees: [context.repo.owner],
+                labels: ['💁‍new-app']
+              });
+
+              console.log(`Created new issue #${newIssue.data.number}: ${issueTitle}`);
+            }

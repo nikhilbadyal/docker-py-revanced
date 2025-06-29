@@ -25,7 +25,6 @@ from src.exceptions import (
     APKMonkIconScrapError,
     APKPureIconScrapError,
     BuilderError,
-    ScrapingError,
 )
 from src.patches import Patches
 from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header, request_timeout
@@ -158,11 +157,12 @@ def icon_scrapper(package_name: str) -> str:
     }
 
     for scraper_name, error_type in scraper_names.items():
+        # noinspection PyBroadException
         try:
             return str(globals()[scraper_name](package_name))
         except error_type:
             pass
-        except ScrapingError:
+        except Exception:  # noqa: BLE001,S110
             pass
 
     return not_found_icon
