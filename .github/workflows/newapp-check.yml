@@ -87,14 +87,6 @@ jobs:
                 body: updateBody
               });
 
-              // Add a comment to show the update
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: existingIssue.number,
-                body: `🔄 **Status Updated** - ${new Date().toISOString().split('T')[0]}\n\nThe Revanced apps status has been refreshed with the latest information.`
-              });
-
               console.log(`Updated existing issue #${existingIssue.number}: ${issueTitle}`);
             } else {
               // Create new issue if none exists
