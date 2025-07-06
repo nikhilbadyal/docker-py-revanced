@@ -29,7 +29,7 @@ from src.exceptions import (
 from src.patches import Patches
 from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header, request_timeout
 
-no_of_col = 8
+no_of_col = 9
 combo_headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/116.0"}
 
 
@@ -174,15 +174,15 @@ def generate_markdown_table(data: list[list[str]]) -> str:
         return "No data to generate for the table."
 
     table = (
-        "| Package Name | App Icon | PlayStore| APKMirror |APKMonk |ApkPure | ApkCombo |Supported?|\n"
-        "|--------------|----------|----------|-----------|--------|--------|----------|----------|\n"
+        "| Package Name | App Icon | PlayStore| APKMirror |APKMonk |ApkPure | ApkCombo |Available patches |Supported?|\n"  # noqa: E501
+        "|--------------|----------|----------|-----------|--------|--------|----------|------------------|----------|\n"
     )
     for row in data:
         if len(row) != no_of_col:
             msg = f"Each row must contain {no_of_col} columns of data."
             raise ValueError(msg)
 
-        table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |{row[5]} | {row[6]} | {row[7]} |\n"
+        table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |{row[5]} | {row[6]} | {row[7]} | {row[8]} |\n"
 
     return table
 
@@ -212,6 +212,7 @@ def main() -> None:
             f"[APKMonk Link]({APK_MONK_APK_URL.format(app)})",
             f"[APKPure Link]({APK_PURE_ICON_URL.format(app)})",
             f"[APKCombo Link]({APK_COMBO_GENERIC_URL.format(app)})",
+            f"[Patches](https://revanced.app/patches?pkg={app})",
             "<li>- [ ] </li>",
         ]
         for app in missing_support
