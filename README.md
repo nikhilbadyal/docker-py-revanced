@@ -11,7 +11,7 @@ A little python script that will help you in building [Revanced](https://revance
 
 ## Pre-Built APKs
 
-You can get pre-built apks [here](https://revanced_apkss.t.me/)
+You can get pre-built apks [here](https://@revanced_apks_1.t.me/)
 
 ## Facing issues? Click [here](https://github.com/nikhilbadyal/docker-py-revanced/issues/new/choose).<br>
 ## Build Yourself
