@@ -88,6 +88,7 @@ class Patches(object):
         "com.instagram.barcelona": "threads",
         "com.nousguide.android.orftvthek": "orf-on",
         "com.pandora.android": "pandora",
+        "it.ipzs.cieid": "cieid",
     }
 
     @staticmethod
