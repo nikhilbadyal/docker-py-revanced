@@ -92,4 +92,5 @@ apk_sources = {
     "prime-video": f"{APK_MIRROR_BASE_APK_URL}/amazon-mobile-llc/amazon-prime-video/",
     "cricbuzz": f"{APK_MIRROR_BASE_APK_URL}/cricbuzz-com/cricbuzz-live-cricket-scores-news/",
     "crunchyroll": f"{APK_MIRROR_BASE_APK_URL}/crunchyroll-llc-2/crunchyroll/",
+    "threads": f"{APK_MIRROR_BASE_APK_URL}/instagram/threads-an-instagram-app/",
 }

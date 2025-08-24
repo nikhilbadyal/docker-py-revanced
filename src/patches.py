@@ -85,6 +85,7 @@ class Patches(object):
         "com.amazon.avod.thirdpartyclient": "prime-video",
         "com.cricbuzz.android": "cricbuzz",
         "com.crunchyroll.crunchyroid": "crunchyroll",
+        "com.instagram.barcelona": "threads",
     }
 
     @staticmethod
