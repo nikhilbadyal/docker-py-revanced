@@ -87,6 +87,7 @@ class Patches(object):
         "com.crunchyroll.crunchyroid": "crunchyroll",
         "com.instagram.barcelona": "threads",
         "com.nousguide.android.orftvthek": "orf-on",
+        "com.pandora.android": "pandora",
     }
 
     @staticmethod
