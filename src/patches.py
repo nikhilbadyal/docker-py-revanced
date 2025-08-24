@@ -83,6 +83,7 @@ class Patches(object):
         "at.willhaben": "willhaben",
         "ch.protonmail.android": "proton-mail",
         "com.amazon.avod.thirdpartyclient": "prime-video",
+        "com.cricbuzz.android": "cricbuzz",
     }
 
     @staticmethod
