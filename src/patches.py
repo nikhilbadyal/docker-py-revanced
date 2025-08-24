@@ -86,6 +86,7 @@ class Patches(object):
         "com.cricbuzz.android": "cricbuzz",
         "com.crunchyroll.crunchyroid": "crunchyroll",
         "com.instagram.barcelona": "threads",
+        "com.nousguide.android.orftvthek": "orf-on",
     }
 
     @staticmethod

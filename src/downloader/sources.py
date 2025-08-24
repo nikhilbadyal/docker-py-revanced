@@ -93,4 +93,5 @@ apk_sources = {
     "cricbuzz": f"{APK_MIRROR_BASE_APK_URL}/cricbuzz-com/cricbuzz-live-cricket-scores-news/",
     "crunchyroll": f"{APK_MIRROR_BASE_APK_URL}/crunchyroll-llc-2/crunchyroll/",
     "threads": f"{APK_MIRROR_BASE_APK_URL}/instagram/threads-an-instagram-app/",
+    "orf-on": f"{APK_MIRROR_BASE_APK_URL}/orf-osterreichischer-rundfunk/orf-tvthek-video-on-demand-android-tv/",
 }

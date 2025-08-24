@@ -230,6 +230,7 @@ You can use any of the following methods to build.
     - [cricbuzz](https://www.apkmirror.com/apk/cricbuzz-com/cricbuzz-live-cricket-scores-news/)
     - [crunchyroll](https://www.apkmirror.com/apk/crunchyroll-llc-2/crunchyroll/)
     - [threads](https://www.apkmirror.com/apk/instagram/threads-an-instagram-app/)
+    - [orf-on](https://www.apkmirror.com/apk/orf-osterreichischer-rundfunk/orf-tvthek-video-on-demand-android-tv/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
