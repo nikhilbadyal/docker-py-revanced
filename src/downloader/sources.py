@@ -96,4 +96,5 @@ apk_sources = {
     "orf-on": f"{APK_MIRROR_BASE_APK_URL}/orf-osterreichischer-rundfunk/orf-tvthek-video-on-demand-android-tv/",
     "pandora": f"{APK_MIRROR_BASE_APK_URL}/pandora/pandora-music-podcasts/",
     "cieid": f"{APK_MIRROR_BASE_APK_URL}/istituto-poligrafico-e-zecca-dello-stato-s-p-a/cieid/",
+    "infinity-for-reddit-patreon": f"{APK_MIRROR_BASE_APK_URL}/docile-alligator/infinity-for-reddit-patreon-github-version/",  # noqa: E501
 }

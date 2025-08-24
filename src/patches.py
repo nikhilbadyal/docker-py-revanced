@@ -89,6 +89,7 @@ class Patches(object):
         "com.nousguide.android.orftvthek": "orf-on",
         "com.pandora.android": "pandora",
         "it.ipzs.cieid": "cieid",
+        "ml.docilealligator.infinityforreddit.patreon": "infinity-for-reddit-patreon",
     }
 
     @staticmethod
