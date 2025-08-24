@@ -82,6 +82,7 @@ class Patches(object):
         "de.stocard.stocard": "stocard",
         "at.willhaben": "willhaben",
         "ch.protonmail.android": "proton-mail",
+        "com.amazon.avod.thirdpartyclient": "prime-video",
     }
 
     @staticmethod

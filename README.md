@@ -226,6 +226,7 @@ You can use any of the following methods to build.
     - [stocard](https://www.apkmirror.com/apk/stocard-gmbh/stocard-rewards-cards-wallet/)
     - [willhaben](https://www.apkmirror.com/apk/willhaben/willhaben/)
     - [proton-mail](https://www.apkmirror.com/apk/proton-technologies-ag/protonmail-encrypted-email/)
+    - [prime-video](https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
