@@ -97,4 +97,5 @@ apk_sources = {
     "pandora": f"{APK_MIRROR_BASE_APK_URL}/pandora/pandora-music-podcasts/",
     "cieid": f"{APK_MIRROR_BASE_APK_URL}/istituto-poligrafico-e-zecca-dello-stato-s-p-a/cieid/",
     "infinity-for-reddit-patreon": f"{APK_MIRROR_BASE_APK_URL}/docile-alligator/infinity-for-reddit-patreon-github-version/",  # noqa: E501
+    "infinity-for-reddit-plus": f"{APK_MIRROR_BASE_APK_URL}/docile-alligator/infinity-for-reddit-plus/",
 }

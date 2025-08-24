@@ -90,6 +90,7 @@ class Patches(object):
         "com.pandora.android": "pandora",
         "it.ipzs.cieid": "cieid",
         "ml.docilealligator.infinityforreddit.patreon": "infinity-for-reddit-patreon",
+        "ml.docilealligator.infinityforreddit.plus": "infinity-for-reddit-plus",
     }
 
     @staticmethod

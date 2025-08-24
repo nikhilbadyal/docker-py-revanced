@@ -234,6 +234,7 @@ You can use any of the following methods to build.
     - [pandora](https://www.apkmirror.com/apk/pandora/pandora-music-podcasts/)
     - [cieid](https://www.apkmirror.com/apk/istituto-poligrafico-e-zecca-dello-stato-s-p-a/cieid/)
     - [infinity-for-reddit-patreon](https://www.apkmirror.com/apk/docile-alligator/infinity-for-reddit-patreon-github-version/)
+    - [infinity-for-reddit-plus](https://www.apkmirror.com/apk/docile-alligator/infinity-for-reddit-plus/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
