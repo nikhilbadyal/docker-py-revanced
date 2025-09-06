@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.5)",
+        "Version": "V1.4.5",
+        "Changelog": "## What's Changed\r\n* Minor improvement on dex building performance\r\n* Fix dex container building issues\r\n* Fix smali parsing #198 \r\n* Update README @yonggamer in https://github.com/REAndroid/APKEditor/pull/203\r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.4...V1.4.5",
+        "PublishedOn": "2025-08-13T20:00:41Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "- Based on ReVanced Cli [5.0.0](https://github.com/ReVanced/revanced-cli/tree/v5.0.0)\r\n- Added option command `options` (`options.json` file generator)\r\n- Added option command `patches` (`patches.json` file generator)\r\n- Added option command `--legacy-options` (set patch option via options.json file)\r\n- Added option command `--rip-libs` (remove native libs from apk)\r\n- Added option command `--unsigned` (disable signing of the final apk, regardless of whether it is mounted or not)\r\n- Added support anti-split (merged some [REAndroid/ARSCLib](https://github.com/REAndroid/ARSCLib) sources to implement anti-split)\r\n\r\n",
+        "PublishedOn": "2024-12-08T09:50:42Z"
+    },
+    "inotia00/revanced-patches": {
+        "ResourceName": "[inotia00/revanced-patches](https://github.com/inotia00/revanced-patches/releases/tag/v5.11.1-dev.1)",
+        "Version": "v5.11.1-dev.1",
+        "Changelog": "YouTube\r\n==\r\n- feat(YouTube): Add `Set Transcript Cookies` patch (Closes https://github.com/inotia00/ReVanced_Extended/issues/3147)\r\n- fix(YouTube - Player components): `Hide crowdfunding box` setting not working (A/B testing)\r\n- fix(YouTube - Spoof streaming data): `Mobile Web` client is unavailable\r\n- fix(YouTube - Swipe controls): Swipe controls sometimes become active after chapters show in the seekbar\r\n- fix(YouTube - Video playback): If the `Default Shorts quality` is not `Auto`, Miniplayer layout sometimes looks strange (Closes https://github.com/inotia00/ReVanced_Extended/issues/3143)\r\n- fix(YouTube - Video playback): `Disable playback speed for music` setting repeatedly calls the API\r\n\r\n\r\nShared\r\n==\r\n- feat(Universal): Add `Override certificate pinning` patch\r\n\r\n\r\nAnnouncement\r\n==\r\n- **`Fix playback` patch added to fix playback issues with YouTube Music, See: [ReVanced_Extended#3079](https://github.com/inotia00/ReVanced_Extended/issues/3079).**\r\n- **If your app crashes due to VPN or DNS usage, change the default client to something other than the `Block request` client.**\r\n- Compatible ReVanced Manager: [RVX Manager v1.25.5 (fork)](https://github.com/inotia00/revanced-manager/releases/tag/v1.25.5).\r\n\r\n\r\nContribute to translation\r\n==\r\n- [YouTube](https://crowdin.com/project/revancedextended)\r\n- [YT Music](https://crowdin.com/project/revancedmusicextended)",
+        "PublishedOn": "2025-09-06T13:25:09Z"
+    }
+}
