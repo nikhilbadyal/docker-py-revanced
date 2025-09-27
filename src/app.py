@@ -12,7 +12,7 @@ from loguru import logger
 from pytz import timezone
 
 from src.config import RevancedConfig
-from src.downloader.sources import apk_sources
+from src.downloader.sources import APKEEP, apk_sources
 from src.exceptions import BuilderError, DownloadError, PatchingFailedError
 from src.utils import slugify, time_zone
 
@@ -81,15 +81,15 @@ class APP(object):
                 msg = f"App {self.app_name} not supported officially yet. Please provide download source in env."
                 raise DownloadError(msg) from key
 
-            cache_key = (self.download_source, self.app_version)
+            cache_key = self.get_download_cache_key()
+
+            if cache_key in download_cache:
+                logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
+                self.download_file_name, self.download_dl = download_cache[cache_key]
+                return
 
             # Thread-safe cache check and download
             with download_lock:
-                if cache_key in download_cache:
-                    logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
-                    self.download_file_name, self.download_dl = download_cache[cache_key]
-                    return
-
                 # Check again after acquiring lock to handle race conditions
                 if cache_key in download_cache:
                     logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
@@ -103,6 +103,12 @@ class APP(object):
                 # Save to cache using (source, version) tuple
                 download_cache[cache_key] = (self.download_file_name, self.download_dl)
                 logger.info(f"Added {self.app_name} ({self.app_version}) to download cache.")
+
+    def get_download_cache_key(self: Self) -> tuple[str, str]:
+        """Returns a unique cache key for the app."""
+        if self.download_source == APKEEP:
+            return (self.download_source, f"{self.package_name}@{self.app_version}")
+        return (self.download_source, self.app_version or "latest")
 
     def get_output_file_name(self: Self) -> str:
         """The function returns a string representing the output file name.
