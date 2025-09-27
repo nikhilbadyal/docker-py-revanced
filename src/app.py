@@ -106,9 +106,10 @@ class APP(object):
 
     def get_download_cache_key(self: Self) -> tuple[str, str]:
         """Returns a unique cache key for the app."""
+        version = self.app_version or "latest"
         if self.download_source == APKEEP:
-            return (self.download_source, f"{self.package_name}@{self.app_version}")
-        return (self.download_source, self.app_version or "latest")
+            return (self.download_source, f"{self.package_name}@{version}")
+        return (self.download_source, version)
 
     def get_output_file_name(self: Self) -> str:
         """The function returns a string representing the output file name.
