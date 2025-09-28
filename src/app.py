@@ -12,7 +12,7 @@ from loguru import logger
 from pytz import timezone
 
 from src.config import RevancedConfig
-from src.downloader.sources import apk_sources
+from src.downloader.sources import APKEEP, apk_sources
 from src.exceptions import BuilderError, DownloadError, PatchingFailedError
 from src.utils import slugify, time_zone
 
@@ -81,16 +81,18 @@ class APP(object):
                 msg = f"App {self.app_name} not supported officially yet. Please provide download source in env."
                 raise DownloadError(msg) from key
 
-            cache_key = (self.download_source, self.app_version)
+            # Get unique cache key for this app
+            cache_key = self.get_download_cache_key()
+
+            # Optimistic cache check (outside lock for better performance)
+            if cache_key in download_cache:
+                logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
+                self.download_file_name, self.download_dl = download_cache[cache_key]
+                return
 
             # Thread-safe cache check and download
             with download_lock:
-                if cache_key in download_cache:
-                    logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
-                    self.download_file_name, self.download_dl = download_cache[cache_key]
-                    return
-
-                # Check again after acquiring lock to handle race conditions
+                # Double-check after acquiring lock to handle race conditions
                 if cache_key in download_cache:
                     logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
                     self.download_file_name, self.download_dl = download_cache[cache_key]
@@ -100,9 +102,29 @@ class APP(object):
                 downloader = DownloaderFactory.create_downloader(config=config, apk_source=self.download_source)
                 self.download_file_name, self.download_dl = downloader.download(self.app_version, self)
 
-                # Save to cache using (source, version) tuple
+                # Save to cache using the unique cache key
                 download_cache[cache_key] = (self.download_file_name, self.download_dl)
                 logger.info(f"Added {self.app_name} ({self.app_version}) to download cache.")
+
+    def get_download_cache_key(self: Self) -> tuple[str, str]:
+        """Generate a unique cache key for APK downloads.
+
+        For apkeep sources, includes package name to prevent cache collisions
+        when multiple apps use the same version (e.g., "latest").
+
+        Returns
+        -------
+            tuple[str, str]: Cache key as (source, identifier) where identifier
+                            includes package name for apkeep sources.
+        """
+        version = self.app_version or "latest"
+
+        if self.download_source == APKEEP:
+            # Use package@version format for apkeep to ensure uniqueness
+            return (self.download_source, f"{self.package_name}@{version}")
+
+        # For URL-based sources, source+version is already unique
+        return (self.download_source, version)
 
     def get_output_file_name(self: Self) -> str:
         """The function returns a string representing the output file name.
