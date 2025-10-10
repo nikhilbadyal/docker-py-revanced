@@ -135,7 +135,14 @@ class APP(object):
         """
         current_date = datetime.now(timezone(time_zone))
         formatted_date = current_date.strftime("%Y%b%d.%I%M%p").upper()
-        return f"Re{self.app_name}-Version{slugify(self.app_version)}-PatchVersion{slugify(self.resource["patches"]["version"])}-{formatted_date}-output.apk"  # noqa: E501
+        return (
+            f"Re{self.app_name}-Version{slugify(self.app_version)}"
+            f"-PatchVersion{slugify(self.patch_bundles[0]["version"])}-{formatted_date}-output.apk"
+        )
+
+    def get_patch_bundles_versions(self: Self) -> list[str]:
+        """Get versions of all patch bundles."""
+        return [bundle["version"] for bundle in self.patch_bundles]
 
     def __str__(self: "APP") -> str:
         """Returns the str representation of the app."""
