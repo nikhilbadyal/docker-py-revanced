@@ -11,7 +11,7 @@ from src.app import APP
 class ReleaseManager(object):
     """Base Release manager."""
 
-    def get_last_version(self: Self, app: APP, resource_name: str) -> str:
+    def get_last_version(self: Self, app: APP, resource_name: str) -> str | list[str]:
         """Get last patched version."""
         raise NotImplementedError
 

@@ -49,14 +49,14 @@ updates_file_url = "https://raw.githubusercontent.com/{github_repository}/{branc
 changelogs: dict[str, dict[str, str]] = {}
 time_zone = "Asia/Kolkata"
 app_version_key = "app_version"
-patches_version_key = "patches_version"
+patches_versions_key = "patches_versions"
 cli_version_key = "cli_version"
 implement_method = "Please implement the method"
 status_code_200 = 200
 resource_folder = "apks"
 branch_name = "changelogs"
 app_dump_key = "app_dump"
-patches_dl_key = "patches_dl"
+patches_dl_list_key = "patches_dl_list"
 
 
 def update_changelog(name: str, response: dict[str, str]) -> None:
@@ -263,7 +263,7 @@ def save_patch_info(app: "APP", updates_info: dict[str, Any]) -> dict[str, Any]:
     """Save version info a patching resources used to a file."""
     updates_info[app.app_name] = {
         app_version_key: app.app_version,
-        patches_version_key: app.resource["patches"]["version"],
+        patches_versions_key: app.get_patch_bundles_versions(),
         cli_version_key: app.resource["cli"]["version"],
         "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(timezone(time_zone))),
         "date_patched": datetime.now(timezone(time_zone)),
