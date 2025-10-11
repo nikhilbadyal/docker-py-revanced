@@ -31,8 +31,7 @@ class GitHubManager(ReleaseManager):
         else:
             with urllib.request.urlopen(self.update_file_url) as url:
                 data = json.load(url)
-        if app.app_name in data:
-            resource = data[app.app_name][resource_name]
+        if app.app_name in data and (resource := data[app.app_name].get(resource_name)):
             if isinstance(resource, list):
                 return resource
             return str(resource)
@@ -46,8 +45,7 @@ class GitHubManager(ReleaseManager):
         else:
             with urllib.request.urlopen(self.update_file_url) as url:
                 data = json.load(url)
-        if app.app_name in data:
-            resource = data[app.app_name][app_dump_key][resource_name]
+        if app.app_name in data and (resource := data[app.app_name][app_dump_key].get(resource_name)):
             if isinstance(resource, list):
                 return resource
             return str(resource)
