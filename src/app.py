@@ -7,9 +7,9 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from threading import Lock
 from typing import Any, Self
+from zoneinfo import ZoneInfo
 
 from loguru import logger
-from pytz import timezone
 
 from src.config import RevancedConfig
 from src.downloader.sources import APKEEP, apk_sources
@@ -133,7 +133,7 @@ class APP(object):
         -------
             a string that represents the output file name for an APK file.
         """
-        current_date = datetime.now(timezone(time_zone))
+        current_date = datetime.now(ZoneInfo(time_zone))
         formatted_date = current_date.strftime("%Y%b%d.%I%M%p").upper()
         return (
             f"Re{self.app_name}-Version{slugify(self.app_version)}"

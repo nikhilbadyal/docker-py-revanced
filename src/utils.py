@@ -11,11 +11,11 @@ import urllib.request
 from datetime import datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
+from zoneinfo import ZoneInfo
 
 import requests
 from environs import Env
 from loguru import logger
-from pytz import timezone
 from requests import Response, Session
 
 if TYPE_CHECKING:
@@ -265,8 +265,8 @@ def save_patch_info(app: "APP", updates_info: dict[str, Any]) -> dict[str, Any]:
         app_version_key: app.app_version,
         patches_versions_key: app.get_patch_bundles_versions(),
         cli_version_key: app.resource["cli"]["version"],
-        "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(timezone(time_zone))),
-        "date_patched": datetime.now(timezone(time_zone)),
+        "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(ZoneInfo(time_zone))),
+        "date_patched": datetime.now(ZoneInfo(time_zone)),
         "app_dump": app.for_dump(),
     }
     return updates_info
