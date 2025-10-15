@@ -127,7 +127,7 @@ def main() -> None:
                     app_updates = future.result()
                     updates_info.update(app_updates)
                     logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name})")
-                except (AppNotFoundError, PatchesJsonLoadError, PatchingFailedError, BuilderError) as e:
+                except BuilderError as e:
                     logger.exception(f"Error processing {app_name}: {e}")
                     logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name} - FAILED)")
 
