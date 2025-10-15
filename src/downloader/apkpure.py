@@ -35,28 +35,37 @@ class ApkPure(Downloader):
         """Specifically used to sort the arch list based on order of elements of default archs priority list."""
         return [darch for darch in self.default_archs_priority if darch in arch_list]
 
+    def _get_apk_type(self: Self, dl: str) -> list[str] | None:
+        """Extract apk type from download link."""
+        query_params = parse_qs(urlparse(dl).query)
+        return query_params.get("nc")
+
+    def _compare_apk_types(self: Self, apk_type1: list[str], apk_type2: list[str]) -> int:
+        """Compare two apk types for prioritization."""
+        l1, l2 = len(apk_type1), len(apk_type2)
+        if l1 != l2:
+            # Longer list indicates support for multiple archs, higher priority
+            return -1 if l1 > l2 else 1
+
+        # Same length, compare by priority order
+        priority = self.global_archs_priority or self.default_archs_priority
+        for arch in priority:
+            has_arch1 = arch in apk_type1
+            has_arch2 = arch in apk_type2
+            if has_arch1 != has_arch2:
+                return -1 if has_arch1 else 1
+        return 0
+
     def _compare_dls(self: Self, dl1: str, dl2: str) -> int:
         """Compare two dls of same type (apk or xapk) to prioritise the archs on lower indices."""
-        apk_type1 = parse_qs(urlparse(dl1).query).get("nc")
-        apk_type2 = parse_qs(urlparse(dl2).query).get("nc")
+        apk_type1 = self._get_apk_type(dl1)
+        apk_type2 = self._get_apk_type(dl2)
+
         if apk_type1 and apk_type2:
-            l1 = len(apk_type1)
-            l2 = len(apk_type2)
-            # Indicates support for multiple archs, hence longer length
-            if l1 > l2:
-                return -1
-            if l1 < l2:
-                return 1
-            # Arrange based on priority list
-            priority = self.global_archs_priority or self.default_archs_priority
-            for arch in priority:
-                if arch in apk_type1 and arch not in apk_type2:
-                    return -1
-                if arch not in apk_type1 and arch in apk_type2:
-                    return 1
-        elif not apk_type1 and apk_type2:
+            return self._compare_apk_types(apk_type1, apk_type2)
+        if not apk_type1 and apk_type2:
             return 1
-        elif apk_type1 and not apk_type2:
+        if apk_type1 and not apk_type2:
             return -1
         return 0
 
