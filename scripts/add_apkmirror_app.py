@@ -32,6 +32,7 @@ import re
 from pathlib import Path
 
 import requests
+from loguru import logger
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ORG_APP_PARTS = 2
@@ -327,7 +328,7 @@ def main() -> None:
     changed_any = changed_any or changed_readme
 
     if not changed_any:
-        pass
+        logger.info("No changes needed; app may already be registered.")
 
 
 if __name__ == "__main__":
