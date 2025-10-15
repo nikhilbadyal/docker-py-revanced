@@ -161,33 +161,18 @@ def write_text(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
-def insert_kv_into_dict(  # noqa: C901, PLR0912,PLR0915
-    content: str,
-    dict_var_pattern: str,
-    key: str,
-    value_code: str,
-) -> tuple[str, bool]:
-    r"""Insert a key/value into a Python dict literal for a variable.
+def _find_dict_braces(content: str, open_match: re.Match[str]) -> tuple[int, int]:
+    """Find the start and end indices of dictionary braces.
 
-    - dict_var_pattern: regex to match the variable assignment line that opens the dict
-      e.g., r"revanced_package_names[\s\S]*?=\s*\{"
-    - key: dictionary key to insert (without quotes)
-    - value_code: full code for the value expression (already quoted/f-string as needed)
-
-    Returns: (new_content, changed)
+    Returns: (brace_start, brace_end)
     """
-    # Find dict opening
-    open_match = re.search(dict_var_pattern, content)
-    if not open_match:
-        msg = "Could not locate dictionary with given pattern"
-        raise RuntimeError(msg)
-
-    # Find the '{' start index and walk to matching '}'
+    # Find the '{' start index
     brace_start = content.find("{", open_match.start())
     if brace_start == -1:
         msg = "Malformed dictionary start: missing '{'"
         raise RuntimeError(msg)
 
+    # Walk to matching '}' while handling strings and escape sequences
     i = brace_start
     depth = 0
     in_str: str | None = None
@@ -209,42 +194,82 @@ def insert_kv_into_dict(  # noqa: C901, PLR0912,PLR0915
             depth -= 1
             if depth == 0:
                 brace_end = i
-                break
+                return brace_start, brace_end
         i += 1
     else:
         msg = "Malformed dictionary: missing closing '}'"
         raise RuntimeError(msg)
 
-    # The dictionary body
+
+def _calculate_indentation(content: str, brace_start: int, body: str) -> str:
+    """Calculate the proper indentation for a new dictionary entry."""
+    # Look for first item indentation
+    item_match = re.search(r"^(?P<indent>[ \t]+)\"[^\n]+\"\s*:\s*", body, re.MULTILINE)
+    if item_match:
+        return item_match.group("indent")
+
+    # Fallback: compute from dictionary line indentation
+    line_start = content.rfind("\n", 0, brace_start) + 1
+    base_indent = content[line_start:brace_start].split("\n")[-1]
+
+    # Count leading spaces/tabs of the line
+    m_leading = re.match(r"^[ \t]*", base_indent)
+    if not m_leading:
+        msg = "Could not determine indentation for dictionary body"
+        raise RuntimeError(msg)
+    leading = m_leading.group(0)
+    return leading + " " * 4
+
+
+def _key_exists_in_dict(body: str, key: str) -> bool:
+    """Check if a key already exists in the dictionary body."""
+    key_re = re.compile(rf"^[ \t]*\"{re.escape(key)}\"\s*:\s*", re.MULTILINE)
+    return bool(key_re.search(body))
+
+
+def _insert_kv_entry(content: str, brace_start: int, brace_end: int, body: str, indent: str, key: str, value_code: str) -> str:
+    """Insert the key-value entry into the dictionary."""
+    new_entry = f'\n{indent}"{key}": {value_code},'
+    new_body = body + new_entry + "\n"
+    return content[: brace_start + 1] + new_body + content[brace_end:]
+
+
+def insert_kv_into_dict(
+    content: str,
+    dict_var_pattern: str,
+    key: str,
+    value_code: str,
+) -> tuple[str, bool]:
+    r"""Insert a key/value into a Python dict literal for a variable.
+
+    - dict_var_pattern: regex to match the variable assignment line that opens the dict
+      e.g., r"revanced_package_names[\s\S]*?=\s*\{"
+    - key: dictionary key to insert (without quotes)
+    - value_code: full code for the value expression (already quoted/f-string as needed)
+
+    Returns: (new_content, changed)
+    """
+    # Find dict opening
+    open_match = re.search(dict_var_pattern, content)
+    if not open_match:
+        msg = "Could not locate dictionary with given pattern"
+        raise RuntimeError(msg)
+
+    # Find dictionary braces
+    brace_start, brace_end = _find_dict_braces(content, open_match)
+
+    # Get dictionary body
     body = content[brace_start + 1 : brace_end]
 
     # Check if key already exists
-    key_re = re.compile(rf"^[ \t]*\"{re.escape(key)}\"\s*:\s*", re.MULTILINE)
-    if key_re.search(body):
+    if _key_exists_in_dict(body, key):
         return content, False
 
-    # Determine indentation: look for first item, else fallback to 4 spaces more than dict line indent
-    # Get indentation of first item (if any)
-    item_match = re.search(r"^(?P<indent>[ \t]+)\"[^\n]+\"\s*:\s*", body, re.MULTILINE)
-    if item_match:
-        indent = item_match.group("indent")
-    else:
-        # Compute dictionary base indent from line start to '{'
-        line_start = content.rfind("\n", 0, brace_start) + 1
-        base_indent = content[line_start:brace_start].split("\n")[-1]
-        # Count leading spaces/tabs of the line
-        m_leading = re.match(r"^[ \t]*", base_indent)
-        if not m_leading:
-            msg = "Could not determine indentation for dictionary body"
-            raise RuntimeError(msg)
-        leading = m_leading.group(0)
-        indent = leading + " " * 4
+    # Calculate indentation
+    indent = _calculate_indentation(content, brace_start, body)
 
-    new_entry = f'\n{indent}"{key}": {value_code},'
-
-    # Insert before closing brace
-    new_body = body + new_entry + "\n"
-    new_content = content[: brace_start + 1] + new_body + content[brace_end:]
+    # Insert the new entry
+    new_content = _insert_kv_entry(content, brace_start, brace_end, body, indent, key, value_code)
     return new_content, True
 
 
