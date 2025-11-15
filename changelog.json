@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.5)",
+        "Version": "V1.4.5",
+        "Changelog": "## What's Changed\r\n* Minor improvement on dex building performance\r\n* Fix dex container building issues\r\n* Fix smali parsing #198 \r\n* Update README @yonggamer in https://github.com/REAndroid/APKEditor/pull/203\r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.4...V1.4.5",
+        "PublishedOn": "2025-08-13T20:00:41Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "- Based on ReVanced Cli [5.0.0](https://github.com/ReVanced/revanced-cli/tree/v5.0.0)\r\n- Added option command `options` (`options.json` file generator)\r\n- Added option command `patches` (`patches.json` file generator)\r\n- Added option command `--legacy-options` (set patch option via options.json file)\r\n- Added option command `--rip-libs` (remove native libs from apk)\r\n- Added option command `--unsigned` (disable signing of the final apk, regardless of whether it is mounted or not)\r\n- Added support anti-split (merged some [REAndroid/ARSCLib](https://github.com/REAndroid/ARSCLib) sources to implement anti-split)\r\n\r\n",
+        "PublishedOn": "2024-12-08T09:50:42Z"
+    },
+    "inotia00/revanced-patches": {
+        "ResourceName": "[inotia00/revanced-patches](https://github.com/inotia00/revanced-patches/releases/tag/v5.13.1)",
+        "Version": "v5.13.1",
+        "Changelog": "YouTube\r\n==\r\n- chore(YouTube - Spoof streaming data): Add client ids for TV and TV_UNPLUGGED\r\n- chore(YouTube - Spoof streaming data): Add information about Android XR devices to the client list for Android VR Auth\r\n- feat(YouTube - Description components): Add `Hide Ask section` and `Hide Featured content section` [#165](https://github.com/inotia00/revanced-patches/pull/165)\r\n- feat(YouTube - Description components): Add `Hide Hype points section` setting\r\n- feat(YouTube - Description components): Add `Hide Subscribe button` setting [ReVanced_Extended#3294](https://github.com/inotia00/ReVanced_Extended/issues/3294)\r\n- feat(YouTube - Spoof streaming data): Remove `Default audio stream language` and `Show audio track button`, which are no longer working\r\n- feat(YouTube - Swipe controls): Add `Fix swipe controls tap and hold speed` setting [ReVanced_Extended#3245](https://github.com/inotia00/ReVanced_Extended/issues/3245)\r\n- fix(YouTube - AuthUtils): Sometimes the Auth token is not updated\r\n- fix(YouTube - Settings): Resolve settings search crash when searching for specific words [ReVanced/revanced-patches#6231](https://github.com/ReVanced/revanced-patches/pull/6231)\r\n\r\n\r\nShared\r\n==\r\n- chore(Disable forced auto audio tracks): Change default value [#161](https://github.com/inotia00/revanced-patches/pull/161)\r\n- feat(Spoof streaming data): Add `Android No SDK` client\r\n- feat(Spoof streaming data): Add `TV Legacy` (TV Downgraded) client [yt-dlp/yt-dlp#14887](https://github.com/yt-dlp/yt-dlp/pull/14887)\r\n- feat(Spoof streaming data): Cache the player JavaScript\r\n- feat(Spoof streaming data): Reflects the latest changes in MediaServiceCore\r\n- feat(Spoof streaming data): Remove `Use yt-dlp ejs` setting (Enabled by default)\r\n- feat(Spoof streaming data): Temporarily remove the `Mobile Web` client due to an issue with the PoToken generator\r\n- feat(Spoof streaming data): Update innerTube client\r\n- feat(Spoof streaming data): Update yt-dlp ejs script\r\n- fix(Spoof streaming data): Delay when playing music using the JavaScript client\r\n- fix(Spoof streaming data): Every time the app fetches the latest client version, an additional 2MB of data is consumed\r\n\r\n\r\nAnnouncement\r\n==\r\n- **[Announcement: Playback Issues on YouTube and YouTube Music](https://github.com/inotia00/ReVanced_Extended/issues/3181)**\r\n- **[Troubleshooting playback issues on YouTube and YouTube Music](https://github.com/ReVanced-Extended-Community/Community-Guides/blob/main/news/playback-issues-announcement.md)**\r\n- Currently Reddit 2025.40.0+ can only be patched via CLI or rvx-builder: [Announcement](https://github.com/inotia00/ReVanced_Extended/issues/3288) [Documentation](https://github.com/inotia00/revanced-documentation/blob/main/docs/latest-reddit-patch-info.md).\r\n- Compatible ReVanced Manager: [RVX Manager v1.25.5 (fork)](https://github.com/inotia00/revanced-manager/releases/tag/v1.25.5).\r\n\r\n\r\nContribute to translation\r\n==\r\n- [YouTube](https://crowdin.com/project/revancedextended)\r\n- [YT Music](https://crowdin.com/project/revancedmusicextended)",
+        "PublishedOn": "2025-11-15T12:10:09Z"
+    }
+}
