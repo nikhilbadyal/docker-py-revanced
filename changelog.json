@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.6)",
+        "Version": "V1.4.6",
+        "Changelog": "## What's Changed\r\n* Fix invalid actor on overlayable merge :https://github.com/REAndroid/ARSCLib/pull/93\r\n* Merge manifest components :https://github.com/REAndroid/ARSCLib/pull/92\r\n* Fix incorrect detection of bin xml files #209 \r\n* Introduce `-remove-annotation` feature :https://github.com/REAndroid/APKEditor/commit/093adee1fe2b406b105292280380964cb153ab6e\r\n* Smali registers and const numbers validation\r\n* Improved performance smali/baksmaling\r\n* Fix checksum error for dex v041 \r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.5...V1.4.6",
+        "PublishedOn": "2025-12-14T12:30:59Z"
+    },
+    "inotia00/revanced-cli": {
+        "ResourceName": "[inotia00/revanced-cli](https://github.com/inotia00/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "- Based on ReVanced Cli [5.0.0](https://github.com/ReVanced/revanced-cli/tree/v5.0.0)\r\n- Added option command `options` (`options.json` file generator)\r\n- Added option command `patches` (`patches.json` file generator)\r\n- Added option command `--legacy-options` (set patch option via options.json file)\r\n- Added option command `--rip-libs` (remove native libs from apk)\r\n- Added option command `--unsigned` (disable signing of the final apk, regardless of whether it is mounted or not)\r\n- Added support anti-split (merged some [REAndroid/ARSCLib](https://github.com/REAndroid/ARSCLib) sources to implement anti-split)\r\n\r\n",
+        "PublishedOn": "2024-12-08T09:50:42Z"
+    },
+    "inotia00/revanced-patches": {
+        "ResourceName": "[inotia00/revanced-patches](https://github.com/inotia00/revanced-patches/releases/tag/v5.14.1-dev.8)",
+        "Version": "v5.14.1-dev.8",
+        "Changelog": "YouTube\r\n==\r\n- fix(YouTube - Hide layout components): Fix side effect of `Disable translucent status bar`\r\n\r\n\r\nAnnouncement\r\n==\r\n- Thanks to the [Aurora OSS Team](https://auroraoss.com/) for providing a lot of references for implementing YouTube sign in logic.\r\n- [Announcement: Playback Issues on YouTube and YouTube Music](https://github.com/inotia00/ReVanced_Extended/issues/3181)\r\n- [Troubleshooting playback issues on YouTube and YouTube Music](https://github.com/ReVanced-Extended-Community/Community-Guides/blob/main/news/playback-issues-announcement.md)\r\n- Currently Reddit 2025.40.0+ can only be patched via CLI or rvx-builder: [Announcement](https://github.com/inotia00/ReVanced_Extended/issues/3288) [Documentation](https://github.com/inotia00/revanced-documentation/blob/main/docs/latest-reddit-patch-info.md).\r\n- Compatible ReVanced Manager: [RVX Manager v1.25.5 (fork)](https://github.com/inotia00/revanced-manager/releases/tag/v1.25.5).",
+        "PublishedOn": "2025-12-25T10:12:55Z"
+    }
+}
