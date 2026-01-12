@@ -89,8 +89,10 @@ class Patches(object):
         "com.nousguide.android.orftvthek": "orf-on",
         "com.pandora.android": "pandora",
         "it.ipzs.cieid": "cieid",
-        "ml.docilealligator.infinityforreddit.patreon": "infinity-for-reddit-patreon",
-        "ml.docilealligator.infinityforreddit.plus": "infinity-for-reddit-plus",
+        "ml.docilealligator.infinityforreddit.patreon": "infinity-patreon",
+        "ml.docilealligator.infinityforreddit.plus": "infinity-plus",
+        "com.sec.android.app.fm": "samsung-radio",
+        "com.viber.voip": "rakuten-viber",
     }
 
     @staticmethod
