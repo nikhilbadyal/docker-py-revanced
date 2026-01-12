@@ -57,6 +57,7 @@ apk_sources = {
         "ticktickto-do-list-calendar"
     ),
     "tiktok": f"{APK_MIRROR_BASE_APK_URL}/tiktok-pte-ltd/tik-tok/tiktok",
+    "musically": f"{APK_MIRROR_BASE_APK_URL}/tiktok-pte-ltd/tik-tok-including-musical-ly/tiktok",
     "trakt": f"{APK_MIRROR_BASE_APK_URL}/trakt/trakt/trakt-tv-shows-movies",
     "twitch": f"{APK_MIRROR_BASE_APK_URL}/twitch-interactive-inc/twitch/twitch-live-streaming",
     "twitter": f"{APK_MIRROR_BASE_APK_URL}/x-corp/twitter/x",

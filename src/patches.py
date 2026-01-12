@@ -62,7 +62,6 @@ class Patches(object):
         "com.strava": "strava",
         "com.microblink.photomath": "photomath",
         "o.o.joey": "joey",
-        "com.vanced.android.youtube": "vanced",
         "com.spotify.lite": "spotify-lite",
         "at.gv.oe.app": "digitales",
         "com.scb.phone": "scbeasy",
