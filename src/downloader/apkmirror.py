@@ -103,8 +103,7 @@ class ApkMirror(Downloader):
         if not main_page:
             version = version.replace(".", "-")
             apk_main_page = app.download_source
-            version_page = apk_main_page + apk_main_page.split("/")[-2]
-            main_page = f"{version_page}-{version}-release/"
+            main_page = f"{apk_main_page}-{version}-release/"
         download_page = self.get_download_page(main_page)
         if app.app_version == "latest":
             try:
