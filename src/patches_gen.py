@@ -28,8 +28,8 @@ def extract_enabled_state_from_section(section: str) -> bool:
 def extract_package_info(package_section: str) -> dict[str, Any]:
     """Extract package name and versions from a package section."""
     package_name = package_section.split("\n")[0].strip()
-    versions_match = re.search(r"Compatible versions:\s*((?:\d+\.\d+\.\d+\s*)+)", package_section)
-    versions = versions_match.group(1).split() if versions_match else []
+    versions_match = re.search(r"Compatible versions:\s*((?:\n\s+.+)+)", package_section)
+    versions = re.split(r"\n\s+", versions_match.group(1).strip()) if versions_match else []
     return {"name": package_name, "versions": versions if versions else None}
 
 
