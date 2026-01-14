@@ -205,7 +205,7 @@ class APP(object):
         # Download multiple patch bundles
         for i, patches_url in enumerate(self.patches_dl_list):
             bundle_name = f"patches_{i}" if len(self.patches_dl_list) > 1 else "patches"
-            download_tasks.append((bundle_name, patches_url, None, ".*rvp"))
+            download_tasks.append((bundle_name, patches_url, None, ".*(rvp|mpp)"))
 
         return download_tasks
 
