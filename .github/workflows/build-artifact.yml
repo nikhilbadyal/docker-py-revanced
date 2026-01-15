@@ -119,6 +119,22 @@ jobs:
               echo "Using Prod compose file."
               docker compose up --build
           fi
+
+      - name: Ensure changelog files exist
+        if: ${{ true && !inputs.DEBUG_ENABLED }}
+        run: |
+          # Create empty changelog files if they don't exist (fallback for failed builds)
+          if [ ! -f changelog.md ]; then
+            echo "| Resource Name | Version | Changelog | Published On | Build By|" > changelog.md
+            echo "|---------------|---------|-----------|--------------|---------|" >> changelog.md
+          fi
+          if [ ! -f changelog.json ]; then
+            echo "{}" > changelog.json
+          fi
+          if [ ! -f updates.json ]; then
+            echo "{}" > updates.json
+          fi
+
       - name: Upload Build APKS
         uses: actions/upload-artifact@main
         if: ${{ true && !inputs.DEBUG_ENABLED }}
@@ -129,7 +145,7 @@ jobs:
             changelog.json
             updates.json
             apks/*-output.apk
-            apks/VancedMicroG.apk"
+            apks/VancedMicroG.apk
           if-no-files-found: error
 
       - name: Commit Update file
