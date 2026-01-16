@@ -109,7 +109,7 @@ def main() -> None:
                 try:
                     app_updates = process_single_app(app_name, config, caches)
                     updates_info.update(app_updates)
-                except Exception as e:
+                except Exception as e:  # noqa: BLE001
                     logger.exception(f"Error processing {app_name}: {e}")
                     logger.info(f"{app_name} - FAILED")
         else:
@@ -120,8 +120,7 @@ def main() -> None:
                 # Submit all app processing tasks
                 caches = (download_cache, resource_cache, download_lock, resource_lock)
                 future_to_app = {
-                    executor.submit(process_single_app, app_name, config, caches): app_name
-                    for app_name in config.apps
+                    executor.submit(process_single_app, app_name, config, caches): app_name for app_name in config.apps
                 }
 
                 # Collect results as they complete
@@ -133,7 +132,7 @@ def main() -> None:
                         app_updates = future.result()
                         updates_info.update(app_updates)
                         logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name})")
-                    except Exception as e:
+                    except Exception as e:  # noqa: BLE001
                         logger.exception(f"Error processing {app_name}: {e}")
                         logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name} - FAILED)")
     finally:
