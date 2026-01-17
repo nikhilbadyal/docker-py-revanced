@@ -120,6 +120,21 @@ jobs:
               docker compose up --build
           fi
 
+      - name: Verify at least one APK was patched
+        if: ${{ true && !inputs.DEBUG_ENABLED }}
+        run: |
+          # Count patched APKs (excluding Microg which is a dependency, not a patched app)
+          patched_count=$(find apks -maxdepth 1 -name "*-output.apk" ! -name "Revanced-Microg-output.apk" -type f 2>/dev/null | wc -l)
+          echo "Found $patched_count patched APK(s)"
+
+          if [ "$patched_count" -eq 0 ]; then
+            echo "::error::No APKs were successfully patched. Build failed."
+            exit 1
+          fi
+
+          echo "✅ Successfully patched $patched_count APK(s):"
+          find apks -maxdepth 1 -name "*-output.apk" ! -name "Revanced-Microg-output.apk" -type f
+
       - name: Ensure changelog files exist
         if: ${{ true && !inputs.DEBUG_ENABLED }}
         run: |
