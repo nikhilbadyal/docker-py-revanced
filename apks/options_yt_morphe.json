@@ -1,0 +1,24 @@
+[
+  {
+    "patchName": "Change package name",
+    "options": [
+      {
+        "key": "packageName",
+        "value": "com.google.android.youtube.dockerpy"
+      }
+    ]
+  },
+  {
+    "patchName": "Theme",
+    "options": [
+      {
+        "key": "darkThemeBackgroundColor",
+        "value": "@android:color/black"
+      },
+      {
+        "key": "lightThemeBackgroundColor",
+        "value": "@android:color/white"
+      }
+    ]
+  }
+]

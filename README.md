@@ -369,11 +369,29 @@ You can use any of the following methods to build.
    ```dotenv
     GLOBAL_OPTIONS_FILE=my_options.json
    ```
-   Tool also support providing secret key at app level. You can sign A app with X key while signing B with Y
-   key.<br>
-    Example:
+   Tool also supports providing options file at app level. When an app-specific options file is provided,
+   it is **merged** with the global options file. App-specific options override global options for the same
+   patch name, while all other global options are preserved.<br>
+
+   Example:
    ```dotenv
     YOUTUBE_OPTIONS_FILE=my_cool_yt_options.json
+   ```
+
+   **Options Merging Example:**<br>
+   If your global `options.json` contains Theme and SponsorBlock options, and your app-specific
+   `my_cool_yt_options.json` contains only a custom package name option, the final merged options will include
+   all three. This is useful when using different patch sources (like Morphe, anddea, ReVanced) that require
+   different patch option names for the same functionality.
+
+   ```
+   Global options.json          App options.json           Final Merged Options
+   ┌─────────────────┐         ┌─────────────────┐        ┌─────────────────┐
+   │ Theme           │         │ Change package  │   =>   │ Theme           │
+   │ SponsorBlock    │    +    │ name            │        │ SponsorBlock    │
+   │ Custom branding │         └─────────────────┘        │ Change package  │
+   └─────────────────┘                                    │ name            │
+                                                          └─────────────────┘
    ```
 10. <a id="global-archs-to-build"></a>You can build only for a particular arch in order to get smaller apk files.This
     can be done with by adding comma separated `ARCHS_TO_BUILD` in `ENVS` in `GitHub secrets` (Recommended) in the

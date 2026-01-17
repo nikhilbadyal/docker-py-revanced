@@ -159,8 +159,70 @@ class Parser(object):
             {},
         )
 
+    def _load_options_from_file(self: Self, file_name: str) -> list[dict[str, Any]]:
+        """Load options from a single file.
+
+        Parameters
+        ----------
+        file_name : str
+            The options file name
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of patch options from the file
+        """
+        try:
+            with self.config.temp_folder.joinpath(file_name).open() as file:
+                options: list[dict[str, Any]] = json.load(file)
+                return options
+        except FileNotFoundError as e:
+            logger.warning(str(e))
+            return []
+
+    def _merge_options(
+        self: Self,
+        global_options: list[dict[str, Any]],
+        app_options: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        """Merge global and app-specific options.
+
+        App-specific options override global options for the same patch name.
+
+        Parameters
+        ----------
+        global_options : list[dict[str, Any]]
+            Options from the global options file
+        app_options : list[dict[str, Any]]
+            Options from the app-specific options file
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            Merged options list
+        """
+        # Create a dict keyed by patchName for easy lookup and merging
+        merged: dict[str, dict[str, Any]] = {}
+
+        # Add global options first
+        for opt in global_options:
+            patch_name = opt.get("patchName")
+            if patch_name:
+                merged[patch_name] = opt
+
+        # Override/add with app-specific options
+        for opt in app_options:
+            patch_name = opt.get("patchName")
+            if patch_name:
+                merged[patch_name] = opt
+
+        return list(merged.values())
+
     def _load_patch_options(self: Self, app: APP) -> list[dict[str, Any]]:
         """Load patch options from file.
+
+        Loads global options first, then merges app-specific options on top.
+        App-specific options override global options for the same patch name.
 
         Parameters
         ----------
@@ -172,14 +234,16 @@ class Parser(object):
         list[dict[str, Any]]
             List of patch options
         """
-        options_list: list[dict[str, Any]] = [{}]
-        try:
-            with self.config.temp_folder.joinpath(app.options_file).open() as file:
-                options_list = json.load(file)
-        except FileNotFoundError as e:
-            logger.warning(str(e))
-            logger.debug("Setting options to empty list.")
-        return options_list
+        # Load global options first
+        global_options = self._load_options_from_file(self.config.global_options_file)
+
+        # If app uses a different options file, load and merge it
+        if app.options_file != self.config.global_options_file:
+            logger.info(f"Loading app-specific options from {app.options_file} and merging with global options")
+            app_options = self._load_options_from_file(app.options_file)
+            return self._merge_options(global_options, app_options)
+
+        return global_options if global_options else [{}]
 
     def _normalize_patch_name(self: Self, patch_name: str, *, space_formatted: bool) -> str:
         """Normalize patch name based on formatting preference.
