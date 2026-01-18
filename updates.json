@@ -1,1 +1,516 @@
-{}
+{
+    "YOUTUBE_MUSIC_INOTIA00": {
+        "app_version": "8.37.56",
+        "patches_versions": [
+            "v1.6.0-dev.4"
+        ],
+        "cli_version": "v1.1.0",
+        "ms_epoch_since_patched": 1768645673435,
+        "date_patched": "2026-01-17 10:27:53.435130+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_MUSIC_INOTIA00",
+            "app_version": "8.37.56",
+            "experiment": false,
+            "cli_dl": "https://github.com/MorpheApp/morphe-cli",
+            "patches_dl_list": [
+                "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease"
+            ],
+            "patches_dl": "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-compact-dialog",
+                "enable-debug-logging",
+                "enable-old-player-layout",
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-name-for-youtube-music",
+                "custom-header-for-youtube-music"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "5e63a7f95b6a4c0367e707b714743970db2f51a428952ed05d726d40e03965c5.jar",
+                    "version": "v1.1.0"
+                },
+                "patches": {
+                    "file_name": "7527a2cb5874bfc54b09797bbc8e6f99ac200beb5146dc5d7519e0edfd96ab8d.mpp",
+                    "version": "v1.6.0-dev.4"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "7527a2cb5874bfc54b09797bbc8e6f99ac200beb5146dc5d7519e0edfd96ab8d.mpp",
+                    "version": "v1.6.0-dev.4"
+                }
+            ],
+            "no_of_patches": 18,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_MUSIC_INOTIA00.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=10830243&key=584d1ea0ea2b6b6718861c79a60cb8d00d1bbf5c&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_INOTIA00": {
+        "app_version": "20.37.48",
+        "patches_versions": [
+            "v1.6.0-dev.4"
+        ],
+        "cli_version": "v1.1.0",
+        "ms_epoch_since_patched": 1768634481309,
+        "date_patched": "2026-01-17 07:21:21.308891+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_INOTIA00",
+            "app_version": "20.37.48",
+            "experiment": false,
+            "cli_dl": "https://github.com/MorpheApp/morphe-cli",
+            "patches_dl_list": [
+                "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease"
+            ],
+            "patches_dl": "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging",
+                "hide-fullscreen-button",
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "5e63a7f95b6a4c0367e707b714743970db2f51a428952ed05d726d40e03965c5.jar",
+                    "version": "v1.1.0"
+                },
+                "patches": {
+                    "file_name": "7527a2cb5874bfc54b09797bbc8e6f99ac200beb5146dc5d7519e0edfd96ab8d.mpp",
+                    "version": "v1.6.0-dev.4"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "7527a2cb5874bfc54b09797bbc8e6f99ac200beb5146dc5d7519e0edfd96ab8d.mpp",
+                    "version": "v1.6.0-dev.4"
+                }
+            ],
+            "no_of_patches": 58,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_INOTIA00.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=10838436&key=a34838fe974c59e43bf0596193fdce35228f3421&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "REDDIT_ANDEA": {
+        "app_version": "2025.12.1",
+        "patches_versions": [
+            "v3.15.0"
+        ],
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1768505606094,
+        "date_patched": "2026-01-15 19:33:26.093835+05:30",
+        "app_dump": {
+            "app_name": "REDDIT_ANDEA",
+            "app_version": "2025.12.1",
+            "experiment": false,
+            "cli_dl": "https://github.com/revanced/revanced-cli/releases/latest",
+            "patches_dl_list": [
+                "https://github.com/anddea/revanced-patches/releases/latest-prerelease"
+            ],
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "change-package-name",
+                "custom-branding-name-for-reddit"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "2d7026935af86ae1618510c333c6e98bcd084ac4312ff8fd382414464c601e7f.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "2820d58a3323f9595568f58378376da89941286dfce70160c5654731fba7e64a.rvp",
+                    "version": "v3.15.0"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "2820d58a3323f9595568f58378376da89941286dfce70160c5654731fba7e64a.rvp",
+                    "version": "v3.15.0"
+                }
+            ],
+            "no_of_patches": 15,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "REDDIT_ANDEA.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8855218&key=dfe2d7fddcb5a885b11fa4a731bdddd3d61299e5",
+            "download_source": "https://www.apkmirror.com/apk/reddit-inc/reddit/",
+            "package_name": "com.reddit.frontpage",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_MUSIC_ANDEA": {
+        "app_version": "8.30.54",
+        "patches_versions": [
+            "v3.15.0"
+        ],
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1768505629206,
+        "date_patched": "2026-01-15 19:33:49.206192+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_MUSIC_ANDEA",
+            "app_version": "8.30.54",
+            "experiment": false,
+            "cli_dl": "https://github.com/revanced/revanced-cli/releases/latest",
+            "patches_dl_list": [
+                "https://github.com/anddea/revanced-patches/releases/latest-prerelease"
+            ],
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-compact-dialog",
+                "enable-debug-logging",
+                "enable-old-player-layout",
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-name-for-youtube-music",
+                "custom-header-for-youtube-music"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "2d7026935af86ae1618510c333c6e98bcd084ac4312ff8fd382414464c601e7f.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "2820d58a3323f9595568f58378376da89941286dfce70160c5654731fba7e64a.rvp",
+                    "version": "v3.15.0"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "2820d58a3323f9595568f58378376da89941286dfce70160c5654731fba7e64a.rvp",
+                    "version": "v3.15.0"
+                }
+            ],
+            "no_of_patches": 40,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_MUSIC_ANDEA.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=10354047&key=f411d7f0b94adc4813d9d7a7b103ec06b03f50ed&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_MUSIC_REVANCED": {
+        "app_version": "8.10.52",
+        "patches_versions": [
+            "v5.47.0"
+        ],
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1768505729723,
+        "date_patched": "2026-01-15 19:35:29.723322+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_MUSIC_REVANCED",
+            "app_version": "8.10.52",
+            "experiment": false,
+            "cli_dl": "https://github.com/revanced/revanced-cli/releases/latest",
+            "patches_dl_list": [
+                "https://github.com/ReVanced/revanced-patches/releases/latest"
+            ],
+            "patches_dl": "https://github.com/ReVanced/revanced-patches/releases/latest",
+            "exclude_request": [
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-compact-dialog",
+                "enable-debug-logging",
+                "enable-old-player-layout",
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-name-for-youtube-music",
+                "custom-header-for-youtube-music"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "2d7026935af86ae1618510c333c6e98bcd084ac4312ff8fd382414464c601e7f.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "4db079c020591878e62b2e7944ae5efddc1e283d809386faa68986e91ac8cb91.rvp",
+                    "version": "v5.47.0"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "4db079c020591878e62b2e7944ae5efddc1e283d809386faa68986e91ac8cb91.rvp",
+                    "version": "v5.47.0"
+                }
+            ],
+            "no_of_patches": 18,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_MUSIC_REVANCED.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8704658&key=d3470163f866b23de8e3f2a0d03b4ddbadba8615&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_ANDEA": {
+        "app_version": "20.05.46",
+        "patches_versions": [
+            "v3.15.0"
+        ],
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1768505615085,
+        "date_patched": "2026-01-15 19:33:35.085139+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_ANDEA",
+            "app_version": "20.05.46",
+            "experiment": false,
+            "cli_dl": "https://github.com/revanced/revanced-cli/releases/latest",
+            "patches_dl_list": [
+                "https://github.com/anddea/revanced-patches/releases/latest-prerelease"
+            ],
+            "patches_dl": "https://github.com/anddea/revanced-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging",
+                "hide-fullscreen-button",
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "2d7026935af86ae1618510c333c6e98bcd084ac4312ff8fd382414464c601e7f.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "2820d58a3323f9595568f58378376da89941286dfce70160c5654731fba7e64a.rvp",
+                    "version": "v3.15.0"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "2820d58a3323f9595568f58378376da89941286dfce70160c5654731fba7e64a.rvp",
+                    "version": "v3.15.0"
+                }
+            ],
+            "no_of_patches": 67,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_ANDEA.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8403884&key=e4af53dc9ab3435bb9999a0fd7f490f0c11c282a&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_REVANCED": {
+        "app_version": "20.14.43",
+        "patches_versions": [
+            "v5.47.0"
+        ],
+        "cli_version": "v5.0.1",
+        "ms_epoch_since_patched": 1768505744591,
+        "date_patched": "2026-01-15 19:35:44.591251+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_REVANCED",
+            "app_version": "20.14.43",
+            "experiment": false,
+            "cli_dl": "https://github.com/revanced/revanced-cli/releases/latest",
+            "patches_dl_list": [
+                "https://github.com/ReVanced/revanced-patches/releases/latest"
+            ],
+            "patches_dl": "https://github.com/ReVanced/revanced-patches/releases/latest",
+            "exclude_request": [
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging",
+                "hide-fullscreen-button",
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube"
+            ],
+            "include_request": [],
+            "resource": {
+                "cli": {
+                    "file_name": "2d7026935af86ae1618510c333c6e98bcd084ac4312ff8fd382414464c601e7f.jar",
+                    "version": "v5.0.1"
+                },
+                "patches": {
+                    "file_name": "4db079c020591878e62b2e7944ae5efddc1e283d809386faa68986e91ac8cb91.rvp",
+                    "version": "v5.47.0"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "4db079c020591878e62b2e7944ae5efddc1e283d809386faa68986e91ac8cb91.rvp",
+                    "version": "v5.47.0"
+                }
+            ],
+            "no_of_patches": 58,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options.json",
+            "download_file_name": "YOUTUBE_REVANCED.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=8988562&key=d42e3ef6dc0ee1ff4da099410d4bae799ba3a36b&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_MUSIC_MORPHE": {
+        "app_version": "8.37.56",
+        "patches_versions": [
+            "v1.7.0-dev.1"
+        ],
+        "cli_version": "v1.1.0",
+        "ms_epoch_since_patched": 1768760110965,
+        "date_patched": "2026-01-18 18:15:10.964672+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_MUSIC_MORPHE",
+            "app_version": "8.37.56",
+            "experiment": false,
+            "cli_dl": "https://github.com/MorpheApp/morphe-cli",
+            "patches_dl_list": [
+                "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease"
+            ],
+            "patches_dl": "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube-music",
+                "custom-branding-name-youtube-music",
+                "enable-compact-dialog",
+                "enable-debug-logging",
+                "enable-old-player-layout",
+                "custom-branding-icon-for-youtube-music",
+                "custom-branding-name-for-youtube-music",
+                "custom-header-for-youtube-music",
+                "custom-branding"
+            ],
+            "include_request": [
+                "change-package-name"
+            ],
+            "resource": {
+                "cli": {
+                    "file_name": "5e63a7f95b6a4c0367e707b714743970db2f51a428952ed05d726d40e03965c5.jar",
+                    "version": "v1.1.0"
+                },
+                "patches": {
+                    "file_name": "97e1f8775a2619d0aec1bd5537e8a62454cdf1a67b3748150c94e68580cbdbde.mpp",
+                    "version": "v1.7.0-dev.1"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "97e1f8775a2619d0aec1bd5537e8a62454cdf1a67b3748150c94e68580cbdbde.mpp",
+                    "version": "v1.7.0-dev.1"
+                }
+            ],
+            "no_of_patches": 18,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options_yt_music_morphe.json",
+            "download_file_name": "YOUTUBE_MUSIC_MORPHE.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=10830243&key=c82fa1e5070e25da20cf5375ab1483926fc0187d&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube-music/",
+            "package_name": "com.google.android.apps.youtube.music",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    },
+    "YOUTUBE_MORPHE": {
+        "app_version": "20.37.48",
+        "patches_versions": [
+            "v1.7.0-dev.1"
+        ],
+        "cli_version": "v1.1.0",
+        "ms_epoch_since_patched": 1768760105980,
+        "date_patched": "2026-01-18 18:15:05.980438+05:30",
+        "app_dump": {
+            "app_name": "YOUTUBE_MORPHE",
+            "app_version": "20.37.48",
+            "experiment": false,
+            "cli_dl": "https://github.com/MorpheApp/morphe-cli",
+            "patches_dl_list": [
+                "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease"
+            ],
+            "patches_dl": "https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease",
+            "exclude_request": [
+                "custom-branding-icon-youtube",
+                "custom-branding-name-youtube",
+                "enable-debug-logging",
+                "hide-fullscreen-button",
+                "custom-branding-icon-for-youtube",
+                "custom-branding-name-for-youtube",
+                "custom-branding"
+            ],
+            "include_request": [
+                "change-package-name"
+            ],
+            "resource": {
+                "cli": {
+                    "file_name": "5e63a7f95b6a4c0367e707b714743970db2f51a428952ed05d726d40e03965c5.jar",
+                    "version": "v1.1.0"
+                },
+                "patches": {
+                    "file_name": "97e1f8775a2619d0aec1bd5537e8a62454cdf1a67b3748150c94e68580cbdbde.mpp",
+                    "version": "v1.7.0-dev.1"
+                }
+            },
+            "patch_bundles": [
+                {
+                    "name": "patches",
+                    "file_name": "97e1f8775a2619d0aec1bd5537e8a62454cdf1a67b3748150c94e68580cbdbde.mpp",
+                    "version": "v1.7.0-dev.1"
+                }
+            ],
+            "no_of_patches": 58,
+            "keystore_name": "revanced.keystore",
+            "archs_to_build": [],
+            "options_file": "options_yt_morphe.json",
+            "download_file_name": "YOUTUBE_MORPHE.apk",
+            "download_dl": "https://www.apkmirror.com/wp-content/themes/APKMirror/download.php?id=10838436&key=55ce62d8e513f5002a0b77f521ef4b0c5d3f7ade&forcebaseapk=true",
+            "download_source": "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "package_name": "com.google.android.youtube",
+            "old_key": true,
+            "patches": [],
+            "space_formatted": true
+        }
+    }
+}
