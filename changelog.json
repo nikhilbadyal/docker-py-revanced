@@ -1,1 +1,26 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.7)",
+        "Version": "V1.4.7",
+        "Changelog": "## What's Changed\r\n* Set smali comment level to `basic` (For faster smali deompiling):https://github.com/REAndroid/APKEditor/commit/a5390a3401153ab9ac38b4487a279316eee7400d\r\n* Fix: Protector - dictionaries options by @Kirlif in https://github.com/REAndroid/APKEditor/pull/218\r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.6...V1.4.7",
+        "PublishedOn": "2025-12-28T11:00:45Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-cli/releases/tag/v1.1.0)",
+        "Version": "v1.1.0",
+        "Changelog": "# [1.1.0](https://github.com/MorpheApp/morphe-cli/compare/v1.0.0...v1.1.0) (2026-01-10)\n\n\n### Bug Fixes\n\n* Use patcher / library 1.0.1 release ([0ca02e9](https://github.com/MorpheApp/morphe-cli/commit/0ca02e920b9e3189ac2b3a18587f0fb9efd0de4e))\n\n\n### Features\n\n* add command option `unsigned` ([#20](https://github.com/MorpheApp/morphe-cli/issues/20)) ([4505091](https://github.com/MorpheApp/morphe-cli/commit/4505091624b854706b39656bae642e5dc1132dcd))\n\n\n\n",
+        "PublishedOn": "2026-01-10T15:50:06Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.9.0-dev.8)",
+        "Version": "v1.9.0-dev.8",
+        "Changelog": "# [1.9.0-dev.8](https://github.com/MorpheApp/morphe-patches/compare/v1.9.0-dev.7...v1.9.0-dev.8) (2026-01-29)\n\n\n### Features\n\n* **YouTube - Hide layout components:** Add \"Hide Latest videos button\" setting ([#305](https://github.com/MorpheApp/morphe-patches/issues/305)) ([aed3e34](https://github.com/MorpheApp/morphe-patches/commit/aed3e343885732bb86647ddf626efdc173ca2ed6))\n\n\n\n",
+        "PublishedOn": "2026-01-29T06:57:48Z"
+    }
+}
