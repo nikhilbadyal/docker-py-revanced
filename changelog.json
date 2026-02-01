@@ -1,1 +1,38 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.1.4.240913)",
+        "Version": "v0.3.1.4.240913",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.1.4.240913/app.revanced.android.gms-240913008-hw-signed.apk) |\r\n",
+        "PublishedOn": "2024-04-05T02:37:11Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.7)",
+        "Version": "V1.4.7",
+        "Changelog": "## What's Changed\r\n* Set smali comment level to `basic` (For faster smali deompiling):https://github.com/REAndroid/APKEditor/commit/a5390a3401153ab9ac38b4487a279316eee7400d\r\n* Fix: Protector - dictionaries options by @Kirlif in https://github.com/REAndroid/APKEditor/pull/218\r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.6...V1.4.7",
+        "PublishedOn": "2025-12-28T11:00:45Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-cli/releases/tag/v1.1.0)",
+        "Version": "v1.1.0",
+        "Changelog": "# [1.1.0](https://github.com/MorpheApp/morphe-cli/compare/v1.0.0...v1.1.0) (2026-01-10)\n\n\n### Bug Fixes\n\n* Use patcher / library 1.0.1 release ([0ca02e9](https://github.com/MorpheApp/morphe-cli/commit/0ca02e920b9e3189ac2b3a18587f0fb9efd0de4e))\n\n\n### Features\n\n* add command option `unsigned` ([#20](https://github.com/MorpheApp/morphe-cli/issues/20)) ([4505091](https://github.com/MorpheApp/morphe-cli/commit/4505091624b854706b39656bae642e5dc1132dcd))\n\n\n\n",
+        "PublishedOn": "2026-01-10T15:50:06Z"
+    },
+    "revanced/revanced-cli": {
+        "ResourceName": "[revanced/revanced-cli](https://github.com/ReVanced/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "## [5.0.1](https://github.com/ReVanced/revanced-cli/compare/v5.0.0...v5.0.1) (2025-04-14)\n\n\n### Bug Fixes\n\n* Make mounting work again by bumping dependencies ([#359](https://github.com/ReVanced/revanced-cli/issues/359)) ([68a4872](https://github.com/ReVanced/revanced-cli/commit/68a48724ebf01a0c8f8adc0fec63037bff672dc9))\n\n\n\n",
+        "PublishedOn": "2025-04-14T08:53:52Z"
+    },
+    "anddea/revanced-patches": {
+        "ResourceName": "[anddea/revanced-patches](https://github.com/anddea/revanced-patches/releases/tag/v3.16.0)",
+        "Version": "v3.16.0",
+        "Changelog": "# [3.16.0](https://github.com/anddea/revanced-patches/compare/v3.15.0...v3.16.0) (2026-01-30)\n\n\n### Bug Fixes\n\n* **YouTube - Overlay buttons:** Fix issues with Gemini transcription failures and the UI layout of subtitles ([77c52ee](https://github.com/anddea/revanced-patches/commit/77c52ee38ceb9c6151f44de125b6b93b837763d1))\n* **YouTube & YT Music:** Remove no longer working `Android No SDK` client from clients order ([ce23663](https://github.com/anddea/revanced-patches/commit/ce23663bf977c42accba4797576b415b6327ee96))\n* **YouTube, YT Music & Reddit - Translations:** Do not add the Translations preference when the `Translations` patch is disabled ([2abf4ae](https://github.com/anddea/revanced-patches/commit/2abf4aecca9b45ce8f4486ff0b6cb0bffa850db9))\n\n\n### Features\n\n* **YouTube - Overlay buttons:** Add `Seal Plus` downloader ([98fb5d6](https://github.com/anddea/revanced-patches/commit/98fb5d63738997cd3a115c98d4bfc01971e76445))\n* **YouTube - Overlay buttons:** Allow simultaneous summary and transcription operations, cache summaries and transcriptions for all videos until the app is restarted ([7325d2a](https://github.com/anddea/revanced-patches/commit/7325d2aae355fd968bea6439d9acc796f0c15e20))\n* **YouTube - Overlay buttons:** Improve the translation workflow of subtitles after Yandex transcription ([88e54e6](https://github.com/anddea/revanced-patches/commit/88e54e64db3778c14a2d5cdecc6516632eae1875))\n* **YouTube - Overlay buttons:** Update Gemini to `Gemini 3 Flash Preview` and fallback to `Gemini 2.5 Flash` ([16c53da](https://github.com/anddea/revanced-patches/commit/16c53dad17fdf6b1f8ae2d71d7f4825744f8ae5f))\n\n\n\n",
+        "PublishedOn": "2026-01-30T19:08:54Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.10.0-dev.2)",
+        "Version": "v1.10.0-dev.2",
+        "Changelog": "# [1.10.0-dev.2](https://github.com/MorpheApp/morphe-patches/compare/v1.10.0-dev.1...v1.10.0-dev.2) (2026-02-01)\n\n\n### Features\n\n* **YouTube - Captions:** Add \"Set caption cookies\" and \"Fix transcript\" settings ([#341](https://github.com/MorpheApp/morphe-patches/issues/341)) ([0e50fc7](https://github.com/MorpheApp/morphe-patches/commit/0e50fc7de9b667f6f9b1e61cec2cfd2f6011e126))\n\n\n\n",
+        "PublishedOn": "2026-02-01T12:35:05Z"
+    }
+}
