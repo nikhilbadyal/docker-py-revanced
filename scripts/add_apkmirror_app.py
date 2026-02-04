@@ -243,7 +243,7 @@ def _calculate_indentation(content: str, brace_start: int, body: str) -> str:
 
     # Fallback: compute from dictionary line indentation
     line_start = content.rfind("\n", 0, brace_start) + 1
-    base_indent = content[line_start:brace_start].split("\n")[-1]
+    base_indent = content[line_start:brace_start].rsplit("\n", maxsplit=1)[-1]
 
     # Count leading spaces/tabs of the line
     m_leading = re.match(r"^[ \t]*", base_indent)

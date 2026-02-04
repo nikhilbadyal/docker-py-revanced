@@ -27,10 +27,10 @@ def extract_enabled_state_from_section(section: str) -> bool:
 
 def extract_package_info(package_section: str) -> dict[str, Any]:
     """Extract package name and versions from a package section."""
-    package_name = package_section.split("\n")[0].strip()
+    package_name = package_section.split("\n", maxsplit=1)[0].strip()
     versions_match = re.search(r"Compatible versions:\s*((?:\d+\.\d+\.\d+\s*)+)", package_section)
     versions = versions_match.group(1).split() if versions_match else []
-    return {"name": package_name, "versions": versions if versions else None}
+    return {"name": package_name, "versions": versions or None}
 
 
 def extract_compatible_packages_from_section(section: str) -> list[dict[str, Any]]:
@@ -80,7 +80,7 @@ def parse_single_section(section: str) -> dict[str, Any]:
     return {
         "name": name,
         "description": description,
-        "compatiblePackages": compatible_packages if compatible_packages else None,
+        "compatiblePackages": compatible_packages or None,
         "use": enabled,
         "options": options,
     }
