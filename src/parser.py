@@ -243,7 +243,7 @@ class Parser(object):
             app_options = self._load_options_from_file(app.options_file)
             return self._merge_options(global_options, app_options)
 
-        return global_options if global_options else [{}]
+        return global_options or [{}]
 
     def _normalize_patch_name(self: Self, patch_name: str, *, space_formatted: bool) -> str:
         """Normalize patch name based on formatting preference.
