@@ -144,7 +144,6 @@ def main() -> None:
                         logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name} - FAILED)")
     finally:
         # Always write changelog, even if some apps failed
-        # Always write changelog, even if some apps failed
         write_changelog_to_file(updates_info)
         generate_obtainium_export(updates_info, config)
 
