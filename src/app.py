@@ -71,6 +71,8 @@ class APP(object):
             (self.cli_lpargs, self.cli_pargs),
             self.cli_argsf,
         )
+        # Obtainium metadata reuses the computed output name, so cache the value with an explicit string type.
+        self._cached_output_file_name: str = ""
 
     def download_apk_for_patching(
         self: Self,
@@ -147,12 +149,23 @@ class APP(object):
         -------
             a string that represents the output file name for an APK file.
         """
+        if self._cached_output_file_name:
+            return self._cached_output_file_name
+
+        # The patch set identity includes every bundle file and version so Obtainium detects patch-only updates.
+        patch_bundle_identity = "|".join(f"{bundle['file_name']}@{bundle['version']}" for bundle in self.patch_bundles)
+        # A short digest keeps the release asset name readable while still changing when any bundle changes.
+        patch_bundle_digest = hashlib.sha256(patch_bundle_identity.encode()).hexdigest()[:12]
+        # The visible version segment remains useful for humans, but includes every bundle version now.
+        patch_bundle_versions = "-".join(bundle["version"] for bundle in self.patch_bundles) or "unknown"
         current_date = datetime.now(ZoneInfo(time_zone))
         formatted_date = current_date.strftime("%Y%b%d.%I%M%p").upper()
-        return (
+        self._cached_output_file_name = (
             f"Re{self.app_name}-Version{slugify(self.app_version)}"
-            f"-PatchVersion{slugify(self.patch_bundles[0]["version"])}-{formatted_date}-output.apk"
+            f"-PatchVersion{slugify(patch_bundle_versions)}"
+            f"-PatchSet{patch_bundle_digest}-{formatted_date}-output.apk"
         )
+        return self._cached_output_file_name
 
     def get_patch_bundles_versions(self: Self) -> list[str]:
         """Get versions of all patch bundles."""
