@@ -122,7 +122,7 @@ class Downloader(object):
         """
         if self.config.dry_run:
             return "", ""
-        if app in self.config.existing_downloaded_apks:
+        if app.app_name in self.config.existing_downloaded_apks:
             logger.debug(f"Will not download {app.app_name} -v{version} from the internet.")
             return app.app_name, f"local://{app.app_name}"
         if version and version != "latest":
