@@ -14,7 +14,14 @@ from src.downloader.download import Downloader
 from src.exceptions import AppNotFoundError, BuilderError, PatchesJsonLoadError, PatchingFailedError
 from src.parser import Parser
 from src.patches import Patches
-from src.utils import check_java, delete_old_changelog, load_older_updates, save_patch_info, write_changelog_to_file
+from src.utils import (
+    check_java,
+    delete_old_changelog,
+    generate_obtainium_export,
+    load_older_updates,
+    save_patch_info,
+    write_changelog_to_file,
+)
 
 
 def get_app(config: RevancedConfig, app_name: str) -> APP:
@@ -137,7 +144,9 @@ def main() -> None:
                         logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name} - FAILED)")
     finally:
         # Always write changelog, even if some apps failed
+        # Always write changelog, even if some apps failed
         write_changelog_to_file(updates_info)
+        generate_obtainium_export(updates_info, config)
 
 
 if __name__ == "__main__":

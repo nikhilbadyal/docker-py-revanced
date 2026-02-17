@@ -20,6 +20,7 @@ from requests import Response, Session
 
 if TYPE_CHECKING:
     from src.app import APP
+    from src.config import RevancedConfig
 
 from src.downloader.sources import APK_MIRROR_APK_CHECK
 from src.exceptions import ScrapingError
@@ -268,5 +269,52 @@ def save_patch_info(app: "APP", updates_info: dict[str, Any]) -> dict[str, Any]:
         "ms_epoch_since_patched": datetime_to_ms_epoch(datetime.now(ZoneInfo(time_zone))),
         "date_patched": datetime.now(ZoneInfo(time_zone)),
         "app_dump": app.for_dump(),
+        "output_file_name": app.get_output_file_name(),
     }
     return updates_info
+
+
+def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedConfig") -> None:
+    """Generate HTML files for Obtainium."""
+    if not config.obtainium_export:
+        return
+
+    obtainium_sources_path = Path("obtainium_sources")
+    obtainium_sources_path.mkdir(exist_ok=True)
+    
+    github_repository = config.env.str("GITHUB_REPOSITORY", "")
+    github_ref_name = config.env.str("GITHUB_REF_NAME", "latest")
+    
+    if not github_repository:
+        logger.warning("GITHUB_REPOSITORY not set. Skipping Obtainium export.")
+        return
+
+    for app_name, app_data in updates_info.items():
+        if "output_file_name" not in app_data:
+            continue
+            
+        output_file_name = app_data["output_file_name"]
+        
+        # Construct download URL
+        # Format: https://github.com/{owner}/{repo}/releases/download/{tag}/{filename}
+        download_url = f"https://github.com/{github_repository}/releases/download/{github_ref_name}/{output_file_name}"
+        
+        html_content = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{app_name}</title>
+</head>
+<body>
+    <h1>{app_name}</h1>
+    <p>Latest version: {app_data.get("app_version", "unknown")}</p>
+    <a href="{download_url}">Download APK</a>
+</body>
+</html>
+"""
+        # Write to file
+        html_file_path = obtainium_sources_path / f"{app_name}.html"
+        html_file_path.write_text(html_content.strip())
+        logger.info(f"Generated Obtainium export for {app_name}: {html_file_path}")
