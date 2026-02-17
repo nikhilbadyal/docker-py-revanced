@@ -69,7 +69,8 @@ class UptoDown(Downloader):
                     version_url_data = item["versionURL"]
                     if isinstance(version_url_data, dict):
                         download_url = (
-                            f"{version_url_data['url']}/{version_url_data['extraURL']}/{version_url_data['versionID']}"
+                            f"{version_url_data['url']}/{version_url_data['extraURL']}/"
+                            f"{version_url_data['versionID']}"
                         )
                     else:
                         download_url = f"{version_url_data}-x"
