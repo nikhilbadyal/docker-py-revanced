@@ -281,10 +281,10 @@ def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedCon
 
     obtainium_sources_path = Path("obtainium_sources")
     obtainium_sources_path.mkdir(exist_ok=True)
-    
+
     github_repository = config.env.str("GITHUB_REPOSITORY", "")
-    github_ref_name = config.env.str("GITHUB_REF_NAME", "latest")
-    
+    obtainium_github_tag = config.obtainium_github_tag
+
     if not github_repository:
         logger.warning("GITHUB_REPOSITORY not set. Skipping Obtainium export.")
         return
@@ -292,13 +292,19 @@ def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedCon
     for app_name, app_data in updates_info.items():
         if "output_file_name" not in app_data:
             continue
-            
+
         output_file_name = app_data["output_file_name"]
-        
+
         # Construct download URL
-        # Format: https://github.com/{owner}/{repo}/releases/download/{tag}/{filename}
-        download_url = f"https://github.com/{github_repository}/releases/download/{github_ref_name}/{output_file_name}"
-        
+        if obtainium_github_tag == "latest":
+            # Format: https://github.com/{owner}/{repo}/releases/latest/download/{filename}
+            download_url = f"https://github.com/{github_repository}/releases/latest/download/{output_file_name}"
+        else:
+            # Format: https://github.com/{owner}/{repo}/releases/download/{tag}/{filename}
+            download_url = (
+                f"https://github.com/{github_repository}/releases/download/{obtainium_github_tag}/{output_file_name}"
+            )
+
         html_content = f"""
 <!DOCTYPE html>
 <html lang="en">
