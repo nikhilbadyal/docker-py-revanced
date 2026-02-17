@@ -57,6 +57,7 @@ class APP(object):
             f"{app_name}_SPACE_FORMATTED_PATCHES".upper(),
             config.global_space_formatted,
         )
+        self._cached_output_file_name: str = ""
 
     def download_apk_for_patching(
         self: Self,
@@ -133,7 +134,7 @@ class APP(object):
         -------
             a string that represents the output file name for an APK file.
         """
-        if hasattr(self, "_cached_output_file_name"):
+        if self._cached_output_file_name:
             return self._cached_output_file_name
 
         current_date = datetime.now(ZoneInfo(time_zone))
