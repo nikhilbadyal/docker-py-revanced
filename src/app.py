@@ -57,6 +57,7 @@ class APP(object):
             f"{app_name}_SPACE_FORMATTED_PATCHES".upper(),
             config.global_space_formatted,
         )
+        self._cached_output_file_name: str = ""
 
     def download_apk_for_patching(
         self: Self,
@@ -133,12 +134,16 @@ class APP(object):
         -------
             a string that represents the output file name for an APK file.
         """
+        if self._cached_output_file_name:
+            return self._cached_output_file_name
+
         current_date = datetime.now(ZoneInfo(time_zone))
         formatted_date = current_date.strftime("%Y%b%d.%I%M%p").upper()
-        return (
+        self._cached_output_file_name = (
             f"Re{self.app_name}-Version{slugify(self.app_version)}"
-            f"-PatchVersion{slugify(self.patch_bundles[0]["version"])}-{formatted_date}-output.apk"
+            f"-PatchVersion{slugify(self.patch_bundles[0]['version'])}-{formatted_date}-output.apk"
         )
+        return self._cached_output_file_name
 
     def get_patch_bundles_versions(self: Self) -> list[str]:
         """Get versions of all patch bundles."""

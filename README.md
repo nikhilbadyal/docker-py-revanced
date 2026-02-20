@@ -491,3 +491,20 @@ You can use any of the following methods to build.
     APPRISE_NOTIFICATION_BODY=What a great Body
     APPRISE_NOTIFICATION_TITLE=What a great title
     ```
+
+20. <a id="obtainium"></a>[Obtainium](https://github.com/ImranR98/Obtainium)<br>
+    We support generating HTML files for Obtainium to scrape and download the latest patched APKs directly from your GitHub Releases.
+    Add below envs in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
+    ```ini
+    OBTAINIUM_EXPORT=true
+    ```
+    This will generate an `obtainium_sources/` folder in the `changelogs` branch containing HTML files (e.g., `youtube.html`).
+    You can then add the raw GitHub URL of these HTML files to Obtainium as an "HTML" source.
+    Example URL: `https://raw.githubusercontent.com/<user>/<repo>/changelogs/obtainium_sources/youtube.html`
+
+    **Optional Configuration**:
+    ```ini
+    OBTAINIUM_GITHUB_TAG=latest
+    ```
+    By default, links point to the `latest` release. If you want to link to a specific tag, set this variable.
+    > **Warning**: Ensure your CI workflow is configured to release with the exact tag you specify. The default CI uses dynamic timestamp-based tags.
