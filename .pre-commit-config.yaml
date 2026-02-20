@@ -23,7 +23,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.15.1'
+    rev: 'v0.15.2'
     hooks:
       - id: ruff
         args:
@@ -38,7 +38,7 @@ repos:
           - "--config=pyproject.toml"
 
   - repo: https://github.com/pycqa/isort
-    rev: 7.0.0
+    rev: 8.0.0
     hooks:
       - id: isort
         args:
