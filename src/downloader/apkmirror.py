@@ -1,8 +1,7 @@
 """Downloader Class."""
 
-from typing import Any, Self
+from typing import Any, Self, cast
 
-import requests
 from bs4 import BeautifulSoup, Tag
 from loguru import logger
 
@@ -10,14 +9,27 @@ from src.app import APP
 from src.downloader.download import Downloader
 from src.downloader.sources import APK_MIRROR_BASE_URL
 from src.exceptions import APKMirrorAPKDownloadError, ScrapingError
-from src.utils import bs4_parser, contains_any_word, handle_request_response, request_header, request_timeout, slugify
+from src.utils import (
+    apkmirror_scraper,
+    bs4_parser,
+    contains_any_word,
+    handle_request_response,
+    request_timeout,
+    slugify,
+)
 
 
 class ApkMirror(Downloader):
     """Files downloader."""
 
     def _extract_force_download_link(self: Self, link: str, app: str) -> tuple[str, str]:
-        """Extract force download link."""
+        """Extract force download link.
+
+        The actual download.php file endpoint is also behind Cloudflare, so we
+        must use apkmirror_scraper (instead of the plain requests session) and
+        pass the download page URL as a Referer header — exactly what the
+        twitter-apk reference implementation does — to satisfy Cloudflare checks.
+        """
         link_page_source = self._extract_source(link)
         notes_divs = self._extracted_search_source_div(link_page_source, "tab-pane")
         apk_type = self._extracted_search_source_div(link_page_source, "apkm-badge").get_text()
@@ -26,8 +38,15 @@ class ApkMirror(Downloader):
         for possible_link in possible_links:
             if possible_link.get("href") and "download.php?id=" in possible_link.get("href"):
                 file_name = f"{app}.{extension}"
-                self._download(APK_MIRROR_BASE_URL + possible_link["href"], file_name)
-                return file_name, APK_MIRROR_BASE_URL + possible_link["href"]
+                download_url = APK_MIRROR_BASE_URL + possible_link["href"]
+                # Use cloudscraper + Referer so Cloudflare allows the binary download
+                self._download(
+                    download_url,
+                    file_name,
+                    http_session=apkmirror_scraper,
+                    extra_headers={"Referer": link},
+                )
+                return file_name, download_url
         msg = f"Unable to extract force download for {app}"
         raise APKMirrorAPKDownloadError(msg, url=link)
 
@@ -77,10 +96,17 @@ class ApkMirror(Downloader):
 
     @staticmethod
     def _extract_source(url: str) -> str:
-        """Extracts the source from the url incase of reuse."""
-        response = requests.get(url, headers=request_header, timeout=request_timeout)
+        """Extracts the source from the url incase of reuse.
+
+        Uses cloudscraper instead of plain requests because APKMirror is protected
+        by Cloudflare. Plain requests.get returns HTTP 403 with a JS challenge page
+        ("Just a moment...") in CI environments. cloudscraper transparently handles
+        those challenges and returns the real page HTML.
+        """
+        response = apkmirror_scraper.get(url, timeout=request_timeout)
         handle_request_response(response, url)
-        return response.text
+        # cloudscraper's .text is typed as Any; cast to str to satisfy mypy
+        return cast("str", response.text)
 
     @staticmethod
     def _extracted_search_source_div(source: str, search_class: str) -> Tag:
