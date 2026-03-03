@@ -8,6 +8,7 @@ from time import perf_counter
 from typing import Any, Self
 
 from loguru import logger
+from requests import Session
 from tqdm import tqdm
 
 from src.app import APP
@@ -27,7 +28,29 @@ class Downloader(object):
         self.global_archs_priority: Any = None
         self.app_version: Any = None
 
-    def _download(self: Self, url: str, file_name: str) -> None:
+    def _download(
+        self: Self,
+        url: str,
+        file_name: str,
+        http_session: Session | None = None,
+        extra_headers: dict[str, str] | None = None,
+    ) -> None:
+        """Download a file from url to the configured temp folder.
+
+        Parameters
+        ----------
+        url : str
+            URL to download from.
+        file_name : str
+            Name of the file to save.
+        http_session : Session | None
+            Optional HTTP session to use for the request. Defaults to the shared
+            plain requests.Session. Pass apkmirror_scraper for APKMirror URLs so
+            that Cloudflare challenges are solved transparently.
+        extra_headers : dict[str, str] | None
+            Optional additional headers merged on top of the default headers (e.g.
+            a Referer for APKMirror file downloads to satisfy Cloudflare checks).
+        """
         if not url:
             msg = "No url provided to download"
             raise DownloadError(msg)
@@ -37,11 +60,21 @@ class Downloader(object):
         logger.info(f"Trying to download {file_name} from {url}")
         self._QUEUE_LENGTH += 1
         start = perf_counter()
-        headers = {}
+
+        # Use the caller-supplied session (e.g. cloudscraper for APKMirror) or
+        # fall back to the module-level plain requests session.
+        effective_session = http_session if http_session is not None else session
+
+        headers: dict[str, str] = {}
         if self.config.personal_access_token and "github" in url:
             logger.debug("Using personal access token")
             headers["Authorization"] = f"token {self.config.personal_access_token}"
-        response = session.get(
+
+        # Merge any caller-supplied extra headers (e.g. Referer for APKMirror)
+        if extra_headers:
+            headers.update(extra_headers)
+
+        response = effective_session.get(
             url,
             stream=True,
             headers=headers,

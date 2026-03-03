@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from zoneinfo import ZoneInfo
 
+import cloudscraper
 import requests
 from environs import Env
 from loguru import logger
@@ -44,6 +45,13 @@ changelog_json_file = "changelog.json"
 request_timeout = 60
 session = Session()
 session.headers["User-Agent"] = request_header["User-Agent"]
+
+# Singleton cloudscraper session used for all APKMirror requests.
+# APKMirror is protected by Cloudflare, which blocks plain requests with a 403
+# "Just a moment..." challenge page. cloudscraper transparently solves those
+# JS/cookie challenges and returns the real HTML response.
+apkmirror_scraper = cloudscraper.create_scraper()
+apkmirror_scraper.headers.update({"User-Agent": request_header["User-Agent"]})
 updates_file = "updates.json"
 updates_file_url = "https://raw.githubusercontent.com/{github_repository}/{branch_name}/{updates_file}"
 changelogs: dict[str, dict[str, str]] = {}
