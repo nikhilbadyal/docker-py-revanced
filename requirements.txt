@@ -1,4 +1,5 @@
 beautifulsoup4==4.13.4
+cloudscraper==1.2.71
 environs==14.1.1
 google-play-scraper==1.2.7
 lastversion==3.5.7
