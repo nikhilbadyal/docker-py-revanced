@@ -1,1 +1,38 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.2.250932)",
+        "Version": "v0.3.13.2.250932",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-hw-signed.apk) |\r\n",
+        "PublishedOn": "2026-02-16T01:57:27Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.7)",
+        "Version": "V1.4.7",
+        "Changelog": "## What's Changed\r\n* Set smali comment level to `basic` (For faster smali deompiling):https://github.com/REAndroid/APKEditor/commit/a5390a3401153ab9ac38b4487a279316eee7400d\r\n* Fix: Protector - dictionaries options by @Kirlif in https://github.com/REAndroid/APKEditor/pull/218\r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.6...V1.4.7",
+        "PublishedOn": "2025-12-28T11:00:45Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-cli/releases/tag/v1.4.0)",
+        "Version": "v1.4.0",
+        "Changelog": "# [1.4.0](https://github.com/MorpheApp/morphe-cli/compare/v1.3.0...v1.4.0) (2026-02-21)\n\n\n### Bug Fixes\n\n* Allow enabling/disabling patches using case insensitive patch names ([#48](https://github.com/MorpheApp/morphe-cli/issues/48)) ([03a280a](https://github.com/MorpheApp/morphe-cli/commit/03a280abea6c9187eec22548707eb889b0252c3f))\n* Do not log patch name more than once if disabled ([#49](https://github.com/MorpheApp/morphe-cli/issues/49)) ([b980bb8](https://github.com/MorpheApp/morphe-cli/commit/b980bb8e0b3bf8eb4c7af1fe289ff1b63c437fa3))\n\n\n### Features\n\n* Add `--continue-on-error` argument, return non zero exit code if patching fails ([#47](https://github.com/MorpheApp/morphe-cli/issues/47)) ([255646b](https://github.com/MorpheApp/morphe-cli/commit/255646b250237087ab7d7f9733daa6751b7e4016))\n* Add `--options-file` json patch/option configuration ([#53](https://github.com/MorpheApp/morphe-cli/issues/53)) ([44943da](https://github.com/MorpheApp/morphe-cli/commit/44943da5f40f8ec37364d4f67b9d2e82d2b5e98f))\n* Add `--striplibs` argument to strip unwanted architectures ([#46](https://github.com/MorpheApp/morphe-cli/issues/46)) ([7442d94](https://github.com/MorpheApp/morphe-cli/commit/7442d942d392b3e1e9ce959c30db8460bffee8d6))\n* Support patching APKM bundles ([#40](https://github.com/MorpheApp/morphe-cli/issues/40)) ([bfe43d0](https://github.com/MorpheApp/morphe-cli/commit/bfe43d0b747d0e336a3f36f048e85907a140f1fc))\n\n\n\n",
+        "PublishedOn": "2026-02-21T07:09:05Z"
+    },
+    "revanced/revanced-cli": {
+        "ResourceName": "[revanced/revanced-cli](https://github.com/ReVanced/revanced-cli/releases/tag/v5.0.1)",
+        "Version": "v5.0.1",
+        "Changelog": "## [5.0.1](https://github.com/ReVanced/revanced-cli/compare/v5.0.0...v5.0.1) (2025-04-14)\n\n\n### Bug Fixes\n\n* Make mounting work again by bumping dependencies ([#359](https://github.com/ReVanced/revanced-cli/issues/359)) ([68a4872](https://github.com/ReVanced/revanced-cli/commit/68a48724ebf01a0c8f8adc0fec63037bff672dc9))\n\n\n\n",
+        "PublishedOn": "2025-04-14T08:53:52Z"
+    },
+    "anddea/revanced-patches": {
+        "ResourceName": "[anddea/revanced-patches](https://github.com/anddea/revanced-patches/releases/tag/v4.0.0-dev.6)",
+        "Version": "v4.0.0-dev.6",
+        "Changelog": "# [4.0.0-dev.6](https://github.com/anddea/revanced-patches/compare/v4.0.0-dev.5...v4.0.0-dev.6) (2026-03-05)\n\n\n### Bug Fixes\n\n* ARSCLib compatibility ([#1404](https://github.com/anddea/revanced-patches/issues/1404)) ([bc75d5a](https://github.com/anddea/revanced-patches/commit/bc75d5a4b05be0915beeafdda6307b014bffcce4))\n\n\n### Features\n\n* **YouTube - Overlay buttons:** Use cascade of Gemini models ([56db9b3](https://github.com/anddea/revanced-patches/commit/56db9b3195033ce39af66e8d49b09b436d4419e0))\n\n\n\n",
+        "PublishedOn": "2026-03-05T18:41:20Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.18.0-dev.1)",
+        "Version": "v1.18.0-dev.1",
+        "Changelog": "# [1.18.0-dev.1](https://github.com/MorpheApp/morphe-patches/compare/v1.17.1-dev.1...v1.18.0-dev.1) (2026-03-07)\r\n\r\n\r\n### Features\r\n\r\n* Add Kurmanji Crowdin translations ([2413a08](https://github.com/MorpheApp/morphe-patches/commit/2413a083ddd6c6768e5db5bd7e814107c97cb8e1))\r\n* **YouTube:** Add experimental support for `21.10.493` ([c09049d](https://github.com/MorpheApp/morphe-patches/commit/c09049d46b94b5fa0097f3a53398469356b440f1))\r\n\r\n\r\n\r\n",
+        "PublishedOn": "2026-03-07T08:01:50Z"
+    }
+}
