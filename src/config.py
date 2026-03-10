@@ -5,6 +5,7 @@ from typing import Self
 
 from environs import Env
 
+from src.cli_args import DEFAULT_CLI_PROFILE
 from src.utils import default_build, default_cli, default_patches, resource_folder
 
 
@@ -31,6 +32,12 @@ class RevancedConfig(object):
         self.apps = sorted(env.list("PATCH_APPS", default_build))
         self.global_old_key = env.bool("GLOBAL_OLD_KEY", True)
         self.global_space_formatted = env.bool("GLOBAL_SPACE_FORMATTED_PATCHES", True)
+        # This profile controls the default CLI flag family (revanced v5/v6/morphe) for all apps.
+        self.global_cli_argsf = env.str("GLOBAL_CLI_ARGSF", DEFAULT_CLI_PROFILE)
+        # This env allows global overrides for `list-patches` key-value argument map.
+        self.global_cli_lpargs = env.str("GLOBAL_CLI_LPARGS", "")
+        # This env allows global overrides for `patch` key-value argument map.
+        self.global_cli_pargs = env.str("GLOBAL_CLI_PARGS", "")
         self.max_resource_workers = env.int("MAX_RESOURCE_WORKERS", 3)
         self.max_parallel_apps = env.int("MAX_PARALLEL_APPS", 4)
         self.disable_caching = env.bool("DISABLE_CACHING", False)
