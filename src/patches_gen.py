@@ -48,7 +48,8 @@ def parse_option_match(option_dict: dict[str, Any]) -> dict[str, Any]:
     """Parse a single option match into a dictionary."""
     title = option_dict.get("title", "").strip()
     # Use the title as the key if absent
-    if not option_dict.get("key"):
+    key = option_dict.get("key", "").strip()
+    if not key:
         key = title
 
     possible_values = []
