@@ -46,11 +46,12 @@ def extract_compatible_packages_from_section(section: str) -> list[dict[str, Any
 
 def parse_option_match(option_dict: dict[str, Any]) -> dict[str, Any]:
     """Parse a single option match into a dictionary."""
-    title = option_dict.get("title", "").strip()
+    title = option_dict.get("title", "")
+    if title:
+        title = title.strip()
     # Use the title as the key if absent
-    key = option_dict.get("key", "").strip()
-    if not key:
-        key = title
+    key = option_dict.get("key", "")
+    key = key.strip() if key else title
 
     possible_values = []
     if option_dict.get("possible_values"):
