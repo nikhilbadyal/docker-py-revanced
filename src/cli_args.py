@@ -11,7 +11,7 @@ from loguru import logger
 # This sentinel makes it explicit that the value is positional and should not be prefixed with any flag.
 POSITIONAL_ARG: Final[str] = "__POSITIONAL__"
 # This profile keeps current behavior and remains the default until the project intentionally switches versions.
-DEFAULT_CLI_PROFILE: Final[str] = "revanced-cli"
+DEFAULT_CLI_PROFILE: Final[str] = "revanced-cli-v6"
 # This constant centralizes legacy old-key alias behavior shared across profiles.
 KEYSTORE_ALIAS_ARG: Final[str] = "--keystore-entry-alias=alias"
 # This constant centralizes legacy old-key entry password behavior shared across profiles.
