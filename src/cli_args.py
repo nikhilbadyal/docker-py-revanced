@@ -55,13 +55,13 @@ PATCH_KEYS: Final[set[str]] = {
 # These defaults intentionally match the existing builder behavior for current stable users.
 DEFAULT_LIST_PATCHES_ARGS: Final[dict[str, list[str]]] = {
     "CMD": ["list-patches"],
-    "DESCRIPTIONS": [""],
-    "FILTER_PACKAGE_NAME": [""],
+    "DESCRIPTIONS": [],
+    "FILTER_PACKAGE_NAME": [],
     "INDEX": ["-i"],
     "OPTIONS": ["-o"],
     "PACKAGES": ["-p"],
     "PATCHES": [POSITIONAL_ARG],
-    "PATCHES_POST": [""],
+    "PATCHES_POST": [],
     "UNIVERSAL": ["-u"],
     "VERSIONS": ["-v"],
 }
@@ -83,10 +83,10 @@ DEFAULT_PATCH_ARGS: Final[dict[str, list[str]]] = {
     "OPTIONS": ["-O"],
     "OUTPUT": ["-o"],
     "PATCHES": ["-p"],
-    "PATCHES_POST": [""],
+    "PATCHES_POST": [],
     "PURGE": ["--purge"],
     "RIP_LIB": ["--rip-lib"],
-    "STRIPLIBS": [""],
+    "STRIPLIBS": [],
 }
 
 # Profile map centralizes known CLI families so users can switch format with one env variable.
@@ -101,7 +101,7 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, list[str]]]]] = {
             "CMD": ["list-patches"],
             "DESCRIPTIONS": ["--descriptions"],
             # Filter flag is optional and should not be emitted unless the user explicitly overrides it.
-            "FILTER_PACKAGE_NAME": [""],
+            "FILTER_PACKAGE_NAME": [],
             "INDEX": ["--index"],
             "OPTIONS": ["--options"],
             "PACKAGES": ["--packages"],
@@ -131,22 +131,22 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, list[str]]]]] = {
             # ReVanced v6 requires verification companion flags for every patches file group.
             "PATCHES_POST": ["-b"],
             "PURGE": ["--purge"],
-            "RIP_LIB": [""],
-            "STRIPLIBS": [""],
+            "RIP_LIB": [],
+            "STRIPLIBS": [],
         },
     },
     "morphe-cli": {
         # Morphe list-patches requires explicit patch bundle flags instead of positional files.
         "list_patches": {
             "CMD": ["list-patches"],
-            "DESCRIPTIONS": [""],
+            "DESCRIPTIONS": [],
             # Filter flag is optional and should not be emitted unless the user explicitly overrides it.
-            "FILTER_PACKAGE_NAME": [""],
+            "FILTER_PACKAGE_NAME": [],
             "INDEX": ["-i"],
             "OPTIONS": ["-o"],
             "PACKAGES": ["-p"],
             "PATCHES": ["--patches"],
-            "PATCHES_POST": [""],
+            "PATCHES_POST": [],
             "UNIVERSAL": ["-u"],
             "VERSIONS": ["-v"],
         },
@@ -167,13 +167,18 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, list[str]]]]] = {
             "OPTIONS": ["-O"],
             "OUTPUT": ["-o"],
             "PATCHES": ["-p"],
-            "PATCHES_POST": [""],
+            "PATCHES_POST": [],
             "PURGE": ["--purge"],
-            "RIP_LIB": [""],
+            "RIP_LIB": [],
             "STRIPLIBS": ["--striplibs"],
         },
     },
 }
+
+
+def is_arg_enabled(arg_template: list[str]) -> bool:
+    """Check if the arg template can be used/enabled by the cli."""
+    return any(t.strip() for t in arg_template)
 
 
 def parse_arg_overrides(raw_overrides: str | None, allowed_keys: set[str]) -> dict[str, list[str]]:
@@ -224,10 +229,9 @@ def resolve_cli_profile(profile_name: str | None) -> dict[str, dict[str, list[st
 
 def fill_in_default_args(from_defaults: dict[str, list[str]], into_args: dict[str, list[str]]) -> dict[str, list[str]]:
     """Fill in missing keys from defaults to ensure all expected keys are present."""
-    for key, default_value in from_defaults.items():
-        if key not in into_args:
-            into_args[key] = default_value
-    return into_args
+    merged_args = from_defaults.copy()
+    merged_args.update(into_args)
+    return merged_args
 
 
 def merge_cli_arg_maps(
@@ -268,7 +272,7 @@ def _format_template_arg(template: str, value: str | None = None) -> list[str]:
     if not value:
         return [template]
 
-    # Consume value when POSIITONAL
+    # Consume value when POSITIONAL
     if template == POSITIONAL_ARG:
         return [value]
 

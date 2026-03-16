@@ -8,7 +8,7 @@ from typing import Any, Self
 from loguru import logger
 
 from src.app import APP
-from src.cli_args import DEFAULT_PATCH_ARGS, append_cli_argument
+from src.cli_args import DEFAULT_PATCH_ARGS, append_cli_argument, is_arg_enabled
 from src.config import RevancedConfig
 from src.exceptions import PatchingFailedError
 from src.patches import Patches
@@ -428,12 +428,12 @@ class Parser(object):
             return
 
         # Morphe-style striplibs keeps selected architectures instead of excluding architecture-by-architecture.
-        if self._patch_args["STRIPLIBS"]:
+        if is_arg_enabled(self._patch_args["STRIPLIBS"]):
             append_cli_argument(args, self._patch_args["STRIPLIBS"], [",".join(app.archs_to_build)])
             return
 
         # Legacy rip-lib behavior is preserved for profiles that expose a compatible argument.
-        if self._patch_args["RIP_LIB"]:
+        if is_arg_enabled(self._patch_args["RIP_LIB"]):
             excluded = set(possible_archs) - set(app.archs_to_build)
             append_cli_argument(args, self._patch_args["RIP_LIB"], list(excluded))
 
