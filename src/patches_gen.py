@@ -53,7 +53,7 @@ def parse_option_match(option_dict: dict[str, Any]) -> dict[str, Any]:
     key = option_dict.get("key", "")
     key = key.strip() if key else title
 
-    possible_values = []
+    possible_values: list[str] = []
     if option_dict.get("possible_values"):
         raw_values = option_dict["possible_values"].strip().split("\n")
         option_dict["possible_values"] = [val.strip() for val in raw_values]
