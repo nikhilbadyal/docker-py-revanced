@@ -42,9 +42,7 @@ PATCH_KEYS: Final[set[str]] = {
     "EXCLUSIVE",
     "FORCE",
     "KEYSTORE",
-    "KEYSTORE_ENTRY_ALIAS",
-    "KEYSTORE_ENTRY_PASSWORD",
-    "KEYSTORE_PASSWORD",
+    "KEYSTORE_OLD",
     "OPTIONS",
     "OUTPUT",
     "PATCHES",
@@ -55,42 +53,44 @@ PATCH_KEYS: Final[set[str]] = {
 }
 
 # These defaults intentionally match the existing builder behavior for current stable users.
-DEFAULT_LIST_PATCHES_ARGS: Final[dict[str, str]] = {
-    "CMD": "list-patches",
-    "DESCRIPTIONS": "",
-    "FILTER_PACKAGE_NAME": "",
-    "INDEX": "-i",
-    "OPTIONS": "-o",
-    "PACKAGES": "-p",
-    "PATCHES": POSITIONAL_ARG,
-    "PATCHES_POST": "",
-    "UNIVERSAL": "-u",
-    "VERSIONS": "-v",
+DEFAULT_LIST_PATCHES_ARGS: Final[dict[str, list[str]]] = {
+    "CMD": ["list-patches"],
+    "DESCRIPTIONS": [""],
+    "FILTER_PACKAGE_NAME": [""],
+    "INDEX": ["-i"],
+    "OPTIONS": ["-o"],
+    "PACKAGES": ["-p"],
+    "PATCHES": [POSITIONAL_ARG],
+    "PATCHES_POST": [""],
+    "UNIVERSAL": ["-u"],
+    "VERSIONS": ["-v"],
 }
 
 # These defaults intentionally match the existing patch invocation and keep old-key signing behavior compatible.
-DEFAULT_PATCH_ARGS: Final[dict[str, str]] = {
-    "APK": POSITIONAL_ARG,
-    "CMD": "patch",
-    "DISABLED": "-d",
-    "ENABLED": "-e",
-    "EXCLUSIVE": "--exclusive",
-    "FORCE": "--force",
-    "KEYSTORE": "--keystore",
-    "KEYSTORE_ENTRY_ALIAS": KEYSTORE_ALIAS_ARG,
-    "KEYSTORE_ENTRY_PASSWORD": KEYSTORE_ENTRY_PASSWORD_ARG,
-    "KEYSTORE_PASSWORD": KEYSTORE_PASSWORD_ARG,
-    "OPTIONS": "-O",
-    "OUTPUT": "-o",
-    "PATCHES": "-p",
-    "PATCHES_POST": "",
-    "PURGE": "--purge",
-    "RIP_LIB": "--rip-lib",
-    "STRIPLIBS": "",
+DEFAULT_PATCH_ARGS: Final[dict[str, list[str]]] = {
+    "APK": [POSITIONAL_ARG],
+    "CMD": ["patch"],
+    "DISABLED": ["-d"],
+    "ENABLED": ["-e"],
+    "EXCLUSIVE": ["--exclusive"],
+    "FORCE": ["--force"],
+    "KEYSTORE": ["--keystore"],
+    "KEYSTORE_OLD": [
+        KEYSTORE_ALIAS_ARG,
+        KEYSTORE_ENTRY_PASSWORD_ARG,
+        KEYSTORE_PASSWORD_ARG,
+    ],
+    "OPTIONS": ["-O"],
+    "OUTPUT": ["-o"],
+    "PATCHES": ["-p"],
+    "PATCHES_POST": [""],
+    "PURGE": ["--purge"],
+    "RIP_LIB": ["--rip-lib"],
+    "STRIPLIBS": [""],
 }
 
 # Profile map centralizes known CLI families so users can switch format with one env variable.
-CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
+CLI_PROFILES: Final[dict[str, dict[str, dict[str, list[str]]]]] = {
     "revanced-cli": {
         "list_patches": deepcopy(DEFAULT_LIST_PATCHES_ARGS),
         "patch": deepcopy(DEFAULT_PATCH_ARGS),
@@ -98,87 +98,91 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
     "revanced-cli-v6": {
         # ReVanced v6 moved list flags to long names and made patches flag-based.
         "list_patches": {
-            "CMD": "list-patches",
-            "DESCRIPTIONS": "--descriptions",
+            "CMD": ["list-patches"],
+            "DESCRIPTIONS": ["--descriptions"],
             # Filter flag is optional and should not be emitted unless the user explicitly overrides it.
-            "FILTER_PACKAGE_NAME": "",
-            "INDEX": "--index",
-            "OPTIONS": "--options",
-            "PACKAGES": "--packages",
-            "PATCHES": "-p",
+            "FILTER_PACKAGE_NAME": [""],
+            "INDEX": ["--index"],
+            "OPTIONS": ["--options"],
+            "PACKAGES": ["--packages"],
+            "PATCHES": ["-p"],
             # ReVanced v6 requires verification companion flags for every patches file group.
-            "PATCHES_POST": "-b",
-            "UNIVERSAL": "--universal-patches",
-            "VERSIONS": "--versions",
+            "PATCHES_POST": ["-b"],
+            "UNIVERSAL": ["--universal-patches"],
+            "VERSIONS": ["--versions"],
         },
         # Patch command still supports most legacy short flags, but v6 removes rip-lib behavior.
         "patch": {
-            "APK": POSITIONAL_ARG,
-            "CMD": "patch",
-            "DISABLED": "-d",
-            "ENABLED": "-e",
-            "EXCLUSIVE": "--exclusive",
-            "FORCE": "--force",
-            "KEYSTORE": "--keystore",
-            "KEYSTORE_ENTRY_ALIAS": KEYSTORE_ALIAS_ARG,
-            "KEYSTORE_ENTRY_PASSWORD": KEYSTORE_ENTRY_PASSWORD_ARG,
-            "KEYSTORE_PASSWORD": KEYSTORE_PASSWORD_ARG,
-            "OPTIONS": "-O",
-            "OUTPUT": "-o",
-            "PATCHES": "-p",
+            "APK": [POSITIONAL_ARG],
+            "CMD": ["patch"],
+            "DISABLED": ["-d"],
+            "ENABLED": ["-e"],
+            "EXCLUSIVE": ["--exclusive"],
+            "FORCE": ["--force"],
+            "KEYSTORE": ["--keystore"],
+            "KEYSTORE_OLD": [
+                KEYSTORE_ALIAS_ARG,
+                KEYSTORE_ENTRY_PASSWORD_ARG,
+                KEYSTORE_PASSWORD_ARG,
+            ],
+            "OPTIONS": ["-O"],
+            "OUTPUT": ["-o"],
+            "PATCHES": ["-p"],
             # ReVanced v6 requires verification companion flags for every patches file group.
-            "PATCHES_POST": "-b",
-            "PURGE": "--purge",
-            "RIP_LIB": "",
-            "STRIPLIBS": "",
+            "PATCHES_POST": ["-b"],
+            "PURGE": ["--purge"],
+            "RIP_LIB": [""],
+            "STRIPLIBS": [""],
         },
     },
     "morphe-cli": {
         # Morphe list-patches requires explicit patch bundle flags instead of positional files.
         "list_patches": {
-            "CMD": "list-patches",
-            "DESCRIPTIONS": "",
+            "CMD": ["list-patches"],
+            "DESCRIPTIONS": [""],
             # Filter flag is optional and should not be emitted unless the user explicitly overrides it.
-            "FILTER_PACKAGE_NAME": "",
-            "INDEX": "-i",
-            "OPTIONS": "-o",
-            "PACKAGES": "-p",
-            "PATCHES": "--patches",
-            "PATCHES_POST": "",
-            "UNIVERSAL": "-u",
-            "VERSIONS": "-v",
+            "FILTER_PACKAGE_NAME": [""],
+            "INDEX": ["-i"],
+            "OPTIONS": ["-o"],
+            "PACKAGES": ["-p"],
+            "PATCHES": ["--patches"],
+            "PATCHES_POST": [""],
+            "UNIVERSAL": ["-u"],
+            "VERSIONS": ["-v"],
         },
         # Morphe patch supports striplibs and keeps most names aligned with revanced-cli.
         "patch": {
-            "APK": POSITIONAL_ARG,
-            "CMD": "patch",
-            "DISABLED": "-d",
-            "ENABLED": "-e",
-            "EXCLUSIVE": "--exclusive",
-            "FORCE": "--force",
-            "KEYSTORE": "--keystore",
-            "KEYSTORE_ENTRY_ALIAS": KEYSTORE_ALIAS_ARG,
-            "KEYSTORE_ENTRY_PASSWORD": KEYSTORE_ENTRY_PASSWORD_ARG,
-            "KEYSTORE_PASSWORD": KEYSTORE_PASSWORD_ARG,
-            "OPTIONS": "-O",
-            "OUTPUT": "-o",
-            "PATCHES": "-p",
-            "PATCHES_POST": "",
-            "PURGE": "--purge",
-            "RIP_LIB": "",
-            "STRIPLIBS": "--striplibs",
+            "APK": [POSITIONAL_ARG],
+            "CMD": ["patch"],
+            "DISABLED": ["-d"],
+            "ENABLED": ["-e"],
+            "EXCLUSIVE": ["--exclusive"],
+            "FORCE": ["--force"],
+            "KEYSTORE": ["--keystore"],
+            "KEYSTORE_OLD": [
+                KEYSTORE_ALIAS_ARG,
+                KEYSTORE_ENTRY_PASSWORD_ARG,
+                KEYSTORE_PASSWORD_ARG,
+            ],
+            "OPTIONS": ["-O"],
+            "OUTPUT": ["-o"],
+            "PATCHES": ["-p"],
+            "PATCHES_POST": [""],
+            "PURGE": ["--purge"],
+            "RIP_LIB": [""],
+            "STRIPLIBS": ["--striplibs"],
         },
     },
 }
 
 
-def parse_arg_overrides(raw_overrides: str | None, allowed_keys: set[str]) -> dict[str, str]:
+def parse_arg_overrides(raw_overrides: str | None, allowed_keys: set[str]) -> dict[str, list[str]]:
     """Parse `KEY=value` override strings into a normalized dictionary."""
     # Empty values intentionally mean "no overrides", so we return quickly.
     if not raw_overrides:
         return {}
 
-    parsed_overrides: dict[str, str] = {}
+    parsed_overrides: dict[str, list[str]] = {}
 
     # We use shell tokenization so quoted values survive intact when users pass complex flags.
     for token in shlex.split(raw_overrides):
@@ -195,13 +199,14 @@ def parse_arg_overrides(raw_overrides: str | None, allowed_keys: set[str]) -> di
             logger.warning(f"Ignoring unsupported CLI override key `{normalized_key}`.")
             continue
 
-        # We keep the exact string value to avoid altering user-specified flag formatting.
-        parsed_overrides[normalized_key] = value.strip()
+        # We split the value to keep multiple flags/args for a key
+        # Example: `FORCE='--force --continue-on-error'`
+        parsed_overrides[normalized_key] = shlex.split(value.strip())
 
     return parsed_overrides
 
 
-def resolve_cli_profile(profile_name: str | None) -> dict[str, dict[str, str]]:
+def resolve_cli_profile(profile_name: str | None) -> dict[str, dict[str, list[str]]]:
     """Resolve CLI profile by name and fallback to default profile when unknown."""
     # We normalize to lowercase so env values are case-insensitive for users.
     selected_profile = (profile_name or DEFAULT_CLI_PROFILE).strip().lower()
@@ -217,12 +222,20 @@ def resolve_cli_profile(profile_name: str | None) -> dict[str, dict[str, str]]:
     return deepcopy(CLI_PROFILES[selected_profile])
 
 
+def fill_in_default_args(from_defaults: dict[str, list[str]], into_args: dict[str, list[str]]) -> dict[str, list[str]]:
+    """Fill in missing keys from defaults to ensure all expected keys are present."""
+    for key, default_value in from_defaults.items():
+        if key not in into_args:
+            into_args[key] = default_value
+    return into_args
+
+
 def merge_cli_arg_maps(
     profile_name: str | None,
     global_overrides: tuple[str | None, str | None],
     app_overrides: tuple[str | None, str | None] = (None, None),
     app_profile_name: str | None = None,
-) -> tuple[dict[str, str], dict[str, str]]:
+) -> tuple[dict[str, list[str]], dict[str, list[str]]]:
     """Resolve and merge global/app CLI argument maps."""
     # We unpack override tuples explicitly so call sites stay compact and lint-friendly.
     global_lp_overrides, global_p_overrides = global_overrides
@@ -250,37 +263,78 @@ def merge_cli_arg_maps(
     return list_patches_args, patch_args
 
 
-def append_cli_argument(args: list[str], arg_template: str, value: str | None = None) -> None:
-    """Append CLI argument from a template and optional dynamic value."""
-    # We strip whitespace so values from env files with extra spaces still behave predictably.
-    normalized_template = arg_template.strip()
+def _format_template_arg(template: str, value: str | None = None) -> list[str]:
+    """Helper to evaluate template formatting with value."""
+    if not value:
+        return [template]
 
-    # Empty template means disabled argument, so we append only the dynamic value if provided.
-    if not normalized_template:
-        if value is not None:
-            args.append(value)
+    # Consume value when POSIITONAL
+    if template == POSITIONAL_ARG:
+        return [value]
+
+    # Consume value when PLACEHOLDER
+    if "{value}" in template:
+        return [template.format(value=value)]
+
+    # Consume value when template -> '--flag='
+    if template.endswith("="):
+        return [f"{template}{value}"]
+
+    # Default behavior
+    return [template, value]
+
+
+def build_template_with_values(args: list[str], templates: list[str], values: list[str]) -> None:
+    """Extend the args with each template and use value if required.
+
+    Value is consumed for every template that is either `POSITIONAL_ARG` or
+    contains the PLACEHOLDER (--flag={value}) or
+    ends with '=' (--flag=).
+
+    If the values still remain, after extending the args with the templates,
+    the last template is used for the rest of the values.
+    """
+    current_value_index = 0
+    max_value_index = len(values) - 1 if values else -1
+    missing_value_msg = f"Missing value required for the positional arg from list of args: {templates}"
+
+    # Iterate till 2nd last template
+    for template in templates[:-1]:
+        if template == POSITIONAL_ARG or "{value}" in template or template.endswith("="):
+            if current_value_index <= max_value_index:
+                args.extend(_format_template_arg(template, values[current_value_index]))
+            else:
+                logger.warning(missing_value_msg)
+            current_value_index += 1
+        else:
+            args.append(template)
+
+    last_template = templates[-1]
+    if current_value_index > max_value_index:
+        args.append(last_template)
         return
 
-    # Positional sentinel explicitly appends only the value and omits any flag prefix.
-    if normalized_template == POSITIONAL_ARG:
-        if value is not None:
-            args.append(value)
+    # Consume rest of the values with the last template
+    while current_value_index <= max_value_index:
+        args.extend(_format_template_arg(last_template, values[current_value_index]))
+        current_value_index += 1
+
+
+def append_cli_argument(args: list[str], arg_templates: list[str], values: list[str] | None = None) -> None:
+    """Append CLI argument from a list of arg templates and an optional list of dynamic values."""
+    # We strip whitespace so values from env files with extra spaces behave predictably.
+    normalized_templates = [t.strip() for t in arg_templates if t.strip()]
+
+    # Handle completely empty templates
+    if not normalized_templates:
+        if values:
+            args.extend(values)
         return
 
-    # Static flags without value are appended as-is.
-    if value is None:
-        args.append(normalized_template)
+    # Handle completely empty values
+    if not values:
+        if normalized_templates:
+            args.extend(normalized_templates)
         return
 
-    # Template placeholders let users customize joined formatting in a controlled way.
-    if "{value}" in normalized_template:
-        args.append(normalized_template.replace("{value}", value))
-        return
-
-    # Flags ending with '=' are joined into a single token to support CLIs expecting `--flag=value`.
-    if normalized_template.endswith("="):
-        args.append(f"{normalized_template}{value}")
-        return
-
-    # Default style appends flag and value as separate tokens.
-    args.extend([normalized_template, value])
+    build_template_with_values(args, normalized_templates, values)
