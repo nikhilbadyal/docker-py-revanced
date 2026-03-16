@@ -137,7 +137,9 @@ class ApkMirror(Downloader):
                 logger.info(f"Trying to guess {app.app_name} version.")
                 appsec_val = self._extracted_search_div(download_page, "appspec-value")
                 appsec_version = str(appsec_val.find(text=lambda text: "Version" in text))
-                app.app_version = slugify(appsec_version.rsplit(":", maxsplit=1)[-1].strip())
+                appsec_version = appsec_version.rsplit(":", maxsplit=1)[-1].strip()
+                appsec_version = appsec_version.split(maxsplit=1)[0]
+                app.app_version = slugify(appsec_version)
                 logger.info(f"Guessed {app.app_version} for {app.app_name}")
             except ScrapingError:
                 pass
