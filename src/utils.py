@@ -29,7 +29,7 @@ default_build = [
     "youtube",
     "youtube_music",
 ]
-possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
+possible_archs = ["arm64-v8a", "armeabi-v7a", "x86_64", "x86"]
 request_header = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (HTML, like Gecko)"

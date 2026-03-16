@@ -425,6 +425,10 @@ class Parser(object):
         if app.app_name not in self.config.rip_libs_apps:
             return
 
+        excluded = set(possible_archs) - set(app.archs_to_build)
+        if len(excluded) == 0:
+            return
+
         # Morphe-style striplibs keeps selected architectures instead of excluding architecture-by-architecture.
         if self._patch_args["STRIPLIBS"]:
             append_cli_argument(args, self._patch_args["STRIPLIBS"], ",".join(app.archs_to_build))
@@ -432,7 +436,6 @@ class Parser(object):
 
         # Legacy rip-lib behavior is preserved for profiles that expose a compatible argument.
         if self._patch_args["RIP_LIB"]:
-            excluded = set(possible_archs) - set(app.archs_to_build)
             for arch in excluded:
                 append_cli_argument(args, self._patch_args["RIP_LIB"], arch)
 
