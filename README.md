@@ -142,11 +142,11 @@ You can use any of the following methods to build.
 
 | Env Name                                                      |                                             Description                                              | Default                        |
 |:--------------------------------------------------------------|:----------------------------------------------------------------------------------------------------:|:-------------------------------|
-| [**APP_NAME**_CLI_DL](#global-resources)                      |                     DL for CLI to be used for patching **APP_NAME**.                 | GLOBAL_CLI_DL                  |
+| [**APP_NAME**_CLI_DL](#global-resources)                      |                          DL for CLI to be used for patching **APP_NAME**.                            | GLOBAL_CLI_DL                  |
 | [**APP_NAME**_PATCHES_DL](#global-resources)                  | DL for Patches to be used for patching **APP_NAME**. Supports multiple bundles via comma separation. | GLOBAL_PATCHES_DL              |
 | [**APP_NAME**_SPACE_FORMATTED_PATCHES](#global-resources)     |                         Whether patches are space formatted.   **APP_NAME**.                         | GLOBAL_SPACE_FORMATTED_PATCHES |
 | [**APP_NAME**_KEYSTORE_FILE_NAME](#global-keystore-file-name) |                            Key file to be used for signing **APP_NAME**.                             | GLOBAL_KEYSTORE_FILE_NAME      |
-| [**APP_NAME**_OLD_KEY](#global-keystore-file-name)            |     Whether key used was generated with cli > v4(new) <br/><br/>**APP_NAME**.      <br/>   <br/>     | GLOBAL_OLK_KEY                 |
+| [**APP_NAME**_OLD_KEY](#global-keystore-file-name)            |     Whether key used was generated with cli > v4(new) <br/><br/>**APP_NAME**.      <br/>   <br/>     | GLOBAL_OLD_KEY                 |
 | [**APP_NAME**_ARCHS_TO_BUILD](#global-archs-to-build)         |                              Arch to keep in the patched **APP_NAME**.                               | GLOBAL_ARCHS_TO_BUILD          |
 | [**APP_NAME**_CLI_ARGSF](#cli-arg-compatibility)              |                                CLI argument profile for **APP_NAME**.                                | GLOBAL_CLI_ARGSF               |
 | [**APP_NAME**_CLI_LPARGS](#cli-arg-compatibility)             |                           Override map for **APP_NAME** list-patches args.                           | GLOBAL_CLI_LPARGS              |
