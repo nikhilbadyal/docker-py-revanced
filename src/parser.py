@@ -421,10 +421,11 @@ class Parser(object):
             append_cli_argument(args, self._patch_args["KEYSTORE_PASSWORD"])
 
     def _add_architecture_args(self: Self, args: list[str], app: APP) -> None:
-        """Add architecture-specific arguments."""
-        if app.app_name not in self.config.rip_libs_apps:
-            return
+        """
+        Add architecture-specific arguments.
 
+        Note: Strip only, if the app config has set the `ARCHS_TO_BUILD` != set(possible_archs)
+        """
         excluded = set(possible_archs) - set(app.archs_to_build)
         if len(excluded) == 0:
             return
