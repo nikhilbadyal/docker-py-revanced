@@ -17,7 +17,6 @@ class RevancedConfig(object):
         self.temp_folder_name = resource_folder
         self.temp_folder = Path(self.temp_folder_name)
         self.ci_test = env.bool("CI_TEST", False)
-        self.rip_libs_apps: list[str] = []
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
         self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
         self.dry_run = env.bool("DRY_RUN", False)
