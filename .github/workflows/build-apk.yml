@@ -120,7 +120,7 @@ jobs:
           echo "date=$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
 
       - name: Delete Older Releases
-        uses: nikhilbadyal/ghaction-rm-releases@v0.0.5
+        uses: nikhilbadyal/ghaction-rm-releases@dd944d88262e0ca5e68c8fed16e2d581103ef6d6 # v0.7.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RELEASE_PATTERN: "Build*"
