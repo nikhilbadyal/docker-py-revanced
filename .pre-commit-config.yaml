@@ -23,7 +23,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 'v0.15.5'
+    rev: 'v0.15.11'
     hooks:
       - id: ruff
         args:
@@ -31,21 +31,21 @@ repos:
           - "--unsafe-fixes"
 
   - repo: https://github.com/psf/black-pre-commit-mirror
-    rev: 26.1.0
+    rev: 26.3.1
     hooks:
       - id: black
         args:
           - "--config=pyproject.toml"
 
   - repo: https://github.com/pycqa/isort
-    rev: 8.0.1
+    rev: 9.0.0a2
     hooks:
       - id: isort
         args:
           - "--settings-path=pyproject.toml"
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.19.1
+    rev: v1.20.2
     hooks:
       - id: mypy
         args:

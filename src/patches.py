@@ -141,6 +141,7 @@ class Patches(object):
                 patches = convert_command_output_to_json(
                     f"{config.temp_folder}/{app.resource["cli"]["file_name"]}",
                     f"{config.temp_folder}/{bundle["file_name"]}",
+                    app.cli_lp_args,
                 )
                 self._process_patches(patches, app)
         elif "patches" in app.resource:
@@ -148,6 +149,7 @@ class Patches(object):
             patches = convert_command_output_to_json(
                 f"{config.temp_folder}/{app.resource["cli"]["file_name"]}",
                 f"{config.temp_folder}/{app.resource["patches"]["file_name"]}",
+                app.cli_lp_args,
             )
             self._process_patches(patches, app)
 

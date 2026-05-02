@@ -11,6 +11,7 @@ from zoneinfo import ZoneInfo
 
 from loguru import logger
 
+from src.cli_args import merge_cli_arg_maps
 from src.config import RevancedConfig
 from src.downloader.sources import APKEEP, apk_sources
 from src.exceptions import BuilderError, DownloadError, PatchingFailedError
@@ -56,6 +57,19 @@ class APP(object):
         self.space_formatted = config.env.bool(
             f"{app_name}_SPACE_FORMATTED_PATCHES".upper(),
             config.global_space_formatted,
+        )
+        # This optional app-level profile allows switching argument families per app.
+        self.cli_argsf = config.env.str(f"{app_name}_CLI_ARGSF".upper(), "")
+        # This optional app-level override customizes list-patches argument mapping.
+        self.cli_lpargs = config.env.str(f"{app_name}_CLI_LPARGS".upper(), "")
+        # This optional app-level override customizes patch command argument mapping.
+        self.cli_pargs = config.env.str(f"{app_name}_CLI_PARGS".upper(), "")
+        # We resolve final CLI argument maps once during app initialization for consistent command building.
+        self.cli_lp_args, self.cli_p_args = merge_cli_arg_maps(
+            config.global_cli_argsf,
+            (config.global_cli_lpargs, config.global_cli_pargs),
+            (self.cli_lpargs, self.cli_pargs),
+            self.cli_argsf,
         )
 
     def download_apk_for_patching(

@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@main
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Update Env for custom build
         run: |
@@ -53,7 +53,7 @@ jobs:
           echo "Added envs"
 
       - name: Setup python
-        uses: actions/setup-python@main
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: '3.x'
 
@@ -104,7 +104,7 @@ jobs:
 
 
       - name: Setup tmate session
-        uses: mxschmitt/action-tmate@master
+        uses: mxschmitt/action-tmate@c0afd6f790e3a5564914980036ebf83216678101 # v3.23
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.DEBUG_ENABLED }}
         with:
           detached: true
@@ -151,7 +151,7 @@ jobs:
           fi
 
       - name: Upload Build APKS
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ true && !inputs.DEBUG_ENABLED }}
         with:
           name: Built-APKs
