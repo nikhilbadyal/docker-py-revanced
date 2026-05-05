@@ -1,6 +1,6 @@
 beautifulsoup4==4.14.3
 cloudscraper==1.2.71
-environs==14.6.0
+environs==15.0.1
 google-play-scraper==1.2.7
 lastversion==3.5.7
 loguru==0.7.3
