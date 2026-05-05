@@ -360,24 +360,24 @@ You can use any of the following methods to build.
    This builder now supports multiple CLI syntax families and key-value override maps.
    ```dotenv
     # Default profile (recommended today)
-    GLOBAL_CLI_ARGSF=revanced-cli
+    GLOBAL_CLI_ARGSF=revanced-cli-v6
    ```
    Built-in profile values:
-   - `revanced-cli` (default, v5-style list-patches positional patch files)
-   - `revanced-cli-v6` (v6-style list-patches requires `-p/--patches`)
+   - `revanced-cli` (v5-style list-patches positional patch files)
+   - `revanced-cli-v6` (default, v6-style list-patches requires `-p/--patches`)
    - `morphe-cli` (morphe-style list-patches requires `--patches`)
 
    Override maps use unordered `KEY=value` pairs in a single string:
    ```dotenv
     GLOBAL_CLI_LPARGS="CMD=list-patches INDEX=-i PACKAGES=-p UNIVERSAL=-u VERSIONS=-v OPTIONS=-o PATCHES=__POSITIONAL__ PATCHES_POST="
-    GLOBAL_CLI_PARGS="CMD=patch PATCHES=-p PATCHES_POST= ENABLED=-e DISABLED=-d OPTIONS=-O PURGE=--purge KEYSTORE=--keystore KEYSTORE_ENTRY_ALIAS=--keystore-entry-alias=alias KEYSTORE_ENTRY_PASSWORD=--keystore-entry-password=ReVanced KEYSTORE_PASSWORD=--keystore-password=ReVanced EXCLUSIVE=--exclusive APK=__POSITIONAL__ OUTPUT=-o FORCE=--force RIP_LIB=--rip-lib"
+    GLOBAL_CLI_PARGS="CMD=patch PATCHES=-p PATCHES_POST= ENABLED=-e DISABLED=-d OPTIONS=-O PURGE=--purge KEYSTORE=--keystore KEYSTORE_OLD='--keystore-entry-alias=alias --keystore-entry-password=ReVanced --keystore-password=ReVanced' EXCLUSIVE=--exclusive APK=__POSITIONAL__ OUTPUT=-o FORCE=--force RIP_LIB=--rip-lib"
    ```
    `PATCHES_POST` is an optional companion argument appended after every patch bundle (used by ReVanced v6 with `-b`).
    App-level overrides are also supported and take precedence:
    ```dotenv
     YOUTUBE_CLI_ARGSF=morphe-cli
     YOUTUBE_CLI_LPARGS="PATCHES=--patches"
-    YOUTUBE_CLI_PARGS="PATCHES=-p STRIPLIBS=--striplibs"
+    YOUTUBE_CLI_PARGS="PATCHES=-p STRIPLIBS=--striplibs FORCE='--force --continue-on-error'"
    ```
 
    Example migration to ReVanced v6 syntax:

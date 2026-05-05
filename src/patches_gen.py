@@ -6,7 +6,9 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-from src.cli_args import DEFAULT_LIST_PATCHES_ARGS, append_cli_argument
+from loguru import logger
+
+from src.cli_args import DEFAULT_LIST_PATCHES_ARGS, append_cli_argument, fill_in_default_args
 
 
 def extract_name_from_section(section: str) -> str | None:
@@ -90,8 +92,13 @@ def parse_single_section(section: str) -> dict[str, Any]:
 
 def run_command_and_capture_output(patches_command: list[str]) -> str:
     """Run command and capture its output."""
-    result = subprocess.run(patches_command, capture_output=True, text=True, check=True)
-    return result.stdout
+    try:
+        result = subprocess.run(patches_command, capture_output=True, text=True, check=True)
+    except subprocess.CalledProcessError as e:
+        logger.error(e.stderr)
+        raise
+    else:
+        return result.stdout
 
 
 def parse_text_to_json(text: str) -> list[dict[Any, Any]]:
@@ -103,7 +110,7 @@ def parse_text_to_json(text: str) -> list[dict[Any, Any]]:
 def convert_command_output_to_json(
     jar_file_name: str,
     patches_file: str,
-    cli_lp_args: dict[str, str] | None = None,
+    cli_lp_args: dict[str, list[str]] | None = None,
 ) -> list[dict[Any, Any]]:
     """
     Runs the ReVanced CLI command, processes the output, and saves it as a sorted JSON file.
@@ -115,19 +122,20 @@ def convert_command_output_to_json(
     # We start from defaults and then overlay resolved per-app profile/override values.
     list_patches_args = dict(DEFAULT_LIST_PATCHES_ARGS)
     if cli_lp_args:
-        list_patches_args.update(cli_lp_args)
+        list_patches_args = fill_in_default_args(list_patches_args, cli_lp_args)
 
     # We construct the command from the configurable map to support multiple CLI syntaxes.
-    command = ["java", "-jar", jar_file_name, list_patches_args["CMD"]]
+    command = ["java", "-jar", jar_file_name]
+    append_cli_argument(command, list_patches_args["CMD"])
     # These toggles reproduce existing behavior and remain configurable for future CLI changes.
     for key in ("INDEX", "PACKAGES", "UNIVERSAL", "VERSIONS", "OPTIONS", "DESCRIPTIONS"):
-        append_cli_argument(command, list_patches_args.get(key, ""))
+        append_cli_argument(command, list_patches_args[key])
     # This optional flag slot is preserved for advanced users who embed a fixed filter in the template.
-    append_cli_argument(command, list_patches_args.get("FILTER_PACKAGE_NAME", ""))
+    append_cli_argument(command, list_patches_args["FILTER_PACKAGE_NAME"])
     # Patch bundle argument supports positional, split, or `--flag=value` formatting styles.
-    append_cli_argument(command, list_patches_args["PATCHES"], patches_file)
+    append_cli_argument(command, list_patches_args["PATCHES"], [patches_file])
     # Some CLI families require a companion flag per patches file group (e.g., v6 `-b` bypass verification).
-    append_cli_argument(command, list_patches_args.get("PATCHES_POST", ""))
+    append_cli_argument(command, list_patches_args["PATCHES_POST"])
 
     output = run_command_and_capture_output(command)
 

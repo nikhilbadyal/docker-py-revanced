@@ -8,7 +8,7 @@ from typing import Any, Self
 from loguru import logger
 
 from src.app import APP
-from src.cli_args import DEFAULT_PATCH_ARGS, append_cli_argument
+from src.cli_args import DEFAULT_PATCH_ARGS, append_cli_argument, is_arg_enabled
 from src.config import RevancedConfig
 from src.exceptions import PatchingFailedError
 from src.patches import Patches
@@ -19,16 +19,18 @@ class Parser(object):
     """Revanced Parser."""
 
     def __init__(self: Self, patcher: Patches, config: RevancedConfig) -> None:
-        self._PATCHES: list[str] = []
+        # list[str] -> list of args for the patch
+        # str -> patch name
+        self._PATCHES: list[str | list[str]] = []
         self._EXCLUDED: list[str] = []
         self.patcher = patcher
         self.config = config
         # We initialize with default patch argument templates and update them per app profile when needed.
-        self._patch_args: dict[str, str] = dict(DEFAULT_PATCH_ARGS)
+        self._patch_args: dict[str, list[str]] = dict(DEFAULT_PATCH_ARGS)
         # These cached templates keep include/exclude logic simple and profile-aware.
-        self._options_arg = self._patch_args["OPTIONS"]
-        self._enable_arg = self._patch_args["ENABLED"]
-        self._disable_arg = self._patch_args["DISABLED"]
+        self._options_arg: list[str] = self._patch_args["OPTIONS"]
+        self._enable_arg: list[str] = self._patch_args["ENABLED"]
+        self._disable_arg: list[str] = self._patch_args["DISABLED"]
 
     def format_option(self: Self, opt: dict[str, Any]) -> str:
         """
@@ -101,12 +103,13 @@ class Parser(object):
         """
         return self._EXCLUDED
 
-    def get_all_patches(self: Self) -> list[str]:
+    def get_all_patches(self: Self) -> list[str | list[str]]:
         """The function "get_all_patches" is a getter method that returns the list of all patches.
 
         Returns
         -------
-            The method is returning a list of all patches.
+            The method is returning a list of all patches in the format
+            `["-e"], patch1, ["-e", "--some-flag"], patch2, ["-d"], patch2]`
         """
         return self._PATCHES
 
@@ -380,9 +383,10 @@ class Parser(object):
         apk_path = str(self.config.temp_folder.joinpath(app.download_file_name))
 
         # This starts the CLI invocation with jar launcher and selected patch command keyword.
-        args: list[str] = ["-jar", cli_path, self._patch_args["CMD"]]
+        args: list[str] = ["-jar", cli_path]
+        append_cli_argument(args, self._patch_args["CMD"])
         # APK argument can be positional or flagged depending on configured profile.
-        append_cli_argument(args, self._patch_args["APK"], apk_path)
+        append_cli_argument(args, self._patch_args["APK"], [apk_path])
         return args
 
     def _add_patch_bundles(self: Self, args: list[str], app: APP) -> None:
@@ -391,24 +395,24 @@ class Parser(object):
             # Multiple bundles are appended one-by-one and keep profile-specific flag formatting.
             for bundle in app.patch_bundles:
                 bundle_path = str(self.config.temp_folder.joinpath(bundle["file_name"]))
-                append_cli_argument(args, self._patch_args["PATCHES"], bundle_path)
+                append_cli_argument(args, self._patch_args["PATCHES"], [bundle_path])
                 # Some CLI families require a companion flag per patches file group (e.g., v6 `-b` bypass verification).
-                append_cli_argument(args, self._patch_args.get("PATCHES_POST", ""))
+                append_cli_argument(args, self._patch_args["PATCHES_POST"])
         else:
             # Single bundle fallback stays compatible with older resource metadata.
             bundle_path = str(self.config.temp_folder.joinpath(app.resource["patches"]["file_name"]))
-            append_cli_argument(args, self._patch_args["PATCHES"], bundle_path)
+            append_cli_argument(args, self._patch_args["PATCHES"], [bundle_path])
             # Some CLI families require a companion flag per patches file group (e.g., v6 `-b` bypass verification).
-            append_cli_argument(args, self._patch_args.get("PATCHES_POST", ""))
+            append_cli_argument(args, self._patch_args["PATCHES_POST"])
 
     def _add_output_and_keystore_args(self: Self, args: list[str], app: APP) -> None:
         """Add output file and keystore arguments."""
         # Output file path is always resolved in the temp directory used by the builder.
         output_path = str(self.config.temp_folder.joinpath(app.get_output_file_name()))
-        append_cli_argument(args, self._patch_args["OUTPUT"], output_path)
+        append_cli_argument(args, self._patch_args["OUTPUT"], [output_path])
         # Keystore path is always resolved in the temp directory used by the builder.
         keystore_path = str(self.config.temp_folder.joinpath(app.keystore_name))
-        append_cli_argument(args, self._patch_args["KEYSTORE"], keystore_path)
+        append_cli_argument(args, self._patch_args["KEYSTORE"], [keystore_path])
         # Force flag keeps current behavior unless user profile explicitly disables it.
         append_cli_argument(args, self._patch_args["FORCE"])
 
@@ -416,9 +420,7 @@ class Parser(object):
         """Add keystore-specific flags if needed."""
         if app.old_key:
             # https://github.com/ReVanced/revanced-cli/issues/272#issuecomment-1740587534
-            append_cli_argument(args, self._patch_args["KEYSTORE_ENTRY_ALIAS"])
-            append_cli_argument(args, self._patch_args["KEYSTORE_ENTRY_PASSWORD"])
-            append_cli_argument(args, self._patch_args["KEYSTORE_PASSWORD"])
+            append_cli_argument(args, self._patch_args["KEYSTORE_OLD"])
 
     def _add_architecture_args(self: Self, args: list[str], app: APP) -> None:
         """Add architecture-specific arguments."""
@@ -426,15 +428,14 @@ class Parser(object):
             return
 
         # Morphe-style striplibs keeps selected architectures instead of excluding architecture-by-architecture.
-        if self._patch_args["STRIPLIBS"]:
-            append_cli_argument(args, self._patch_args["STRIPLIBS"], ",".join(app.archs_to_build))
+        if is_arg_enabled(self._patch_args["STRIPLIBS"]):
+            append_cli_argument(args, self._patch_args["STRIPLIBS"], [",".join(app.archs_to_build)])
             return
 
         # Legacy rip-lib behavior is preserved for profiles that expose a compatible argument.
-        if self._patch_args["RIP_LIB"]:
+        if is_arg_enabled(self._patch_args["RIP_LIB"]):
             excluded = set(possible_archs) - set(app.archs_to_build)
-            for arch in excluded:
-                append_cli_argument(args, self._patch_args["RIP_LIB"], arch)
+            append_cli_argument(args, self._patch_args["RIP_LIB"], list(excluded))
 
     # noinspection IncorrectFormatting
     def patch_app(
@@ -460,7 +461,11 @@ class Parser(object):
         if self.config.ci_test:
             self.enable_exclusive_mode()
         if self._PATCHES:
-            args.extend(self._PATCHES)
+            for item in self._PATCHES:
+                if isinstance(item, list):
+                    args.extend(item)
+                else:
+                    args.append(item)
 
         self._add_architecture_args(args, app)
         # Purge behavior remains enabled by default and can be remapped per CLI profile.
