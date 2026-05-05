@@ -115,7 +115,7 @@ You can use any of the following methods to build.
 | [PERSONAL_ACCESS_TOKEN](#personal-access-token)          |             GitHub/GitLab Token to be used              | None                                                                                                                  |
 | DRY_RUN                                                  |                      Do a dry run                       | False                                                                                                                 |
 | [~~GLOBAL_CLI_DL*~~](#global-resources)                  | DL for CLI to be used for patching apps.(Disabled Temp) | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                              |
-| [GLOBAL_PATCHES_DL*](#global-resources)                  |      DL for Patches to be used for patching apps.       | [Revanced Patches](https://gitlab.com/revanced/revanced-patches)                                                      |
+| [GLOBAL_PATCHES_DL*](#global-resources)                  |      DL for Patches to be used for patching apps.       | [ReVanced API patches bundle](https://api.revanced.app/v5/patches.rvp)                                                |
 | [GLOBAL_SPACE_FORMATTED_PATCHES*](#global-resources)     |          Whether patches are space formatted.           | True                                                                                                                  |
 | [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |          Key file to be used for signing apps           | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore)              |
 | [GLOBAL_OLD_KEY*](#global-keystore-file-name)            |    Whether key was generated with cli v4(new) or not    | <br/>[Builder's v3(old) own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore) |
@@ -309,8 +309,9 @@ You can use any of the following methods to build.
    or in `ENVS` in `GitHub secrets` (Recommended) in the format -
    ```dotenv
     GLOBAL_CLI_DL=https://github.com/revanced/revanced-cli
-    GLOBAL_PATCHES_DL=https://gitlab.com/revanced/revanced-patches
+    GLOBAL_PATCHES_DL=https://api.revanced.app/v5/patches.rvp
    ```
+   The ReVanced API `.rvp` endpoint is the default patches source because it provides the binary patch bundle directly.
    GitLab release URLs are also supported for resources. The tool resolves the latest release through GitLab's
    release API and filters release links/sources with the same asset extension regex used for GitHub.
    ```dotenv

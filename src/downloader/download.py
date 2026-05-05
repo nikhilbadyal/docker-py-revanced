@@ -6,6 +6,7 @@ from pathlib import Path
 from queue import PriorityQueue
 from time import perf_counter
 from typing import Any, Self
+from urllib.parse import urlparse
 
 from loguru import logger
 from requests import Session
@@ -73,6 +74,10 @@ class Downloader(object):
         if self.config.personal_access_token and "gitlab" in url:
             logger.debug("Using personal access token")
             headers["PRIVATE-TOKEN"] = self.config.personal_access_token
+        if urlparse(url).path.lower().endswith((".rvp", ".mpp")):
+            # Patch bundle endpoints such as ReVanced API can use content negotiation, so direct downloads ask for
+            # raw bytes instead of accepting any JSON or HTML representation a service may otherwise choose.
+            headers["Accept"] = "application/octet-stream"
 
         # Merge any caller-supplied extra headers (e.g. Referer for APKMirror)
         if extra_headers:
