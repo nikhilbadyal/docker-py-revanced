@@ -69,6 +69,10 @@ class Downloader(object):
         if self.config.personal_access_token and "github" in url:
             logger.debug("Using personal access token")
             headers["Authorization"] = f"token {self.config.personal_access_token}"
+        # GitLab's API uses a different personal-token header than GitHub's download endpoints.
+        if self.config.personal_access_token and "gitlab" in url:
+            logger.debug("Using personal access token")
+            headers["PRIVATE-TOKEN"] = self.config.personal_access_token
 
         # Merge any caller-supplied extra headers (e.g. Referer for APKMirror)
         if extra_headers:

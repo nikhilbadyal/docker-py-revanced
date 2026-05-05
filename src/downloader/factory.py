@@ -8,6 +8,7 @@ from src.downloader.apkpure import ApkPure
 from src.downloader.apksos import ApkSos
 from src.downloader.download import Downloader
 from src.downloader.github import Github
+from src.downloader.gitlab import Gitlab
 from src.downloader.sources import (
     APK_MIRROR_BASE_URL,
     APK_MONK_BASE_URL,
@@ -35,6 +36,9 @@ class DownloaderFactory(object):
         """
         if apk_source.startswith(GITHUB_BASE_URL):
             return Github(config)
+        # GitLab app sources need release-asset discovery instead of generic HTML scraping.
+        if Gitlab.is_gitlab_url(apk_source):
+            return Gitlab(config)
         if apk_source.startswith(APK_PURE_BASE_URL):
             return ApkPure(config)
         if apk_source.startswith(APKS_SOS_BASE_URL):

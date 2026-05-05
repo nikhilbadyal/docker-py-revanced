@@ -175,14 +175,14 @@ class APP(object):
         ----------
         url : str
             The `url` parameter is a string that represents the URL of the resource you want to download.
-            It can be a URL from GitHub or a local file URL.
+            It can be a URL from GitHub, GitLab, or a local file URL.
         config : RevancedConfig
             The `config` parameter is an instance of the `RevancedConfig` class. It is used to provide
             configuration settings for the download process.
         assets_filter : str
             The `assets_filter` parameter is a string that is used to filter the assets to be downloaded
-            from a GitHub repository. It is used when the `url` parameter starts with "https://github". The
-            `assets_filter` string is matched against the names of the assets in the repository, and only
+            from a GitHub or GitLab repository. It is used when the `url` parameter points at a supported
+            release host. The `assets_filter` string is matched against the assets in the repository, and only
             file_name : str
             The `file_name` parameter is a string that represents the name of the file that will be
             downloaded. If no value is provided for `file_name`, the function will generate a filename based
@@ -202,6 +202,11 @@ class APP(object):
             tag, url = Github.patch_resource(url, assets_filter, config)
             if tag.startswith("tags/"):
                 tag = tag.split("/")[-1]
+        # GitLab release URLs need host-specific API resolution before the generic file downloader can stream bytes.
+        elif url.startswith("https://gitlab"):
+            from src.downloader.gitlab import Gitlab  # noqa: PLC0415
+
+            tag, url = Gitlab.patch_resource(url, assets_filter, config)
         elif url.startswith("local://"):
             return tag, url.split("/")[-1]
         if not file_name:

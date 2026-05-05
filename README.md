@@ -112,7 +112,7 @@ You can use any of the following methods to build.
 |:---------------------------------------------------------|:-------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------|
 | [PATCH_APPS](#patch-apps)                                |                   Apps to patch/build                   | youtube                                                                                                               |
 | [EXISTING_DOWNLOADED_APKS ](#existing-downloaded-apks)   |              Already downloaded clean apks              | []                                                                                                                    |
-| [PERSONAL_ACCESS_TOKEN](#personal-access-token)          |                 Github Token to be used                 | None                                                                                                                  |
+| [PERSONAL_ACCESS_TOKEN](#personal-access-token)          |             GitHub/GitLab Token to be used              | None                                                                                                                  |
 | DRY_RUN                                                  |                      Do a dry run                       | False                                                                                                                 |
 | [~~GLOBAL_CLI_DL*~~](#global-resources)                  | DL for CLI to be used for patching apps.(Disabled Temp) | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                              |
 | [GLOBAL_PATCHES_DL*](#global-resources)                  |      DL for Patches to be used for patching apps.       | [Revanced Patches](https://github.com/revanced/revanced-patches)                                                      |
@@ -299,8 +299,8 @@ You can use any of the following methods to build.
    ```
    If you add above. Script will not download the `youtube` & `youtube_music`apk from internet and expects an apk in
    `/apks` folder with **same** name.
-6. <a id="personal-access-token"></a>If you run script again & again. You might hit GitHub API limit. In that case
-   you can provide your Personal GitHub Access Token in `.env` file or in `ENVS` in `GitHub secrets` (Recommended)
+6. <a id="personal-access-token"></a>If you run script again & again. You might hit GitHub/GitLab API limits.
+   In that case you can provide your Personal Access Token in `.env` file or in `ENVS` in `GitHub secrets` (Recommended)
    in the format -
    ```dotenv
     PERSONAL_ACCESS_TOKEN=<PAT>
@@ -310,6 +310,12 @@ You can use any of the following methods to build.
    ```dotenv
     GLOBAL_CLI_DL=https://github.com/revanced/revanced-cli
     GLOBAL_PATCHES_DL=https://github.com/revanced/revanced-patches
+   ```
+   GitLab release URLs are also supported for resources. The tool resolves the latest release through GitLab's
+   release API and filters release links/sources with the same asset extension regex used for GitHub.
+   ```dotenv
+    GLOBAL_CLI_DL=https://gitlab.com/example/revanced-cli
+    GLOBAL_PATCHES_DL=https://gitlab.com/example/revanced-patches/-/releases/permalink/latest
    ```
    Resources downloaded from envs and will be used for patching for any **APP_NAME**.
    Unless provided different resource for the individual app.<br><br>
@@ -332,14 +338,16 @@ You can use any of the following methods to build.
    The tool will download all specified patch bundles and apply them together using the ReVanced CLI's multiple `-p` argument support.<br>
    If you have want to provide resource locally in the apks folder. You can specify that by mentioning filename
    prefixed with `local://`.<br>
-   _Note_ - The link provided must be DLs. Unless they are from GitHub.<br>
-   _Note_ - If your patches resource are available on GitHub and you want to select latest resource without excluding
-    pre-release you can add `latest-prerelease` to the URL.
+   _Note_ - The link provided must be DLs. Unless they are from GitHub or GitLab.<br>
+   _Note_ - If your patches resource are available on GitHub/GitLab and you want to select latest resource without
+    excluding pre-release you can add `latest-prerelease` to the URL.
     Example:
    ```dotenv
     YOUTUBE_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest-prerelease
    ```
    For above example tool while selecting latest patches will consider pre-releases/beta too.
+   For GitLab, `latest-prerelease` maps to GitLab's latest release because GitLab releases do not expose a separate
+   pre-release flag in the release API.
     ```dotenv
     YOUTUBE_PATCHES_DL=https://github.com/inotia00/revanced-patches/releases/latest
    ```
