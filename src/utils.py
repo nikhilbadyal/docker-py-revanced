@@ -38,7 +38,7 @@ request_header = {
     "Content-Type": "application/json",
 }
 default_cli = "https://github.com/revanced/revanced-cli/releases/latest"
-default_patches = "https://github.com/revanced/revanced-patches/releases/latest"
+default_patches = "https://gitlab.com/revanced/revanced-patches/releases/latest"
 bs4_parser = "html.parser"
 changelog_file = "changelog.md"
 changelog_json_file = "changelog.json"
