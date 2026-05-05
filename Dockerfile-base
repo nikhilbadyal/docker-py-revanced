@@ -1,5 +1,5 @@
 # Use a specific version of the base Python image
-ARG PYTHON_VERSION=3.13.1-slim-bookworm
+ARG PYTHON_VERSION=3.14.4-slim-bookworm
 
 FROM python:${PYTHON_VERSION} AS python
 
