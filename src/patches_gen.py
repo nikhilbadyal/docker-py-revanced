@@ -44,40 +44,68 @@ def extract_compatible_packages_from_section(section: str) -> list[dict[str, Any
     return [extract_package_info(package_section) for package_section in package_sections[1:]]
 
 
-def parse_option_match(match: tuple[str, ...]) -> dict[str, Any]:
+def parse_option_match(option_dict: dict[str, Any]) -> dict[str, Any]:
     """Parse a single option match into a dictionary."""
+    title = option_dict.get("title", "")
+    if title:
+        title = title.strip()
+    # Use the title as the key if absent
+    key = option_dict.get("key", "")
+    key = key.strip() if key else title
+
+    possible_values: list[str] = []
+    if option_dict.get("possible_values"):
+        raw_values = option_dict["possible_values"].strip().split("\n")
+        possible_values = [val.strip() for val in raw_values]
+
     return {
-        "title": match[0].strip(),
-        "description": match[1].strip(),
-        "required": match[2].lower() == "true",
-        "key": match[3].strip(),
-        "default": match[4].strip(),
-        "possible_values": [v.strip() for v in match[5].split() if v.strip()] if match[5] else [],
-        "type": match[6].strip(),
+        "title": title,
+        "description": option_dict.get("description", "").strip(),
+        "required": option_dict.get("required", "").lower() == "true",
+        "key": key,
+        "default": option_dict.get("default", "").strip() if option_dict.get("default") else None,
+        "possible_values": possible_values,
+        "type": option_dict.get("type", "").strip(),
     }
 
 
-def extract_options_from_section(section: str) -> list[dict[str, Any]]:
-    """Extract options from a section."""
-    if "Options:" not in section:
-        return []
-
-    options_section = section.split("Options:")[1]
-    option_matches = re.findall(
-        r"Title: (.*?)\n\s*Description: (.*?)\n\s*Required: (true|false)\n\s*Key: (.*?)\n\s*Default: (.*?)\n(?:\s*Possible values:\s*(.*?))?\s*Type: (.*?)\n",  # noqa: E501
-        options_section,
-        re.DOTALL,
+def extract_options_from_section(options_section: str) -> list[dict[str, Any]]:
+    """Extract options from an options section."""
+    regex = re.compile(
+        r"(?:Title|Name):\s*(?P<title>[^\n]+)\n"
+        r"\s*Description:\s*(?P<description>[^\n]+)\n"
+        r"\s*Required:\s*(?P<required>true|false)\n"
+        r"(?:\s*Key:\s*(?P<key>[^\n]+)\n)?"
+        r"(?:\s*Default:\s*(?P<default>[^\n]+)\n)?"
+        r"(?:\s*Possible values:\n(?P<possible_values>[\s\S]*?))?"
+        r"\s*Type:\s*(?P<type>[^\n]+)",
+        re.VERBOSE,
     )
-    return [parse_option_match(match) for match in option_matches]
+    return [parse_option_match(match.groupdict()) for match in regex.finditer(options_section)]
+
+
+def split_section(section: str) -> tuple[str, str]:
+    """Split a section into patch and options parts."""
+    patch_section = section
+    options_section = ""
+
+    options_section_regex = re.compile(r"^Options:(?:\n(?!\w).*)*", re.MULTILINE)
+    match = options_section_regex.search(section)
+    if match:
+        patch_section = (section[: match.start()] + section[match.end() :]).rstrip() + "\n\n"
+        options_section = match.group(0)
+
+    return patch_section, options_section
 
 
 def parse_single_section(section: str) -> dict[str, Any]:
     """Parse a single section into a dictionary."""
-    name = extract_name_from_section(section)
-    description = extract_description_from_section(section)
-    enabled = extract_enabled_state_from_section(section)
-    compatible_packages = extract_compatible_packages_from_section(section)
-    options = extract_options_from_section(section)
+    patch_section, options_section = split_section(section)
+    name = extract_name_from_section(patch_section)
+    description = extract_description_from_section(patch_section)
+    enabled = extract_enabled_state_from_section(patch_section)
+    compatible_packages = extract_compatible_packages_from_section(patch_section)
+    options = extract_options_from_section(options_section)
 
     return {
         "name": name,
@@ -96,7 +124,7 @@ def run_command_and_capture_output(patches_command: list[str]) -> str:
 
 def parse_text_to_json(text: str) -> list[dict[Any, Any]]:
     """Parse text output into JSON format."""
-    sections = re.split(r"(?=Name:)", text)
+    sections = re.split(r"(?=^Name:)", text, flags=re.MULTILINE)
     return [parse_single_section(section) for section in sections]
 
 

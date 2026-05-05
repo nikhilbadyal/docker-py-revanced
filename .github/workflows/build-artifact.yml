@@ -85,7 +85,7 @@ jobs:
           "patchName": "Spoof client",
           "options": [
             {
-              "key": "client-id",
+              "key": "OAuth client ID",
               "value": "'${client_id}'"
             }
           ]
@@ -101,7 +101,6 @@ jobs:
             updated_json=$(echo "${json_data}" | jq ". += [${new_object}]")
           fi
           echo "${updated_json}" > "${path}"
-
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@c0afd6f790e3a5564914980036ebf83216678101 # v3.23
