@@ -114,7 +114,7 @@ You can use any of the following methods to build.
 | [EXISTING_DOWNLOADED_APKS ](#existing-downloaded-apks)   |              Already downloaded clean apks              | []                                                                                                                    |
 | [PERSONAL_ACCESS_TOKEN](#personal-access-token)          |             GitHub/GitLab Token to be used              | None                                                                                                                  |
 | DRY_RUN                                                  |                      Do a dry run                       | False                                                                                                                 |
-| [~~GLOBAL_CLI_DL*~~](#global-resources)                  | DL for CLI to be used for patching apps.(Disabled Temp) | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                              |
+| [GLOBAL_CLI_DL*](#global-resources)                      |          DL for CLI to be used for patching apps.       | [Revanced CLI](https://github.com/revanced/revanced-cli)                                                                                     |
 | [GLOBAL_PATCHES_DL*](#global-resources)                  |      DL for Patches to be used for patching apps.       | [ReVanced API patches bundle](https://api.revanced.app/v5/patches.rvp)                                                |
 | [GLOBAL_SPACE_FORMATTED_PATCHES*](#global-resources)     |          Whether patches are space formatted.           | True                                                                                                                  |
 | [GLOBAL_KEYSTORE_FILE_NAME*](#global-keystore-file-name) |          Key file to be used for signing apps           | [Builder's own key](https://github.com/nikhilbadyal/docker-py-revanced/blob/main/apks/revanced.keystore)              |
@@ -142,11 +142,11 @@ You can use any of the following methods to build.
 
 | Env Name                                                      |                                             Description                                              | Default                        |
 |:--------------------------------------------------------------|:----------------------------------------------------------------------------------------------------:|:-------------------------------|
-| [~~**APP_NAME**_CLI_DL~~](#global-resources)                  |                   DL for CLI to be used for patching **APP_NAME**.(Disabled Temp)                    | GLOBAL_CLI_DL                  |
+| [**APP_NAME**_CLI_DL](#global-resources)                      |                          DL for CLI to be used for patching **APP_NAME**.                            | GLOBAL_CLI_DL                  |
 | [**APP_NAME**_PATCHES_DL](#global-resources)                  | DL for Patches to be used for patching **APP_NAME**. Supports multiple bundles via comma separation. | GLOBAL_PATCHES_DL              |
 | [**APP_NAME**_SPACE_FORMATTED_PATCHES](#global-resources)     |                         Whether patches are space formatted.   **APP_NAME**.                         | GLOBAL_SPACE_FORMATTED_PATCHES |
 | [**APP_NAME**_KEYSTORE_FILE_NAME](#global-keystore-file-name) |                            Key file to be used for signing **APP_NAME**.                             | GLOBAL_KEYSTORE_FILE_NAME      |
-| [**APP_NAME**_OLD_KEY](#global-keystore-file-name)            |     Whether key used was generated with cli > v4(new) <br/><br/>**APP_NAME**.      <br/>   <br/>     | GLOBAL_OLK_KEY                 |
+| [**APP_NAME**_OLD_KEY](#global-keystore-file-name)            |     Whether key used was generated with cli > v4(new) <br/><br/>**APP_NAME**.      <br/>   <br/>     | GLOBAL_OLD_KEY                 |
 | [**APP_NAME**_ARCHS_TO_BUILD](#global-archs-to-build)         |                              Arch to keep in the patched **APP_NAME**.                               | GLOBAL_ARCHS_TO_BUILD          |
 | [**APP_NAME**_CLI_ARGSF](#cli-arg-compatibility)              |                                CLI argument profile for **APP_NAME**.                                | GLOBAL_CLI_ARGSF               |
 | [**APP_NAME**_CLI_LPARGS](#cli-arg-compatibility)             |                           Override map for **APP_NAME** list-patches args.                           | GLOBAL_CLI_LPARGS              |
