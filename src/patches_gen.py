@@ -73,7 +73,7 @@ def extract_options_from_section(options_section: str) -> list[dict[str, Any]]:
     """Extract options from an options section."""
     regex = re.compile(
         r"(?:Title|Name):\s*(?P<title>[^\n]+)\n"
-        r"\s*Description:\s*(?P<description>[^\n]+)\n"
+        r"\s*Description:\s*(?P<description>[\s\S]*?)\n"  ## allows multi-line descriptions
         r"\s*Required:\s*(?P<required>true|false)\n"
         r"(?:\s*Key:\s*(?P<key>[^\n]+)\n)?"
         r"(?:\s*Default:\s*(?P<default>[^\n]+)\n)?"
