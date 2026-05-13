@@ -25,10 +25,15 @@ class _BinaryResponse:
         """Store bytes so the downloader writes a real file during the test."""
         self._body = body
         self.headers = {"content-length": str(len(body))}
+        self.closed = False
 
     def iter_content(self: Self, chunk_size: int) -> list[bytes]:
         """Return one chunk because chunking behavior is not what this test is verifying."""
         return [self._body]
+
+    def close(self: Self) -> None:
+        """Record close calls because streamed responses must release their connection."""
+        self.closed = True
 
 
 def _config(temp_folder: Path) -> RevancedConfig:
@@ -49,3 +54,33 @@ class DirectDownloadTests(TestCase):
                 Downloader(config).direct_download("https://api.revanced.app/v5/patches.rvp", "patches.rvp")
 
         self.assertEqual("application/octet-stream", request_get.call_args.kwargs["headers"]["Accept"])
+
+    def test_existing_partial_file_is_replaced_when_size_does_not_match(self: Self) -> None:
+        """Interrupted downloads should be retried instead of treating a partial target as cache-valid."""
+        with TemporaryDirectory() as tmp_dir:
+            config = _config(Path(tmp_dir))
+            target = Path(tmp_dir, "patches.rvp")
+            target.write_bytes(b"partial")
+            response = _BinaryResponse(b"complete-patch-bundle")
+
+            with patch("src.downloader.download.session.get", return_value=response):
+                Downloader(config).direct_download("https://api.revanced.app/v5/patches.rvp", "patches.rvp")
+
+            self.assertEqual(b"complete-patch-bundle", target.read_bytes())
+            self.assertEqual([], list(Path(tmp_dir).glob(".patches.rvp.*.part")))
+            self.assertTrue(response.closed)
+
+    def test_existing_complete_file_is_kept_when_size_matches(self: Self) -> None:
+        """Matching content length is the cache-valid signal for an already downloaded artifact."""
+        with TemporaryDirectory() as tmp_dir:
+            config = _config(Path(tmp_dir))
+            target = Path(tmp_dir, "patches.rvp")
+            target.write_bytes(b"cached-patch-bundle")
+            response = _BinaryResponse(b"cached-patch-bundle")
+
+            with patch("src.downloader.download.session.get", return_value=response):
+                Downloader(config).direct_download("https://api.revanced.app/v5/patches.rvp", "patches.rvp")
+
+            self.assertEqual(b"cached-patch-bundle", target.read_bytes())
+            self.assertEqual([], list(Path(tmp_dir).glob(".patches.rvp.*.part")))
+            self.assertTrue(response.closed)
