@@ -3,7 +3,7 @@
     "patchName": "Spoof client",
     "options": [
       {
-        "key": "client-id",
+        "key": "Application client ID",
         "value": null
       }
     ]

@@ -9,12 +9,12 @@ new_object='{
 "patchName": "Spoof client",
 "options": [
   {
-    "key": "client-id",
+    "key": "Application client ID",
     "value": "'${client_id}'"
   }
 ]
 }'
-# Check if an object with the patchName "Spoof client" already exists
+# ReVanced v6 exposes the option name as the key because its list-patches output has no explicit Key field.
 existing_object_index=$(echo "${json_data}" | jq 'map(.patchName) | index("Spoof client")')
 echo "${existing_object_index}"
 if [[ ${existing_object_index} != "null" ]]; then
