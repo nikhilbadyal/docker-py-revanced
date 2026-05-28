@@ -7,6 +7,7 @@
 from typing import Any, Self
 from unittest import TestCase
 
+from src.patches import Patches
 from src.patches_gen import parse_text_to_json
 
 EXPECTED_REVANCED_PATCH_COUNT = 2
@@ -94,6 +95,18 @@ def _patch_by_name(patches: list[dict[Any, Any]], name: str) -> dict[Any, Any]:
 
 class PatchesGenParserTests(TestCase):
     """Verify parser compatibility with current ReVanced, Morphe, and Anddea output shapes."""
+
+    def test_recommended_version_uses_newest_compatible_version(self: Self) -> None:
+        """Compatible versions may be listed newest-to-oldest, so the builder must not pick the final entry."""
+        selected_version = Patches.select_recommended_version(["8.47.56", "7.29.52"])
+
+        self.assertEqual("8.47.56", selected_version)
+
+    def test_recommended_version_falls_back_to_first_unparseable_version(self: Self) -> None:
+        """Non-standard app versions should stay deterministic instead of crashing patch metadata parsing."""
+        selected_version = Patches.select_recommended_version(["beta-current", "beta-old"])
+
+        self.assertEqual("beta-current", selected_version)
 
     def test_revanced_indented_option_names_do_not_split_patch_sections(self: Self) -> None:
         """ReVanced v6 option `Name:` fields should not become fake patch sections."""

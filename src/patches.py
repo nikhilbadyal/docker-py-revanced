@@ -4,6 +4,7 @@ import contextlib
 from typing import Any, ClassVar, Self
 
 from loguru import logger
+from packaging.version import InvalidVersion, Version
 
 from src.app import APP
 from src.config import RevancedConfig
@@ -181,13 +182,33 @@ class Patches(object):
         patch_dict["app"] = app_name
 
         if isinstance(version, list) and version:
-            patch_dict["version"] = version[-1]
+            patch_dict["version"] = self.select_recommended_version(version)
         elif version:
             patch_dict["version"] = version
         else:
             patch_dict["version"] = "all"
 
         return patch_dict
+
+    @staticmethod
+    def select_recommended_version(versions: list[str]) -> str:
+        """Choose the newest compatible version from the CLI-provided version list."""
+        valid_versions: list[tuple[Version, str]] = []
+
+        for candidate in versions:
+            try:
+                # The CLI often returns newest-to-oldest, but sorting avoids relying on source ordering.
+                valid_versions.append((Version(candidate), candidate))
+            except InvalidVersion:
+                # Non-standard app versions should not crash patch listing; fallback below preserves CLI order.
+                logger.warning(f"Unable to parse compatible app version `{candidate}`.")
+
+        if valid_versions:
+            # The original string is returned so downstream download sources receive the exact advertised value.
+            return max(valid_versions, key=lambda item: item[0])[1]
+
+        # If every version is non-standard, keep the first advertised version rather than silently picking oldest.
+        return versions[0]
 
     def _is_duplicate_patch(self: Self, patch_name: str, app_name: str) -> bool:
         """Check if patch already exists to avoid duplicates.
