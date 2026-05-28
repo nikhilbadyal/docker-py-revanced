@@ -179,7 +179,6 @@ You can use any of the following methods to build.
     - [icon_pack_studio](https://www.apkmirror.com/apk/smart-launcher-team/icon-pack-studio/)
     - [ticktick](https://www.apkmirror.com/apk/appest-inc/ticktick-to-do-list-with-reminder-day-planner/)
     - [twitch](https://www.apkmirror.com/apk/twitch-interactive-inc/twitch/)
-    - [hex-editor](https://m.apkpure.com/hex-editor/com.myprog.hexedit)
     - [windy](https://www.apkmirror.com/apk/windy-weather-world-inc/windy-wind-weather-forecast/)
     - [my-expenses](https://my-expenses.en.uptodown.com/android)
     - [backdrops](https://backdrops.en.uptodown.com/android)
@@ -197,7 +196,6 @@ You can use any of the following methods to build.
     - [trakt](https://www.apkmirror.com/apk/trakt/trakt/)
     - [candyvpn](https://www.apkmirror.com/apk/liondev-io/candylink-vpn/)
     - [sonyheadphone](https://www.apkmirror.com/apk/sony-corporation/sony-headphones-connect/)
-    - [androidtwelvewidgets](https://m.apkpure.com/android--widgets-twelve/com.dci.dev.androidtwelvewidgets)
     - [yuka](https://yuka.en.uptodown.com/android)
     - [relay](https://www.apkmirror.com/apk/dbrady/relay-for-reddit-/)
     - [boost](https://www.apkmirror.com/apk/ruben-mayayo/boost-for-reddit/)
@@ -213,13 +211,9 @@ You can use any of the following methods to build.
     - [lightroom](https://www.apkmirror.com/apk/adobe/lightroom/)
     - [duolingo](https://www.apkmirror.com/apk/duolingo/duolingo-duolingo/)
     - [musically](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
-    - [photomath](https://apkpure.net/-/com.microblink.photomath)
     - [joey](https://joey-for-reddit.en.uptodown.com/android)
     - [vanced](https://www.apkmirror.com/apk/team-vanced/youtube-vanced/)
-    - [spotify-lite](https://apkpure.net/-/com.spotify.lite)
-    - [digitales](https://apkpure.net/-/at.gv.oe.app)
     - [scbeasy](https://scb-easy.en.uptodown.com/android)
-    - [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
     - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
     - [tumblr](https://www.apkmirror.com/apk/tumblr-inc/tumblr/)
     - [fitnesspal](https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal/)
@@ -271,12 +265,9 @@ You can use any of the following methods to build.
         1. Link Format - https://<app-name>.en.uptodown.com/android
         2. Example Link - https://spotify.en.uptodown.com/android
    3. APKSOS - Supports downloading any available version
-       1. Link Format - https://apksos.com/download-app/<package-name>
-       2. Example Link - https://apksos.com/download-app/com.expensemanager
-   4. APKPURE - Supports downloading any available version
-       1. Link Format - https://apkpure.net/-/<package-name>
-       2. Example Link - https://apkpure.net/-/com.google.android.youtube
-   5. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
+        1. Link Format - https://apksos.com/download-app/<package-name>
+        2. Example Link - https://apksos.com/download-app/com.expensemanager
+   4. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
       1. Link Format - apkeep
       2. Example Link - apkeep
       Note - You need to provide APKEEP_EMAIL and APKEEP_TOKEN in the **DOCKER_PY_REVANCED_SECRETS** Github Secrets.
@@ -521,7 +512,7 @@ You can use any of the following methods to build.
     ```
     Example:
     ```ini
-    YOUTUBE_DL=https://d.apkpure.com/b/APK/com.google.android.youtube?version=latest
+    YOUTUBE_DL=https://example.com/youtube.apk
     ```
 16. <a id="telegram-support"></a>For Telegram Upload.
      1. Set up a telegram channel, send a message to it and forward the message to

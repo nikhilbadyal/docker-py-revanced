@@ -6,9 +6,6 @@ APK_MIRROR_PACKAGE_URL = f"{APK_MIRROR_BASE_URL}/?s=" + "{}"
 APK_MIRROR_APK_CHECK = f"{APK_MIRROR_BASE_URL}/wp-json/apkm/v1/app_exists/"
 UPTODOWN_SUFFIX = "en.uptodown.com/android"
 UPTODOWN_BASE_URL = "https://{}." + UPTODOWN_SUFFIX
-APK_PURE_BASE_URL = "https://apkpure.net"
-APK_PURE_URL = APK_PURE_BASE_URL + "/-/{}"
-APK_PURE_ICON_URL = APK_PURE_BASE_URL + "/search?q={}"
 APKS_SOS_BASE_URL = "https://apksos.com/download-app"
 APK_SOS_URL = APKS_SOS_BASE_URL + "/{}"
 GITHUB_BASE_URL = "https://github.com"
@@ -71,12 +68,6 @@ apk_sources = {
     "my-expenses": UPTODOWN_BASE_URL.format("my-expenses"),
     "scbeasy": UPTODOWN_BASE_URL.format("scb-easy"),
     "expensemanager": UPTODOWN_BASE_URL.format("bishinews-expense-manager"),
-    "androidtwelvewidgets": APK_PURE_URL,
-    "reddit-news": APK_PURE_URL,
-    "hex-editor": APK_PURE_URL,
-    "photomath": APK_PURE_URL,
-    "spotify-lite": APK_PURE_URL,
-    "digitales": APK_PURE_URL,
     "finanz-online": APK_SOS_URL,
     "photos": f"{APK_MIRROR_BASE_APK_URL}/google-inc/photos/",
     "amazon": f"{APK_MIRROR_BASE_APK_URL}/amazon-mobile-llc/amazon-shopping/",

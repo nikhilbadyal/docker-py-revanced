@@ -47,10 +47,6 @@ class APKComboIconScrapError(ScrapingError):
     """Exception raised when the icon cannot be scraped from apkcombo."""
 
 
-class APKPureIconScrapError(ScrapingError):
-    """Exception raised when the icon cannot be scraped from apkpure."""
-
-
 class DownloadError(BuilderError):
     """Generic Download failure."""
 
@@ -86,10 +82,6 @@ class APKMirrorAPKNotFoundError(APKDownloadError):
 
 class UptoDownAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from uptodown failed."""
-
-
-class APKPureAPKDownloadError(APKDownloadError):
-    """Exception raised when downloading an APK from apkpure failed."""
 
 
 class APKSosAPKDownloadError(APKDownloadError):
