@@ -92,6 +92,7 @@ class Patches(object):
         "it.ipzs.cieid": "cieid",
         "ml.docilealligator.infinityforreddit.patreon": "infinity-for-reddit-patreon",
         "ml.docilealligator.infinityforreddit.plus": "infinity-for-reddit-plus",
+        "com.peacocktv.peacockandroid": "peacock-tv",
     }
 
     @staticmethod
