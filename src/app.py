@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from threading import Lock
 from typing import Any, Self
+from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
 from loguru import logger
@@ -60,6 +61,8 @@ class APP(object):
         )
         # This optional app-level profile allows switching argument families per app.
         self.cli_argsf = config.env.str(f"{app_name}_CLI_ARGSF".upper(), "")
+        # Scheduling code needs the effective profile even when it came from the global default.
+        self.effective_cli_argsf = self.cli_argsf or config.global_cli_argsf
         # This optional app-level override customizes list-patches argument mapping.
         self.cli_lpargs = config.env.str(f"{app_name}_CLI_LPARGS".upper(), "")
         # This optional app-level override customizes patch command argument mapping.
@@ -148,6 +151,28 @@ class APP(object):
 
         # For URL-based sources, source+version is already unique
         return (self.download_source, version)
+
+    def get_cli_temporary_files_path(self: Self, config: RevancedConfig) -> str:
+        """Return this app's isolated CLI temp path for tools that support caller-selected temp dirs."""
+        # Including patch source and app name prevents parallel patch families from sharing purge-sensitive work dirs.
+        temp_leaf = slugify(f"{self._get_patch_source_label()}-{self.app_name}") or slugify(self.app_name)
+        return str(config.temp_folder.joinpath(config.cli_temp_folder_name, temp_leaf))
+
+    def _get_patch_source_label(self: Self) -> str:
+        """Return a stable human-readable patch source label for temp directory names."""
+        if not self.patches_dl_list:
+            # Apps without patch bundles still need deterministic temp names when custom profiles use temp flags.
+            return str(self.effective_cli_argsf)
+
+        parsed_url = urlparse(self.patches_dl_list[0])
+        path_parts = [part for part in parsed_url.path.split("/") if part]
+        if parsed_url.netloc == "github.com" and len(path_parts) > 1:
+            # GitHub patch sources are best identified by owner and repository rather than release path details.
+            return f"{path_parts[0]}-{path_parts[1]}"
+        if parsed_url.netloc and path_parts:
+            # Non-GitHub sources keep the host plus leaf artifact so API bundles remain distinguishable.
+            return f"{parsed_url.netloc}-{path_parts[-1]}"
+        return str(self.effective_cli_argsf)
 
     def get_output_file_name(self: Self) -> str:
         """The function returns a string representing the output file name.

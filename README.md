@@ -124,6 +124,7 @@ You can use any of the following methods to build.
 | [GLOBAL_CLI_ARGSF*](#cli-arg-compatibility)              |      CLI argument profile (`revanced-cli` default)      | revanced-cli                                                                                                          |
 | [GLOBAL_CLI_LPARGS*](#cli-arg-compatibility)             |      Override map for `list-patches` command args       | None                                                                                                                  |
 | [GLOBAL_CLI_PARGS*](#cli-arg-compatibility)              |          Override map for `patch` command args          | None                                                                                                                  |
+| CLI_TEMP_FOLDER_NAME                                     |     Parent folder for per-app CLI temporary files       | patch-source-temporary-files                                                                                          |
 | REDDIT_CLIENT_ID                                         |          Reddit Client ID to patch reddit apps          | None                                                                                                                  |
 | [TELEGRAM_CHAT_ID](#telegram-support)                    |               Receiver in Telegram upload               | None                                                                                                                  |
 | [TELEGRAM_BOT_TOKEN](#telegram-support)                  |             APKs Sender for Telegram upload             | None                                                                                                                  |
@@ -364,22 +365,25 @@ You can use any of the following methods to build.
      GLOBAL_CLI_ARGSF=revanced-cli
     ```
     Built-in profile values:
-    - `revanced-cli` (default, modern flag-based ReVanced CLI format; the old v5 positional variant has been completely removed)
+    - `revanced-cli` (default, current flag-based ReVanced CLI format)
     - `morphe-cli` (morphe-style list-patches requires `--patches`)
 
     Override maps use unordered `KEY=value` pairs in a single string:
     ```dotenv
-     GLOBAL_CLI_LPARGS="CMD=list-patches INDEX=-i PACKAGES=-p UNIVERSAL=-u VERSIONS=-v OPTIONS=-o PATCHES=__POSITIONAL__ PATCHES_POST="
-     GLOBAL_CLI_PARGS="CMD=patch PATCHES=-p PATCHES_POST= ENABLED=-e DISABLED=-d OPTIONS=-O PURGE=--purge KEYSTORE=--keystore KEYSTORE_ENTRY_ALIAS=--keystore-entry-alias=alias KEYSTORE_ENTRY_PASSWORD=--keystore-entry-password=ReVanced KEYSTORE_PASSWORD=--keystore-password=ReVanced EXCLUSIVE=--exclusive APK=__POSITIONAL__ OUTPUT=-o FORCE=--force RIP_LIB=--rip-lib"
+     GLOBAL_CLI_LPARGS="CMD=list-patches INDEX=-i PACKAGES=-p UNIVERSAL=-u VERSIONS=-v OPTIONS=-o PATCHES=__POSITIONAL__ PATCHES_POST= TEMPORARY_FILES_PATH="
+     GLOBAL_CLI_PARGS="CMD=patch PATCHES=-p PATCHES_POST= ENABLED=-e DISABLED=-d OPTIONS=-O PURGE=--purge KEYSTORE=--keystore KEYSTORE_ENTRY_ALIAS=--keystore-entry-alias=alias KEYSTORE_ENTRY_PASSWORD=--keystore-entry-password=ReVanced KEYSTORE_PASSWORD=--keystore-password=ReVanced EXCLUSIVE=--exclusive APK=__POSITIONAL__ OUTPUT=-o FORCE=--force RIP_LIB=--rip-lib TEMPORARY_FILES_PATH=-t"
     ```
     `PATCHES_POST` is an optional companion argument appended after every patch bundle (used by ReVanced v6 with `-b`).
+    `TEMPORARY_FILES_PATH` is a dynamic argument; when a CLI profile sets it, the builder passes
+    `<apks>/<CLI_TEMP_FOLDER_NAME>/<patch-source-app-name>` so parallel patchers do not share purge-sensitive temp files.
+    ReVanced and Morphe patch commands expose `-t`; Morphe list-patches also exposes `-t`, while ReVanced list-patches does not.
     `CONTINUE_ON_ERROR` is an optional patch flag; the built-in `morphe-cli` profile enables `--continue-on-error`
     because Morphe can skip one failed patch while still producing the app.
     App-level overrides are also supported and take precedence:
     ```dotenv
      YOUTUBE_CLI_ARGSF=morphe-cli
-     YOUTUBE_CLI_LPARGS="PATCHES=--patches"
-     YOUTUBE_CLI_PARGS="PATCHES=-p STRIPLIBS=--striplibs"
+     YOUTUBE_CLI_LPARGS="PATCHES=--patches TEMPORARY_FILES_PATH=-t"
+     YOUTUBE_CLI_PARGS="PATCHES=-p STRIPLIBS=--striplibs TEMPORARY_FILES_PATH=-t"
     ```
 
     Example configuration for the standard ReVanced CLI:

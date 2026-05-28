@@ -10,6 +10,7 @@ from types import SimpleNamespace
 from typing import Self, cast
 from unittest import TestCase
 from unittest.mock import patch
+from zipfile import ZipFile
 
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
@@ -41,8 +42,22 @@ def _config(temp_folder: Path) -> RevancedConfig:
     return cast(
         "RevancedConfig",
         # These are the downloader policy fields exercised by the tests without constructing the full env config.
-        SimpleNamespace(personal_access_token=None, dry_run=False, disable_caching=False, temp_folder=temp_folder),
+        SimpleNamespace(
+            apk_editor="apkeditor.jar",
+            personal_access_token=None,
+            dry_run=False,
+            disable_caching=False,
+            temp_folder=temp_folder,
+        ),
     )
+
+
+def _write_zip(path: Path, names: list[str]) -> None:
+    """Create a small archive with controlled entries so APK shape detection is deterministic."""
+    with ZipFile(path, "w") as zip_file:
+        for name in names:
+            # Entry contents do not matter; only root filenames drive the merge decision.
+            zip_file.writestr(name, b"content")
 
 
 class DirectDownloadTests(TestCase):
@@ -105,3 +120,31 @@ class DirectDownloadTests(TestCase):
             self.assertEqual(b"fresh-patch-bundle", target.read_bytes())
             self.assertEqual([], list(Path(tmp_dir).glob(".patches.rvp.*.part")))
             self.assertTrue(response.closed)
+
+    def test_convert_to_apk_keeps_real_apk_without_apkeditor(self: Self) -> None:
+        """A proper APK should not be passed through APKEditor just because APKs are zip archives."""
+        with TemporaryDirectory() as tmp_dir:
+            config = _config(Path(tmp_dir))
+            _write_zip(Path(tmp_dir, "youtube.apk"), ["AndroidManifest.xml", "resources.arsc"])
+
+            with patch("src.downloader.download.subprocess.run") as subprocess_run:
+                output_file = Downloader(config).convert_to_apk("youtube.apk")
+
+        self.assertEqual("youtube.apk", output_file)
+        subprocess_run.assert_not_called()
+
+    def test_convert_to_apk_merges_xapk_archive_misnamed_as_apk(self: Self) -> None:
+        """Uptodown can return split APK archives with `.apk` names, so content decides conversion."""
+        with TemporaryDirectory() as tmp_dir:
+            config = _config(Path(tmp_dir))
+            app_archive = Path(tmp_dir, "youtube_music.apk")
+            _write_zip(app_archive, ["base.apk", "split_config.arm64_v8a.apk"])
+
+            with patch("src.downloader.download.subprocess.run") as subprocess_run:
+                output_file = Downloader(config).convert_to_apk("youtube_music.apk")
+
+            command = subprocess_run.call_args.args[0]
+
+        self.assertEqual("youtube_music.apk", output_file)
+        self.assertIn(f"{tmp_dir}/youtube_music.xapk", command)
+        self.assertIn(f"{tmp_dir}/youtube_music.apk", command)

@@ -436,6 +436,15 @@ class Parser(object):
             for arch in excluded:
                 append_cli_argument(args, self._patch_args["RIP_LIB"], arch)
 
+    def _add_temporary_files_args(self: Self, args: list[str], app: APP) -> None:
+        """Add an isolated temporary-files directory for CLIs that expose one."""
+        # Morphe defaults to a shared temp path, so configured profiles pass a per-app directory for parallel builds.
+        append_cli_argument(
+            args,
+            self._patch_args["TEMPORARY_FILES_PATH"],
+            app.get_cli_temporary_files_path(self.config),
+        )
+
     # noinspection IncorrectFormatting
     def patch_app(
         self: Self,
@@ -463,6 +472,7 @@ class Parser(object):
             args.extend(self._PATCHES)
 
         self._add_architecture_args(args, app)
+        self._add_temporary_files_args(args, app)
         # Purge behavior remains enabled by default and can be remapped per CLI profile.
         append_cli_argument(args, self._patch_args["PURGE"])
         # Continue-on-error is profile-controlled because Morphe supports it but ReVanced may reject unknown flags.

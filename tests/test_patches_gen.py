@@ -4,11 +4,15 @@
 # unittest keeps this parser coverage aligned with the existing project test style.
 # ruff: noqa: PT009
 
+from contextlib import chdir
+from tempfile import TemporaryDirectory
 from typing import Any, Self
 from unittest import TestCase
+from unittest.mock import patch
 
+from src.cli_args import merge_cli_arg_maps
 from src.patches import Patches
-from src.patches_gen import parse_text_to_json
+from src.patches_gen import convert_command_output_to_json, parse_text_to_json
 
 EXPECTED_REVANCED_PATCH_COUNT = 2
 EXPECTED_REVANCED_OPTION_COUNT = 2
@@ -142,3 +146,18 @@ class PatchesGenParserTests(TestCase):
         self.assertEqual("gmsCoreVendorGroupId", option["key"])
         self.assertEqual(["app.revanced", "com.google", "com.mgoogle"], option["possible_values"])
         self.assertEqual(["20.47.62", "20.48.46"], gms_core["compatiblePackages"][0]["versions"])
+
+    def test_morphe_list_patches_uses_isolated_temp_path(self: Self) -> None:
+        """Morphe list-patches also supports temp paths, so parallel scans should not share its default."""
+        list_patch_args, _ = merge_cli_arg_maps("morphe-cli", ("", ""))
+
+        with (
+            TemporaryDirectory() as temp_dir,
+            chdir(temp_dir),
+            patch("src.patches_gen.run_command_and_capture_output", return_value=MORPHE_SAMPLE) as run_command,
+        ):
+            convert_command_output_to_json("morphe-cli.jar", "patches.mpp", list_patch_args, "tmp/youtube")
+
+        command = run_command.call_args.args[0]
+        self.assertIn("-t", command)
+        self.assertIn("tmp/youtube", command)

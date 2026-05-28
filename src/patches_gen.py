@@ -397,6 +397,7 @@ def convert_command_output_to_json(
     jar_file_name: str,
     patches_file: str,
     cli_lp_args: dict[str, str] | None = None,
+    temporary_files_path: str | None = None,
 ) -> list[dict[Any, Any]]:
     """
     Runs the ReVanced CLI command, processes the output, and saves it as a sorted JSON file.
@@ -417,6 +418,8 @@ def convert_command_output_to_json(
         append_cli_argument(command, list_patches_args.get(key, ""))
     # This optional flag slot is preserved for advanced users who embed a fixed filter in the template.
     append_cli_argument(command, list_patches_args.get("FILTER_PACKAGE_NAME", ""))
+    # Morphe list-patches accepts a temp path, so parallel app scans should not share its default directory.
+    append_cli_argument(command, list_patches_args.get("TEMPORARY_FILES_PATH", ""), temporary_files_path)
     # Patch bundle argument supports positional, split, or `--flag=value` formatting styles.
     append_cli_argument(command, list_patches_args["PATCHES"], patches_file)
     # Some CLI families require a companion flag per patches file group (e.g., v6 `-b` bypass verification).

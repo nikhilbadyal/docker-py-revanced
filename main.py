@@ -91,7 +91,7 @@ def _record_failed_app(app_name: str, error: Exception, failed_apps: list[str]) 
     """Log and remember a failed app without hiding it from the final build result."""
     logger.exception(f"Error processing {app_name}: {error}")
     logger.info(f"{app_name} - FAILED")
-    # The build continues collecting independent successes, then fails once partial metadata is written.
+    # The build continues collecting independent successes before deciding whether anything usable was produced.
     failed_apps.append(app_name)
 
 
@@ -140,12 +140,19 @@ def _process_apps_in_parallel(
                 _record_failed_app(app_name, e, failed_apps)
 
 
-def _raise_if_apps_failed(failed_apps: list[str]) -> None:
-    """Fail the process after all possible app work and metadata writing has completed."""
-    if failed_apps:
-        # CI must fail when any requested app fails so releases cannot silently ship partial builds.
-        msg = f"Failed to build {len(failed_apps)} app(s): {', '.join(sorted(failed_apps))}"
-        raise PatchingFailedError(msg)
+def _raise_if_no_apps_succeeded(failed_apps: list[str], updates_info: dict[str, Any]) -> None:
+    """Fail only when the builder produced no patched app metadata at all."""
+    if not failed_apps:
+        return
+
+    msg = f"Failed to build {len(failed_apps)} app(s): {', '.join(sorted(failed_apps))}"
+    if updates_info:
+        # Partial builds are still useful release inputs; patch-specific app failures should stay visible as warnings.
+        logger.warning(f"{msg}. Continuing because {len(updates_info)} app(s) completed successfully.")
+        return
+
+    # No successful app means the build produced nothing usable, so callers should receive a failed process.
+    raise PatchingFailedError(msg)
 
 
 def main() -> None:
@@ -179,7 +186,7 @@ def main() -> None:
         write_changelog_to_file(updates_info)
         generate_obtainium_export(updates_info, config)
 
-    _raise_if_apps_failed(failed_apps)
+    _raise_if_no_apps_succeeded(failed_apps, updates_info)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
 from typing import Self
 from unittest import TestCase
 
-from src.cli_args import merge_cli_arg_maps
+from src.cli_args import append_cli_argument, merge_cli_arg_maps
 
 
 class CliArgProfileTests(TestCase):
@@ -14,19 +14,18 @@ class CliArgProfileTests(TestCase):
 
     def test_morphe_profile_enables_continue_on_error(self: Self) -> None:
         """Morphe supports continuing after one patch fails, so the profile should emit the flag by default."""
-        _, patch_args = merge_cli_arg_maps("morphe-cli", ("", ""))
+        list_patch_args, patch_args = merge_cli_arg_maps("morphe-cli", ("", ""))
 
         self.assertEqual("--continue-on-error", patch_args["CONTINUE_ON_ERROR"])
+        self.assertEqual("-t", list_patch_args["TEMPORARY_FILES_PATH"])
+        self.assertEqual("-t", patch_args["TEMPORARY_FILES_PATH"])
 
     def test_revanced_cli_profile_does_not_emit_morphe_only_flag(self: Self) -> None:
-        """ReVanced docs do not list the Morphe flag, so the standard profile should avoid unknown CLI args.
-
-        We test the 'revanced-cli' profile since the older variant has been removed and the v6 style
-        is now the default.
-        """
+        """The ReVanced profile should avoid Morphe-only flags while keeping ReVanced-supported temp isolation."""
         _, patch_args = merge_cli_arg_maps("revanced-cli", ("", ""))
 
         self.assertEqual("", patch_args["CONTINUE_ON_ERROR"])
+        self.assertEqual("-t", patch_args["TEMPORARY_FILES_PATH"])
 
     def test_continue_on_error_can_be_overridden_for_custom_profiles(self: Self) -> None:
         """Operators can opt other CLI builds into the flag without changing built-in profile defaults.
@@ -40,3 +39,11 @@ class CliArgProfileTests(TestCase):
         )
 
         self.assertEqual("--continue-on-error", patch_args["CONTINUE_ON_ERROR"])
+
+    def test_empty_template_disables_dynamic_values(self: Self) -> None:
+        """Disabled profile keys must not leak dynamic values into commands as positional arguments."""
+        args: list[str] = []
+
+        append_cli_argument(args, "", "apks/patch-source-temporary-files/example")
+
+        self.assertEqual([], args)

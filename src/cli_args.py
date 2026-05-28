@@ -10,7 +10,7 @@ from loguru import logger
 
 # This sentinel makes it explicit that the value is positional and should not be prefixed with any flag.
 POSITIONAL_ARG: Final[str] = "__POSITIONAL__"
-# This profile has been updated to 'revanced-cli' (formerly 'revanced-cli-v6') as the standard stable profile.
+# The default profile follows the current ReVanced CLI argument shape used by the builder.
 DEFAULT_CLI_PROFILE: Final[str] = "revanced-cli"
 # This constant centralizes legacy old-key alias behavior shared across profiles.
 KEYSTORE_ALIAS_ARG: Final[str] = "--keystore-entry-alias=alias"
@@ -29,6 +29,7 @@ LIST_PATCHES_KEYS: Final[set[str]] = {
     "PACKAGES",
     "PATCHES",
     "PATCHES_POST",
+    "TEMPORARY_FILES_PATH",
     "UNIVERSAL",
     "VERSIONS",
 }
@@ -53,6 +54,7 @@ PATCH_KEYS: Final[set[str]] = {
     "PURGE",
     "RIP_LIB",
     "STRIPLIBS",
+    "TEMPORARY_FILES_PATH",
 }
 
 DEFAULT_LIST_PATCHES_ARGS: Final[dict[str, str]] = {
@@ -65,6 +67,8 @@ DEFAULT_LIST_PATCHES_ARGS: Final[dict[str, str]] = {
     "PACKAGES": "--packages",
     "PATCHES": "-p",
     "PATCHES_POST": "-b",
+    # ReVanced list-patches does not expose a temp-path flag, so the dynamic temp value must be ignored here.
+    "TEMPORARY_FILES_PATH": "",
     "UNIVERSAL": "--universal-patches",
     "VERSIONS": "--versions",
 }
@@ -90,11 +94,13 @@ DEFAULT_PATCH_ARGS: Final[dict[str, str]] = {
     "PURGE": "--purge",
     "RIP_LIB": "",
     "STRIPLIBS": "",
+    # ReVanced patch exposes `-t`, so each parallel app gets its own temporary files directory.
+    "TEMPORARY_FILES_PATH": "-t",
 }
 
 # Profile map centralizes known CLI families so users can switch format with one env variable.
 CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
-    # The primary revanced-cli now maps directly to the updated v6-style arguments as the old variant is discarded.
+    # The primary ReVanced profile uses the current flag-based command shape.
     "revanced-cli": {
         "list_patches": deepcopy(DEFAULT_LIST_PATCHES_ARGS),
         "patch": deepcopy(DEFAULT_PATCH_ARGS),
@@ -111,6 +117,8 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
             "PACKAGES": "-p",
             "PATCHES": "--patches",
             "PATCHES_POST": "",
+            # Morphe list commands share the same temp-path flag as patching and can run concurrently per app.
+            "TEMPORARY_FILES_PATH": "-t",
             "UNIVERSAL": "-u",
             "VERSIONS": "-v",
         },
@@ -135,6 +143,8 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
             "PURGE": "--purge",
             "RIP_LIB": "",
             "STRIPLIBS": "--striplibs",
+            # Morphe otherwise uses `/app/morphe-temporary-files`, which parallel apps can delete mid-patch.
+            "TEMPORARY_FILES_PATH": "-t",
         },
     },
 }
@@ -223,10 +233,8 @@ def append_cli_argument(args: list[str], arg_template: str, value: str | None = 
     # We strip whitespace so values from env files with extra spaces still behave predictably.
     normalized_template = arg_template.strip()
 
-    # Empty template means disabled argument, so we append only the dynamic value if provided.
+    # Empty template means the argument is disabled; positional values must use POSITIONAL_ARG explicitly.
     if not normalized_template:
-        if value is not None:
-            args.append(value)
         return
 
     # Positional sentinel explicitly appends only the value and omits any flag prefix.

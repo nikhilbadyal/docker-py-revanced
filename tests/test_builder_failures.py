@@ -1,6 +1,6 @@
 """Regression tests for builder failure propagation."""
 
-# These tests guard CI/release behavior: failed patch commands and failed apps must fail the build.
+# These tests guard CI/release behavior: failed patch commands must be visible without discarding good app outputs.
 # The repo's local test command is unittest, so assertion contexts stay on TestCase instead of pytest.
 # ruff: noqa: PT009, PT027
 
@@ -69,6 +69,9 @@ def _patch_app() -> APP:
         SimpleNamespace(
             app_name="youtube",
             archs_to_build=[],
+            cli_dl="https://github.com/revanced/revanced-cli/releases/latest",
+            cli_argsf="revanced-cli",
+            effective_cli_argsf="revanced-cli",
             cli_p_args={
                 "APK": "__POSITIONAL__",
                 "CMD": "patch",
@@ -88,8 +91,12 @@ def _patch_app() -> APP:
                 "PURGE": "--purge",
                 "RIP_LIB": "",
                 "STRIPLIBS": "",
+                "TEMPORARY_FILES_PATH": "",
             },
             download_file_name="youtube.apk",
+            get_cli_temporary_files_path=lambda config: str(
+                config.temp_folder.joinpath("patch-source-temporary-files", "revanced-patches-youtube"),
+            ),
             get_output_file_name=lambda: "youtube-output.apk",
             keystore_name="revanced.keystore",
             old_key=False,
@@ -103,7 +110,12 @@ def _config(temp_folder: Path = Path("apks")) -> RevancedConfig:
     """Build the minimum RevancedConfig-shaped object needed by Parser.patch_app."""
     return cast(
         "RevancedConfig",
-        SimpleNamespace(ci_test=False, rip_libs_apps=[], temp_folder=temp_folder),
+        SimpleNamespace(
+            ci_test=False,
+            cli_temp_folder_name="patch-source-temporary-files",
+            rip_libs_apps=[],
+            temp_folder=temp_folder,
+        ),
     )
 
 
@@ -123,12 +135,16 @@ class BuilderFailureTests(TestCase):
         app = _patch_app()
         # The test mutates only this app profile so the assertion covers profile-driven command generation.
         app.cli_p_args["CONTINUE_ON_ERROR"] = "--continue-on-error"
+        # Morphe exposes a temp-path flag, so each app should avoid the shared default Morphe temp directory.
+        app.cli_p_args["TEMPORARY_FILES_PATH"] = "-t"
 
         with patch("src.parser.Popen", return_value=_SuccessfulProcess()) as popen:
             parser.patch_app(app)
 
         command = popen.call_args.args[0]
         self.assertIn("--continue-on-error", command)
+        self.assertIn("-t", command)
+        self.assertIn("apks/patch-source-temporary-files/revanced-patches-youtube", command)
 
     def test_patch_app_accepts_nonzero_continue_on_error_when_output_exists(self: Self) -> None:
         """A skipped patch should not fail the app when Morphe still wrote the patched APK."""
@@ -143,8 +159,8 @@ class BuilderFailureTests(TestCase):
             with patch("src.parser.Popen", return_value=_FailedProcessProducingOutput(output_file)):
                 parser.patch_app(app)
 
-    def test_main_fails_after_writing_partial_metadata_for_failed_apps(self: Self) -> None:
-        """The builder should write successful metadata but still fail when any requested app fails."""
+    def test_main_continues_after_writing_partial_metadata_for_failed_apps(self: Self) -> None:
+        """The builder should keep partial output usable when at least one app patches successfully."""
         env = SimpleNamespace(read_env=lambda: None)
         config = SimpleNamespace(
             apps=["youtube", "reddit"],
@@ -165,9 +181,33 @@ class BuilderFailureTests(TestCase):
             patch("main.process_single_app", side_effect=side_effects),
             patch("main.write_changelog_to_file") as write_changelog,
             patch("main.generate_obtainium_export") as generate_obtainium,
-            self.assertRaisesRegex(PatchingFailedError, "reddit"),
         ):
             builder_main.main()
 
         write_changelog.assert_called_once()
         generate_obtainium.assert_called_once()
+
+    def test_main_fails_when_no_app_builds(self: Self) -> None:
+        """A run with zero successful apps must fail because it produced no usable release output."""
+        env = SimpleNamespace(read_env=lambda: None)
+        config = SimpleNamespace(
+            apps=["youtube", "reddit"],
+            ci_test=True,
+            disable_caching=False,
+            dry_run=False,
+            max_parallel_apps=4,
+        )
+
+        with (
+            patch("main.Env", return_value=env),
+            patch("main.RevancedConfig", return_value=config),
+            patch("main.Downloader.extra_downloads"),
+            patch("main.check_java"),
+            patch("main.delete_old_changelog"),
+            patch("main.load_older_updates", return_value={}),
+            patch("main.process_single_app", side_effect=PatchingFailedError("patch failed")),
+            patch("main.write_changelog_to_file"),
+            patch("main.generate_obtainium_export"),
+            self.assertRaisesRegex(PatchingFailedError, "reddit, youtube"),
+        ):
+            builder_main.main()

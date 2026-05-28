@@ -3,6 +3,7 @@
 # Cache policy bugs can silently reuse stale artifacts, so these tests exercise the public resource path.
 # ruff: noqa: PT009
 
+from pathlib import Path
 from threading import Lock
 from types import SimpleNamespace
 from typing import TYPE_CHECKING, Self, cast
@@ -17,6 +18,22 @@ if TYPE_CHECKING:
 
 class AppCachingTests(TestCase):
     """Verify DISABLE_CACHING prevents shared cache reads and writes."""
+
+    def test_cli_temp_path_includes_patch_source_and_app_name(self: Self) -> None:
+        """CLI temp directories should identify the patch source so parallel patch families stay isolated."""
+        app = APP.__new__(APP)
+        # The temp-path helper only needs these fields and should not require full app initialization.
+        app.app_name = "YOUTUBE_MORPHE"
+        app.effective_cli_argsf = "morphe-cli"
+        app.patches_dl_list = ["https://github.com/MorpheApp/morphe-patches/releases/latest-prerelease"]
+        config = cast(
+            "RevancedConfig",
+            SimpleNamespace(cli_temp_folder_name="patch-source-temporary-files", temp_folder=Path("apks")),
+        )
+
+        path = app.get_cli_temporary_files_path(config)
+
+        self.assertEqual("apks/patch-source-temporary-files/morpheapp.morphe.patches.youtube_morphe", path)
 
     def test_disabled_resource_cache_downloads_and_leaves_shared_cache_unchanged(self: Self) -> None:
         """Disabled cache mode should resolve resources freshly without mutating shared cache state."""
