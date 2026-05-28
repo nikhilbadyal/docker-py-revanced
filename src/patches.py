@@ -103,6 +103,7 @@ class Patches(object):
         "com.nothing.smartcenter": "nothing-x",
         "com.peacocktv.peacockandroid": "peacock-tv",
         "com.sbs.ondemand.tv": "sbs-on-demand-android-tv",
+        "com.sec.android.app.fm": "samsung-radio",
     }
 
     @staticmethod
