@@ -248,6 +248,7 @@ You can use any of the following methods to build.
     - [sbs-on-demand-android-tv](https://www.apkmirror.com/apk/sbs-corporation-2/sbs-on-demand-android-tv/)
     - [samsung-radio](https://www.apkmirror.com/apk/samsung-electronics-co-ltd/samsung-radio/)
     - [rakuten-viber-messenger](https://www.apkmirror.com/apk/viber-media-s-a-r-l/viber/)
+    - [id-austria](https://www.apkmirror.com/apk/spra-source-pin-register-authority/digitales-amt/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
