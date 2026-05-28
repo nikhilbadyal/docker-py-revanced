@@ -104,6 +104,7 @@ class Patches(object):
         "com.peacocktv.peacockandroid": "peacock-tv",
         "com.sbs.ondemand.tv": "sbs-on-demand-android-tv",
         "com.sec.android.app.fm": "samsung-radio",
+        "com.viber.voip": "rakuten-viber-messenger",
     }
 
     @staticmethod
