@@ -43,10 +43,6 @@ class APKMirrorIconScrapError(ScrapingError):
     """Exception raised when the icon cannot be scraped from apkmirror."""
 
 
-class APKComboIconScrapError(ScrapingError):
-    """Exception raised when the icon cannot be scraped from apkcombo."""
-
-
 class DownloadError(BuilderError):
     """Generic Download failure."""
 

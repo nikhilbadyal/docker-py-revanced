@@ -11,8 +11,6 @@ APK_SOS_URL = APKS_SOS_BASE_URL + "/{}"
 GITHUB_BASE_URL = "https://github.com"
 PLAY_STORE_BASE_URL = "https://play.google.com"
 PLAY_STORE_APK_URL = f"{PLAY_STORE_BASE_URL}/store/apps/details?id=" + "{}"
-APK_COMBO_BASE_URL = "https://apkcombo.com"
-APK_COMBO_GENERIC_URL = APK_COMBO_BASE_URL + "/genericApp/{}"
 not_found_icon = "https://www.svgrepo.com/download/441689/page-not-found.svg"
 # ReVanced API v5 exposes patch release metadata, and the status check resolves the bundle from that contract.
 revanced_api = "https://api.revanced.app/v5/patches"
