@@ -95,6 +95,7 @@ class Patches(object):
         "de.gmx.mobile.android.mail": "gmx",
         "ch.protonvpn.android": "proton-vpn",
         "com.adobe.photoshopmix": "adobe-photoshop-mix",
+        "com.disney.disneyplus": "disney-plus-fire-tv-android-tv",
     }
 
     @staticmethod

@@ -102,4 +102,5 @@ apk_sources = {
     "gmx": f"{APK_MIRROR_BASE_APK_URL}/gmx/gmx-mail/",
     "proton-vpn": f"{APK_MIRROR_BASE_APK_URL}/proton-technologies-ag/protonvpn-secure-and-free-vpn/",
     "adobe-photoshop-mix": f"{APK_MIRROR_BASE_APK_URL}/adobe/photoshop-mix/",
+    "disney-plus-fire-tv-android-tv": f"{APK_MIRROR_BASE_APK_URL}/disney/disney-fire-tv/",
 }
