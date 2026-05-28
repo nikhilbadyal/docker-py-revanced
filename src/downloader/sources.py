@@ -107,4 +107,5 @@ apk_sources = {
     "letterboxd": f"{APK_MIRROR_BASE_APK_URL}/letterboxd-limited/letterboxd/",
     "microsoft-lens": f"{APK_MIRROR_BASE_APK_URL}/microsoft-corporation/office-lens/",
     "fotmob": f"{APK_MIRROR_BASE_APK_URL}/fotmob-as/fotmob-live-soccer-scores/",
+    "nothing-x": f"{APK_MIRROR_BASE_APK_URL}/nothing-technology-limited/ear-1/",
 }
