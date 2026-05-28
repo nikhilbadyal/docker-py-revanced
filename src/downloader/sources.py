@@ -96,4 +96,5 @@ apk_sources = {
     "samsung-radio": f"{APK_MIRROR_BASE_APK_URL}/samsung-electronics-co-ltd/samsung-radio/",
     "rakuten-viber-messenger": f"{APK_MIRROR_BASE_APK_URL}/viber-media-s-a-r-l/viber/",
     "id-austria": f"{APK_MIRROR_BASE_APK_URL}/spra-source-pin-register-authority/digitales-amt/",
+    "photomath": f"{APK_MIRROR_BASE_APK_URL}/google-inc/photomath/",
 }

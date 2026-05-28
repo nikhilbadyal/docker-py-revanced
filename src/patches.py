@@ -99,6 +99,7 @@ class Patches(object):
         "com.sec.android.app.fm": "samsung-radio",
         "com.viber.voip": "rakuten-viber-messenger",
         "at.gv.oe.app": "id-austria",
+        "com.microblink.photomath": "photomath",
     }
 
     @staticmethod
