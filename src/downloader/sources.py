@@ -111,4 +111,5 @@ apk_sources = {
     "peacock-tv": f"{APK_MIRROR_BASE_APK_URL}/peacock-tv-llc/peacock-tv/",
     "sbs-on-demand-android-tv": f"{APK_MIRROR_BASE_APK_URL}/sbs-corporation-2/sbs-on-demand-android-tv/",
     "samsung-radio": f"{APK_MIRROR_BASE_APK_URL}/samsung-electronics-co-ltd/samsung-radio/",
+    "rakuten-viber-messenger": f"{APK_MIRROR_BASE_APK_URL}/viber-media-s-a-r-l/viber/",
 }
