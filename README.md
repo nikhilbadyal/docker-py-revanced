@@ -249,6 +249,7 @@ You can use any of the following methods to build.
     - [kleinanzeigen](https://www.apkmirror.com/apk/kleinanzeigen-de-gmbh/ebay-kleinanzeigen-for-germany/)
     - [letterboxd](https://www.apkmirror.com/apk/letterboxd-limited/letterboxd/)
     - [microsoft-lens](https://www.apkmirror.com/apk/microsoft-corporation/office-lens/)
+    - [fotmob](https://www.apkmirror.com/apk/fotmob-as/fotmob-live-soccer-scores/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.

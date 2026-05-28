@@ -99,6 +99,7 @@ class Patches(object):
         "com.ebay.kleinanzeigen": "kleinanzeigen",
         "com.letterboxd.letterboxd": "letterboxd",
         "com.microsoft.office.officelens": "microsoft-lens",
+        "com.mobilefootie.wc2010": "fotmob",
     }
 
     @staticmethod
