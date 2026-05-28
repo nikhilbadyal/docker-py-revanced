@@ -16,11 +16,7 @@ on:
         required: false
         type: boolean
         default: false
-      TELEGRAM_ROOT_UPLOAD:
-        description: "Upload Magisk Module from nikhilbadyal/revanced-magisk-module to Telegram"
-        required: false
-        type: boolean
-        default: false
+
       APPRISE_NOTIFY:
         description: "Use Apprise to Notify"
         required: false
@@ -57,11 +53,7 @@ on:
         required: false
         type: boolean
         default: false
-      TELEGRAM_ROOT_UPLOAD:
-        description: "Upload Magisk Module from nikhilbadyal/revanced-magisk-module to Telegram"
-        required: false
-        type: boolean
-        default: false
+
       APPRISE_NOTIFY:
         description: "Use Apprise to Notify"
         required: false
@@ -149,18 +141,6 @@ jobs:
       TELEGRAM_STICKER_ID: ${{ secrets.TELEGRAM_STICKER_ID }}
       MESSAGE: ${{ secrets.MESSAGE_NON_ROOT }}
 
-  upload-to-telegram-root:
-    needs: [ build-apk ]
-    uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
-    if: inputs.TELEGRAM_ROOT_UPLOAD
-    secrets:
-      TELEGRAM_API_ID: ${{ secrets.TELEGRAM_API_ID }}
-      TELEGRAM_API_HASH: ${{ secrets.TELEGRAM_API_HASH }}
-      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-      DOWNLOAD_GITHUB_REPOSITORY: ${{ secrets.ROOT_DOWNLOAD_GITHUB_REPOSITORY }}
-      MESSAGE: ${{ secrets.MESSAGE_ROOT }}
-
   apprise-notifier:
     needs: build-apk
     name: Apprise Notifier
@@ -206,9 +186,8 @@ jobs:
         && inputs.CLEANUP
         && needs.upload-to-github.result == 'success'
         && contains(fromJSON('["success","skipped"]'), needs.upload-to-telegram.result)
-        && contains(fromJSON('["success","skipped"]'), needs.upload-to-telegram-root.result)
       }}
-    needs: [ upload-to-github, upload-to-telegram, upload-to-telegram-root ]
+    needs: [ upload-to-github, upload-to-telegram ]
     uses: ./.github/workflows/github-cleanup.yml
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

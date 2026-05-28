@@ -11,11 +11,6 @@ on:
         required: false
         type: boolean
         default: true
-      TELEGRAM_ROOT_UPLOAD:
-        description: "Upload Magisk Module from nikhilbadyal/revanced-magisk-module to Telegram"
-        required: false
-        type: boolean
-        default: false
   schedule:
     - cron: '0 */12 * * *'
 jobs:
