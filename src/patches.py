@@ -97,6 +97,7 @@ class Patches(object):
         "com.adobe.photoshopmix": "adobe-photoshop-mix",
         "com.disney.disneyplus": "disney-plus-fire-tv-android-tv",
         "com.ebay.kleinanzeigen": "kleinanzeigen",
+        "com.letterboxd.letterboxd": "letterboxd",
     }
 
     @staticmethod

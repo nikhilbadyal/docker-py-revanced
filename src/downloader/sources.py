@@ -104,4 +104,5 @@ apk_sources = {
     "adobe-photoshop-mix": f"{APK_MIRROR_BASE_APK_URL}/adobe/photoshop-mix/",
     "disney-plus-fire-tv-android-tv": f"{APK_MIRROR_BASE_APK_URL}/disney/disney-fire-tv/",
     "kleinanzeigen": f"{APK_MIRROR_BASE_APK_URL}/kleinanzeigen-de-gmbh/ebay-kleinanzeigen-for-germany/",
+    "letterboxd": f"{APK_MIRROR_BASE_APK_URL}/letterboxd-limited/letterboxd/",
 }
