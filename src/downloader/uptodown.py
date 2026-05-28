@@ -15,6 +15,28 @@ from src.utils import bs4_parser, handle_request_response, request_header, reque
 class UptoDown(Downloader):
     """Files downloader."""
 
+    @staticmethod
+    def _is_xapk_variant_page(page: str) -> bool:
+        """Detect Uptodown variant URLs that expose the real XAPK file instead of the store bridge."""
+        return page.rstrip("/").endswith("-x")
+
+    @staticmethod
+    def _is_xapk_store_bridge(detail_download_button: Tag, page: str) -> bool:
+        """Detect generic XAPK download pages whose button downloads the Uptodown installer app."""
+        button_classes = detail_download_button.get("class", [])
+        # Direct variant pages also point at XAPK bytes, so only generic pages should be rewritten.
+        return "xapk" in button_classes and not UptoDown._is_xapk_variant_page(page)
+
+    def _resolve_xapk_variant_page(self: Self, detail_download_button: Tag, page: str, app: str) -> str:
+        """Build the direct XAPK variant URL from Uptodown's generic app-store bridge button."""
+        download_version = detail_download_button.get("data-download-version")
+        if not download_version:
+            msg = f"Unable to resolve direct XAPK download for {app} from uptodown."
+            raise UptoDownAPKDownloadError(msg, url=page)
+
+        # Uptodown encodes the real file endpoint as `/download/<file-id>-x` behind the variants UI.
+        return f"{page.rstrip('/')}/{download_version}-x"
+
     def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
         """Extract download link from uptodown url."""
         r = requests.get(page, headers=request_header, allow_redirects=True, timeout=request_timeout)
@@ -26,9 +48,14 @@ class UptoDown(Downloader):
             msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=page)
 
+        if self._is_xapk_store_bridge(detail_download_button, page):
+            # Generic XAPK pages download Uptodown App Store; recurse into the real variant page before downloading.
+            return self.extract_download_link(self._resolve_xapk_variant_page(detail_download_button, page, app), app)
+
         data_url = detail_download_button.get("data-url")
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
-        file_name = f"{app}.apk"
+        # XAPK archives must keep their extension so APKEditor can merge them into a patchable APK later.
+        file_name = f"{app}.xapk" if self._is_xapk_variant_page(page) else f"{app}.apk"
         self._download(download_url, file_name)
 
         return file_name, download_url
