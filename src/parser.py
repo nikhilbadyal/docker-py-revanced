@@ -465,6 +465,13 @@ class Parser(object):
         self._add_architecture_args(args, app)
         # Purge behavior remains enabled by default and can be remapped per CLI profile.
         append_cli_argument(args, self._patch_args["PURGE"])
+        # Continue-on-error is profile-controlled because Morphe supports it but ReVanced may reject unknown flags.
+        append_cli_argument(args, self._patch_args["CONTINUE_ON_ERROR"])
+
+        output_file_path = self.config.temp_folder.joinpath(app.get_output_file_name())
+        if output_file_path.exists():
+            # Removing the target first prevents a stale APK from masking a failed patch command.
+            output_file_path.unlink()
 
         start = perf_counter()
         logger.debug(f"Sending request to revanced cli for building with args java {args}")
@@ -479,6 +486,14 @@ class Parser(object):
         # A non-zero CLI exit means the APK was not patched even if the command produced log output.
         return_code = process.wait()
         if return_code != 0:
+            output_was_written = output_file_path.is_file() and output_file_path.stat().st_size > 0
+            if self._patch_args["CONTINUE_ON_ERROR"] and output_was_written:
+                # Morphe reports skipped patch failures with a non-zero code, but the produced APK is still usable.
+                logger.warning(
+                    f"ReVanced CLI exited with code {return_code} for {app.app_name}; "
+                    f"continuing because {output_file_path.name} was produced.",
+                )
+                return
             msg = f"ReVanced CLI exited with code {return_code} for {app.app_name}."
             raise PatchingFailedError(msg)
         logger.info(f"Patching completed for app {app} in {perf_counter() - start:.2f} seconds.")

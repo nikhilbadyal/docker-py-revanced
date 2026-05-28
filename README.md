@@ -361,11 +361,11 @@ You can use any of the following methods to build.
    This builder now supports multiple CLI syntax families and key-value override maps.
    ```dotenv
     # Default profile (recommended today)
-    GLOBAL_CLI_ARGSF=revanced-cli
+    GLOBAL_CLI_ARGSF=revanced-cli-v6
    ```
    Built-in profile values:
-   - `revanced-cli` (default, v5-style list-patches positional patch files)
-   - `revanced-cli-v6` (v6-style list-patches requires `-p/--patches`)
+   - `revanced-cli` (v5-style list-patches positional patch files)
+   - `revanced-cli-v6` (default, v6-style list-patches requires `-p/--patches`)
    - `morphe-cli` (morphe-style list-patches requires `--patches`)
 
    Override maps use unordered `KEY=value` pairs in a single string:
@@ -374,6 +374,8 @@ You can use any of the following methods to build.
     GLOBAL_CLI_PARGS="CMD=patch PATCHES=-p PATCHES_POST= ENABLED=-e DISABLED=-d OPTIONS=-O PURGE=--purge KEYSTORE=--keystore KEYSTORE_ENTRY_ALIAS=--keystore-entry-alias=alias KEYSTORE_ENTRY_PASSWORD=--keystore-entry-password=ReVanced KEYSTORE_PASSWORD=--keystore-password=ReVanced EXCLUSIVE=--exclusive APK=__POSITIONAL__ OUTPUT=-o FORCE=--force RIP_LIB=--rip-lib"
    ```
    `PATCHES_POST` is an optional companion argument appended after every patch bundle (used by ReVanced v6 with `-b`).
+   `CONTINUE_ON_ERROR` is an optional patch flag; the built-in `morphe-cli` profile enables `--continue-on-error`
+   because Morphe can skip one failed patch while still producing the app.
    App-level overrides are also supported and take precedence:
    ```dotenv
     YOUTUBE_CLI_ARGSF=morphe-cli

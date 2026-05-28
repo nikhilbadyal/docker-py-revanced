@@ -37,6 +37,7 @@ LIST_PATCHES_KEYS: Final[set[str]] = {
 PATCH_KEYS: Final[set[str]] = {
     "APK",
     "CMD",
+    "CONTINUE_ON_ERROR",
     "DISABLED",
     "ENABLED",
     "EXCLUSIVE",
@@ -72,6 +73,7 @@ DEFAULT_LIST_PATCHES_ARGS: Final[dict[str, str]] = {
 DEFAULT_PATCH_ARGS: Final[dict[str, str]] = {
     "APK": POSITIONAL_ARG,
     "CMD": "patch",
+    "CONTINUE_ON_ERROR": "",
     "DISABLED": "-d",
     "ENABLED": "-e",
     "EXCLUSIVE": "--exclusive",
@@ -115,6 +117,8 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
         "patch": {
             "APK": POSITIONAL_ARG,
             "CMD": "patch",
+            # ReVanced CLI docs do not currently advertise this Morphe-only flag, so keep it opt-in here.
+            "CONTINUE_ON_ERROR": "",
             "DISABLED": "-d",
             "ENABLED": "-e",
             "EXCLUSIVE": "--exclusive",
@@ -152,6 +156,8 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
         "patch": {
             "APK": POSITIONAL_ARG,
             "CMD": "patch",
+            # Morphe can skip failed individual patches so one bad optional patch does not abort the whole app.
+            "CONTINUE_ON_ERROR": "--continue-on-error",
             "DISABLED": "-d",
             "ENABLED": "-e",
             "EXCLUSIVE": "--exclusive",
