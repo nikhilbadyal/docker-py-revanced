@@ -27,13 +27,19 @@ Notes
 from __future__ import annotations
 
 import argparse
+import html
 import os
 import re
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
+from typing import TYPE_CHECKING, cast
 
 import requests
 from loguru import logger
+
+if TYPE_CHECKING:
+    from collections.abc import Collection
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ORG_APP_PARTS = 2
@@ -45,13 +51,32 @@ DEFAULT_BASIC_AUTH = os.getenv(
     "YXBpLWFwa3VwZGF0ZXI6cm01cmNmcnVVakt5MDRzTXB5TVBKWFc4",
 )
 DEFAULT_HTTP_TIMEOUT_SECS = 20
+APP_NAME_PRIMARY_SEPARATOR = re.compile("\\s*(?::|\\|| - | \\N{EN DASH} | \\N{EM DASH} )\\s*")
+
+
+@dataclass(frozen=True)
+class APKMirrorApp:
+    """APKMirror app metadata needed to register a ReVanced-supported package."""
+
+    package_name: str
+    org: str
+    app: str
+    display_name: str
+
+    @property
+    def url(self) -> str:
+        """Return the canonical APKMirror app page URL used in README entries and PR bodies."""
+        return f"https://www.apkmirror.com/apk/{self.org}/{self.app}/"
 
 
 def parse_args() -> argparse.Namespace:
     """Parse CLI arguments for registering an APKMirror app."""
     parser = argparse.ArgumentParser(description="Register a new APKMirror app")
     parser.add_argument("--package", required=True, help="Android package name, e.g., com.facebook.katana")
-    parser.add_argument("--name", required=True, help="Short app key/name used in configs, e.g., facebook")
+    parser.add_argument(
+        "--name",
+        help="Short app key/name used in configs; defaults to a stable key derived from APKMirror metadata",
+    )
 
     apkmirror = parser.add_mutually_exclusive_group(required=False)
     apkmirror.add_argument(
@@ -111,11 +136,88 @@ def extract_apkmirror_path(url_or_path: str) -> tuple[str, str]:
     return org, app
 
 
-def discover_apkmirror_path_via_api(package_name: str, auth_b64: str, user_agent: str) -> tuple[str, str]:
-    """Query APKMirror app_exists API to discover the org/app path for a package.
+def slugify_app_key(value: str) -> str:
+    """Convert human app text into the lowercase config-key shape used by this repository."""
+    # Treat plus signs as a word because app names such as Disney+ would otherwise lose meaningful identity.
+    value = value.replace("+", " plus ")
+    # Normalize accents before stripping punctuation so generated keys stay ASCII and shell-friendly.
+    normalized = unicodedata.normalize("NFKD", value).encode("ascii", "ignore").decode("ascii")
+    # Treat every punctuation run as a separator because app names often contain spaces, colons, and trademark marks.
+    return re.sub(r"[^a-z0-9]+", "-", normalized.lower()).strip("-")
+
+
+def derive_app_key(metadata: APKMirrorApp, reserved_keys: Collection[str] = ()) -> str:
+    """Derive a stable app key from APKMirror metadata, avoiding keys already used by supported apps."""
+    # APKMirror titles often include marketing suffixes after a separator, so prefer the recognizable primary name.
+    primary_name = APP_NAME_PRIMARY_SEPARATOR.split(metadata.display_name, maxsplit=1)[0].strip()
+    app_key = slugify_app_key(primary_name) or slugify_app_key(metadata.app)
+    reserved = set(reserved_keys)
+    if app_key not in reserved:
+        return app_key
+
+    # If the friendly name collides with an existing app, append the package tail to keep the generated PR isolated.
+    package_suffix = slugify_app_key(metadata.package_name.rsplit(".", maxsplit=1)[-1])
+    collision_key = f"{app_key}-{package_suffix}" if package_suffix else f"{app_key}-app"
+    counter = 2
+    while collision_key in reserved:
+        collision_key = f"{app_key}-{package_suffix or 'app'}-{counter}"
+        counter += 1
+    return collision_key
+
+
+def _select_api_item(data: dict[str, object], package_name: str) -> dict[str, object]:
+    """Select the API item for the requested package and reject APKMirror misses early."""
+    items = data.get("data") or []
+    if not isinstance(items, list) or not items:
+        msg = f"No data returned from APKMirror for {package_name}"
+        raise RuntimeError(msg)
+
+    # APKMirror preserves request order today, but matching by `pname` avoids trusting that undocumented behavior.
+    item = next(
+        (candidate for candidate in items if isinstance(candidate, dict) and candidate.get("pname") == package_name),
+        None,
+    )
+    if item is None and isinstance(items[0], dict) and "pname" not in items[0]:
+        item = items[0]
+    if item is None or not item.get("exists"):
+        msg = f"APKMirror does not have an app for {package_name}"
+        raise RuntimeError(msg)
+    return item
+
+
+def _object_dict(value: object) -> dict[str, object]:
+    """Return JSON object values as typed dictionaries and treat other JSON values as absent."""
+    if isinstance(value, dict):
+        return cast("dict[str, object]", value)
+    return {}
+
+
+def _metadata_from_api_response(package_name: str, data: dict[str, object]) -> APKMirrorApp:
+    """Parse the small subset of APKMirror API metadata needed for repo registration."""
+    item = _select_api_item(data, package_name)
+    app_data = _object_dict(item.get("app"))
+    release_data = _object_dict(item.get("release"))
+    app_link = app_data.get("link") or release_data.get("link")
+    if not isinstance(app_link, str):
+        msg = "APKMirror response missing app/release link"
+        raise TypeError(msg)
+
+    # App and release links both include `/apk/<org>/<app>/`; the release path may continue after those segments.
+    m = re.search(r"/apk/([^/]+)/([^/]+)(?:/|$)", app_link)
+    if not m:
+        msg = "Unable to parse org/app from APKMirror response link"
+        raise RuntimeError(msg)
+
+    raw_display_name = app_data.get("name")
+    display_name = html.unescape(str(raw_display_name or m.group(2))).strip()
+    return APKMirrorApp(package_name=package_name, org=m.group(1), app=m.group(2), display_name=display_name)
+
+
+def discover_apkmirror_app_via_api(package_name: str, auth_b64: str, user_agent: str) -> APKMirrorApp:
+    """Query APKMirror app_exists API to discover the app metadata for a package.
 
     Tries `app.link` first, then falls back to `release.link`.
-    Returns (org, app).
+    Returns APKMirror metadata used by the source, patch, and README updates.
     """
     headers = {
         "Authorization": f"Basic {auth_b64}",
@@ -133,23 +235,7 @@ def discover_apkmirror_path_via_api(package_name: str, auth_b64: str, user_agent
         msg = f"APKMirror app_exists API error: HTTP {resp.status_code}"
         raise RuntimeError(msg)
     data = resp.json()
-    items = data.get("data") or []
-    if not items:
-        msg = f"No data returned from APKMirror for {package_name}"
-        raise RuntimeError(msg)
-
-    item = items[0]
-    app_link = ((item.get("app") or {}).get("link")) or ((item.get("release") or {}).get("link"))
-    if not app_link:
-        msg = "APKMirror response missing app/release link"
-        raise RuntimeError(msg)
-
-    # Expect a path like: /apk/<org>/<app>/...
-    m = re.search(r"/apk/([^/]+)/([^/]+)/", app_link)
-    if not m:
-        msg = "Unable to parse org/app from APKMirror response link"
-        raise RuntimeError(msg)
-    return m.group(1), m.group(2)
+    return _metadata_from_api_response(package_name, data)
 
 
 def read_text(path: Path) -> str:
@@ -260,10 +346,23 @@ def _key_exists_in_dict(body: str, key: str) -> bool:
     return bool(key_re.search(body))
 
 
+def _split_body_and_closing_indent(body: str) -> tuple[str, str]:
+    """Split dictionary body content from indentation that belongs to the closing brace."""
+    # The parser stops at the closing brace, so any spaces before `}` are still inside `body`.
+    closing_indent_match = re.search(r"\n(?P<indent>[ \t]*)\Z", body)
+    if not closing_indent_match:
+        return body, ""
+
+    # Removing the final line break prevents the inserted item from being separated by a blank line.
+    return body[: closing_indent_match.start()], closing_indent_match.group("indent")
+
+
 def _insert_kv_entry(params: DictInsertParams) -> str:
     """Insert the key-value entry into the dictionary."""
+    body, closing_indent = _split_body_and_closing_indent(params.body)
     new_entry = f'\n{params.indent}"{params.key}": {params.value_code},'
-    new_body = params.body + new_entry + "\n"
+    # Reattach the closing indentation after the inserted entry so class-level dicts keep their closing brace aligned.
+    new_body = body + new_entry + "\n" + closing_indent
     return params.content[: params.brace_start + 1] + new_body + params.content[params.brace_end :]
 
 
@@ -373,17 +472,20 @@ def main() -> None:
 
     if args.apkmirror_path or args.apkmirror_url:
         org, app = extract_apkmirror_path(args.apkmirror_path or args.apkmirror_url)
+        metadata = APKMirrorApp(package_name=args.package, org=org, app=app, display_name=app)
     else:
-        org, app = discover_apkmirror_path_via_api(args.package, args.apkmirror_auth, args.user_agent)
+        metadata = discover_apkmirror_app_via_api(args.package, args.apkmirror_auth, args.user_agent)
+
+    app_key = args.name or derive_app_key(metadata)
 
     changed_any = False
-    changed_sources = update_sources_py(args.name, org, app, dry_run=args.dry_run)
+    changed_sources = update_sources_py(app_key, metadata.org, metadata.app, dry_run=args.dry_run)
     changed_any = changed_any or changed_sources
 
-    changed_patches = update_patches_py(args.package, args.name, dry_run=args.dry_run)
+    changed_patches = update_patches_py(args.package, app_key, dry_run=args.dry_run)
     changed_any = changed_any or changed_patches
 
-    changed_readme = update_readme_md(args.name, org, app, dry_run=args.dry_run)
+    changed_readme = update_readme_md(app_key, metadata.org, metadata.app, dry_run=args.dry_run)
     changed_any = changed_any or changed_readme
 
     if not changed_any:

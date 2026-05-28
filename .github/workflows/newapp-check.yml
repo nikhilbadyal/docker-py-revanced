@@ -17,6 +17,8 @@ jobs:
   status_check:
     if: github.repository == 'nikhilbadyal/docker-py-revanced'
     runs-on: ubuntu-latest
+    outputs:
+      missing_apps: ${{ steps.status.outputs.missing_apps }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -43,9 +45,12 @@ jobs:
         run: |
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           output=$(python -m scripts.status_check)
-          echo "changelog<<$EOF" >> $GITHUB_OUTPUT
-          echo "$output" >> $GITHUB_OUTPUT
-          echo "$EOF" >> $GITHUB_OUTPUT
+          {
+            echo "changelog<<$EOF"
+            echo "$output"
+            echo "$EOF"
+            echo "missing_apps=$(tr -d '\n' < missing_apps.json)"
+          } >> "$GITHUB_OUTPUT"
         id: status
 
       - name: Update Check
@@ -117,3 +122,52 @@ jobs:
 
               console.log(`Created new issue #${newIssue.data.number}: ${issueTitle}`);
             }
+
+  apkmirror_prs:
+    needs: status_check
+    if: github.repository == 'nikhilbadyal/docker-py-revanced' && needs.status_check.outputs.missing_apps != '' && needs.status_check.outputs.missing_apps != '[]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+
+      - name: Setup python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+
+      - name: Install Requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Configure git author
+        run: |
+          # GitHub branch protection and review history are clearer when bot-authored PR commits use the bot identity.
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Restore missing app list
+        run: |
+          # Pass the package list through a file because the Python PR creator consumes the same local artifact as tests.
+          cat > missing_apps.json <<'JSON'
+          ${{ needs.status_check.outputs.missing_apps }}
+          JSON
+
+      - name: Create APKMirror app PRs
+        env:
+          GH_PROMPT_DISABLED: "1"
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python -m scripts.auto_apkmirror_prs \
+            --missing-apps-json missing_apps.json \
+            --base-branch "${{ github.ref_name }}" \
+            --base-ref "origin/${{ github.ref_name }}"

@@ -1,5 +1,6 @@
 """Status check."""
 
+import json
 import re
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -41,6 +42,7 @@ revanced_cli_latest_release_api = "https://api.github.com/repos/ReVanced/revance
 revanced_cli_file_name = "revanced-cli.jar"
 revanced_patches_file_name = "patches.rvp"
 download_chunk_size = 1024 * 1024
+missing_apps_file = "missing_apps.json"
 
 
 def _download_file(url: str, destination: Path, headers: dict[str, str] | None = None) -> None:
@@ -137,6 +139,12 @@ def _compatible_apps_from_patches(patches: list[dict[Any, Any]]) -> set[str]:
             # The v5 path uses the repo parser output, where compatible packages are dictionaries with `name`.
             possible_apps.add(compatible_package["name"])
     return possible_apps
+
+
+def _write_missing_apps_file(missing_support: list[str]) -> None:
+    """Write missing packages as compact JSON for downstream automation jobs."""
+    # Compact JSON keeps the GitHub Actions job output small enough to pass between jobs without artifacts.
+    Path(missing_apps_file).write_text(json.dumps(missing_support, separators=(",", ":")) + "\n", encoding="utf_8")
 
 
 def apkcombo_scrapper(package_name: str) -> str:
@@ -299,6 +307,7 @@ def main() -> None:
     possible_apps = _compatible_apps_from_patches(patches)
     supported_app = set(Patches.support_app().keys())
     missing_support = sorted(possible_apps.difference(supported_app))
+    _write_missing_apps_file(missing_support)
     output = "New app found which aren't supported.\n\n"
     data = [
         [

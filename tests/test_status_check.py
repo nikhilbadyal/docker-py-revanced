@@ -3,11 +3,14 @@
 # The status check now bridges the v5 API release object and ReVanced CLI output, so tests focus on that contract.
 # ruff: noqa: PT009
 
+import json
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from typing import Any, Self
 from unittest import TestCase
+from unittest.mock import patch
 
-from scripts.status_check import _build_v5_list_patches_command, _compatible_apps_from_patches
+from scripts.status_check import _build_v5_list_patches_command, _compatible_apps_from_patches, _write_missing_apps_file
 
 
 class StatusCheckV5Tests(TestCase):
@@ -45,3 +48,13 @@ class StatusCheckV5Tests(TestCase):
             {"com.google.android.youtube", "com.google.android.apps.youtube.music"},
             _compatible_apps_from_patches(patches),
         )
+
+    def test_missing_apps_file_is_compact_json_for_workflow_output(self: Self) -> None:
+        """The PR job consumes a compact JSON handoff from the status job instead of reparsing markdown."""
+        with TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "missing_apps.json"
+            with patch("scripts.status_check.missing_apps_file", str(path)):
+                _write_missing_apps_file(["com.example.one", "com.example.two"])
+
+            self.assertEqual(["com.example.one", "com.example.two"], json.loads(path.read_text(encoding="utf_8")))
+            self.assertEqual('["com.example.one","com.example.two"]\n', path.read_text(encoding="utf_8"))
