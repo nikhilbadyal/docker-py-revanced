@@ -101,6 +101,7 @@ class Patches(object):
         "com.microsoft.office.officelens": "microsoft-lens",
         "com.mobilefootie.wc2010": "fotmob",
         "com.nothing.smartcenter": "nothing-x",
+        "com.peacocktv.peacockandroid": "peacock-tv",
     }
 
     @staticmethod
