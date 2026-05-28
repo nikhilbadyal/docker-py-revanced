@@ -99,6 +99,7 @@ class Patches(object):
         "com.sbs.ondemand.tv": "sbs-on-demand-android-tv",
         "com.sec.android.app.fm": "samsung-radio",
         "com.viber.voip": "rakuten-viber-messenger",
+        "at.gv.oe.app": "id-austria",
     }
 
     @staticmethod
