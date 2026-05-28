@@ -100,6 +100,7 @@ class Patches(object):
         "com.letterboxd.letterboxd": "letterboxd",
         "com.microsoft.office.officelens": "microsoft-lens",
         "com.mobilefootie.wc2010": "fotmob",
+        "com.nothing.smartcenter": "nothing-x",
     }
 
     @staticmethod
