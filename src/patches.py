@@ -94,6 +94,7 @@ class Patches(object):
         "ml.docilealligator.infinityforreddit.plus": "infinity-for-reddit-plus",
         "de.gmx.mobile.android.mail": "gmx",
         "ch.protonvpn.android": "proton-vpn",
+        "com.adobe.photoshopmix": "adobe-photoshop-mix",
     }
 
     @staticmethod

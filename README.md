@@ -244,6 +244,7 @@ You can use any of the following methods to build.
     - [infinity-for-reddit-plus](https://www.apkmirror.com/apk/docile-alligator/infinity-for-reddit-plus/)
     - [gmx](https://www.apkmirror.com/apk/gmx/gmx-mail/)
     - [proton-vpn](https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/)
+    - [adobe-photoshop-mix](https://www.apkmirror.com/apk/adobe/photoshop-mix/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
