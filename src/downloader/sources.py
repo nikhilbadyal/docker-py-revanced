@@ -101,4 +101,5 @@ apk_sources = {
     "infinity-for-reddit-plus": f"{APK_MIRROR_BASE_APK_URL}/docile-alligator/infinity-for-reddit-plus/",
     "gmx": f"{APK_MIRROR_BASE_APK_URL}/gmx/gmx-mail/",
     "proton-vpn": f"{APK_MIRROR_BASE_APK_URL}/proton-technologies-ag/protonvpn-secure-and-free-vpn/",
+    "adobe-photoshop-mix": f"{APK_MIRROR_BASE_APK_URL}/adobe/photoshop-mix/",
 }
