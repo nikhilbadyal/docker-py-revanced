@@ -220,6 +220,43 @@ def icon_scrapper(package_name: str) -> str:
     return not_found_icon
 
 
+def _is_on_apkmirror(package_name: str) -> bool:
+    """Helper to check if a package actually exists on APKMirror.
+
+    This queries apkmirror API through the utility function. If the API check fails
+    or rate-limits, we default to False to be conservative and prevent workflow crashes.
+    """
+    try:
+        response = apkmirror_status_check(package_name)
+        return bool(response["data"][0]["exists"])
+    except Exception:
+        # Fallback to False if check fails to avoid crashing status script.
+        return False
+
+
+def _is_on_google_play(package_name: str) -> bool:
+    """Helper to check if a package actually exists on Google Play.
+
+    This sends a fast HTTP HEAD request to the Play Store. A 200 OK status indicates
+    the app is active, while a 404 indicates it is absent or delisted.
+    """
+    # Build the full URL targeting the app details page on the Play Store.
+    url = PLAY_STORE_APK_URL.format(package_name)
+    try:
+        # We perform a HEAD request rather than a full GET request.
+        # This only fetches response headers, bypassing downloading the full HTML page content.
+        # It is significantly faster and consumes minimal network bandwidth.
+        # We also pass request_header to present a standard User-Agent and prevent requests from being blocked.
+        response = requests.head(url, headers=request_header, timeout=request_timeout)
+        # HTTP 200 means the app details page is available (app exists).
+        # HTTP 404 means the app is not found on Google Play.
+        return response.status_code == 200
+    except Exception:
+        # Fallback to False if check fails (e.g. request timeouts, network failure, or rate limit)
+        # to ensure the automated status pipeline never crashes.
+        return False
+
+
 def generate_markdown_table(data: list[list[str]]) -> str:
     """Generate markdown table."""
     if not data:
@@ -247,16 +284,30 @@ def main() -> None:
     missing_support = sorted(possible_apps.difference(supported_app))
     _write_missing_apps_file(missing_support)
     output = "New app found which aren't supported.\n\n"
-    data = [
-        [
+    data = []
+    for app in missing_support:
+        # Query APKMirror status API to see if the app exists.
+        exists_on_apkmirror = _is_on_apkmirror(app)
+        apkmirror_link_text = f"[APKMirror Link]({APK_MIRROR_PACKAGE_URL.format(app)})"
+        # Strikethrough (cancelling text) in Markdown is supported via ~~text~~.
+        # If the app doesn't exist on APKMirror, we cancel the link.
+        if not exists_on_apkmirror:
+            apkmirror_link_text = f"~~{apkmirror_link_text}~~"
+
+        # Query Google Play Store scraper to see if the app exists.
+        exists_on_google_play = _is_on_google_play(app)
+        playstore_link_text = f"[PlayStore Link]({PLAY_STORE_APK_URL.format(app)})"
+        # If the app doesn't exist on Google Play, we cancel the link.
+        if not exists_on_google_play:
+            playstore_link_text = f"~~{playstore_link_text}~~"
+
+        data.append([
             app,
             f'<img src="{icon_scrapper(app)}" width=50 height=50>',
-            f"[PlayStore Link]({PLAY_STORE_APK_URL.format(app)})",
-            f"[APKMirror Link]({APK_MIRROR_PACKAGE_URL.format(app)})",
+            playstore_link_text,
+            apkmirror_link_text,
             f"[Patches](https://revanced.app/patches?pkg={app})",
-        ]
-        for app in missing_support
-    ]
+        ])
     table = generate_markdown_table(data)
     output += table
     with Path("status.md").open("w", encoding="utf_8") as status:
