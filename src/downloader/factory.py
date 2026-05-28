@@ -3,7 +3,6 @@
 from src.config import RevancedConfig
 from src.downloader.apkeep import Apkeep
 from src.downloader.apkmirror import ApkMirror
-from src.downloader.apkmonk import ApkMonk
 from src.downloader.apkpure import ApkPure
 from src.downloader.apksos import ApkSos
 from src.downloader.download import Downloader
@@ -11,7 +10,6 @@ from src.downloader.github import Github
 from src.downloader.gitlab import Gitlab
 from src.downloader.sources import (
     APK_MIRROR_BASE_URL,
-    APK_MONK_BASE_URL,
     APK_PURE_BASE_URL,
     APKEEP,
     APKS_SOS_BASE_URL,
@@ -47,8 +45,6 @@ class DownloaderFactory(object):
             return UptoDown(config)
         if apk_source.startswith(APK_MIRROR_BASE_URL):
             return ApkMirror(config)
-        if apk_source.startswith(APK_MONK_BASE_URL):
-            return ApkMonk(config)
         if apk_source.startswith(APKEEP):
             return Apkeep(config)
         msg = "No download factory found."

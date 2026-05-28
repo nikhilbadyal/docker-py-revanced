@@ -51,10 +51,6 @@ class APKPureIconScrapError(ScrapingError):
     """Exception raised when the icon cannot be scraped from apkpure."""
 
 
-class APKMonkIconScrapError(ScrapingError):
-    """Exception raised when the icon cannot be scraped from apkmonk."""
-
-
 class DownloadError(BuilderError):
     """Generic Download failure."""
 
@@ -82,10 +78,6 @@ class APKDownloadError(DownloadError):
 
 class APKMirrorAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from apkmirror failed."""
-
-
-class APKMonkAPKDownloadError(APKDownloadError):
-    """Exception raised when downloading an APK from apkmonk failed."""
 
 
 class APKMirrorAPKNotFoundError(APKDownloadError):

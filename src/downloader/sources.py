@@ -19,10 +19,7 @@ APK_COMBO_GENERIC_URL = APK_COMBO_BASE_URL + "/genericApp/{}"
 not_found_icon = "https://www.svgrepo.com/download/441689/page-not-found.svg"
 # ReVanced API v5 exposes patch release metadata, and the status check resolves the bundle from that contract.
 revanced_api = "https://api.revanced.app/v5/patches"
-APK_MONK_BASE_URL = "https://www.apkmonk.com"
 APKEEP = "apkeep"
-APK_MONK_APK_URL = APK_MONK_BASE_URL + "/app/{}/"
-APK_MONK_ICON_URL = "https://cdn.apkmonk.com/logos/{}"
 apk_sources = {
     "backdrops": f"{APK_MIRROR_BASE_APK_URL}/backdrops/backdrops-wallpapers/",
     "bacon": f"{APK_MIRROR_BASE_APK_URL}/onelouder-apps/baconreader-for-reddit/",

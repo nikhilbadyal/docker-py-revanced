@@ -213,12 +213,12 @@ You can use any of the following methods to build.
     - [lightroom](https://www.apkmirror.com/apk/adobe/lightroom/)
     - [duolingo](https://www.apkmirror.com/apk/duolingo/duolingo-duolingo/)
     - [musically](https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/)
-    - [photomath](https://www.apkmonk.com/app/com.microblink.photomath/)
-    - [joey](https://www.apkmonk.com/app/o.o.joey/)
+    - [photomath](https://apkpure.net/-/com.microblink.photomath)
+    - [joey](https://joey-for-reddit.en.uptodown.com/android)
     - [vanced](https://www.apkmirror.com/apk/team-vanced/youtube-vanced/)
-    - [spotify-lite](https://www.apkmonk.com/app/com.spotify.lite/)
-    - [digitales](https://www.apkmonk.com/app/at.gv.oe.app/)
-    - [scbeasy](https://www.apkmonk.com/app/com.scb.phone/)
+    - [spotify-lite](https://apkpure.net/-/com.spotify.lite)
+    - [digitales](https://apkpure.net/-/at.gv.oe.app)
+    - [scbeasy](https://scb-easy.en.uptodown.com/android)
     - [reddit-news](https://m.apkpure.com/relay-for-reddit/reddit.news)
     - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
     - [tumblr](https://www.apkmirror.com/apk/tumblr-inc/tumblr/)
@@ -276,10 +276,7 @@ You can use any of the following methods to build.
    4. APKPURE - Supports downloading any available version
        1. Link Format - https://apkpure.net/-/<package-name>
        2. Example Link - https://apkpure.net/-/com.google.android.youtube
-   5. APKMonk - Supports downloading any available version
-       1. Link Format - https://www.apkmonk.com/app/<package-name>/
-       2. Example Link - https://www.apkmonk.com/app/<package-name>/
-   6. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
+   5. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
       1. Link Format - apkeep
       2. Example Link - apkeep
       Note - You need to provide APKEEP_EMAIL and APKEEP_TOKEN in the **DOCKER_PY_REVANCED_SECRETS** Github Secrets.

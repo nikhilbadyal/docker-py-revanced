@@ -16,8 +16,6 @@ from src.downloader.sources import (
     APK_COMBO_GENERIC_URL,
     APK_MIRROR_BASE_URL,
     APK_MIRROR_PACKAGE_URL,
-    APK_MONK_APK_URL,
-    APK_MONK_ICON_URL,
     APK_PURE_ICON_URL,
     PLAY_STORE_APK_URL,
     not_found_icon,
@@ -26,7 +24,6 @@ from src.downloader.sources import (
 from src.exceptions import (
     APKComboIconScrapError,
     APKMirrorIconScrapError,
-    APKMonkIconScrapError,
     APKPureIconScrapError,
     BuilderError,
     DownloadError,
@@ -35,7 +32,7 @@ from src.patches import Patches
 from src.patches_gen import parse_text_to_json, run_command_and_capture_output
 from src.utils import apkmirror_status_check, bs4_parser, handle_request_response, request_header, request_timeout
 
-no_of_col = 9
+no_of_col = 8
 combo_headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/116.0"}
 github_release_api_headers = {"Accept": "application/vnd.github+json"}
 revanced_cli_latest_release_api = "https://api.github.com/repos/ReVanced/revanced-cli/releases/latest"
@@ -185,24 +182,6 @@ def bigger_image(possible_links: list[str]) -> str:
     return higher_dimension_url
 
 
-def apkmonk_scrapper(package_name: str) -> str:
-    """APKMonk scrapper."""
-    apkmonk_url = APK_MONK_APK_URL.format(package_name)
-    icon_logo = APK_MONK_ICON_URL.format(package_name)
-    r = requests.get(apkmonk_url, headers=combo_headers, allow_redirects=True, timeout=request_timeout)
-    handle_request_response(r, apkmonk_url)
-    if head := BeautifulSoup(r.text, bs4_parser).head:
-        parsed_head = BeautifulSoup(str(head), bs4_parser)
-        href_elements = parsed_head.find_all(href=True)
-        possible_link = []
-        for element in href_elements:
-            href_value = element.get("href")
-            if href_value.startswith(icon_logo):
-                possible_link.append(href_value)
-        if possible_link:
-            return bigger_image(possible_link)
-    raise APKMonkIconScrapError(url=apkmonk_url)
-
 
 def apkmirror_scrapper(package_name: str) -> str:
     """Apkmirror URL."""
@@ -265,7 +244,6 @@ def icon_scrapper(package_name: str) -> str:
     scraper_names = {
         "gplay_icon_scrapper": GooglePlayScraperException,
         "apkmirror_scrapper": APKMirrorIconScrapError,
-        "apkmonk_scrapper": APKMonkIconScrapError,
         "apkpure_scrapper": APKPureIconScrapError,
         "apkcombo_scrapper": APKComboIconScrapError,
     }
@@ -288,15 +266,15 @@ def generate_markdown_table(data: list[list[str]]) -> str:
         return "No data to generate for the table."
 
     table = (
-        "| Package Name | App Icon | PlayStore| APKMirror |APKMonk |ApkPure | ApkCombo |Available patches |Supported?|\n"  # noqa: E501
-        "|--------------|----------|----------|-----------|--------|--------|----------|------------------|----------|\n"
+        "| Package Name | App Icon | PlayStore| APKMirror |ApkPure | ApkCombo |Available patches |Supported?|\n"  # noqa: E501
+        "|--------------|----------|----------|-----------|--------|----------|------------------|----------|\n"
     )
     for row in data:
         if len(row) != no_of_col:
             msg = f"Each row must contain {no_of_col} columns of data."
             raise ValueError(msg)
 
-        table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |{row[5]} | {row[6]} | {row[7]} | {row[8]} |\n"
+        table += f"| {row[0]} | {row[1]} | {row[2]} | {row[3]} |{row[4]} |{row[5]} | {row[6]} | {row[7]} |\n"
 
     return table
 
@@ -315,7 +293,6 @@ def main() -> None:
             f'<img src="{icon_scrapper(app)}" width=50 height=50>',
             f"[PlayStore Link]({PLAY_STORE_APK_URL.format(app)})",
             f"[APKMirror Link]({APK_MIRROR_PACKAGE_URL.format(app)})",
-            f"[APKMonk Link]({APK_MONK_APK_URL.format(app)})",
             f"[APKPure Link]({APK_PURE_ICON_URL.format(app)})",
             f"[APKCombo Link]({APK_COMBO_GENERIC_URL.format(app)})",
             f"[Patches](https://revanced.app/patches?pkg={app})",
