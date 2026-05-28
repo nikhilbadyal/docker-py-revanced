@@ -27,6 +27,13 @@ jobs:
           python-version: '3.x'
           cache: 'pip'
 
+      - name: Setup java
+        # The v5 status check shells out to ReVanced CLI because the API now exposes patch bundles instead of JSON lists.
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Install Requirements
         run: |
           python -m pip install --upgrade pip
