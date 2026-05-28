@@ -106,4 +106,5 @@ apk_sources = {
     "kleinanzeigen": f"{APK_MIRROR_BASE_APK_URL}/kleinanzeigen-de-gmbh/ebay-kleinanzeigen-for-germany/",
     "letterboxd": f"{APK_MIRROR_BASE_APK_URL}/letterboxd-limited/letterboxd/",
     "microsoft-lens": f"{APK_MIRROR_BASE_APK_URL}/microsoft-corporation/office-lens/",
+    "fotmob": f"{APK_MIRROR_BASE_APK_URL}/fotmob-as/fotmob-live-soccer-scores/",
 }
