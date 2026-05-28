@@ -98,6 +98,7 @@ class Patches(object):
         "com.disney.disneyplus": "disney-plus-fire-tv-android-tv",
         "com.ebay.kleinanzeigen": "kleinanzeigen",
         "com.letterboxd.letterboxd": "letterboxd",
+        "com.microsoft.office.officelens": "microsoft-lens",
     }
 
     @staticmethod
