@@ -52,7 +52,11 @@ class Apkeep(Downloader):
             "split_apk=true",
             self.config.temp_folder_name,
         ]
-        logger.debug(f"Running command: {cmd}")
+        # Keep the exact execution command separate from the log-safe command so credentials never reach CI logs.
+        safe_cmd = [*cmd]
+        safe_cmd[6] = "<redacted-email>"
+        safe_cmd[8] = "<redacted-token>"
+        logger.debug(f"Running command: {safe_cmd}")
 
         start = perf_counter()
         process = Popen(cmd, stdout=PIPE)

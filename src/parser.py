@@ -1,7 +1,7 @@
 """Revanced Parser."""
 
 import json
-from subprocess import PIPE, Popen
+from subprocess import PIPE, STDOUT, Popen
 from time import perf_counter
 from typing import Any, Self
 
@@ -468,12 +468,17 @@ class Parser(object):
 
         start = perf_counter()
         logger.debug(f"Sending request to revanced cli for building with args java {args}")
-        process = Popen(["java", *args], stdout=PIPE)
+        # stderr is merged into stdout so CLI failures are visible in the existing build log stream.
+        process = Popen(["java", *args], stdout=PIPE, stderr=STDOUT)
         output = process.stdout
         if not output:
             msg = "Failed to send request for patching."
             raise PatchingFailedError(msg)
         for line in output:
             logger.debug(line.decode(), flush=True, end="")
-        process.wait()
+        # A non-zero CLI exit means the APK was not patched even if the command produced log output.
+        return_code = process.wait()
+        if return_code != 0:
+            msg = f"ReVanced CLI exited with code {return_code} for {app.app_name}."
+            raise PatchingFailedError(msg)
         logger.info(f"Patching completed for app {app} in {perf_counter() - start:.2f} seconds.")

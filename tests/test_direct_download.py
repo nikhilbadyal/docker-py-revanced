@@ -38,7 +38,11 @@ class _BinaryResponse:
 
 def _config(temp_folder: Path) -> RevancedConfig:
     """Build only the config fields needed by the direct downloader."""
-    return cast("RevancedConfig", SimpleNamespace(personal_access_token=None, dry_run=False, temp_folder=temp_folder))
+    return cast(
+        "RevancedConfig",
+        # These are the downloader policy fields exercised by the tests without constructing the full env config.
+        SimpleNamespace(personal_access_token=None, dry_run=False, disable_caching=False, temp_folder=temp_folder),
+    )
 
 
 class DirectDownloadTests(TestCase):
@@ -54,6 +58,7 @@ class DirectDownloadTests(TestCase):
                 Downloader(config).direct_download("https://api.revanced.app/v5/patches.rvp", "patches.rvp")
 
         self.assertEqual("application/octet-stream", request_get.call_args.kwargs["headers"]["Accept"])
+        self.assertIn("timeout", request_get.call_args.kwargs)
 
     def test_existing_partial_file_is_replaced_when_size_does_not_match(self: Self) -> None:
         """Interrupted downloads should be retried instead of treating a partial target as cache-valid."""
@@ -82,5 +87,21 @@ class DirectDownloadTests(TestCase):
                 Downloader(config).direct_download("https://api.revanced.app/v5/patches.rvp", "patches.rvp")
 
             self.assertEqual(b"cached-patch-bundle", target.read_bytes())
+            self.assertEqual([], list(Path(tmp_dir).glob(".patches.rvp.*.part")))
+            self.assertTrue(response.closed)
+
+    def test_existing_complete_file_is_replaced_when_caching_is_disabled(self: Self) -> None:
+        """DISABLE_CACHING should force a fresh download even when a complete artifact exists."""
+        with TemporaryDirectory() as tmp_dir:
+            config = _config(Path(tmp_dir))
+            config.disable_caching = True
+            target = Path(tmp_dir, "patches.rvp")
+            target.write_bytes(b"cached-patch-bundle")
+            response = _BinaryResponse(b"fresh-patch-bundle")
+
+            with patch("src.downloader.download.session.get", return_value=response):
+                Downloader(config).direct_download("https://api.revanced.app/v5/patches.rvp", "patches.rvp")
+
+            self.assertEqual(b"fresh-patch-bundle", target.read_bytes())
             self.assertEqual([], list(Path(tmp_dir).glob(".patches.rvp.*.part")))
             self.assertTrue(response.closed)

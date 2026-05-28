@@ -23,6 +23,14 @@ from src.utils import (
     write_changelog_to_file,
 )
 
+# Shared cache tuple keeps app-processing helpers explicit without repeating the full nested type.
+AppCaches = tuple[
+    dict[tuple[str, str], tuple[str, str]],
+    dict[str, tuple[str, str]],
+    Lock,
+    Lock,
+]
+
 
 def get_app(config: RevancedConfig, app_name: str) -> APP:
     """Get App object."""
@@ -34,12 +42,7 @@ def get_app(config: RevancedConfig, app_name: str) -> APP:
 def process_single_app(
     app_name: str,
     config: RevancedConfig,
-    caches: tuple[
-        dict[tuple[str, str], tuple[str, str]],
-        dict[str, tuple[str, str]],
-        Lock,
-        Lock,
-    ],
+    caches: AppCaches,
 ) -> dict[str, Any]:
     """Process a single app and return its update info."""
     download_cache, resource_cache, download_lock, resource_lock = caches
@@ -47,14 +50,14 @@ def process_single_app(
     try:
         app = get_app(config, app_name)
 
-        # Use shared resource cache with thread safety
+        # Resource downloads use shared in-run caches unless the operator disables caching in config.
         app.download_patch_resources(config, resource_cache, resource_lock)
 
         patcher = Patches(config, app)
         parser = Parser(patcher, config)
         app_all_patches = patcher.get_app_configs(app)
 
-        # Use shared APK cache with thread safety
+        # APK downloads use shared in-run caches unless the operator disables caching in config.
         app.download_apk_for_patching(config, download_cache, download_lock)
 
         parser.include_exclude_patch(app, app_all_patches, patcher.patches_dict)
@@ -63,19 +66,86 @@ def process_single_app(
         parser.patch_app(app)
     except AppNotFoundError as e:
         logger.info(e)
-        return {}
+        raise
     except PatchesJsonLoadError:
         logger.exception("Patches.json not found")
-        return {}
+        raise
     except PatchingFailedError as e:
         logger.exception(e)
-        return {}
+        raise
     except BuilderError as e:
         logger.exception(f"Failed to build {app_name} because of {e}")
-        return {}
+        raise
     else:
         logger.info(f"Successfully completed {app_name}")
         return app_update_info
+
+
+def _build_caches() -> AppCaches:
+    """Create cache containers and locks shared across app workers."""
+    # Cache policy is enforced by callers, but the tuple shape stays stable for app-processing helpers.
+    return {}, {}, Lock(), Lock()
+
+
+def _record_failed_app(app_name: str, error: Exception, failed_apps: list[str]) -> None:
+    """Log and remember a failed app without hiding it from the final build result."""
+    logger.exception(f"Error processing {app_name}: {error}")
+    logger.info(f"{app_name} - FAILED")
+    # The build continues collecting independent successes, then fails once partial metadata is written.
+    failed_apps.append(app_name)
+
+
+def _process_apps_sequentially(
+    config: RevancedConfig,
+    caches: AppCaches,
+    updates_info: dict[str, Any],
+    failed_apps: list[str],
+) -> None:
+    """Process apps one-by-one for single-app and CI-test runs."""
+    for app_name in config.apps:
+        try:
+            app_updates = process_single_app(app_name, config, caches)
+            updates_info.update(app_updates)
+        except Exception as e:  # noqa: BLE001
+            _record_failed_app(app_name, e, failed_apps)
+
+
+def _process_apps_in_parallel(
+    config: RevancedConfig,
+    caches: AppCaches,
+    updates_info: dict[str, Any],
+    failed_apps: list[str],
+) -> None:
+    """Process apps with worker concurrency while preserving aggregate failure reporting."""
+    # Worker count is capped by app count and operator config so a large env file does not overload the runner.
+    max_workers = min(len(config.apps), config.max_parallel_apps)
+    logger.info(f"Processing {len(config.apps)} apps in parallel with {max_workers} workers")
+
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Submitting everything first lets independent apps finish even if one app fails early.
+        future_to_app = {}
+        for app_name in config.apps:
+            future = executor.submit(process_single_app, app_name, config, caches)
+            future_to_app[future] = app_name
+        total_apps = len(config.apps)
+
+        for completed_count, future in enumerate(as_completed(future_to_app), 1):
+            app_name = future_to_app[future]
+            try:
+                app_updates = future.result()
+                updates_info.update(app_updates)
+                logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name})")
+            except Exception as e:  # noqa: BLE001
+                logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name} - FAILED)")
+                _record_failed_app(app_name, e, failed_apps)
+
+
+def _raise_if_apps_failed(failed_apps: list[str]) -> None:
+    """Fail the process after all possible app work and metadata writing has completed."""
+    if failed_apps:
+        # CI must fail when any requested app fails so releases cannot silently ship partial builds.
+        msg = f"Failed to build {len(failed_apps)} app(s): {', '.join(sorted(failed_apps))}"
+        raise PatchingFailedError(msg)
 
 
 def main() -> None:
@@ -84,6 +154,7 @@ def main() -> None:
     env.read_env()
     config = RevancedConfig(env)
     updates_info = {}
+    failed_apps: list[str] = []
     Downloader.extra_downloads(config)
     if not config.dry_run:
         check_java()
@@ -92,60 +163,23 @@ def main() -> None:
 
     logger.info(f"Will Patch only {len(config.apps)} apps-:\n{config.apps}")
 
-    # Shared caches for reuse across all apps (empty if caching disabled)
-    download_cache: dict[tuple[str, str], tuple[str, str]] = {}
-    resource_cache: dict[str, tuple[str, str]] = {}
-
-    # Thread-safe locks for cache access
-    download_lock = Lock()
-    resource_lock = Lock()
-
-    # Clear caches if caching is disabled
     if config.disable_caching:
-        download_cache.clear()
-        resource_cache.clear()
+        # The cache containers still satisfy helper signatures, but callers skip reading or populating them.
+        logger.info("Download and resource caches are disabled for this run.")
 
-    # Determine optimal number of workers (don't exceed number of apps or CPU cores)
-    max_workers = min(len(config.apps), config.max_parallel_apps)
+    caches = _build_caches()
 
     try:
         if len(config.apps) == 1 or config.ci_test:
-            # For single app or CI testing, use sequential processing
-            caches = (download_cache, resource_cache, download_lock, resource_lock)
-            for app_name in config.apps:
-                try:
-                    app_updates = process_single_app(app_name, config, caches)
-                    updates_info.update(app_updates)
-                except Exception as e:  # noqa: BLE001
-                    logger.exception(f"Error processing {app_name}: {e}")
-                    logger.info(f"{app_name} - FAILED")
+            _process_apps_sequentially(config, caches, updates_info, failed_apps)
         else:
-            # For multiple apps, use parallel processing
-            logger.info(f"Processing {len(config.apps)} apps in parallel with {max_workers} workers")
-
-            with ThreadPoolExecutor(max_workers=max_workers) as executor:
-                # Submit all app processing tasks
-                caches = (download_cache, resource_cache, download_lock, resource_lock)
-                future_to_app = {
-                    executor.submit(process_single_app, app_name, config, caches): app_name for app_name in config.apps
-                }
-
-                # Collect results as they complete
-                total_apps = len(config.apps)
-
-                for completed_count, future in enumerate(as_completed(future_to_app), 1):
-                    app_name = future_to_app[future]
-                    try:
-                        app_updates = future.result()
-                        updates_info.update(app_updates)
-                        logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name})")
-                    except Exception as e:  # noqa: BLE001
-                        logger.exception(f"Error processing {app_name}: {e}")
-                        logger.info(f"Progress: {completed_count}/{total_apps} apps completed ({app_name} - FAILED)")
+            _process_apps_in_parallel(config, caches, updates_info, failed_apps)
     finally:
-        # Always write changelog, even if some apps failed
+        # Always write partial metadata for successful apps before surfacing the aggregate failure.
         write_changelog_to_file(updates_info)
         generate_obtainium_export(updates_info, config)
+
+    _raise_if_apps_failed(failed_apps)
 
 
 if __name__ == "__main__":

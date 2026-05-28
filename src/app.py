@@ -100,6 +100,13 @@ class APP(object):
             # Get unique cache key for this app
             cache_key = self.get_download_cache_key()
 
+            if config.disable_caching:
+                # Operators use this mode to force fresh APK resolution instead of reusing another app's in-run result.
+                logger.info(f"Caching disabled. Downloading APK for {self.app_name} without cache lookup.")
+                downloader = DownloaderFactory.create_downloader(config=config, apk_source=self.download_source)
+                self.download_file_name, self.download_dl = downloader.download(self.app_version, self)
+                return
+
             # Optimistic cache check (outside lock for better performance)
             if cache_key in download_cache:
                 logger.info(f"Skipping download. Reusing APK from cache for {self.app_name} ({self.app_version})")
@@ -297,6 +304,13 @@ class APP(object):
         """Filter out cached resources and handle cached ones."""
         resources_to_download: list[tuple[str, str, RevancedConfig, str]] = []
 
+        if self._config_disables_caching(download_tasks):
+            # Resource caching disabled means every configured resource URL is resolved freshly for this app.
+            return [
+                (resource_name, raw_url.strip(), cfg, assets_filter)
+                for resource_name, raw_url, cfg, assets_filter in download_tasks
+            ]
+
         with resource_lock:
             for resource_name, raw_url, cfg, assets_filter in download_tasks:
                 url = raw_url.strip()
@@ -325,7 +339,13 @@ class APP(object):
                 futures[resource_name] = executor.submit(self.download, url, cfg, assets_filter)
 
             concurrent.futures.wait(futures.values())
-            self._update_resource_cache(futures, resources_to_download, download_tasks, resource_cache, resource_lock)
+            self._update_resource_cache(
+                futures,
+                resources_to_download,
+                download_tasks,
+                resource_cache,
+                resource_lock,
+            )
 
     def _update_resource_cache(
         self: Self,
@@ -336,11 +356,17 @@ class APP(object):
         resource_lock: Lock,
     ) -> None:
         """Update resource cache with downloaded resources."""
+        disable_caching = self._config_disables_caching(resources_to_download)
         with resource_lock:
             for resource_name, future in futures.items():
                 try:
                     tag, file_name = future.result()
                     corresponding_url = next(url for name, url, _, _ in resources_to_download if name == resource_name)
+                    if disable_caching:
+                        # The app still needs resource metadata, but the shared cache must remain untouched.
+                        self._handle_cached_resource(resource_name, tag, file_name)
+                        logger.info(f"Downloaded {resource_name} without caching: {corresponding_url}")
+                        continue
                     if corresponding_url not in resource_cache:
                         self._handle_downloaded_resource(
                             resource_name,
@@ -359,6 +385,12 @@ class APP(object):
                 except BuilderError as e:
                     msg = f"Failed to download {resource_name} resource."
                     raise PatchingFailedError(msg) from e
+
+    @staticmethod
+    def _config_disables_caching(download_tasks: list[tuple[str, str, RevancedConfig, str]]) -> bool:
+        """Return whether the prepared resource tasks are configured to skip shared caches."""
+        # Every prepared task carries the same config object, so the first entry is enough to read the run policy.
+        return bool(download_tasks and download_tasks[0][2].disable_caching)
 
     def download_patch_resources(
         self: Self,

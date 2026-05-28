@@ -16,7 +16,7 @@ from tqdm import tqdm
 from src.app import APP
 from src.config import RevancedConfig
 from src.exceptions import DownloadError
-from src.utils import handle_request_response, implement_method, session
+from src.utils import handle_request_response, implement_method, request_timeout, session
 
 
 class Downloader(object):
@@ -105,20 +105,27 @@ class Downloader(object):
             url,
             stream=True,
             headers=self._build_download_headers(url, extra_headers),
+            # External artifact hosts occasionally hang; bounded requests let CI fail and retry instead of timing out.
+            timeout=request_timeout,
         )
         handle_request_response(response, url)
         total = int(response.headers.get("content-length", 0))
 
-        # Do not trust existence alone: an interrupted parallel worker can leave a partial artifact at the final path.
-        existing_size = self._existing_file_size(file_path)
-        if self._existing_download_is_complete(existing_size, total):
-            logger.debug(f"Skipping download of {file_name} from {url}. File already exists with expected size.")
-            response.close()
-            return
-        if existing_size is not None:
-            logger.warning(
-                f"Re-downloading {file_name} from {url}; existing size {existing_size} differs from expected {total}.",
-            )
+        if not self.config.disable_caching:
+            # An interrupted parallel worker can leave a partial artifact, so size must match before reuse.
+            existing_size = self._existing_file_size(file_path)
+            if self._existing_download_is_complete(existing_size, total):
+                logger.debug(f"Skipping download of {file_name} from {url}. File already exists with expected size.")
+                response.close()
+                return
+            if existing_size is not None:
+                logger.warning(
+                    f"Re-downloading {file_name} from {url}; "
+                    f"existing size {existing_size} differs from expected {total}.",
+                )
+        elif file_path.exists():
+            # DISABLE_CACHING means the caller wants a fresh artifact even when a same-sized file is already present.
+            logger.debug(f"Ignoring cached {file_name} because caching is disabled.")
 
         logger.info(f"Trying to download {file_name} from {url}")
         self._QUEUE_LENGTH += 1

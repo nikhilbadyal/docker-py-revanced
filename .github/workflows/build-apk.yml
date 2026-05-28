@@ -150,7 +150,7 @@ jobs:
       MESSAGE: ${{ secrets.MESSAGE_NON_ROOT }}
 
   upload-to-telegram-root:
-    needs: [ upload-to-telegram ]
+    needs: [ build-apk ]
     uses: nikhilbadyal/ghactions/.github/workflows/telegram-uploader.yml@main
     if: inputs.TELEGRAM_ROOT_UPLOAD
     secrets:
@@ -198,8 +198,17 @@ jobs:
 
   cleanup:
     name: GitHub Cleanup
-    if: inputs.CLEANUP
-    needs: [ upload-to-telegram ]
+    # Cleanup waits for upload jobs because Telegram flows may still need the GitHub release artifacts.
+    # always() prevents skipped optional upload jobs from short-circuiting the explicit result checks below.
+    if: >-
+      ${{
+        always()
+        && inputs.CLEANUP
+        && needs.upload-to-github.result == 'success'
+        && contains(fromJSON('["success","skipped"]'), needs.upload-to-telegram.result)
+        && contains(fromJSON('["success","skipped"]'), needs.upload-to-telegram-root.result)
+      }}
+    needs: [ upload-to-github, upload-to-telegram, upload-to-telegram-root ]
     uses: ./.github/workflows/github-cleanup.yml
     secrets:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
