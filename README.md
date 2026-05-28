@@ -182,7 +182,7 @@ You can use any of the following methods to build.
     - [windy](https://www.apkmirror.com/apk/windy-weather-world-inc/windy-wind-weather-forecast/)
     - [my-expenses](https://my-expenses.en.uptodown.com/android)
     - [backdrops](https://backdrops.en.uptodown.com/android)
-    - [expensemanager](https://apksos.com/app/com.ithebk.expensemanager)
+    - [expensemanager](https://bishinews-expense-manager.en.uptodown.com/android)
     - [tasker](https://www.apkmirror.com/apk/joaomgcd/tasker-crafty-apps-eu/)
     - [irplus](https://irplus.en.uptodown.com/android)
     - [vsco](https://www.apkmirror.com/apk/vsco/vsco-cam/)
@@ -214,7 +214,6 @@ You can use any of the following methods to build.
     - [joey](https://joey-for-reddit.en.uptodown.com/android)
     - [vanced](https://www.apkmirror.com/apk/team-vanced/youtube-vanced/)
     - [scbeasy](https://scb-easy.en.uptodown.com/android)
-    - [finanz-online](https://apksos.com/app/at.gv.bmf.bmf2go)
     - [tumblr](https://www.apkmirror.com/apk/tumblr-inc/tumblr/)
     - [fitnesspal](https://www.apkmirror.com/apk/myfitnesspal-inc/calorie-counter-myfitnesspal/)
     - [facebook](https://www.apkmirror.com/apk/facebook-2/facebook/)
@@ -264,10 +263,7 @@ You can use any of the following methods to build.
    2. UPTODOWN - Supports downloading any available version
         1. Link Format - https://<app-name>.en.uptodown.com/android
         2. Example Link - https://spotify.en.uptodown.com/android
-   3. APKSOS - Supports downloading any available version
-        1. Link Format - https://apksos.com/download-app/<package-name>
-        2. Example Link - https://apksos.com/download-app/com.expensemanager
-   4. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
+   3. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
       1. Link Format - apkeep
       2. Example Link - apkeep
       Note - You need to provide APKEEP_EMAIL and APKEEP_TOKEN in the **DOCKER_PY_REVANCED_SECRETS** Github Secrets.

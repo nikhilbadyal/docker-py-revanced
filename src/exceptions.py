@@ -80,10 +80,6 @@ class UptoDownAPKDownloadError(APKDownloadError):
     """Exception raised when downloading an APK from uptodown failed."""
 
 
-class APKSosAPKDownloadError(APKDownloadError):
-    """Exception raised when downloading an APK from apksos failed."""
-
-
 class PatchingFailedError(BuilderError):
     """Patching Failed."""
 

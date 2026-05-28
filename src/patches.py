@@ -62,7 +62,6 @@ class Patches(object):
         "o.o.joey": "joey",
         "com.vanced.android.youtube": "vanced",
         "com.scb.phone": "scbeasy",
-        "at.gv.bmf.bmf2go": "finanz-online",
         "com.tumblr": "tumblr",
         "com.myfitnesspal.android": "fitnesspal",
         "com.facebook.katana": "facebook",

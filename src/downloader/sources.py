@@ -6,8 +6,6 @@ APK_MIRROR_PACKAGE_URL = f"{APK_MIRROR_BASE_URL}/?s=" + "{}"
 APK_MIRROR_APK_CHECK = f"{APK_MIRROR_BASE_URL}/wp-json/apkm/v1/app_exists/"
 UPTODOWN_SUFFIX = "en.uptodown.com/android"
 UPTODOWN_BASE_URL = "https://{}." + UPTODOWN_SUFFIX
-APKS_SOS_BASE_URL = "https://apksos.com/download-app"
-APK_SOS_URL = APKS_SOS_BASE_URL + "/{}"
 GITHUB_BASE_URL = "https://github.com"
 PLAY_STORE_BASE_URL = "https://play.google.com"
 PLAY_STORE_APK_URL = f"{PLAY_STORE_BASE_URL}/store/apps/details?id=" + "{}"
@@ -66,7 +64,6 @@ apk_sources = {
     "my-expenses": UPTODOWN_BASE_URL.format("my-expenses"),
     "scbeasy": UPTODOWN_BASE_URL.format("scb-easy"),
     "expensemanager": UPTODOWN_BASE_URL.format("bishinews-expense-manager"),
-    "finanz-online": APK_SOS_URL,
     "photos": f"{APK_MIRROR_BASE_APK_URL}/google-inc/photos/",
     "amazon": f"{APK_MIRROR_BASE_APK_URL}/amazon-mobile-llc/amazon-shopping/",
     "bandcamp": f"{APK_MIRROR_BASE_APK_URL}/bandcamp-inc/bandcamp/",
