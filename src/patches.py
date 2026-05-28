@@ -93,6 +93,7 @@ class Patches(object):
         "ml.docilealligator.infinityforreddit.patreon": "infinity-for-reddit-patreon",
         "ml.docilealligator.infinityforreddit.plus": "infinity-for-reddit-plus",
         "de.gmx.mobile.android.mail": "gmx",
+        "ch.protonvpn.android": "proton-vpn",
     }
 
     @staticmethod
