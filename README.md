@@ -245,6 +245,7 @@ You can use any of the following methods to build.
     - [gmx](https://www.apkmirror.com/apk/gmx/gmx-mail/)
     - [proton-vpn](https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/)
     - [adobe-photoshop-mix](https://www.apkmirror.com/apk/adobe/photoshop-mix/)
+    - [disney-plus-fire-tv-android-tv](https://www.apkmirror.com/apk/disney/disney-fire-tv/)
 
     <br>`**` - You can also patch any other app which is **not** supported officially.To do so, you need to provide
    few more inputs to the tool which are mentioned below. These config will override the sources config from the tool.
