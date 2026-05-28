@@ -96,6 +96,7 @@ class Patches(object):
         "ch.protonvpn.android": "proton-vpn",
         "com.adobe.photoshopmix": "adobe-photoshop-mix",
         "com.disney.disneyplus": "disney-plus-fire-tv-android-tv",
+        "com.ebay.kleinanzeigen": "kleinanzeigen",
     }
 
     @staticmethod

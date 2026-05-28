@@ -103,4 +103,5 @@ apk_sources = {
     "proton-vpn": f"{APK_MIRROR_BASE_APK_URL}/proton-technologies-ag/protonvpn-secure-and-free-vpn/",
     "adobe-photoshop-mix": f"{APK_MIRROR_BASE_APK_URL}/adobe/photoshop-mix/",
     "disney-plus-fire-tv-android-tv": f"{APK_MIRROR_BASE_APK_URL}/disney/disney-fire-tv/",
+    "kleinanzeigen": f"{APK_MIRROR_BASE_APK_URL}/kleinanzeigen-de-gmbh/ebay-kleinanzeigen-for-germany/",
 }
