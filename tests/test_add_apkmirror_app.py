@@ -130,6 +130,39 @@ class APKMirrorAppRegistrationTests(TestCase):
         self.assertEqual("example-reader", candidates[0].app_key)
         self.assertEqual("new-app/apkmirror-com-example-reader", candidates[0].branch)
 
+    def test_resolve_candidates_stops_after_first_apkmirror_match(self: Self) -> None:
+        """The automation should queue one PR at a time because all generated PRs edit the same blocks."""
+        first_metadata = APKMirrorApp(
+            package_name="com.example.first",
+            org="example",
+            app="first-app",
+            display_name="First App",
+        )
+        second_metadata = APKMirrorApp(
+            package_name="com.example.second",
+            org="example",
+            app="second-app",
+            display_name="Second App",
+        )
+
+        with (
+            patch("scripts.auto_apkmirror_prs.reserved_app_keys", return_value=set()),
+            patch(
+                "scripts.auto_apkmirror_prs.discover_apkmirror_app_via_api",
+                side_effect=[first_metadata, second_metadata],
+            ) as discover_app,
+        ):
+            candidates = resolve_candidates(
+                ["com.example.first", "com.example.second"],
+                "new-app/apkmirror-",
+                "auth",
+                "agent",
+            )
+
+        self.assertEqual(1, len(candidates))
+        self.assertEqual("first-app", candidates[0].app_key)
+        self.assertEqual(1, discover_app.call_count)
+
     def test_insert_kv_into_class_dict_preserves_closing_brace_indentation(self: Self) -> None:
         """Generated PRs should append one dict item without blank spacer lines or closing-brace drift."""
         content = 'class Patches:\n    values = {\n        "existing.package": "existing-app",\n    }\n'

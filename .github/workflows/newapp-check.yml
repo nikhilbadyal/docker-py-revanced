@@ -162,7 +162,7 @@ jobs:
           ${{ needs.status_check.outputs.missing_apps }}
           JSON
 
-      - name: Create APKMirror app PRs
+      - name: Create next APKMirror app PR
         env:
           GH_PROMPT_DISABLED: "1"
           GH_TOKEN: ${{ github.token }}

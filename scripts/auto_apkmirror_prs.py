@@ -131,13 +131,17 @@ def resolve_candidates(
     auth_b64: str,
     user_agent: str,
 ) -> list[APKMirrorPRCandidate]:
-    """Resolve all missing packages while keeping generated app keys unique within the batch."""
+    """Resolve the next APKMirror-backed package so app-support PRs queue behind one base branch."""
     keys = reserved_app_keys()
     candidates = []
     for package_name in packages:
         candidate = resolve_candidate(package_name, keys, branch_prefix, auth_b64, user_agent)
-        if candidate:
-            candidates.append(candidate)
+        if not candidate:
+            continue
+        candidates.append(candidate)
+        # Every generated app PR edits the same README list and source dictionaries, so stop after one
+        # candidate to avoid creating sibling branches that immediately conflict after the first merge.
+        break
     return candidates
 
 
@@ -252,7 +256,7 @@ def process_candidate(candidate: APKMirrorPRCandidate, args: argparse.Namespace)
 
 
 def main() -> None:
-    """Resolve missing packages and open APKMirror support PRs for resolvable apps."""
+    """Resolve missing packages and open the next APKMirror support PR for a resolvable app."""
     args = parse_args()
     packages = load_missing_packages(Path(args.missing_apps_json))
     candidates = resolve_candidates(packages, args.branch_prefix, args.apkmirror_auth, args.user_agent)
