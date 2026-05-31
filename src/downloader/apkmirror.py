@@ -1,6 +1,7 @@
 """Downloader Class."""
 
 from typing import Any, Self, cast
+from uuid import uuid4
 
 from bs4 import BeautifulSoup, Tag
 from loguru import logger
@@ -14,13 +15,124 @@ from src.utils import (
     bs4_parser,
     contains_any_word,
     handle_request_response,
+    request_header,
     request_timeout,
     slugify,
+)
+
+# CloakBrowser runs inside the Docker container as root, so Chromium needs container-safe launch flags.
+CLOAK_BROWSER_ARGS = ["--no-sandbox", "--disable-dev-shm-usage"]
+# Waiting briefly after DOM load lets Cloudflare hand off to the real page without blocking forever on ads.
+CLOAK_NETWORK_IDLE_TIMEOUT_MS = 15_000
+# Playwright expects milliseconds while the rest of the downloader config stores request timeouts in seconds.
+CLOAK_REQUEST_TIMEOUT_MS = request_timeout * 1000
+# APKMirror sometimes returns challenge HTML with HTTP 200, so the body needs explicit marker detection.
+CLOAK_CHALLENGE_MARKERS = (
+    "attention required",
+    "captcha",
+    "cf-chl",
+    "cf-turnstile",
+    "challenge-platform",
+    "checking if the site connection is secure",
+    "checking your browser",
+    "just a moment",
+    "turnstile",
 )
 
 
 class ApkMirror(Downloader):
     """Files downloader."""
+
+    @staticmethod
+    def _is_cloudflare_challenge(source: str) -> bool:
+        """Detect Cloudflare challenge HTML that can be returned with HTTP 200."""
+        lowered_source = source.lower()
+        return any(marker in lowered_source for marker in CLOAK_CHALLENGE_MARKERS)
+
+    @staticmethod
+    def _cloak_dependencies(url: str, cause: Exception | None = None) -> tuple[Any, Any]:
+        """Load CloakBrowser lazily so non-APKMirror flows do not require a browser import."""
+        try:
+            from cloakbrowser import launch  # noqa: PLC0415
+            from playwright.sync_api import TimeoutError as PlaywrightTimeoutError  # noqa: PLC0415
+        except ImportError as exc:
+            msg = "APKMirror returned a Cloudflare challenge, but CloakBrowser is not installed."
+            raise APKMirrorAPKDownloadError(msg, url=url) from (cause or exc)
+
+        return launch, PlaywrightTimeoutError
+
+    @staticmethod
+    def _extract_source_with_cloak(url: str, cause: Exception | None = None) -> str:
+        """Fetch APKMirror HTML through CloakBrowser when cloudscraper receives a challenge page."""
+        launch_browser, playwright_timeout_error = ApkMirror._cloak_dependencies(url, cause)
+        browser = launch_browser(args=CLOAK_BROWSER_ARGS)
+        try:
+            page = browser.new_page()
+            # APKMirror's API/header expectations differ from Chromium defaults, so keep the existing browser identity.
+            page.set_extra_http_headers({"User-Agent": request_header["User-Agent"]})
+            page.goto(url, wait_until="domcontentloaded", timeout=CLOAK_REQUEST_TIMEOUT_MS)
+            try:
+                # Cloudflare may finish after DOMContentLoaded; timeout here should not hide usable page HTML.
+                page.wait_for_load_state("networkidle", timeout=CLOAK_NETWORK_IDLE_TIMEOUT_MS)
+            except playwright_timeout_error:
+                logger.debug(f"Timed out waiting for APKMirror network idle after CloakBrowser loaded {url}.")
+            source = cast("str", page.content())
+        finally:
+            browser.close()
+
+        if ApkMirror._is_cloudflare_challenge(source):
+            msg = "APKMirror still returned a Cloudflare challenge after CloakBrowser loaded the page."
+            raise APKMirrorAPKDownloadError(msg, url=url) from cause
+        return source
+
+    def _download_file_with_cloak(
+        self: Self,
+        url: str,
+        file_name: str,
+        referer: str,
+        cause: Exception | None = None,
+    ) -> None:
+        """Download an APKMirror binary through CloakBrowser when the HTTP session is challenged."""
+        if self.config.dry_run:
+            logger.debug(f"Skipping CloakBrowser download of {file_name} from {url}. Dry run is enabled.")
+            return
+
+        launch_browser, playwright_timeout_error = self._cloak_dependencies(url, cause)
+        target_path = self.config.temp_folder.joinpath(file_name)
+        # Save into a unique partial path so failed browser downloads never poison the cache target.
+        partial_path = target_path.with_name(f".{target_path.name}.{uuid4().hex}.part")
+        browser = launch_browser(args=CLOAK_BROWSER_ARGS)
+        try:
+            page = browser.new_page()
+            # The download endpoint validates browser-like navigation context, including the APKMirror referer.
+            page.set_extra_http_headers({"User-Agent": request_header["User-Agent"], "Referer": referer})
+            page.goto(referer, wait_until="domcontentloaded", timeout=CLOAK_REQUEST_TIMEOUT_MS)
+            try:
+                # The referer page only needs to settle enough for cookies/challenges before triggering the file URL.
+                page.wait_for_load_state("networkidle", timeout=CLOAK_NETWORK_IDLE_TIMEOUT_MS)
+            except playwright_timeout_error:
+                logger.debug(f"Timed out waiting for APKMirror referer network idle before downloading {file_name}.")
+
+            with page.expect_download(timeout=CLOAK_REQUEST_TIMEOUT_MS) as download_info:
+                # Triggering a same-page anchor preserves browser download behavior better than raw HTTP.
+                page.evaluate(
+                    """url => {
+                        const link = document.createElement("a");
+                        link.href = url;
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+                    }""",
+                    url,
+                )
+            download_info.value.save_as(str(partial_path))
+            partial_path.replace(target_path)
+        except Exception as exc:
+            partial_path.unlink(missing_ok=True)
+            msg = f"Unable to download {file_name} from APKMirror with CloakBrowser."
+            raise APKMirrorAPKDownloadError(msg, url=url) from exc
+        finally:
+            browser.close()
 
     def _extract_force_download_link(self: Self, link: str, app: str) -> tuple[str, str]:
         """Extract force download link.
@@ -39,13 +151,17 @@ class ApkMirror(Downloader):
             if possible_link.get("href") and "download.php?id=" in possible_link.get("href"):
                 file_name = f"{app}.{extension}"
                 download_url = APK_MIRROR_BASE_URL + possible_link["href"]
-                # Use cloudscraper + Referer so Cloudflare allows the binary download
-                self._download(
-                    download_url,
-                    file_name,
-                    http_session=apkmirror_scraper,
-                    extra_headers={"Referer": link},
-                )
+                try:
+                    # cloudscraper remains the fast path when APKMirror only serves a JavaScript challenge.
+                    self._download(
+                        download_url,
+                        file_name,
+                        http_session=apkmirror_scraper,
+                        extra_headers={"Referer": link},
+                    )
+                except ScrapingError as exc:
+                    # CAPTCHA/Turnstile challenges require a browser context rather than a raw HTTP retry.
+                    self._download_file_with_cloak(download_url, file_name, link, exc)
                 return file_name, download_url
         msg = f"Unable to extract force download for {app}"
         raise APKMirrorAPKDownloadError(msg, url=link)
@@ -99,14 +215,22 @@ class ApkMirror(Downloader):
         """Extracts the source from the url incase of reuse.
 
         Uses cloudscraper instead of plain requests because APKMirror is protected
-        by Cloudflare. Plain requests.get returns HTTP 403 with a JS challenge page
-        ("Just a moment...") in CI environments. cloudscraper transparently handles
-        those challenges and returns the real page HTML.
+        by Cloudflare. CloakBrowser is a heavier fallback for CAPTCHA/Turnstile
+        pages that cloudscraper can no longer solve.
         """
         response = apkmirror_scraper.get(url, timeout=request_timeout)
-        handle_request_response(response, url)
+        try:
+            # Non-200 challenge responses need the same browser fallback as HTTP 200 challenge pages.
+            handle_request_response(response, url)
+        except ScrapingError as exc:
+            logger.warning(f"APKMirror HTTP fetch failed for {url}; retrying with CloakBrowser.")
+            return ApkMirror._extract_source_with_cloak(url, exc)
         # cloudscraper's .text is typed as Any; cast to str to satisfy mypy
-        return cast("str", response.text)
+        source = cast("str", response.text)
+        if ApkMirror._is_cloudflare_challenge(source):
+            logger.warning(f"APKMirror returned a Cloudflare challenge for {url}; retrying with CloakBrowser.")
+            return ApkMirror._extract_source_with_cloak(url)
+        return source
 
     @staticmethod
     def _extracted_search_source_div(source: str, search_class: str) -> Tag:
