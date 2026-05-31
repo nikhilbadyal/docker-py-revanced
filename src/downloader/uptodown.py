@@ -22,9 +22,9 @@ class UptoDown(Downloader):
 
     @staticmethod
     def _is_xapk_store_bridge(detail_download_button: Tag, page: str) -> bool:
-        """Detect generic XAPK download pages whose button downloads the Uptodown installer app."""
+        """Detect generic XAPK download pages whose direct token is missing and needs the legacy variant path."""
         button_classes = detail_download_button.get("class", [])
-        # Direct variant pages also point at XAPK bytes, so only generic pages should be rewritten.
+        # Direct variant pages already point at app bytes, so only generic pages are eligible for fallback rewriting.
         return "xapk" in button_classes and not UptoDown._is_xapk_variant_page(page)
 
     def _resolve_xapk_variant_page(self: Self, detail_download_button: Tag, page: str, app: str) -> str:
@@ -48,15 +48,27 @@ class UptoDown(Downloader):
             msg = f"Unable to download {app} from uptodown."
             raise UptoDownAPKDownloadError(msg, url=page)
 
-        if self._is_xapk_store_bridge(detail_download_button, page):
-            # Generic XAPK pages download Uptodown App Store; recurse into the real variant page before downloading.
-            return self.extract_download_link(self._resolve_xapk_variant_page(detail_download_button, page, app), app)
-
         data_url = detail_download_button.get("data-url")
+        if not isinstance(data_url, str) or not data_url:
+            if self._is_xapk_store_bridge(detail_download_button, page):
+                # Older Uptodown pages omitted the direct token, so keep the variant-page fallback for that shape.
+                return self.extract_download_link(
+                    self._resolve_xapk_variant_page(detail_download_button, page, app),
+                    app,
+                )
+
+            msg = f"Unable to download {app} from uptodown."
+            raise UptoDownAPKDownloadError(msg, url=page)
+
         download_url = f"https://dw.uptodown.com/dwn/{data_url}"
-        # XAPK archives must keep their extension so APKEditor can merge them into a patchable APK later.
+        # Generic pages may be labeled XAPK while redirecting to one APK; archive inspection handles splits later.
         file_name = f"{app}.xapk" if self._is_xapk_variant_page(page) else f"{app}.apk"
-        self._download(download_url, file_name)
+        # Uptodown signs direct download tokens against its API headers, so reuse the scrape auth for the binary GET.
+        download_headers = {
+            "User-Agent": request_header["User-Agent"],
+            "Authorization": request_header["Authorization"],
+        }
+        self._download(download_url, file_name, extra_headers=download_headers)
 
         return file_name, download_url
 

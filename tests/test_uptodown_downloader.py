@@ -27,15 +27,59 @@ def _config() -> "RevancedConfig":
     return cast("RevancedConfig", SimpleNamespace())
 
 
+def _download_headers() -> dict[str, str]:
+    """Mirror the auth headers Uptodown expects when resolving signed direct download tokens."""
+    return {
+        "User-Agent": request_header["User-Agent"],
+        "Authorization": request_header["Authorization"],
+    }
+
+
 class UptodownDownloaderTests(TestCase):
     """Verify that Uptodown pages resolve to app files, not Uptodown's installer app."""
 
-    def test_generic_xapk_download_page_resolves_real_variant_file(self: Self) -> None:
-        """Generic XAPK pages advertise the Uptodown store, so the downloader must follow the variant file ID."""
+    def test_generic_xapk_download_page_uses_current_direct_token(self: Self) -> None:
+        """Current XAPK pages advertise the store while still exposing a direct app-file token."""
         generic_page = """
             <button id="detail-download-button" class="button download xapk"
                     data-download-version="1174126433"
-                    data-url="uptodown-store-token">
+                    data-url="youtube-music-token">
+                Download with UPTODOWN app store
+            </button>
+        """
+        downloader = UptoDown(_config())
+
+        with (
+            patch(
+                "src.downloader.uptodown.requests.get",
+                return_value=_UptodownResponse(text=generic_page),
+            ) as request_get,
+            patch.object(downloader, "_download") as download,
+        ):
+            file_name, download_url = downloader.extract_download_link(
+                "https://youtube-music.en.uptodown.com/android/download/1164645913",
+                "YOUTUBE_MUSIC_MORPHE",
+            )
+
+        self.assertEqual("YOUTUBE_MUSIC_MORPHE.apk", file_name)
+        self.assertEqual("https://dw.uptodown.com/dwn/youtube-music-token", download_url)
+        download.assert_called_once_with(
+            "https://dw.uptodown.com/dwn/youtube-music-token",
+            "YOUTUBE_MUSIC_MORPHE.apk",
+            extra_headers=_download_headers(),
+        )
+        request_get.assert_called_once_with(
+            "https://youtube-music.en.uptodown.com/android/download/1164645913",
+            headers=request_header,
+            allow_redirects=True,
+            timeout=request_timeout,
+        )
+
+    def test_generic_xapk_download_page_without_token_resolves_legacy_variant_file(self: Self) -> None:
+        """Legacy XAPK bridge pages without a direct token still need the variant file ID fallback."""
+        generic_page = """
+            <button id="detail-download-button" class="button download xapk"
+                    data-download-version="1174126433">
                 Download with UPTODOWN app store
             </button>
         """
@@ -61,7 +105,11 @@ class UptodownDownloaderTests(TestCase):
 
         self.assertEqual("REDDIT_ANDEA.xapk", file_name)
         self.assertEqual("https://dw.uptodown.com/dwn/reddit-xapk-token", download_url)
-        download.assert_called_once_with("https://dw.uptodown.com/dwn/reddit-xapk-token", "REDDIT_ANDEA.xapk")
+        download.assert_called_once_with(
+            "https://dw.uptodown.com/dwn/reddit-xapk-token",
+            "REDDIT_ANDEA.xapk",
+            extra_headers=_download_headers(),
+        )
         request_get.assert_any_call(
             "https://reddit-official-app.en.uptodown.com/android/download/1174126433-x",
             headers=request_header,
@@ -90,4 +138,8 @@ class UptodownDownloaderTests(TestCase):
 
         self.assertEqual("EXAMPLE_APP.apk", file_name)
         self.assertEqual("https://dw.uptodown.com/dwn/plain-apk-token", download_url)
-        download.assert_called_once_with("https://dw.uptodown.com/dwn/plain-apk-token", "EXAMPLE_APP.apk")
+        download.assert_called_once_with(
+            "https://dw.uptodown.com/dwn/plain-apk-token",
+            "EXAMPLE_APP.apk",
+            extra_headers=_download_headers(),
+        )
