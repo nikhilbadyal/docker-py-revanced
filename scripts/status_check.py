@@ -226,10 +226,13 @@ def _is_on_apkmirror(package_name: str) -> bool:
     """
     try:
         response = apkmirror_status_check(package_name)
-        return bool(response["data"][0]["exists"])
-    except Exception:
+    except Exception:  # noqa: BLE001
         # Fallback to False if check fails to avoid crashing status script.
+        # We catch Exception broadly with noqa: BLE001 to prevent any API/scraping failures from halting execution.
         return False
+    else:
+        # Check exists field from the successfully returned API data.
+        return bool(response["data"][0]["exists"])
 
 
 def _is_on_google_play(package_name: str) -> bool:
@@ -246,13 +249,16 @@ def _is_on_google_play(package_name: str) -> bool:
         # It is significantly faster and consumes minimal network bandwidth.
         # We also pass request_header to present a standard User-Agent and prevent requests from being blocked.
         response = requests.head(url, headers=request_header, timeout=request_timeout)
-        # HTTP 200 means the app details page is available (app exists).
-        # HTTP 404 means the app is not found on Google Play.
-        return response.status_code == 200
-    except Exception:
+    except Exception:  # noqa: BLE001
         # Fallback to False if check fails (e.g. request timeouts, network failure, or rate limit)
         # to ensure the automated status pipeline never crashes.
+        # We catch Exception broadly with noqa: BLE001 to prevent any connection/network errors from halting execution.
         return False
+    else:
+        # HTTP 200 means the app details page is available (app exists).
+        # HTTP 404 means the app is not found on Google Play.
+        # We use noqa: PLR2004 as 200 is a standard HTTP status code here.
+        return response.status_code == 200  # noqa: PLR2004
 
 
 def generate_markdown_table(data: list[list[str]]) -> str:
