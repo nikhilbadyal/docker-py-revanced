@@ -2,19 +2,23 @@
 
 # APKMirror's challenge shape is external and unstable, so these tests pin the local fallback decisions.
 # Private helper coverage is intentional because the public path would perform live APKMirror downloads.
-# ruff: noqa: PT009, SLF001
+# ruff: noqa: PT009, PT027, SLF001
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
-from typing import Self, cast
+from typing import TYPE_CHECKING, Self, cast
 from unittest import TestCase
 from unittest.mock import patch
 
 from src.config import RevancedConfig
 from src.downloader.apkmirror import ApkMirror
 from src.downloader.sources import APK_MIRROR_BASE_URL
-from src.exceptions import ScrapingError
+from src.exceptions import APKMirrorAPKDownloadError, ScrapingError
+from src.utils import request_header
+
+if TYPE_CHECKING:
+    from src.app import APP
 
 
 class _APKMirrorResponse(SimpleNamespace):
@@ -22,6 +26,42 @@ class _APKMirrorResponse(SimpleNamespace):
 
     status_code: int
     text: str
+
+
+class _CloakPage:
+    """Browser page double that rejects manual UA overrides while returning stable HTML."""
+
+    def goto(self: Self, *args: object, **kwargs: object) -> None:
+        """Accept navigation calls because URL timing behavior is not what this test verifies."""
+
+    def wait_for_load_state(self: Self, *args: object, **kwargs: object) -> None:
+        """Accept load-state waits because timeout handling is covered by Playwright itself."""
+
+    def set_extra_http_headers(self: Self, headers: dict[str, str]) -> None:
+        """Fail if source extraction reintroduces a partial browser fingerprint override."""
+        msg = f"Unexpected browser headers: {headers}"
+        raise AssertionError(msg)
+
+    def content(self: Self) -> str:
+        """Return a non-challenge page so the fallback can complete successfully."""
+        return "<html>real app page</html>"
+
+
+class _CloakBrowser:
+    """Browser double that records closure while exposing one page instance."""
+
+    def __init__(self: Self) -> None:
+        """Create state used to verify fallback cleanup."""
+        self.closed = False
+        self.page = _CloakPage()
+
+    def new_page(self: Self) -> _CloakPage:
+        """Return the fake page used by the CloakBrowser source fallback."""
+        return self.page
+
+    def close(self: Self) -> None:
+        """Record cleanup because browser processes must not leak after fallback fetches."""
+        self.closed = True
 
 
 def _config(temp_folder: Path) -> RevancedConfig:
@@ -35,6 +75,13 @@ def _config(temp_folder: Path) -> RevancedConfig:
 
 class APKMirrorDownloaderTests(TestCase):
     """Verify APKMirror can fall back from HTTP scraping to CloakBrowser."""
+
+    def test_default_user_agent_uses_valid_khtml_token(self: Self) -> None:
+        """A typo in the shared UA made requests look like an impossible browser."""
+        user_agent = request_header["User-Agent"]
+
+        self.assertIn("(KHTML, like Gecko)", user_agent)
+        self.assertNotIn("(HTML, like Gecko)", user_agent)
 
     def test_extract_source_uses_cloak_when_cloudscraper_gets_http_challenge(self: Self) -> None:
         """HTTP challenge failures should be retried through CloakBrowser instead of failing immediately."""
@@ -62,6 +109,74 @@ class APKMirrorDownloaderTests(TestCase):
         self.assertEqual("<html>real app page</html>", source)
         cloak.assert_called_once_with("https://www.apkmirror.com/apk/example/app/")
 
+    def test_extract_source_with_cloak_keeps_cloakbrowser_user_agent(self: Self) -> None:
+        """CloakBrowser should keep a coherent browser fingerprint instead of receiving a forced UA header."""
+        browser = _CloakBrowser()
+
+        def launch_browser(*_args: object, **_kwargs: object) -> _CloakBrowser:
+            """Return the fake browser while accepting the real launch options."""
+            return browser
+
+        with patch.object(ApkMirror, "_cloak_dependencies", return_value=(launch_browser, TimeoutError)):
+            source = ApkMirror._extract_source_with_cloak("https://www.apkmirror.com/apk/example/app/")
+
+        self.assertEqual("<html>real app page</html>", source)
+        self.assertTrue(browser.closed)
+
+    def test_specific_version_uses_listing_url_for_release_slug(self: Self) -> None:
+        """APKMirror release slugs can differ from app source slugs, so specific versions should use listing links."""
+        listing_page = """
+            <div class="listWidget p-relative">
+                <div class="appRow">
+                    <span class="appRowTitle">X 11.95.1-release.0</span>
+                    <a class="downloadLink" href="/apk/x-corp/twitter/x-11-95-1-release-0-release/">Download</a>
+                </div>
+            </div>
+        """
+        app = cast(
+            "APP",
+            # Only these APP fields are read while network and download methods are patched in this test.
+            SimpleNamespace(
+                app_name="TWITTER_PIKO",
+                app_version="11.95.1-release-ripped.0",
+                download_source="https://www.apkmirror.com/apk/x-corp/twitter/",
+                effective_cli_argsf="morphe-cli",
+            ),
+        )
+
+        with TemporaryDirectory() as tmp_dir:
+            downloader = ApkMirror(_config(Path(tmp_dir)))
+            with (
+                patch.object(downloader, "_extract_source", return_value=listing_page),
+                patch.object(
+                    downloader,
+                    "get_download_page",
+                    return_value="https://example.test/download/",
+                ) as get_page,
+                patch.object(
+                    downloader,
+                    "extract_download_link_for_app",
+                    return_value=("TWITTER_PIKO.apkm", "https://example.test/download.php?id=1"),
+                ),
+            ):
+                file_name, download_url = downloader.specific_version(app, "11.95.1-release-ripped.0")
+
+        get_page.assert_called_once_with(
+            "https://www.apkmirror.com/apk/x-corp/twitter/x-11-95-1-release-0-release/",
+        )
+        self.assertEqual("TWITTER_PIKO.apkm", file_name)
+        self.assertEqual("https://example.test/download.php?id=1", download_url)
+
+    def test_get_download_page_rejects_missing_release_table(self: Self) -> None:
+        """A normal APKMirror 404 page should fail as a download error instead of a NoneType parser crash."""
+        with TemporaryDirectory() as tmp_dir:
+            downloader = ApkMirror(_config(Path(tmp_dir)))
+            with (
+                patch.object(downloader, "_extract_source", return_value="<html><h1>404</h1></html>"),
+                self.assertRaisesRegex(APKMirrorAPKDownloadError, "variants table"),
+            ):
+                downloader.get_download_page("https://www.apkmirror.com/apk/x-corp/twitter/missing/")
+
     def test_force_download_uses_cloak_when_binary_download_is_challenged(self: Self) -> None:
         """The final `download.php` endpoint can be challenged separately from the HTML pages."""
         force_download_page = """
@@ -86,3 +201,28 @@ class APKMirrorDownloaderTests(TestCase):
         self.assertEqual("EXAMPLE_APP.apk", file_name)
         self.assertEqual(f"{APK_MIRROR_BASE_URL}/download.php?id=12345", download_url)
         cloak_download.assert_called_once()
+
+    def test_force_download_preserves_bundle_as_apkm_when_requested(self: Self) -> None:
+        """Morphe patch sources need APKMirror bundles preserved as APKM instead of merged through APKEditor."""
+        force_download_page = """
+            <span class="apkm-badge">BUNDLE</span>
+            <div class="tab-pane">
+                <a href="/download.php?id=67890">Download APKM</a>
+            </div>
+        """
+
+        with TemporaryDirectory() as tmp_dir:
+            downloader = ApkMirror(_config(Path(tmp_dir)))
+            with (
+                patch.object(downloader, "_extract_source", return_value=force_download_page),
+                patch.object(downloader, "_download") as download,
+            ):
+                file_name, download_url = downloader._extract_force_download_link(
+                    "https://www.apkmirror.com/apk/example/app/download/",
+                    "PIKO_TWITTER",
+                    preserve_bundle=True,
+                )
+
+        self.assertEqual("PIKO_TWITTER.apkm", file_name)
+        self.assertEqual(f"{APK_MIRROR_BASE_URL}/download.php?id=67890", download_url)
+        download.assert_called_once()

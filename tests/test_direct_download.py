@@ -7,13 +7,16 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
-from typing import Self, cast
+from typing import TYPE_CHECKING, Self, cast
 from unittest import TestCase
 from unittest.mock import patch
 from zipfile import ZipFile
 
 from src.config import RevancedConfig
 from src.downloader.download import Downloader
+
+if TYPE_CHECKING:
+    from src.app import APP
 
 
 class _BinaryResponse:
@@ -44,6 +47,7 @@ def _config(temp_folder: Path) -> RevancedConfig:
         # These are the downloader policy fields exercised by the tests without constructing the full env config.
         SimpleNamespace(
             apk_editor="apkeditor.jar",
+            existing_downloaded_apks=[],
             personal_access_token=None,
             dry_run=False,
             disable_caching=False,
@@ -148,3 +152,53 @@ class DirectDownloadTests(TestCase):
         self.assertEqual("youtube_music.apk", output_file)
         self.assertIn(f"{tmp_dir}/youtube_music.xapk", command)
         self.assertIn(f"{tmp_dir}/youtube_music.apk", command)
+
+    def test_download_passes_morphe_apkm_to_patcher_without_apkeditor(self: Self) -> None:
+        """Morphe can patch APKM inputs directly, so preserving them avoids corrupting split-bundle patch targets."""
+        with TemporaryDirectory() as tmp_dir:
+            config = _config(Path(tmp_dir))
+            app = cast(
+                "APP",
+                # The downloader only needs the app name for logging and the effective profile for conversion policy.
+                SimpleNamespace(app_name="PIKO_TWITTER", effective_cli_argsf="morphe-cli"),
+            )
+            downloader = Downloader(config)
+
+            with (
+                patch.object(
+                    downloader,
+                    "latest_version",
+                    return_value=("PIKO_TWITTER.apkm", "https://example/apkm"),
+                ),
+                patch.object(downloader, "convert_to_apk") as convert_to_apk,
+            ):
+                output_file, download_url = downloader.download("latest", app)
+
+        self.assertEqual("PIKO_TWITTER.apkm", output_file)
+        self.assertEqual("https://example/apkm", download_url)
+        convert_to_apk.assert_not_called()
+
+    def test_download_keeps_non_morphe_bundle_merge_path(self: Self) -> None:
+        """ReVanced-style profiles still need APKEditor conversion for bundle-shaped downloads."""
+        with TemporaryDirectory() as tmp_dir:
+            config = _config(Path(tmp_dir))
+            app = cast(
+                "APP",
+                # The non-Morphe profile keeps the historical merge behavior even if the source suffix is APKM.
+                SimpleNamespace(app_name="INSTAGRAM_REVANCED", effective_cli_argsf="revanced-cli"),
+            )
+            downloader = Downloader(config)
+
+            with (
+                patch.object(
+                    downloader,
+                    "latest_version",
+                    return_value=("INSTAGRAM_REVANCED.apkm", "https://example/apkm"),
+                ),
+                patch.object(downloader, "convert_to_apk", return_value="INSTAGRAM_REVANCED.apk") as convert_to_apk,
+            ):
+                output_file, download_url = downloader.download("latest", app)
+
+        self.assertEqual("INSTAGRAM_REVANCED.apk", output_file)
+        self.assertEqual("https://example/apkm", download_url)
+        convert_to_apk.assert_called_once_with("INSTAGRAM_REVANCED.apkm")

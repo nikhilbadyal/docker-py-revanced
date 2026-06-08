@@ -1,6 +1,7 @@
 """Revanced Patches."""
 
 import contextlib
+import re
 from typing import Any, ClassVar, Self
 
 from loguru import logger
@@ -201,6 +202,20 @@ class Patches(object):
         return patch_dict
 
     @staticmethod
+    def _coerce_nonstandard_version(candidate: str) -> Version | None:
+        """Convert suffix-heavy app versions into a comparable numeric version when possible."""
+        numeric_parts = re.findall(r"\d+", candidate)
+        if not numeric_parts:
+            # Versions without numeric groups cannot be ordered safely, so callers should keep the existing fallback.
+            return None
+        try:
+            # Piko can publish versions such as `11.95.1-release-ripped.0`; numeric groups preserve app ordering.
+            return Version(".".join(numeric_parts))
+        except InvalidVersion:
+            # The normalized numeric form should be valid, but preserving the old fallback keeps parsing resilient.
+            return None
+
+    @staticmethod
     def select_recommended_version(versions: list[str]) -> str:
         """Choose the newest compatible version from the CLI-provided version list."""
         valid_versions: list[tuple[Version, str]] = []
@@ -210,14 +225,18 @@ class Patches(object):
                 # The CLI often returns newest-to-oldest, but sorting avoids relying on source ordering.
                 valid_versions.append((Version(candidate), candidate))
             except InvalidVersion:
-                # Non-standard app versions should not crash patch listing; fallback below preserves CLI order.
-                logger.warning(f"Unable to parse compatible app version `{candidate}`.")
+                if coerced_version := Patches._coerce_nonstandard_version(candidate):
+                    # Numeric coercion joins the same comparison pool so mixed beta/release-ripped lists sort together.
+                    valid_versions.append((coerced_version, candidate))
+                else:
+                    # Non-standard app versions should not crash patch listing; fallback below preserves CLI order.
+                    logger.warning(f"Unable to parse compatible app version `{candidate}`.")
 
         if valid_versions:
             # The original string is returned so downstream download sources receive the exact advertised value.
             return max(valid_versions, key=lambda item: item[0])[1]
 
-        # If every version is non-standard, keep the first advertised version rather than silently picking oldest.
+        # If every version is unorderable, keep the first advertised version rather than silently picking oldest.
         return versions[0]
 
     def _is_duplicate_patch(self: Self, patch_name: str, app_name: str) -> bool:

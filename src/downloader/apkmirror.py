@@ -15,7 +15,6 @@ from src.utils import (
     bs4_parser,
     contains_any_word,
     handle_request_response,
-    request_header,
     request_timeout,
     slugify,
 )
@@ -68,8 +67,7 @@ class ApkMirror(Downloader):
         browser = launch_browser(args=CLOAK_BROWSER_ARGS)
         try:
             page = browser.new_page()
-            # APKMirror's API/header expectations differ from Chromium defaults, so keep the existing browser identity.
-            page.set_extra_http_headers({"User-Agent": request_header["User-Agent"]})
+            # CloakBrowser owns the browser fingerprint, so partial header overrides would desync client hints.
             page.goto(url, wait_until="domcontentloaded", timeout=CLOAK_REQUEST_TIMEOUT_MS)
             try:
                 # Cloudflare may finish after DOMContentLoaded; timeout here should not hide usable page HTML.
@@ -104,8 +102,8 @@ class ApkMirror(Downloader):
         browser = launch_browser(args=CLOAK_BROWSER_ARGS)
         try:
             page = browser.new_page()
-            # The download endpoint validates browser-like navigation context, including the APKMirror referer.
-            page.set_extra_http_headers({"User-Agent": request_header["User-Agent"], "Referer": referer})
+            # The download endpoint validates navigation context; keep CloakBrowser's own UA and add only the referer.
+            page.set_extra_http_headers({"Referer": referer})
             page.goto(referer, wait_until="domcontentloaded", timeout=CLOAK_REQUEST_TIMEOUT_MS)
             try:
                 # The referer page only needs to settle enough for cookies/challenges before triggering the file URL.
@@ -134,7 +132,25 @@ class ApkMirror(Downloader):
         finally:
             browser.close()
 
-    def _extract_force_download_link(self: Self, link: str, app: str) -> tuple[str, str]:
+    @staticmethod
+    def _select_download_extension(apk_type: str, *, preserve_bundle: bool) -> str:
+        """Choose the local extension that preserves the patcher's expected input shape."""
+        if apk_type == "BUNDLE" and preserve_bundle:
+            # Morphe can patch APKM bundles directly, so preserving the bundle avoids APKEditor flattening split inputs.
+            return "apkm"
+        if apk_type == "BUNDLE":
+            # ReVanced-style patchers still receive a merged APK, so bundles keep an archive suffix for APKEditor.
+            return "zip"
+        # Single APK variants are already patcher-ready and should keep the normal APK suffix.
+        return "apk"
+
+    def _extract_force_download_link(
+        self: Self,
+        link: str,
+        app: str,
+        *,
+        preserve_bundle: bool = False,
+    ) -> tuple[str, str]:
         """Extract force download link.
 
         The actual download.php file endpoint is also behind Cloudflare, so we
@@ -145,7 +161,7 @@ class ApkMirror(Downloader):
         link_page_source = self._extract_source(link)
         notes_divs = self._extracted_search_source_div(link_page_source, "tab-pane")
         apk_type = self._extracted_search_source_div(link_page_source, "apkm-badge").get_text()
-        extension = "zip" if apk_type == "BUNDLE" else "apk"
+        extension = self._select_download_extension(apk_type, preserve_bundle=preserve_bundle)
         possible_links = notes_divs.find_all("a")
         for possible_link in possible_links:
             if possible_link.get("href") and "download.php?id=" in possible_link.get("href"):
@@ -166,8 +182,8 @@ class ApkMirror(Downloader):
         msg = f"Unable to extract force download for {app}"
         raise APKMirrorAPKDownloadError(msg, url=link)
 
-    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
-        """Function to extract the download link from apkmirror html page.
+    def _extract_download_link(self: Self, page: str, app: str, *, preserve_bundle: bool) -> tuple[str, str]:
+        """Extract the APKMirror download link while honoring the selected input-shape policy.
 
         :param page: Url of the page
         :param app: Name of the app
@@ -183,9 +199,28 @@ class ApkMirror(Downloader):
             ),
             None,
         ):
-            return self._extract_force_download_link(APK_MIRROR_BASE_URL + final_download_link, app)
+            return self._extract_force_download_link(
+                APK_MIRROR_BASE_URL + final_download_link,
+                app,
+                preserve_bundle=preserve_bundle,
+            )
         msg = f"Unable to extract link from {app} version list"
         raise APKMirrorAPKDownloadError(msg, url=page)
+
+    def extract_download_link(self: Self, page: str, app: str) -> tuple[str, str]:
+        """Function to extract the download link from apkmirror html page.
+
+        :param page: Url of the page
+        :param app: Name of the app
+        """
+        # Public callers keep historical merged-bundle behavior unless they pass through the APP-aware path below.
+        return self._extract_download_link(page, app, preserve_bundle=False)
+
+    def extract_download_link_for_app(self: Self, page: str, app: APP) -> tuple[str, str]:
+        """Extract the APKMirror download link using the app's patcher profile."""
+        # Morphe's APKM support is profile-specific, so only Morphe apps preserve APKMirror bundles as `.apkm`.
+        preserve_bundle = app.effective_cli_argsf == "morphe-cli"
+        return self._extract_download_link(page, app.app_name, preserve_bundle=preserve_bundle)
 
     def get_download_page(self: Self, main_page: str) -> str:
         """Function to get the download page in apk_mirror.
@@ -194,6 +229,10 @@ class ApkMirror(Downloader):
         :return:
         """
         list_widget = self._extracted_search_div(main_page, "tab-pane noPadding")
+        if list_widget is None:
+            # APKMirror can return a normal 404 page for a guessed release URL, so fail before parsing variant rows.
+            msg = "Unable to find APKMirror variants table on release page"
+            raise APKMirrorAPKDownloadError(msg, url=main_page)
         table_rows = list_widget.find_all(class_="table-row headerFont")
         links: dict[str, str] = {}
         apk_archs = ["arm64-v8a", "universal", "noarch"]
@@ -209,6 +248,35 @@ class ApkMirror(Downloader):
             return preferred_link
         msg = "Unable to extract download page"
         raise APKMirrorAPKDownloadError(msg, url=main_page)
+
+    @staticmethod
+    def _version_matches_title(version: str, title: str) -> bool:
+        """Return whether an APKMirror app-row title refers to the requested version."""
+        if version in title:
+            return True
+        # Piko advertises `release-ripped` versions while APKMirror stores the matching upstream `release` APK.
+        apk_mirror_version = version.replace("-ripped", "")
+        return apk_mirror_version in title
+
+    def _find_specific_version_page(self: Self, app: APP, version: str) -> str:
+        """Resolve a specific APKMirror release URL from the app listing instead of guessing the release slug."""
+        versions_div = self._extracted_search_div(app.download_source, "listWidget p-relative")
+        if versions_div is None:
+            # A missing listing container means the source page is not the expected APKMirror app listing.
+            msg = f"Unable to find APKMirror version list for {app.app_name}"
+            raise APKMirrorAPKDownloadError(msg, url=app.download_source)
+
+        for app_row in versions_div.find_all(class_="appRow"):
+            # APKMirror release slugs can differ from the app source slug, so links must come from the listing row.
+            title = app_row.find(class_="appRowTitle")
+            download_link = app_row.find(class_="downloadLink")
+            if not title or not download_link or not download_link.get("href"):
+                continue
+            if self._version_matches_title(version, title.get_text(" ", strip=True)):
+                return f"{APK_MIRROR_BASE_URL}{download_link['href']}"
+
+        msg = f"Unable to find {app.app_name} version {version} on APKMirror"
+        raise APKMirrorAPKDownloadError(msg, url=app.download_source)
 
     @staticmethod
     def _extract_source(url: str) -> str:
@@ -251,10 +319,8 @@ class ApkMirror(Downloader):
         :return: Version of downloaded apk
         """
         if not main_page:
-            version = version.replace(".", "-")
-            apk_main_page = app.download_source
-            version_page = apk_main_page + apk_main_page.split("/")[-2]
-            main_page = f"{version_page}-{version}-release/"
+            # APKMirror may rename app slugs independently from source paths, so resolve release URLs from listing HTML.
+            main_page = self._find_specific_version_page(app, version)
         download_page = self.get_download_page(main_page)
         if app.app_version == "latest":
             try:
@@ -265,7 +331,7 @@ class ApkMirror(Downloader):
                 logger.info(f"Guessed {app.app_version} for {app.app_name}")
             except ScrapingError:
                 pass
-        return self.extract_download_link(download_page, app.app_name)
+        return self.extract_download_link_for_app(download_page, app)
 
     def latest_version(self: Self, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Function to download whatever the latest version of app from apkmirror.
@@ -275,6 +341,10 @@ class ApkMirror(Downloader):
         """
         app_main_page = app.download_source
         versions_div = self._extracted_search_div(app_main_page, "listWidget p-relative")
+        if versions_div is None:
+            # Without the listing widget there is no safe way to infer the latest APKMirror release.
+            msg = f"Unable to find APKMirror version list for {app.app_name}"
+            raise APKMirrorAPKDownloadError(msg, url=app_main_page)
         app_rows = versions_div.find_all(class_="appRow")
         version_urls = [
             app_row.find(class_="downloadLink")["href"]

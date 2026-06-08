@@ -34,9 +34,10 @@ default_build = [
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
 minimum_java_major_version = 17
+# Use a syntactically valid desktop Chrome identity because APKMirror and artifact hosts may reject impossible browsers.
 request_header = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (HTML, like Gecko)"
+    "AppleWebKit/537.36 (KHTML, like Gecko)"
     " Chrome/96.0.4664.93 Safari/537.36",
     "Authorization": "Basic YXBpLWFwa3VwZGF0ZXI6cm01cmNmcnVVakt5MDRzTXB5TVBKWFc4",
     "Content-Type": "application/json",

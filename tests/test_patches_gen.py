@@ -112,6 +112,19 @@ class PatchesGenParserTests(TestCase):
 
         self.assertEqual("beta-current", selected_version)
 
+    def test_recommended_version_handles_piko_suffix_versions(self: Self) -> None:
+        """Piko can publish channel-suffixed app versions, so numeric groups should still decide newest support."""
+        selected_version = Patches.select_recommended_version(
+            [
+                "11.80.0-alpha.1",
+                "11.82.0-beta.1",
+                "11.81.0-release.0",
+                "11.95.1-release-ripped.0",
+            ],
+        )
+
+        self.assertEqual("11.95.1-release-ripped.0", selected_version)
+
     def test_revanced_indented_option_names_do_not_split_patch_sections(self: Self) -> None:
         """ReVanced v6 option `Name:` fields should not become fake patch sections."""
         patches = parse_text_to_json(REVANCED_SAMPLE)

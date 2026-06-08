@@ -235,6 +235,12 @@ class Downloader(object):
         base_name, _ = os.path.splitext(filename)
         return base_name + new_extension
 
+    @staticmethod
+    def _should_patch_download_directly(file_name: str, app: APP) -> bool:
+        """Return whether the downloaded file should be passed to the patcher without APKEditor conversion."""
+        # Only Morphe accepts APKM safely; every other profile keeps the established APKEditor merge path.
+        return file_name.endswith(".apkm") and app.effective_cli_argsf == "morphe-cli"
+
     def download(self: Self, version: str, app: APP, **kwargs: Any) -> tuple[str, str]:
         """Public function to download apk to patch.
 
@@ -250,6 +256,9 @@ class Downloader(object):
             file_name, app_dl = self.specific_version(app, version)
         else:
             file_name, app_dl = self.latest_version(app, **kwargs)
+        if self._should_patch_download_directly(file_name, app):
+            # The patcher can consume this input as-is, so conversion would remove the split-package shape it needs.
+            return file_name, app_dl
         return self.convert_to_apk(file_name), app_dl
 
     def direct_download(self: Self, dl: str, file_name: str) -> None:
