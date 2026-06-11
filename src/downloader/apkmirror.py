@@ -258,8 +258,44 @@ class ApkMirror(Downloader):
         apk_mirror_version = version.replace("-ripped", "")
         return apk_mirror_version in title
 
+    @staticmethod
+    def _guess_release_url(download_source: str, version: str) -> str:
+        """Construct a direct APKMirror release URL from the app listing URL and version.
+
+        APKMirror follows a predictable slug pattern: the last path segment of the listing URL
+        (the app slug) is combined with the version (dots replaced by dashes) and a '-release'
+        suffix. For example:
+          source: https://www.apkmirror.com/apk/google-inc/youtube/
+          version: 20.51.39
+          result: https://www.apkmirror.com/apk/google-inc/youtube/youtube-20-51-39-release/
+        """
+        # Strip trailing slash and extract the app slug (last path segment of the listing URL).
+        trimmed = download_source.rstrip("/")
+        app_slug = trimmed.rsplit("/", maxsplit=1)[-1]
+        # APKMirror normalizes version separators to dashes inside release slugs.
+        version_slug = version.replace(".", "-")
+        return f"{trimmed}/{app_slug}-{version_slug}-release/"
+
     def _find_specific_version_page(self: Self, app: APP, version: str) -> str:
-        """Resolve a specific APKMirror release URL from the app listing instead of guessing the release slug."""
+        """Resolve a specific APKMirror release URL, trying a direct URL guess before listing scrape.
+
+        The listing page only shows the most recent versions. Popular apps like YouTube push older
+        versions off the first page quickly, so a direct URL construction is attempted first.
+        """
+        # Fast path: construct the release URL directly and verify that the release page exists.
+        guessed_url = self._guess_release_url(app.download_source, version)
+        try:
+            page_source = self._extract_source(guessed_url)
+            # A valid release page contains the variants table; a 404/soft-error page does not.
+            if self._extracted_search_source_div(page_source, "tab-pane noPadding") is not None:
+                logger.debug(f"Direct URL resolved for {app.app_name} {version}: {guessed_url}")
+                return guessed_url
+            logger.debug(f"Guessed URL {guessed_url} loaded but has no variants table; falling back to listing.")
+        except (APKMirrorAPKDownloadError, ScrapingError):
+            # The guessed URL returned a non-200 or challenge page; fall through to listing-based lookup.
+            logger.debug(f"Guessed URL {guessed_url} failed; falling back to listing scrape.")
+
+        # Slow path: scrape the first page of the version listing and match by title text.
         versions_div = self._extracted_search_div(app.download_source, "listWidget p-relative")
         if versions_div is None:
             # A missing listing container means the source page is not the expected APKMirror app listing.

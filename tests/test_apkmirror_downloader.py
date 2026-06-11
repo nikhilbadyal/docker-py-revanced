@@ -123,8 +123,59 @@ class APKMirrorDownloaderTests(TestCase):
         self.assertEqual("<html>real app page</html>", source)
         self.assertTrue(browser.closed)
 
+    def test_guess_release_url_constructs_correct_slug(self: Self) -> None:
+        """The guessed URL should combine the app slug with the version in APKMirror's dash-separated format."""
+        url = ApkMirror._guess_release_url(
+            "https://www.apkmirror.com/apk/google-inc/youtube/",
+            "20.51.39",
+        )
+        self.assertEqual(
+            "https://www.apkmirror.com/apk/google-inc/youtube/youtube-20-51-39-release/",
+            url,
+        )
+
+    def test_guess_release_url_handles_no_trailing_slash(self: Self) -> None:
+        """Sources without a trailing slash should still produce a correct release URL."""
+        url = ApkMirror._guess_release_url(
+            "https://www.apkmirror.com/apk/google-inc/youtube-music",
+            "7.32.51",
+        )
+        self.assertEqual(
+            "https://www.apkmirror.com/apk/google-inc/youtube-music/youtube-music-7-32-51-release/",
+            url,
+        )
+
+    def test_find_specific_version_uses_guessed_url_when_valid(self: Self) -> None:
+        """When the guessed release URL returns a valid variants page, skip the listing scrape entirely."""
+        # Simulates a valid release page with the variants table marker.
+        valid_release_page = """
+            <div class="tab-pane noPadding">variants table here</div>
+        """
+        app = cast(
+            "APP",
+            SimpleNamespace(
+                app_name="YOUTUBE",
+                app_version="20.51.39",
+                download_source="https://www.apkmirror.com/apk/google-inc/youtube/",
+                effective_cli_argsf="revanced-cli",
+            ),
+        )
+
+        with TemporaryDirectory() as tmp_dir:
+            downloader = ApkMirror(_config(Path(tmp_dir)))
+            with patch.object(downloader, "_extract_source", return_value=valid_release_page) as extract:
+                result = downloader._find_specific_version_page(app, "20.51.39")
+
+        # Should return the guessed URL directly without scraping the listing page.
+        self.assertEqual(
+            "https://www.apkmirror.com/apk/google-inc/youtube/youtube-20-51-39-release/",
+            result,
+        )
+        # Only one call to _extract_source (for the guessed URL), not two (listing page).
+        extract.assert_called_once()
+
     def test_specific_version_uses_listing_url_for_release_slug(self: Self) -> None:
-        """APKMirror release slugs can differ from app source slugs, so specific versions should use listing links."""
+        """When the guessed URL fails, fall back to scraping the listing to find non-standard release slugs."""
         listing_page = """
             <div class="listWidget p-relative">
                 <div class="appRow">
@@ -146,8 +197,13 @@ class APKMirrorDownloaderTests(TestCase):
 
         with TemporaryDirectory() as tmp_dir:
             downloader = ApkMirror(_config(Path(tmp_dir)))
+            # The guessed URL fails (ScrapingError), then the listing page is scraped successfully.
             with (
-                patch.object(downloader, "_extract_source", return_value=listing_page),
+                patch.object(
+                    downloader,
+                    "_extract_source",
+                    side_effect=[ScrapingError("404 not found"), listing_page],
+                ),
                 patch.object(
                     downloader,
                     "get_download_page",
