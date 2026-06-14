@@ -1,4 +1,4 @@
-beautifulsoup4==4.14.3
+beautifulsoup4==4.15.0
 cloakbrowser==0.3.31
 cloudscraper==1.2.71
 environs==15.0.1
