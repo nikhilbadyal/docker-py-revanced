@@ -1,1 +1,32 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.2.250932)",
+        "Version": "v0.3.13.2.250932",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-hw-signed.apk) |\r\n",
+        "PublishedOn": "2026-02-16T01:57:27Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.9)",
+        "Version": "V1.4.9",
+        "Changelog": "## What's Changed\r\n* Fix: Merging issue #228 \r\n* Fix: Smali wide register handling #229 \r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.8...V1.4.9",
+        "PublishedOn": "2026-05-19T11:25:01Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-cli/releases/tag/v1.9.1)",
+        "Version": "v1.9.1",
+        "Changelog": "## [1.9.1](https://github.com/MorpheApp/morphe-cli/compare/v1.9.0...v1.9.1) (2026-06-08)\n\n\n### Bug Fixes\n\n* signing improvements ([#160](https://github.com/MorpheApp/morphe-cli/issues/160)) ([166f940](https://github.com/MorpheApp/morphe-cli/commit/166f9409b1cbe00af7663545c41548ead2c189c5))\n* Update dependencies ([83d3969](https://github.com/MorpheApp/morphe-cli/commit/83d39692541ca81b7bb555dfd60a001fbb97b3f1))\n* Update to latest ARSCLib ([f62a179](https://github.com/MorpheApp/morphe-cli/commit/f62a1793601fcfc489f54c558265115530ab6b8d))\n",
+        "PublishedOn": "2026-06-08T12:19:18Z"
+    },
+    "crimera/piko": {
+        "ResourceName": "[crimera/piko](https://github.com/crimera/piko/releases/tag/v3.8.0-dev.2)",
+        "Version": "v3.8.0-dev.2",
+        "Changelog": "## [3.8.0-dev.2](https://github.com/crimera/piko/compare/v3.8.0-dev.1...v3.8.0-dev.2) (2026-06-28)\n\n### \ud83d\udc1b Bug Fixes\n\n* **Twitter:** Tweet link pattern ([d2500ea](https://github.com/crimera/piko/commit/d2500ead98dd5bd77ba97f1ef2ac8388f7b559f0))\n",
+        "PublishedOn": "2026-06-28T13:21:07Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.33.0-dev.9)",
+        "Version": "v1.33.0-dev.9",
+        "Changelog": "## [1.33.0-dev.9](https://github.com/MorpheApp/morphe-patches/compare/v1.33.0-dev.8...v1.33.0-dev.9) (2026-07-01)\n\n### \ud83d\udc1b Bug Fixes\n\n* **YouTube - Add to queue:** Support tablet form factor ([#1891](https://github.com/MorpheApp/morphe-patches/issues/1891)) ([f55b720](https://github.com/MorpheApp/morphe-patches/commit/f55b7206f78e6b5dbe063e6f9e39093929047f34))\n",
+        "PublishedOn": "2026-07-01T09:33:22Z"
+    }
+}
