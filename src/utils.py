@@ -193,8 +193,9 @@ def slugify(string: str) -> str:
     # Replace spaces with dashes
     modified_string = re.sub(r"\s+", ".", modified_string)
 
-    # Remove consecutive dashes
+    # Collapse separator runs
     modified_string = re.sub(r"-+", ".", modified_string)
+    modified_string = re.sub(r"\.+", ".", modified_string)
 
     # Remove leading and trailing dashes
     return modified_string.strip(".")

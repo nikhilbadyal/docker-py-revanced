@@ -59,6 +59,13 @@ class ObtainiumExportTests(TestCase):
         self.assertIn("PatchVersionv1.0.0.v3.0.0", second_name)
         self.assertNotEqual(first_name, second_name)
 
+    def test_output_file_name_collapses_repeated_dots(self: Self) -> None:
+        """Generated release asset names should match GitHub's uploaded asset names."""
+        app = _app_with_patch_bundles("v2.0.0")
+        app.app_version = "50.1.1..5001014"
+
+        self.assertIn("Version50.1.1.5001014", app.get_output_file_name())
+
     def test_generate_obtainium_export_encodes_url_and_slugifies_html_name(self: Self) -> None:
         """Generated HTML should be safe to serve and should link to the exact encoded release asset."""
         with TemporaryDirectory() as temp_dir, chdir(temp_dir):
