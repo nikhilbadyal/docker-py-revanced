@@ -1,5 +1,5 @@
 beautifulsoup4==4.15.0
-cloakbrowser==0.4.8
+cloakbrowser==0.4.9
 cloudscraper==1.2.71
 environs==15.0.1
 google-play-scraper==1.2.7
