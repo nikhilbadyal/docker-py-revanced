@@ -117,8 +117,7 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
             "PACKAGES": "-p",
             "PATCHES": "--patches",
             "PATCHES_POST": "",
-            # Morphe list commands share the same temp-path flag as patching and can run concurrently per app.
-            "TEMPORARY_FILES_PATH": "-t",
+            "TEMPORARY_FILES_PATH": "",
             "UNIVERSAL": "-u",
             "VERSIONS": "-v",
         },
