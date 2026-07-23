@@ -85,7 +85,7 @@ You can use any of the following methods to build.
 
 - 🫠Without Docker
 
-    1. Install Java >= 17
+    1. Install Java >= 21
     2. Install Python >= 3.11
     3. Create virtual environment
        ```

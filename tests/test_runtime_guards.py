@@ -56,13 +56,13 @@ class RuntimeGuardTests(TestCase):
     """Verify runtime checks and logs fail safely."""
 
     def test_java_version_parser_accepts_current_major_versions(self: Self) -> None:
-        """Java 17+ should pass regardless of vendor wording or release year."""
+        """Java 21+ should pass regardless of vendor wording or release year."""
         _check_version('openjdk version "26.0.1" 2026-04-21\nOpenJDK Runtime Environment')
 
     def test_java_version_parser_rejects_unsupported_major_versions(self: Self) -> None:
-        """Java versions below 17 cannot run the current patching toolchain."""
+        """Java versions below 21 cannot run the current patching toolchain."""
         with self.assertRaises(subprocess.CalledProcessError):
-            _check_version('openjdk version "11.0.24" 2024-07-16\nOpenJDK Runtime Environment')
+            _check_version('openjdk version "17.0.24" 2024-07-16\nOpenJDK Runtime Environment')
 
     def test_apkeep_command_log_redacts_credentials(self: Self) -> None:
         """APKEEP credentials should be used for execution but never written to debug logs."""

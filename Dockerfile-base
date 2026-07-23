@@ -7,31 +7,37 @@ FROM python:${PYTHON_VERSION} AS python
 # Set ARGs and ENVs
 ARG APP_HOME=/app
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 WORKDIR ${APP_HOME}
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
-ARG ZULU_REPO_VER=1.0.0-3
+ARG JDK_VERSION=21
 
 
 # Update package lists and install required packages
 RUN apt-get -qq update && \
-    apt-get -qq -y --no-install-recommends install gnupg software-properties-common locales curl tzdata git && \
+    apt-get -qq -y --no-install-recommends install gnupg ca-certificates locales curl tzdata git && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9 && \
-    curl -sLO https://cdn.azul.com/zulu/bin/zulu-repo_${ZULU_REPO_VER}_all.deb && dpkg -i zulu-repo_${ZULU_REPO_VER}_all.deb && \
+    curl -fsSL https://repos.azul.com/azul-repo.key \
+        | gpg --dearmor -o /usr/share/keyrings/azul.gpg && \
+    chmod 644 /usr/share/keyrings/azul.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/azul.gpg] https://repos.azul.com/zulu/deb stable main" \
+        > /etc/apt/sources.list.d/zulu.list && \
     apt-get -qq update && \
     apt-get -qq -y upgrade && \
-    mkdir -p /usr/share/man/man1 && \
-    echo "Package: zulu17-*\nPin: version 17.0.4-*\nPin-Priority: 1001" > /etc/apt/preferences && \
-    apt-get -qq -y --no-install-recommends install zulu17-jdk=17.0.4-* && \
-    apt-get -qq -y purge gnupg software-properties-common curl && \
+    apt-get -qq -y --no-install-recommends install zulu${JDK_VERSION}-jdk && \
+    apt-get -qq -y purge gnupg curl && \
     apt-get -y autoremove && \
-    rm -rf /var/lib/apt/lists/* zulu-repo_${ZULU_REPO_VER}_all.deb
+    rm -rf /var/lib/apt/lists/*
 
 # Set Java home environment variable
-ENV JAVA_HOME=/usr/lib/jvm/zulu17-ca-amd64
+RUN JAVA_BIN="$(readlink -f "$(command -v java)")" && \
+    JAVA_HOME="${JAVA_BIN%/bin/java}" && \
+    ln -s "$JAVA_HOME" /opt/java-home
+
+ENV JAVA_HOME=/opt/java-home
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 # Ensure curl and jq are available for the next step
 RUN apt-get update && \
