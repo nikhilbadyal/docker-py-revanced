@@ -139,7 +139,7 @@ CLI_PROFILES: Final[dict[str, dict[str, dict[str, str]]]] = {
             "OUTPUT": "-o",
             "PATCHES": "-p",
             "PATCHES_POST": "",
-            "PURGE": "--purge",
+            "PURGE": "",
             "RIP_LIB": "",
             "STRIPLIBS": "--striplibs",
             # Morphe otherwise uses `/app/morphe-temporary-files`, which parallel apps can delete mid-patch.
