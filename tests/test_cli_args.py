@@ -17,6 +17,7 @@ class CliArgProfileTests(TestCase):
         list_patch_args, patch_args = merge_cli_arg_maps("morphe-cli", ("", ""))
 
         self.assertEqual("--continue-on-error", patch_args["CONTINUE_ON_ERROR"])
+        self.assertEqual("", patch_args["PURGE"])
         self.assertEqual("-t", list_patch_args["TEMPORARY_FILES_PATH"])
         self.assertEqual("-t", patch_args["TEMPORARY_FILES_PATH"])
 
