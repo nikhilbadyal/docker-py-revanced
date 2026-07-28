@@ -6,7 +6,7 @@ google-play-scraper==1.2.7
 lastversion==3.6.12
 loguru==0.7.3
 packaging==26.2
-pre-commit==4.6.0
+pre-commit==4.6.1
 python-dotenv==1.2.2
 requests==2.34.2
 tqdm==4.69.0
