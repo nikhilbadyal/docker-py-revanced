@@ -16,7 +16,8 @@ ignore = [
     "PERF203", #try-except-in-loop
     "UP004", #useless-object-inheritance
     "PLR0911", #too many returns
-    "S310" # Audit URL open for permitted schemes.
+    "S310", # Audit URL open for permitted schemes.
+    "CPY", # Ignore missing copyright notice check across python files.
 ]
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"

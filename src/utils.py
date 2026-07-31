@@ -33,7 +33,8 @@ default_build = [
     "youtube_music",
 ]
 possible_archs = ["armeabi-v7a", "x86", "x86_64", "arm64-v8a"]
-minimum_java_major_version = 17
+# Set Java 21 as the minimum required major version for running ReVanced patching toolchain.
+minimum_java_major_version = 21
 # Use a syntactically valid desktop Chrome identity because APKMirror and artifact hosts may reject impossible browsers.
 request_header = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -216,19 +217,22 @@ def _check_version(output: str) -> None:
 
 
 def check_java() -> None:
-    """The function `check_java` checks if Java version 17 or higher is installed.
+    """The function `check_java` checks if Java version 21 or higher is installed.
 
     Returns
     -------
         The function `check_java` does not return any value.
     """
     try:
+        # Retrieve installed Java runtime version details from shell output.
         jd = subprocess.check_output(["java", "-version"], stderr=subprocess.STDOUT).decode("utf-8")
         jd = jd[1:-1]
+        # Validate that installed Java version meets minimum required Java 21.
         _check_version(jd)
         logger.debug("Cool!! Java is available")
     except subprocess.CalledProcessError:
-        logger.error("Java>= 17 must be installed")
+        # Log error indicating Java 21+ requirement was not satisfied before exiting.
+        logger.error("Java>= 21 must be installed")
         sys.exit(-1)
 
 
