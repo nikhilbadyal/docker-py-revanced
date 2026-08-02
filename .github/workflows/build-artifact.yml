@@ -30,6 +30,10 @@ on:
         description: "Apps to be patched. Overrides any env set"
         required: false
         type: string
+      RELEASE_TAG:
+        description: "GitHub release tag this build will be uploaded under. Used as the Obtainium export tag."
+        required: false
+        type: string
 
 jobs:
   build-apk:
@@ -43,9 +47,15 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Update Env for custom build
+        env:
+          RELEASE_TAG: ${{ inputs.RELEASE_TAG }}
         run: |
           echo "${{ secrets.ENVS }}" >> .env
           echo "GITHUB_REPOSITORY=${{ github.repository }}" >> .env
+          # Only fill in the tag when the caller didn't already pin a custom OBTAINIUM_GITHUB_TAG via secrets.ENVS.
+          if [ -n "${RELEASE_TAG}" ] && ! grep -q '^OBTAINIUM_GITHUB_TAG=' .env; then
+            echo "OBTAINIUM_GITHUB_TAG=${RELEASE_TAG}" >> .env
+          fi
 
       - name: Update Env from secrets for custom build
         run: |
