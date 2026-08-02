@@ -95,6 +95,7 @@ concurrency:
 jobs:
   compute-tag:
     runs-on: ubuntu-latest
+    permissions: {}
     outputs:
       RELEASE_TAG: ${{ steps.get-date.outputs.tag }}
     steps:
