@@ -53,11 +53,7 @@ jobs:
           echo "${{ secrets.ENVS }}" >> .env
           echo "GITHUB_REPOSITORY=${{ github.repository }}" >> .env
           # Only fill in the tag when the caller didn't already pin a non-empty custom
-          # OBTAINIUM_GITHUB_TAG via secrets.ENVS. Dotenv semantics: last occurrence of the key
-          # wins, and its value may be quoted/padded with whitespace, so a plain key-presence
-          # grep would wrongly treat `OBTAINIUM_GITHUB_TAG=` (empty) as already pinned. The
-          # trailing `|| true` keeps a no-match grep (the common case) from tripping bash -eo
-          # pipefail, under which run: steps execute by default.
+          # OBTAINIUM_GITHUB_TAG via secrets.ENVS
           existing_tag=$(grep '^OBTAINIUM_GITHUB_TAG=' .env | tail -n1 | cut -d'=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//" || true)
           if [ -n "${RELEASE_TAG}" ] && [ -z "${existing_tag}" ]; then
             echo "OBTAINIUM_GITHUB_TAG=${RELEASE_TAG}" >> .env
