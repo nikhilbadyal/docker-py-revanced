@@ -163,6 +163,20 @@ You can use any of the following methods to build.
 `**` - Can be used to included universal patch.<br>
 `***` - Can be used for unavailable apps in the repository (unofficial apps).
 
+### Obtainium
+
+Optional integration with [Obtainium](https://github.com/ImranR98/Obtainium) so patched APKs can be installed and
+updated straight from your GitHub Releases. See [obtainium.md](obtainium.md) for setup steps, how it works, and
+full option details.
+
+| **Env Name**                                                                     |                       **Description**                        | **Default** |
+|:----------------------------------------------------------------------------------|:--------------------------------------------------------------:|:-------------|
+| [OBTAINIUM_EXPORT](obtainium.md#obtainium_export)                                 |            Generate per-app HTML sources for Obtainium         | False        |
+| [OBTAINIUM_GITHUB_TAG](obtainium.md#obtainium_github_tag)                         |         Release tag the generated links point to               | latest       |
+| [OBTAINIUM_SITE_EXPORT](obtainium.md#obtainium_site_export)                       |    Generate a one-click install site (`obtainium_sources/index.html`) | False  |
+| [OBTAINIUM_VERSION_EXTRACTION_REGEX](obtainium.md#obtainium_version_extraction_regex) | Regex used to extract app + patch version for display     | See docs     |
+| [OBTAINIUM_VERSION_MATCH_GROUP](obtainium.md#obtainium_version_match_group)       |         Match-group template used with the regex above         | `$1+$2`      |
+
 ## Note
 
 1. <a id="any-patch-apps"></a>**Officially** Supported values for **APP_NAME**** are :
@@ -538,42 +552,4 @@ You can use any of the following methods to build.
     APPRISE_URL=tgram://bot-token/chat-id
     APPRISE_NOTIFICATION_BODY=What a great Body
     APPRISE_NOTIFICATION_TITLE=What a great title
-    ```
-
-20. <a id="obtainium"></a>[Obtainium](https://github.com/ImranR98/Obtainium)<br>
-    We support generating HTML files for Obtainium to scrape and download the latest patched APKs directly from your GitHub Releases.
-    Enable this only when you are comfortable exposing a public APK discovery URL for your fork or self-hosted setup.
-    Add below envs in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
-    ```ini
-    OBTAINIUM_EXPORT=true
-    ```
-    This will generate an `obtainium_sources/` folder in the `changelogs` branch containing HTML files (e.g., `youtube.html`).
-    You can then add the raw GitHub URL of these HTML files to Obtainium as an "HTML" source.
-    Example URL: `https://raw.githubusercontent.com/<user>/<repo>/changelogs/obtainium_sources/youtube.html`
-    Obtainium's HTML source can use the APK link hash as its release ID, so patch-only updates are detected through
-    the generated release asset name without requiring a custom version extraction regex.
-
-    **Optional Configuration**:
-    ```ini
-    OBTAINIUM_GITHUB_TAG=latest
-    ```
-    By default, links point to the `latest` release. If you want to link to a specific tag, set this variable.
-    > **Warning**: Ensure your CI workflow is configured to release with the exact tag you specify. The default CI uses dynamic timestamp-based tags.
-
-    **One-click install site**:
-    ```ini
-    OBTAINIUM_SITE_EXPORT=true
-    ```
-    In addition to the per-app HTML files, this generates `obtainium_sources/index.html` with an
-    `obtainium://app/...` deep link for each app - tapping one on an Android device with Obtainium installed adds
-    that app's source with no manual configuration. Point GitHub Pages at the `changelogs` branch,
-    `/obtainium_sources` folder to publish it (the missing `index.html` is why this previously didn't work when
-    pointing Pages at that folder).
-
-    The generated links include a version extraction regex so Obtainium shows a readable version instead of a
-    hash. The default matches this project's own output filename convention and needs no configuration; override
-    it only if you've customized the build's filename format:
-    ```ini
-    OBTAINIUM_VERSION_EXTRACTION_REGEX=Version([\w.]+)-PatchVersion[v]?([\w.]+)-PatchSet
-    OBTAINIUM_VERSION_MATCH_GROUP=$1+$2
     ```
