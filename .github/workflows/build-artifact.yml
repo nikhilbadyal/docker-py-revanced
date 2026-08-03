@@ -12,6 +12,8 @@ on:
         required: false
       REDDIT_CLIENT_ID:
         required: false
+      PERSONAL_ACCESS_TOKEN:
+        required: false
     inputs:
       CI_TEST:
         required: false
@@ -43,9 +45,22 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Update Env for custom build
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           echo "${{ secrets.ENVS }}" >> .env
           echo "GITHUB_REPOSITORY=${{ github.repository }}" >> .env
+          # Only fill in the token from the dedicated secret when the caller didn't already pin a
+          # non-empty PERSONAL_ACCESS_TOKEN via secrets.ENVS - an ENVS-embedded value always wins,
+          # for backwards compatibility with existing setups. Dotenv semantics: last occurrence of
+          # the key wins, and its value may be quoted/padded with whitespace, so a plain
+          # key-presence grep would wrongly treat `PERSONAL_ACCESS_TOKEN=` (empty) as already
+          # pinned. `|| true` keeps a no-match grep (the common case) from tripping bash -eo
+          # pipefail, under which run: steps execute by default.
+          existing_pat=$(grep '^PERSONAL_ACCESS_TOKEN=' .env | tail -n1 | cut -d'=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//" || true)
+          if [ -n "${PERSONAL_ACCESS_TOKEN}" ] && [ -z "${existing_pat}" ]; then
+            echo "PERSONAL_ACCESS_TOKEN=${PERSONAL_ACCESS_TOKEN}" >> .env
+          fi
 
       - name: Update Env from secrets for custom build
         run: |

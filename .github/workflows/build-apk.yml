@@ -93,6 +93,7 @@ jobs:
       ENVS: ${{ secrets.ENVS }}
       DOCKER_PY_REVANCED_SECRETS: ${{ secrets.DOCKER_PY_REVANCED_SECRETS }}
       REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+      PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
   upload-to-github:
     name: GitHub Upload
