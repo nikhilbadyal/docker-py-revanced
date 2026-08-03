@@ -335,18 +335,28 @@ def _obtainium_deep_link(
     return "obtainium://app/" + quote(json.dumps(app_config, separators=(",", ":")), safe="")
 
 
-def _write_obtainium_index(apps: list[tuple[str, str]]) -> None:
+def _write_obtainium_index(cards: list[dict[str, str]]) -> None:
     """Write a styled index page of one-click Obtainium "Add app" links.
 
     Written to the repo root (not obtainium_sources/) because GitHub Pages' branch-deploy mode can only
     serve from a branch's root or its /docs folder - never an arbitrary subfolder.
     """
     rows = "\n".join(
-        f"""        <li class="app-row">
-            <span class="app-name">{name}</span>
-            <a class="add-button" href="{link}">Add to Obtainium</a>
+        f"""        <li class="app-card">
+            <div class="app-header">
+                <span class="app-name">{card["name"]}</span>
+                <code class="package-name">{card["package_name"]}</code>
+            </div>
+            <div class="app-meta">
+                <span class="meta-chip">App {card["app_version"]}</span>
+                <span class="meta-chip">Patch {card["patch_version"]}</span>
+            </div>
+            <div class="app-actions">
+                <a class="add-button" href="{card["deep_link"]}">Add to Obtainium</a>
+                <a class="source-link" href="{card["source_url"]}">View source</a>
+            </div>
         </li>"""
-        for name, link in apps
+        for card in cards
     )
     html_content = f"""
 <!DOCTYPE html>
@@ -391,17 +401,39 @@ def _write_obtainium_index(apps: list[tuple[str, str]]) -> None:
         p.intro a {{ color: var(--accent); text-decoration: none; }}
         p.intro a:hover {{ text-decoration: underline; }}
         ul {{ list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-direction: column; gap: 0.75rem; }}
-        .app-row {{
+        .app-card {{
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
+            flex-direction: column;
+            gap: 0.6rem;
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 0.9rem 1.1rem;
         }}
+        .app-header {{
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }}
         .app-name {{ font-weight: 600; overflow-wrap: anywhere; }}
+        .package-name {{
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            overflow-wrap: anywhere;
+        }}
+        .app-meta {{ display: flex; flex-wrap: wrap; gap: 0.4rem; }}
+        .meta-chip {{
+            font-size: 0.78rem;
+            color: var(--muted);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 0.15rem 0.6rem;
+            font-variant-numeric: tabular-nums;
+        }}
+        .app-actions {{ display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.2rem; }}
         .add-button {{
             flex-shrink: 0;
             display: inline-block;
@@ -415,6 +447,12 @@ def _write_obtainium_index(apps: list[tuple[str, str]]) -> None:
             white-space: nowrap;
         }}
         .add-button:hover {{ opacity: 0.9; }}
+        .source-link {{
+            font-size: 0.85rem;
+            color: var(--muted);
+            text-decoration: none;
+        }}
+        .source-link:hover {{ color: var(--accent); text-decoration: underline; }}
     </style>
 </head>
 <body>
@@ -453,7 +491,7 @@ def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedCon
         logger.warning("GITHUB_REPOSITORY not set. Skipping Obtainium export.")
         return
 
-    deep_links: list[tuple[str, str]] = []
+    site_cards: list[dict[str, str]] = []
 
     for app_name, app_data in updates_info.items():
         if "output_file_name" not in app_data:
@@ -516,7 +554,17 @@ def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedCon
                     source_url=source_url,
                     config=config,
                 )
-                deep_links.append((display_app_name, deep_link))
+                patch_versions = ", ".join(str(v) for v in app_data.get(patches_versions_key, [])) or "unknown"
+                site_cards.append(
+                    {
+                        "name": display_app_name,
+                        "package_name": html.escape(package_name),
+                        "app_version": display_version,
+                        "patch_version": html.escape(patch_versions),
+                        "deep_link": deep_link,
+                        "source_url": html.escape(source_url),
+                    },
+                )
 
-    if config.obtainium_site_export and deep_links:
-        _write_obtainium_index(deep_links)
+    if config.obtainium_site_export and site_cards:
+        _write_obtainium_index(site_cards)
