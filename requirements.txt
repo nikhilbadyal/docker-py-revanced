@@ -1,7 +1,7 @@
 beautifulsoup4==4.15.0
 cloakbrowser==0.5.3
 cloudscraper==1.2.71
-environs==15.0.1
+environs==15.1.0
 google-play-scraper==1.2.7
 lastversion==3.6.12
 loguru==0.7.3
