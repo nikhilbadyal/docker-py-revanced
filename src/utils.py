@@ -336,8 +336,14 @@ def _obtainium_deep_link(
 
 
 def _write_obtainium_index(obtainium_sources_path: Path, apps: list[tuple[str, str]]) -> None:
-    """Write an index page of one-click Obtainium "Add app" links, e.g. for GitHub Pages."""
-    rows = "\n".join(f'        <li><a href="{link}">Add {name} to Obtainium</a></li>' for name, link in apps)
+    """Write a styled index page of one-click Obtainium "Add app" links, e.g. for GitHub Pages."""
+    rows = "\n".join(
+        f"""        <li class="app-row">
+            <span class="app-name">{name}</span>
+            <a class="add-button" href="{link}">Add to Obtainium</a>
+        </li>"""
+        for name, link in apps
+    )
     html_content = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -345,12 +351,80 @@ def _write_obtainium_index(obtainium_sources_path: Path, apps: list[tuple[str, s
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Obtainium Sources</title>
+    <style>
+        :root {{
+            color-scheme: light dark;
+            --bg: #f5f6f8;
+            --card-bg: #ffffff;
+            --text: #1a1a1a;
+            --muted: #5f6368;
+            --accent: #2f6fed;
+            --accent-text: #ffffff;
+            --border: #e2e4e8;
+        }}
+        @media (prefers-color-scheme: dark) {{
+            :root {{
+                --bg: #16171a;
+                --card-bg: #212226;
+                --text: #f1f2f4;
+                --muted: #9aa0a6;
+                --accent: #6f9dff;
+                --accent-text: #0b0d10;
+                --border: #33353a;
+            }}
+        }}
+        * {{ box-sizing: border-box; }}
+        body {{
+            margin: 0;
+            padding: 2rem 1rem 3rem;
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }}
+        main {{ max-width: 640px; margin: 0 auto; }}
+        h1 {{ font-size: 1.5rem; margin-bottom: 0.25rem; }}
+        p.intro {{ color: var(--muted); line-height: 1.5; margin-top: 0; }}
+        p.intro a {{ color: var(--accent); text-decoration: none; }}
+        p.intro a:hover {{ text-decoration: underline; }}
+        ul {{ list-style: none; padding: 0; margin: 1.5rem 0 0; display: flex; flex-direction: column; gap: 0.75rem; }}
+        .app-row {{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.9rem 1.1rem;
+        }}
+        .app-name {{ font-weight: 600; overflow-wrap: anywhere; }}
+        .add-button {{
+            flex-shrink: 0;
+            display: inline-block;
+            background: var(--accent);
+            color: var(--accent-text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            white-space: nowrap;
+        }}
+        .add-button:hover {{ opacity: 0.9; }}
+    </style>
 </head>
 <body>
-    <h1>Obtainium Sources</h1>
-    <ul>
+    <main>
+        <h1>Obtainium Sources</h1>
+        <p class="intro">
+            Tap a button below on an Android device with
+            <a href="https://github.com/ImranR98/Obtainium">Obtainium</a> installed to add that app as an update
+            source. Don't have it yet? Get it from the link above first.
+        </p>
+        <ul>
 {rows}
-    </ul>
+        </ul>
+    </main>
 </body>
 </html>
 """

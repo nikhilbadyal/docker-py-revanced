@@ -124,9 +124,11 @@ class ObtainiumExportTests(TestCase):
             generate_obtainium_export(updates_info, config)
             index_content = Path(temp_dir, "obtainium_sources", "index.html").read_text(encoding="utf_8")
 
-        self.assertIn("Add YouTube to Obtainium", index_content)
-        deep_link = index_content.split('href="')[1].split('"')[0]
-        payload = json.loads(unquote(deep_link.removeprefix("obtainium://app/")))
+        self.assertIn('<span class="app-name">YouTube</span>', index_content)
+        self.assertIn("https://github.com/ImranR98/Obtainium", index_content)
+        deep_link_match = re.search(r'href="(obtainium://app/[^"]+)"', index_content)
+        self.assertIsNotNone(deep_link_match)
+        payload = json.loads(unquote(deep_link_match.group(1).removeprefix("obtainium://app/")))  # type: ignore[union-attr]
 
         self.assertEqual(payload["id"], "app.revanced.android.youtube")
         self.assertEqual(payload["overrideSource"], "HTML")
