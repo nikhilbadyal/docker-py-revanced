@@ -15,11 +15,15 @@ Two things get generated, and the second builds on the first:
 1. **Per-app HTML source pages** (`OBTAINIUM_EXPORT`) - one static HTML file per patched app, containing a link to
    its latest release asset. Obtainium's "HTML" source type can point at a page like this and periodically re-check
    it for updates, the same way it'd scrape any other HTML page.
-2. **One-click install site** (`OBTAINIUM_SITE_EXPORT`) - an index page listing every app, each as an
+2. **One-click install site** (`OBTAINIUM_SITE_EXPORT`) - an `index.html` at the repo root of the `changelogs`
+   branch, listing every app as an
    [`obtainium://app/...`](https://github.com/ImranR98/Obtainium/blob/main/README.md) deep link. These links carry
    a URL-encoded JSON blob of an app's full Obtainium configuration (source URL, author, name, version regex,
    etc.). Tapping one on a device with Obtainium installed opens the app with that config pre-filled - equivalent
    to manually adding the HTML source from step 1 and typing in all the same settings by hand, minus the typing.
+   It's written at the branch root rather than alongside the per-app pages in `obtainium_sources/` because GitHub
+   Pages' branch-deploy mode can only serve from a branch's root or its `/docs` folder, never an arbitrary
+   subfolder.
 
 Version detection deserves a specific callout, since it's the part most likely to need tuning: the per-app HTML
 page's only meaningful content is a link to the release asset, and that asset's filename already encodes the app
@@ -43,11 +47,12 @@ have to configure this same regex by hand in Obtainium's UI.
    - **Manually**: in Obtainium, add each app via its raw HTML URL as an "HTML" source, e.g.
      `https://raw.githubusercontent.com/<user>/<repo>/changelogs/obtainium_sources/youtube.html`. You'll need to
      configure the version regex yourself if you want readable versions (see above).
-   - **One-click site**: also enable `OBTAINIUM_SITE_EXPORT=true`. This additionally generates
-     `obtainium_sources/index.html` with a ready-to-tap link per app, version regex included.
+   - **One-click site**: also enable `OBTAINIUM_SITE_EXPORT=true`. This additionally generates `index.html` at
+     the `changelogs` branch root with a ready-to-tap link per app, version regex included.
 3. *(Optional, for the one-click site)* Publish it with GitHub Pages: repo Settings -> Pages -> set the source
-   branch to `changelogs` and the folder to `/obtainium_sources`. Visit the published Pages URL on an Android
-   device with Obtainium installed and tap the links you want.
+   branch to `changelogs` and the folder to `/ (root)` - GitHub Pages' branch-deploy mode only offers root or
+   `/docs`, so this only works because `index.html` is generated at the branch root. Visit the published Pages
+   URL on an Android device with Obtainium installed and tap the links you want.
 
 ## Configuration
 
@@ -82,8 +87,9 @@ OBTAINIUM_GITHUB_TAG=latest
 ### `OBTAINIUM_SITE_EXPORT`
 
 - **Default**: `false`
-- Generates `obtainium_sources/index.html`, listing a one-click `obtainium://app/...` install link for every app
-  covered by `OBTAINIUM_EXPORT`. See [How it works](#how-it-works) above for what these links contain.
+- Generates `index.html` at the `changelogs` branch root, listing a one-click `obtainium://app/...` install link
+  for every app covered by `OBTAINIUM_EXPORT`. See [How it works](#how-it-works) above for what these links
+  contain and why it's at the branch root rather than inside `obtainium_sources/`.
 
 ```ini
 OBTAINIUM_SITE_EXPORT=true

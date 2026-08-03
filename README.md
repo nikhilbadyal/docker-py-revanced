@@ -173,7 +173,7 @@ full option details.
 |:----------------------------------------------------------------------------------|:--------------------------------------------------------------:|:-------------|
 | [OBTAINIUM_EXPORT](obtainium.md#obtainium_export)                                 |            Generate per-app HTML sources for Obtainium         | False        |
 | [OBTAINIUM_GITHUB_TAG](obtainium.md#obtainium_github_tag)                         |         Release tag the generated links point to               | latest       |
-| [OBTAINIUM_SITE_EXPORT](obtainium.md#obtainium_site_export)                       |    Generate a one-click install site (`obtainium_sources/index.html`) | False  |
+| [OBTAINIUM_SITE_EXPORT](obtainium.md#obtainium_site_export)                       |    Generate a one-click install site (`index.html` at branch root) | False  |
 | [OBTAINIUM_VERSION_EXTRACTION_REGEX](obtainium.md#obtainium_version_extraction_regex) | Regex used to extract app + patch version for display     | See docs     |
 | [OBTAINIUM_VERSION_MATCH_GROUP](obtainium.md#obtainium_version_match_group)       |         Match-group template used with the regex above         | `$1+$2`      |
 

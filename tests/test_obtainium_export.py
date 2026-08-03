@@ -122,7 +122,7 @@ class ObtainiumExportTests(TestCase):
             }
 
             generate_obtainium_export(updates_info, config)
-            index_content = Path(temp_dir, "obtainium_sources", "index.html").read_text(encoding="utf_8")
+            index_content = Path(temp_dir, "index.html").read_text(encoding="utf_8")
 
         self.assertIn('<span class="app-name">YouTube</span>', index_content)
         self.assertIn("https://github.com/ImranR98/Obtainium", index_content)
@@ -164,7 +164,7 @@ class ObtainiumExportTests(TestCase):
             }
 
             generate_obtainium_export(updates_info, config)
-            index_path = Path(temp_dir, "obtainium_sources", "index.html")
+            index_path = Path(temp_dir, "index.html")
 
         self.assertFalse(index_path.exists())
 

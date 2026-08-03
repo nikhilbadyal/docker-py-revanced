@@ -335,8 +335,12 @@ def _obtainium_deep_link(
     return "obtainium://app/" + quote(json.dumps(app_config, separators=(",", ":")), safe="")
 
 
-def _write_obtainium_index(obtainium_sources_path: Path, apps: list[tuple[str, str]]) -> None:
-    """Write a styled index page of one-click Obtainium "Add app" links, e.g. for GitHub Pages."""
+def _write_obtainium_index(apps: list[tuple[str, str]]) -> None:
+    """Write a styled index page of one-click Obtainium "Add app" links.
+
+    Written to the repo root (not obtainium_sources/) because GitHub Pages' branch-deploy mode can only
+    serve from a branch's root or its /docs folder - never an arbitrary subfolder.
+    """
     rows = "\n".join(
         f"""        <li class="app-row">
             <span class="app-name">{name}</span>
@@ -428,7 +432,7 @@ def _write_obtainium_index(obtainium_sources_path: Path, apps: list[tuple[str, s
 </body>
 </html>
 """
-    index_path = obtainium_sources_path / "index.html"
+    index_path = Path("index.html")
     index_path.write_text(html_content.strip(), encoding="utf_8")
     logger.info(f"Generated Obtainium site index: {index_path}")
 
@@ -515,4 +519,4 @@ def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedCon
                 deep_links.append((display_app_name, deep_link))
 
     if config.obtainium_site_export and deep_links:
-        _write_obtainium_index(obtainium_sources_path, deep_links)
+        _write_obtainium_index(deep_links)
