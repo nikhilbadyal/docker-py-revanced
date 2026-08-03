@@ -305,6 +305,9 @@ You can use any of the following methods to build.
    ```dotenv
     PERSONAL_ACCESS_TOKEN=<PAT>
    ```
+   Alternatively, you can add a dedicated `PERSONAL_ACCESS_TOKEN` secret to the repo (`Settings` ->
+   `Secrets and variables` -> `Actions`) instead of embedding it in `ENVS`. It's used automatically unless
+   `ENVS` already sets `PERSONAL_ACCESS_TOKEN` to a non-empty value, in which case `ENVS` takes priority.
 7. <a id="global-resources"></a>You can provide Direct download to the resource to used for patching apps `.env` file
    or in `ENVS` in `GitHub secrets` (Recommended) in the format -
    ```dotenv
