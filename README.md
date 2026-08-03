@@ -559,3 +559,21 @@ You can use any of the following methods to build.
     ```
     By default, links point to the `latest` release. If you want to link to a specific tag, set this variable.
     > **Warning**: Ensure your CI workflow is configured to release with the exact tag you specify. The default CI uses dynamic timestamp-based tags.
+
+    **One-click install site**:
+    ```ini
+    OBTAINIUM_SITE_EXPORT=true
+    ```
+    In addition to the per-app HTML files, this generates `obtainium_sources/index.html` with an
+    `obtainium://app/...` deep link for each app - tapping one on an Android device with Obtainium installed adds
+    that app's source with no manual configuration. Point GitHub Pages at the `changelogs` branch,
+    `/obtainium_sources` folder to publish it (the missing `index.html` is why this previously didn't work when
+    pointing Pages at that folder).
+
+    The generated links include a version extraction regex so Obtainium shows a readable version instead of a
+    hash. The default matches this project's own output filename convention and needs no configuration; override
+    it only if you've customized the build's filename format:
+    ```ini
+    OBTAINIUM_VERSION_EXTRACTION_REGEX=Version([\w.]+)-PatchVersion[v]?([\w.]+)-PatchSet
+    OBTAINIUM_VERSION_MATCH_GROUP=$1+$2
+    ```

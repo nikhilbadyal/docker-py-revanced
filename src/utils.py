@@ -62,6 +62,7 @@ apkmirror_scraper = cloudscraper.create_scraper()
 apkmirror_scraper.headers.update({"User-Agent": request_header["User-Agent"]})
 updates_file = "updates.json"
 updates_file_url = "https://raw.githubusercontent.com/{github_repository}/{branch_name}/{updates_file}"
+obtainium_source_url = "https://raw.githubusercontent.com/{github_repository}/{branch_name}/obtainium_sources/{file_name}"
 changelogs: dict[str, dict[str, str]] = {}
 time_zone = "Asia/Kolkata"
 app_version_key = "app_version"
@@ -299,6 +300,65 @@ def save_patch_info(app: "APP", updates_info: dict[str, Any]) -> dict[str, Any]:
     return updates_info
 
 
+def _obtainium_deep_link(
+    *,
+    package_name: str,
+    app_name: str,
+    author: str,
+    source_url: str,
+    config: "RevancedConfig",
+) -> str:
+    """Build an obtainium://app/... link that pre-fills an HTML source, so adding it is one tap."""
+    additional_settings = {
+        "trackOnly": False,
+        "versionExtractionRegEx": config.obtainium_version_extraction_regex,
+        "matchGroupToUse": config.obtainium_version_match_group,
+        "versionDetection": bool(config.obtainium_version_extraction_regex),
+        "apkFilterRegEx": "",
+        "invertAPKFilter": False,
+        "autoApkFilterByArch": True,
+        "appName": app_name,
+        "appAuthor": author,
+        "about": "",
+    }
+    app_config = {
+        "id": package_name,
+        "url": source_url,
+        "author": author,
+        "name": app_name,
+        "preferredApkIndex": 0,
+        "additionalSettings": json.dumps(additional_settings, separators=(",", ":")),
+        "overrideSource": "HTML",
+    }
+    # Compact separators keep the link shorter, matching what Obtainium itself produces.
+    # quote(..., safe="") never leaves a literal `"` in the output, so this is safe to drop straight into an href.
+    return "obtainium://app/" + quote(json.dumps(app_config, separators=(",", ":")), safe="")
+
+
+def _write_obtainium_index(obtainium_sources_path: Path, apps: list[tuple[str, str]]) -> None:
+    """Write an index page of one-click Obtainium "Add app" links, e.g. for GitHub Pages."""
+    rows = "\n".join(f'        <li><a href="{link}">Add {name} to Obtainium</a></li>' for name, link in apps)
+    html_content = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obtainium Sources</title>
+</head>
+<body>
+    <h1>Obtainium Sources</h1>
+    <ul>
+{rows}
+    </ul>
+</body>
+</html>
+"""
+    index_path = obtainium_sources_path / "index.html"
+    index_path.write_text(html_content.strip(), encoding="utf_8")
+    logger.info(f"Generated Obtainium site index: {index_path}")
+
+
 def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedConfig") -> None:
     """Generate HTML files for Obtainium."""
     if not config.obtainium_export:
@@ -309,10 +369,13 @@ def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedCon
 
     github_repository = config.env.str("GITHUB_REPOSITORY", "")
     obtainium_github_tag = config.obtainium_github_tag
+    repo_owner = github_repository.split("/")[0] if github_repository else ""
 
     if not github_repository:
         logger.warning("GITHUB_REPOSITORY not set. Skipping Obtainium export.")
         return
+
+    deep_links: list[tuple[str, str]] = []
 
     for app_name, app_data in updates_info.items():
         if "output_file_name" not in app_data:
@@ -359,3 +422,23 @@ def generate_obtainium_export(updates_info: dict[str, Any], config: "RevancedCon
         html_file_path = obtainium_sources_path / html_file_name
         html_file_path.write_text(html_content.strip(), encoding="utf_8")
         logger.info(f"Generated Obtainium export for {app_name}: {html_file_path}")
+
+        if config.obtainium_site_export:
+            package_name = str(app_data["app_dump"].get("package_name", ""))
+            if not package_name:
+                logger.warning(f"No package_name for {app_name}. Skipping its Obtainium deep link.")
+            else:
+                source_url = obtainium_source_url.format(
+                    github_repository=github_repository, branch_name=branch_name, file_name=html_file_name,
+                )
+                deep_link = _obtainium_deep_link(
+                    package_name=package_name,
+                    app_name=str(app_name),
+                    author=repo_owner,
+                    source_url=source_url,
+                    config=config,
+                )
+                deep_links.append((display_app_name, deep_link))
+
+    if config.obtainium_site_export and deep_links:
+        _write_obtainium_index(obtainium_sources_path, deep_links)

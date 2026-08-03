@@ -45,3 +45,11 @@ class RevancedConfig(object):
         self.disable_caching = env.bool("DISABLE_CACHING", False)
         self.obtainium_export = env.bool("OBTAINIUM_EXPORT", False)
         self.obtainium_github_tag = env.str("OBTAINIUM_GITHUB_TAG", "latest")
+        self.obtainium_site_export = env.bool("OBTAINIUM_SITE_EXPORT", False)
+        # Matches this project's own output filename convention (see APP.get_output_file_name),
+        # so version + patch bundle version resolve correctly without extra configuration.
+        self.obtainium_version_extraction_regex = env.str(
+            "OBTAINIUM_VERSION_EXTRACTION_REGEX",
+            r"Version([\w.]+)-PatchVersion[v]?([\w.]+)-PatchSet",
+        )
+        self.obtainium_version_match_group = env.str("OBTAINIUM_VERSION_MATCH_GROUP", "$1+$2")
