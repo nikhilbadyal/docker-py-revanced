@@ -169,6 +169,6 @@ jobs:
         with:
           branch: changelogs
           skip_checkout: true
-          file_pattern: 'changelog.md changelog.json updates.json obtainium_sources/*'
+          file_pattern: 'changelog.md changelog.json updates.json obtainium_sources/* index.html'
           commit_message: 🚀New Build
           push_options: '--force'
