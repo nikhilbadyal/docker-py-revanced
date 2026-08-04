@@ -41,6 +41,11 @@ on:
         description: "Apps to be patched. Overrides any env set"
         required: false
         type: string
+      DELETE_OLDER_RELEASES:
+        description: "Delete older Build-* releases before uploading. Disable for partial builds so releases for apps not included in this run aren't lost."
+        required: false
+        type: boolean
+        default: true
   workflow_dispatch:
     inputs:
       GITHUB_UPLOAD:
@@ -78,17 +83,35 @@ on:
         description: "Apps to be patched. Overrides any env set"
         required: false
         type: string
+      DELETE_OLDER_RELEASES:
+        description: "Delete older Build-* releases before uploading. Disable for partial builds so releases for apps not included in this run aren't lost."
+        required: false
+        type: boolean
+        default: true
 
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 jobs:
+  compute-tag:
+    runs-on: ubuntu-latest
+    permissions: {}
+    outputs:
+      RELEASE_TAG: ${{ steps.get-date.outputs.tag }}
+    steps:
+      - name: Get Date
+        id: get-date
+        run: |
+          echo "tag=Build-$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
+
   build-apk:
+    needs: compute-tag
     uses: ./.github/workflows/build-artifact.yml
     with:
       COMMIT_CHANGELOG: ${{ inputs.COMMIT_CHANGELOG }}
       DEBUG_ENABLED: ${{ inputs.DEBUG_ENABLED }}
       PREFERRED_PATCH_APPS: ${{ inputs.PREFERRED_PATCH_APPS }}
+      RELEASE_TAG: ${{ needs.compute-tag.outputs.RELEASE_TAG }}
     secrets:
       ENVS: ${{ secrets.ENVS }}
       DOCKER_PY_REVANCED_SECRETS: ${{ secrets.DOCKER_PY_REVANCED_SECRETS }}
@@ -98,7 +121,7 @@ jobs:
     name: GitHub Upload
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: build-apk
+    needs: [ compute-tag, build-apk ]
     if: inputs.GITHUB_UPLOAD
 
     steps:
@@ -106,12 +129,9 @@ jobs:
         uses: actions/download-artifact@main
         with:
           name: Built-APKs
-      - name: Get Date
-        id: get-date
-        run: |
-          echo "date=$(TZ='Asia/Kolkata' date +"%Y.%m.%d-%H.%M.%S")" >> $GITHUB_OUTPUT
 
       - name: Delete Older Releases
+        if: inputs.DELETE_OLDER_RELEASES
         uses: nikhilbadyal/ghaction-rm-releases@0a58d2ce5d2bf162d18e6c01712cc0e53b2bab45 # v0.8.0
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -122,7 +142,7 @@ jobs:
         with:
           artifacts: "apks/*-output.apk,updates.json,changelog.json,changelog.md"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: Build-${{ steps.get-date.outputs.date }}
+          tag: ${{ needs.compute-tag.outputs.RELEASE_TAG }}
           artifactErrorsFailBuild: true
 
       - name: Sleep for 10 seconds
