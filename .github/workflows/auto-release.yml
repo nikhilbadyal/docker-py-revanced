@@ -26,14 +26,17 @@ jobs:
 
       - name: Update Env for custom build
         env:
+          # Pass ENVS as step env var rather than inline string interpolation to prevent shell syntax issues if secret contains special characters.
+          ENVS: ${{ secrets.ENVS }}
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          echo "${{ secrets.ENVS }}" >> .env
-          # An ENVS-embedded PERSONAL_ACCESS_TOKEN always wins (backwards compat); only fall back
-          # to the secret when unset/empty. `|| true` avoids aborting on a no-match grep (-o pipefail).
-          existing_pat=$(grep '^PERSONAL_ACCESS_TOKEN=' .env | tail -n1 | cut -d'=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//" || true)
+          # Safely append ENVS secret to .env using printf to prevent shell interpolation parsing errors.
+          printf '%s\n' "$ENVS" >> .env
+          # An ENVS-embedded PERSONAL_ACCESS_TOKEN always wins (backwards compat); only fall back to secret when unset/empty.
+          # We filter out empty assignments (grep -v '^$') to ensure a trailing empty declaration doesn't hide a valid token set earlier in ENVS.
+          existing_pat=$(grep -E '^[[:space:]]*PERSONAL_ACCESS_TOKEN[[:space:]]*=' .env | cut -d'=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//" | grep -v '^$' | tail -n1 || true)
           if [ -n "${PERSONAL_ACCESS_TOKEN}" ] && [ -z "${existing_pat}" ]; then
-            echo "PERSONAL_ACCESS_TOKEN=${PERSONAL_ACCESS_TOKEN}" >> .env
+            printf 'PERSONAL_ACCESS_TOKEN=%s\n' "${PERSONAL_ACCESS_TOKEN}" >> .env
           fi
 
       - name: Setup python
