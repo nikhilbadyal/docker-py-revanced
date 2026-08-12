@@ -476,11 +476,17 @@ full option details.
 11. <a id="extra-files"></a>If you want to include any extra file to the Github upload. Set comma arguments
      in `.env` file or in `ENVS` in `GitHub secrets` (Recommended) in the format
     ```ini
+    # Exact filename match
     EXTRA_FILES=<url>@<appName>.apk
+
+    # Regex pattern match for dynamic/versioned asset names
+    EXTRA_FILES=<url>@/<regex-pattern>/
     ```
     Example:
     ```dotenv
      EXTRA_FILES=https://github.com/inotia00/mMicroG/releases/latest@mmicrog.apk
+     # Regex example matching versioned MicroG filenames:
+     EXTRA_FILES=https://github.com/microg/GmsCore/releases/latest@/com\.google\.android\.gms-\d+\.apk$/
     ```
 12. <a id="custom-exclude-patching"></a>If you want to exclude any patch. Set comma separated patch in `.env` file
     or in `ENVS` in `GitHub secrets` (Recommended) in the format
