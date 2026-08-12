@@ -11,6 +11,11 @@ on:
         required: false
         type: boolean
         default: true
+      DELETE_OLDER_RELEASES:
+        description: "Delete older Build-* releases before uploading. This workflow does partial builds (only apps with updates), so disable to avoid dropping releases for apps not included in a given run."
+        required: false
+        type: boolean
+        default: true
   schedule:
     - cron: '0 */12 * * *'
 jobs:
@@ -20,6 +25,11 @@ jobs:
     concurrency:
       group: ${{ github.head_ref || github.run_id }}
       cancel-in-progress: true
+    env:
+      # Defaults used only for schedule-triggered runs of build-release below, where `inputs` is
+      # unset entirely (manual workflow_dispatch runs use each input's own `default:` instead).
+      SCHEDULED_TELEGRAM_NO_ROOT_UPLOAD: true
+      SCHEDULED_DELETE_OLDER_RELEASES: true
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -57,8 +67,16 @@ jobs:
         run: |
           should_build=$(python check_resource_updates.py)
           echo "SHOULD_BUILD=$should_build" >> $GITHUB_OUTPUT
+
+      - name: Expose scheduled-run defaults
+        id: scheduled_defaults
+        run: |
+          echo "TELEGRAM_NO_ROOT_UPLOAD=$SCHEDULED_TELEGRAM_NO_ROOT_UPLOAD" >> "$GITHUB_OUTPUT"
+          echo "DELETE_OLDER_RELEASES=$SCHEDULED_DELETE_OLDER_RELEASES" >> "$GITHUB_OUTPUT"
     outputs:
       SHOULD_BUILD: ${{ steps.should_build.outputs.SHOULD_BUILD }}
+      SCHEDULED_TELEGRAM_NO_ROOT_UPLOAD: ${{ steps.scheduled_defaults.outputs.TELEGRAM_NO_ROOT_UPLOAD }}
+      SCHEDULED_DELETE_OLDER_RELEASES: ${{ steps.scheduled_defaults.outputs.DELETE_OLDER_RELEASES }}
 
   build-release:
     permissions: write-all
@@ -70,5 +88,14 @@ jobs:
       group: Auto-Release-${{ github.head_ref || github.run_id }}
       cancel-in-progress: true
     with:
-      TELEGRAM_NO_ROOT_UPLOAD: true
       PREFERRED_PATCH_APPS: ${{ needs.release-check.outputs.SHOULD_BUILD }}
+      TELEGRAM_NO_ROOT_UPLOAD: >-
+        ${{
+          (github.event_name == 'schedule' && fromJSON(needs.release-check.outputs.SCHEDULED_TELEGRAM_NO_ROOT_UPLOAD))
+          || (github.event_name != 'schedule' && inputs.TELEGRAM_NO_ROOT_UPLOAD)
+        }}
+      DELETE_OLDER_RELEASES: >-
+        ${{
+          (github.event_name == 'schedule' && fromJSON(needs.release-check.outputs.SCHEDULED_DELETE_OLDER_RELEASES))
+          || (github.event_name != 'schedule' && inputs.DELETE_OLDER_RELEASES)
+        }}
