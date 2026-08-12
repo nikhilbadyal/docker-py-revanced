@@ -25,8 +25,19 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Update Env for custom build
+        env:
+          # Pass ENVS as step env var rather than inline string interpolation to prevent shell syntax issues if secret contains special characters.
+          ENVS: ${{ secrets.ENVS }}
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          echo "${{ secrets.ENVS }}" >> .env
+          # Safely append ENVS secret to .env using printf to prevent shell interpolation parsing errors.
+          printf '%s\n' "$ENVS" >> .env
+          # An ENVS-embedded PERSONAL_ACCESS_TOKEN always wins (backwards compat); only fall back to secret when unset/empty.
+          # We filter out empty assignments (grep -v '^$') to ensure a trailing empty declaration doesn't hide a valid token set earlier in ENVS.
+          existing_pat=$(grep -E '^[[:space:]]*PERSONAL_ACCESS_TOKEN[[:space:]]*=' .env | cut -d'=' -f2- | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e "s/^['\"]//" -e "s/['\"]$//" | grep -v '^$' | tail -n1 || true)
+          if [ -n "${PERSONAL_ACCESS_TOKEN}" ] && [ -z "${existing_pat}" ]; then
+            printf 'PERSONAL_ACCESS_TOKEN=%s\n' "${PERSONAL_ACCESS_TOKEN}" >> .env
+          fi
 
       - name: Setup python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
