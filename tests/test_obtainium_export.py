@@ -4,18 +4,21 @@
 # unittest keeps this file aligned with the rest of the repository test suite.
 # ruff: noqa: PT009
 
+import json
+import re
 from contextlib import chdir
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from types import SimpleNamespace
-from typing import TYPE_CHECKING, Self, cast
+from typing import Self, cast
 from unittest import TestCase
+from urllib.parse import unquote
+
+from environs import Env
 
 from src.app import APP
+from src.config import RevancedConfig
 from src.utils import generate_obtainium_export
-
-if TYPE_CHECKING:
-    from src.config import RevancedConfig
 
 
 class _Env:
@@ -75,6 +78,7 @@ class ObtainiumExportTests(TestCase):
                 SimpleNamespace(
                     obtainium_export=True,
                     obtainium_github_tag="release tag",
+                    obtainium_site_export=False,
                     env=_Env("owner/repo"),
                 ),
             )
@@ -94,3 +98,94 @@ class ObtainiumExportTests(TestCase):
             html_content,
         )
         self.assertIn("1&lt;2", html_content)
+
+    def test_generate_obtainium_export_site_export_builds_deep_link(self: Self) -> None:
+        """Site export should add a package-scoped obtainium://app/ deep link and an index page."""
+        with TemporaryDirectory() as temp_dir, chdir(temp_dir):
+            config = cast(
+                "RevancedConfig",
+                SimpleNamespace(
+                    obtainium_export=True,
+                    obtainium_github_tag="latest",
+                    obtainium_site_export=True,
+                    obtainium_version_extraction_regex=r"Version([\w.]+)-PatchVersion[v]?([\w.]+)-PatchSet",
+                    obtainium_version_match_group="$1+$2",
+                    env=_Env("owner/repo"),
+                ),
+            )
+            updates_info = {
+                "YouTube": {
+                    "app_version": "20.47.62",
+                    "patches_versions": ["v1.0.0"],
+                    "output_file_name": "ReYouTube-Version20.47.62-PatchVersionv1.0.0-PatchSetabc123-output.apk",
+                    "app_dump": {"package_name": "app.revanced.android.youtube"},
+                },
+            }
+
+            generate_obtainium_export(updates_info, config)
+            index_content = Path(temp_dir, "index.html").read_text(encoding="utf_8")
+
+        self.assertIn('<span class="app-name">YouTube</span>', index_content)
+        self.assertIn('<code class="package-name">app.revanced.android.youtube</code>', index_content)
+        self.assertIn('<span class="meta-chip">App 20.47.62</span>', index_content)
+        self.assertIn('<span class="meta-chip">Patch v1.0.0</span>', index_content)
+        self.assertIn(
+            'class="source-link" href="https://raw.githubusercontent.com/owner/repo/changelogs/'
+            'obtainium_sources/youtube.html"',
+            index_content,
+        )
+        self.assertIn("https://github.com/ImranR98/Obtainium", index_content)
+        deep_link_match = re.search(r'href="(obtainium://app/[^"]+)"', index_content)
+        self.assertIsNotNone(deep_link_match)
+        payload = json.loads(unquote(deep_link_match.group(1).removeprefix("obtainium://app/")))  # type: ignore[union-attr]
+
+        self.assertEqual(payload["id"], "app.revanced.android.youtube")
+        self.assertEqual(payload["overrideSource"], "HTML")
+        self.assertEqual(
+            payload["url"],
+            "https://raw.githubusercontent.com/owner/repo/changelogs/obtainium_sources/youtube.html",
+        )
+
+        additional_settings = json.loads(payload["additionalSettings"])
+        self.assertEqual(additional_settings["matchGroupToUse"], "$1+$2")
+        self.assertTrue(additional_settings["versionDetection"])
+
+    def test_generate_obtainium_export_site_export_skips_app_without_package_name(self: Self) -> None:
+        """An app_dump missing package_name should skip its deep link but not crash the export."""
+        with TemporaryDirectory() as temp_dir, chdir(temp_dir):
+            config = cast(
+                "RevancedConfig",
+                SimpleNamespace(
+                    obtainium_export=True,
+                    obtainium_github_tag="latest",
+                    obtainium_site_export=True,
+                    obtainium_version_extraction_regex="",
+                    obtainium_version_match_group="",
+                    env=_Env("owner/repo"),
+                ),
+            )
+            updates_info = {
+                "YouTube": {
+                    "app_version": "20.47.62",
+                    "output_file_name": "youtube-output.apk",
+                    "app_dump": {},
+                },
+            }
+
+            generate_obtainium_export(updates_info, config)
+            index_path = Path(temp_dir, "index.html")
+
+        self.assertFalse(index_path.exists())
+
+    def test_default_version_extraction_regex_handles_optional_patch_prefix(self: Self) -> None:
+        """The shipped default regex must match patch bundle versions with or without a leading 'v'."""
+        config = RevancedConfig(Env())
+        regex = config.obtainium_version_extraction_regex
+
+        with_v = re.search(regex, "ReYouTube-Version20.47.62-PatchVersionv1.0.0-PatchSetabc123-output.apk")
+        without_v = re.search(regex, "ReYouTube-Version20.47.62-PatchVersion1.0.0-PatchSetabc123-output.apk")
+
+        self.assertIsNotNone(with_v)
+        self.assertIsNotNone(without_v)
+        self.assertEqual(with_v.groups(), ("20.47.62", "1.0.0"))  # type: ignore[union-attr]
+        self.assertEqual(without_v.groups(), ("20.47.62", "1.0.0"))  # type: ignore[union-attr]
