@@ -97,9 +97,11 @@ class Github(Downloader):
         for asset in assets:
             assets_url = asset["browser_download_url"]
             assets_name = asset["name"]
-            if match := filter_pattern.search(assets_url):
+            if filter_pattern.search(assets_url):
                 logger.debug(f"Found {assets_name} to be downloaded from {assets_url}")
-                return response.json()["tag_name"], match.group()
+                # Return the full asset URL directly rather than the regex match group.
+                # This decouples the filter pattern from URL extraction and aligns with GitLab's behavior.
+                return response.json()["tag_name"], assets_url
         return "", ""
 
     @staticmethod

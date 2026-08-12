@@ -267,7 +267,13 @@ class Downloader(object):
 
     @staticmethod
     def extra_downloads(config: RevancedConfig) -> None:
-        """The function `extra_downloads` downloads extra files specified.
+        """Download extra files specified in EXTRA_FILES.
+
+        Supports two formats after the `@` separator:
+        - Exact name: ``url@filename.ext`` — downloads first asset matching
+          the extension, saves as ``filename-output.ext``.
+        - Regex: ``url@/pattern/`` — downloads first asset whose name
+          matches the regex pattern.
 
         Parameters
         ----------
@@ -277,14 +283,22 @@ class Downloader(object):
         """
         try:
             for extra in config.extra_download_files:
-                url, file_name = extra.split("@")
-                file_name_without_extension, file_extension = os.path.splitext(file_name)
-                new_file_name = f"{file_name_without_extension}-output{file_extension}"
-                APP.download(
-                    url,
-                    config,
-                    assets_filter=f".*{file_extension}",
-                    file_name=new_file_name,
-                )
+                url, file_spec = extra.split("@")
+                if file_spec.startswith("/") and file_spec.endswith("/"):
+                    # Regex mode: the text between `/` delimiters is a regex matched against asset names/URLs.
+                    # The save name is auto-derived from the matched download URL by APP.download.
+                    pattern = file_spec[1:-1]
+                    APP.download(url, config, assets_filter=pattern)
+                else:
+                    # Exact-match mode (existing behavior): extension-based filter, explicit save name.
+                    file_name = file_spec
+                    file_name_without_extension, file_extension = os.path.splitext(file_name)
+                    new_file_name = f"{file_name_without_extension}-output{file_extension}"
+                    APP.download(
+                        url,
+                        config,
+                        assets_filter=f".*{file_extension}",
+                        file_name=new_file_name,
+                    )
         except (ValueError, IndexError):
-            logger.info("Unable to download extra file. Provide input in url@name.apk format.")
+            logger.info("Unable to download extra file. Provide input in url@name.apk or url@/regex/ format.")
