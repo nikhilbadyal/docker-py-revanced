@@ -186,12 +186,23 @@ jobs:
             apks/VancedMicroG.apk
           if-no-files-found: error
 
+      - name: Select changelog files
+        id: changelog_files
+        if: ${{ inputs.COMMIT_CHANGELOG && !inputs.CI_TEST}}
+        run: |
+          # Add the optional site index only when generated so git never receives a missing pathspec.
+          file_pattern='changelog.md changelog.json updates.json obtainium_sources/*'
+          if [ -f index.html ]; then
+            file_pattern="${file_pattern} index.html"
+          fi
+          echo "file_pattern=${file_pattern}" >> "$GITHUB_OUTPUT"
+
       - name: Commit Update file
         if: ${{ inputs.COMMIT_CHANGELOG && !inputs.CI_TEST}}
         uses: stefanzweifel/git-auto-commit-action@master
         with:
           branch: changelogs
           skip_checkout: true
-          file_pattern: 'changelog.md changelog.json updates.json obtainium_sources/* index.html'
+          file_pattern: ${{ steps.changelog_files.outputs.file_pattern }}
           commit_message: 🚀New Build
           push_options: '--force'
