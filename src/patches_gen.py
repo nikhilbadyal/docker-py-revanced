@@ -418,7 +418,7 @@ def convert_command_output_to_json(
         append_cli_argument(command, list_patches_args.get(key, ""))
     # This optional flag slot is preserved for advanced users who embed a fixed filter in the template.
     append_cli_argument(command, list_patches_args.get("FILTER_PACKAGE_NAME", ""))
-    # Morphe list-patches accepts a temp path, so parallel app scans should not share its default directory.
+    # Current Morphe list-patches has no temporary-path flag, so only patch commands receive isolated temp dirs.
     append_cli_argument(command, list_patches_args.get("TEMPORARY_FILES_PATH", ""), temporary_files_path)
     # Patch bundle argument supports positional, split, or `--flag=value` formatting styles.
     append_cli_argument(command, list_patches_args["PATCHES"], patches_file)
