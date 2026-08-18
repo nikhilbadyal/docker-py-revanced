@@ -1,6 +1,6 @@
 [
   {
-    "patchName": "Change package name",
+    "patchName": "Clone app",
     "options": [
       {
         "key": "packageName",
