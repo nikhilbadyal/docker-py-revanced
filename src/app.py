@@ -145,7 +145,7 @@ class APP(object):
         """
         version = self.app_version or "latest"
 
-        if self.download_source == APKEEP:
+        if self.download_source.startswith(APKEEP):
             # Use package@version format for apkeep to ensure uniqueness
             return (self.download_source, f"{self.package_name}@{version}")
 

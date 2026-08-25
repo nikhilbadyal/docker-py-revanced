@@ -279,10 +279,15 @@ full option details.
    2. UPTODOWN - Supports downloading any available version
         1. Link Format - https://<app-name>.en.uptodown.com/android
         2. Example Link - https://spotify.en.uptodown.com/android
-   3. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep)
-      1. Link Format - apkeep
-      2. Example Link - apkeep
-      Note - You need to provide APKEEP_EMAIL and APKEEP_TOKEN in the **DOCKER_PY_REVANCED_SECRETS** Github Secrets.
+   3. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep). Set `<APP_NAME>_DL_SOURCE`
+      to `apkeep` (defaults to the `google-play` provider) or `apkeep:<provider>` to pick any provider apkeep
+      itself supports - e.g. `apkeep:f-droid`, `apkeep:apk-pure`, `apkeep:huawei-app-gallery`.
+        1. Link Format - `apkeep` or `apkeep:<provider>`
+        2. Example Link - `apkeep:f-droid`
+      Note - APKEEP_EMAIL and APKEEP_TOKEN (in the **DOCKER_PY_REVANCED_SECRETS** Github Secrets) are only
+      needed for the `google-play` provider, since that's the only one apkeep requires an authenticated
+      Google account for. Only `google-play` ignores `<APP_NAME>_VERSION` and always fetches the latest
+      release - other providers (e.g. F-Droid, APKPure) support pinning to a specific version.
 
    <br>Please verify the source of original APKs yourself with links provided. I'm not responsible for any damage
     caused.If you know any better/safe source to download clean. Open a discussion.
