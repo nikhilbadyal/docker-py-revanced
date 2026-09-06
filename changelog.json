@@ -1,1 +1,32 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.2.250932)",
+        "Version": "v0.3.13.2.250932",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-hw-signed.apk) |\r\n",
+        "PublishedOn": "2026-02-16T01:57:27Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.9)",
+        "Version": "V1.4.9",
+        "Changelog": "## What's Changed\r\n* Fix: Merging issue #228 \r\n* Fix: Smali wide register handling #229 \r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.8...V1.4.9",
+        "PublishedOn": "2026-05-19T11:25:01Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-desktop/releases/tag/v1.15.0)",
+        "Version": "v1.15.0",
+        "Changelog": "# [1.15.0](https://github.com/MorpheApp/morphe-desktop/compare/v1.14.0...v1.15.0) (2026-09-03)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* Prevent NPE crash in `IoUsageSampler` on Windows ([#284](https://github.com/MorpheApp/morphe-desktop/issues/284)) ([539d96f](https://github.com/MorpheApp/morphe-desktop/commit/539d96f07722ec9b7fde28659b3c2c436ba146b2))\r\n* Recognize repository URLs passed to `--patches` on Windows ([#266](https://github.com/MorpheApp/morphe-desktop/issues/266)) ([5ed40a2](https://github.com/MorpheApp/morphe-desktop/commit/5ed40a2ee3895c4763d239aaea44b7cab97bf63e))\r\n\r\n\r\n### Features\r\n\r\n* Port Manager typography and overhaul UI to Material 3 ([#259](https://github.com/MorpheApp/morphe-desktop/issues/259)) ([b4f994b](https://github.com/MorpheApp/morphe-desktop/commit/b4f994bd5b1e7a060f800c05a09be4d097f064bb)), closes [#190](https://github.com/MorpheApp/morphe-desktop/issues/190)\r\n* Port Matrix animated background from Manager ([#285](https://github.com/MorpheApp/morphe-desktop/issues/285)) ([1aa42c2](https://github.com/MorpheApp/morphe-desktop/commit/1aa42c26f48fe49b6529057d60d906898a302885))\r\n",
+        "PublishedOn": "2026-09-03T11:42:05Z"
+    },
+    "crimera/piko": {
+        "ResourceName": "[crimera/piko](https://github.com/crimera/piko/releases/tag/v3.10.0-dev.4)",
+        "Version": "v3.10.0-dev.4",
+        "Changelog": "## [3.10.0-dev.4](https://github.com/crimera/piko/compare/v3.10.0-dev.3...v3.10.0-dev.4) (2026-09-04)\n\n### \ud83d\udc1b Bug Fixes\n\n* **Instagram:** Add missing entity dependencies ([#1833](https://github.com/crimera/piko/issues/1833)) ([a19b255](https://github.com/crimera/piko/commit/a19b255eccd3b2fed5474bc481ab7f3ae6640be9))\n",
+        "PublishedOn": "2026-09-04T22:13:25Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.42.0-dev.6)",
+        "Version": "v1.42.0-dev.6",
+        "Changelog": "## [1.42.0-dev.6](https://github.com/MorpheApp/morphe-patches/compare/v1.42.0-dev.5...v1.42.0-dev.6) (2026-09-06)\n\n### \ud83d\udc1b Bug Fixes\n\n* **YouTube - Channel whitelists:** Hide injected flyout menu buttons from other unrelated menu's  ([#2808](https://github.com/MorpheApp/morphe-patches/issues/2808)) ([5ba4ab4](https://github.com/MorpheApp/morphe-patches/commit/5ba4ab46f1a1ff62a8a733adc1b52a5614208036))\n",
+        "PublishedOn": "2026-09-06T12:43:48Z"
+    }
+}
