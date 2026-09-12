@@ -1,1 +1,32 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.2.250932)",
+        "Version": "v0.3.13.2.250932",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-hw-signed.apk) |\r\n",
+        "PublishedOn": "2026-02-16T01:57:27Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.9)",
+        "Version": "V1.4.9",
+        "Changelog": "## What's Changed\r\n* Fix: Merging issue #228 \r\n* Fix: Smali wide register handling #229 \r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.8...V1.4.9",
+        "PublishedOn": "2026-05-19T11:25:01Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-desktop/releases/tag/v1.15.1)",
+        "Version": "v1.15.1",
+        "Changelog": "## [1.15.1](https://github.com/MorpheApp/morphe-desktop/compare/v1.15.0...v1.15.1) (2026-09-10)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* Harden `IoUsageSampler` against corrupted Windows performance counters ([#298](https://github.com/MorpheApp/morphe-desktop/issues/298)) ([ea1380d](https://github.com/MorpheApp/morphe-desktop/commit/ea1380d28040166950397657dda01368d812eff8))\r\n* Resolve `IoUsageSampler` NPE regression ([#297](https://github.com/MorpheApp/morphe-desktop/issues/297)) ([082849c](https://github.com/MorpheApp/morphe-desktop/commit/082849c99e8523b02f92286125f77344566e89ea))\r\n* Trigger background completion effect when patching finishes ([#295](https://github.com/MorpheApp/morphe-desktop/issues/295)) ([f45091d](https://github.com/MorpheApp/morphe-desktop/commit/f45091d3bde63eab38a0d02e7fe5e73ec22aee8a))\r\n",
+        "PublishedOn": "2026-09-10T13:38:29Z"
+    },
+    "crimera/piko": {
+        "ResourceName": "[crimera/piko](https://github.com/crimera/piko/releases/tag/v3.10.0-dev.6)",
+        "Version": "v3.10.0-dev.6",
+        "Changelog": "## [3.10.0-dev.6](https://github.com/crimera/piko/compare/v3.10.0-dev.5...v3.10.0-dev.6) (2026-09-10)\n\n### \ud83d\udc1b Bug Fixes\n\n* **Twitter - Show changelogs:** Error message is shown with changelog dialog ([e1238c3](https://github.com/crimera/piko/commit/e1238c3ffd38b1573a11a411000080f825f79583))\n* **Twitter:** Restore timeline position on startup ([ae231c5](https://github.com/crimera/piko/commit/ae231c596bf9b7d3b1f2a1cff9ef5e74151cd6b9))\n\n### \u2728 New Features\n\n* **Twitter:** Add bulk feature flag selection and validation ([#1846](https://github.com/crimera/piko/issues/1846)) ([7b92ac8](https://github.com/crimera/piko/commit/7b92ac8626b2ff907769503ae85b688fd2471c36))\n",
+        "PublishedOn": "2026-09-10T01:22:23Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.43.0-dev.1)",
+        "Version": "v1.43.0-dev.1",
+        "Changelog": "## [1.43.0-dev.1](https://github.com/MorpheApp/morphe-patches/compare/v1.42.1-dev.3...v1.43.0-dev.1) (2026-09-12)\n\n### \u2728 New Features\n\n* **GmsCore support:** Handle conflicting MicroG installs ([#2907](https://github.com/MorpheApp/morphe-patches/issues/2907)) ([31a66d9](https://github.com/MorpheApp/morphe-patches/commit/31a66d95932f6ccf4e39a5804c750af72a606d15))\n\n### \ud83d\ude80 Updated App Support\n\n* **YouTube Music:** Add experimental support for `9.36.50` ([da8c85d](https://github.com/MorpheApp/morphe-patches/commit/da8c85d88a3c34597426525f5a81f69a4efdcd75))\n",
+        "PublishedOn": "2026-09-12T07:43:59Z"
+    }
+}
