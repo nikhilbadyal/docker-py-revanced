@@ -9,4 +9,4 @@ packaging==26.3
 pre-commit==4.6.2
 python-dotenv==1.2.3
 requests==2.34.2
-tqdm==4.70.0
+tqdm==4.70.1
