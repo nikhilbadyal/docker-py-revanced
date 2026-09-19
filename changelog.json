@@ -1,1 +1,32 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.2.250932)",
+        "Version": "v0.3.13.2.250932",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-hw-signed.apk) |\r\n",
+        "PublishedOn": "2026-02-16T01:57:27Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.9)",
+        "Version": "V1.4.9",
+        "Changelog": "## What's Changed\r\n* Fix: Merging issue #228 \r\n* Fix: Smali wide register handling #229 \r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.8...V1.4.9",
+        "PublishedOn": "2026-05-19T11:25:01Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-desktop/releases/tag/v1.16.0)",
+        "Version": "v1.16.0",
+        "Changelog": "# [1.16.0](https://github.com/MorpheApp/morphe-desktop/compare/v1.15.1...v1.16.0) (2026-09-14)\n\n\n### Bug Fixes\n\n* Resolve `Boolean/String` type mismatch when applying patch options from GUI ([#308](https://github.com/MorpheApp/morphe-desktop/issues/308)) ([c7c4a11](https://github.com/MorpheApp/morphe-desktop/commit/c7c4a110c285fe445b859effc6da98f92aa3a441))\n* Update to latest Patcher ([89e3868](https://github.com/MorpheApp/morphe-desktop/commit/89e3868d941651c6cd4a528a048cde7a454ca3fa))\n* Update to latest Patcher ([4f878dd](https://github.com/MorpheApp/morphe-desktop/commit/4f878dd3ff474551b11299b56ab0104e260f0c19))\n\n\n### Features\n\n* Prerelease aware updates + Changelog scoped badges + Overhauled \"Your Apps\" sheet + UI fixes ([#272](https://github.com/MorpheApp/morphe-desktop/issues/272)) ([5cdf1a0](https://github.com/MorpheApp/morphe-desktop/commit/5cdf1a00e6119afcf27ad8393c2b33873c5cd917)), closes [#259](https://github.com/MorpheApp/morphe-desktop/issues/259)\n",
+        "PublishedOn": "2026-09-14T18:46:26Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v1.44.0-dev.10)",
+        "Version": "v1.44.0-dev.10",
+        "Changelog": "## [1.44.0-dev.10](https://github.com/MorpheApp/morphe-patches/compare/v1.44.0-dev.9...v1.44.0-dev.10) (2026-09-19)\n\n### \ud83d\ude80 Updated App Support\n\n* **YouTube Music:** Add experimental support for `9.37.54` ([04f67ae](https://github.com/MorpheApp/morphe-patches/commit/04f67ae150d23b1c888061e9d723459736f8f52c))\n",
+        "PublishedOn": "2026-09-19T15:45:23Z"
+    },
+    "crimera/piko": {
+        "ResourceName": "[crimera/piko](https://github.com/crimera/piko/releases/tag/v3.10.0-dev.8)",
+        "Version": "v3.10.0-dev.8",
+        "Changelog": "## [3.10.0-dev.8](https://github.com/crimera/piko/compare/v3.10.0-dev.7...v3.10.0-dev.8) (2026-09-14)\n\n### \ud83d\udc1b Bug Fixes\n\n* **ci:** Import Crowdin translations onto the latest dev ([#1890](https://github.com/crimera/piko/issues/1890)) ([385a8d1](https://github.com/crimera/piko/commit/385a8d1852434f0529d4a017f723ccc5cae4e0b8))\n* **Twitter:** Preserve links when applying custom fonts ([#1889](https://github.com/crimera/piko/issues/1889)) ([f5d1db8](https://github.com/crimera/piko/commit/f5d1db88cb2e1782436604168903347b43d3743c))\n\n### \u2728 New Features\n\n* **Instagram:** Update the Direct icon in settings and in the navigation customization window. ([#1888](https://github.com/crimera/piko/issues/1888)) ([7e50716](https://github.com/crimera/piko/commit/7e507162e87e8ac586216fa7562add6bac355d28))\n",
+        "PublishedOn": "2026-09-14T01:58:21Z"
+    }
+}
