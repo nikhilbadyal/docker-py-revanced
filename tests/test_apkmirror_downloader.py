@@ -197,12 +197,12 @@ class APKMirrorDownloaderTests(TestCase):
 
         with TemporaryDirectory() as tmp_dir:
             downloader = ApkMirror(_config(Path(tmp_dir)))
-            # The guessed URL fails (ScrapingError), then the listing page is scraped successfully.
+            # Both candidate guessed URLs fail (ScrapingError), then the listing page is scraped successfully.
             with (
                 patch.object(
                     downloader,
                     "_extract_source",
-                    side_effect=[ScrapingError("404 not found"), listing_page],
+                    side_effect=[ScrapingError("404 not found"), ScrapingError("404 not found"), listing_page],
                 ),
                 patch.object(
                     downloader,
@@ -222,6 +222,96 @@ class APKMirrorDownloaderTests(TestCase):
         )
         self.assertEqual("TWITTER_PIKO.apkm", file_name)
         self.assertEqual("https://example.test/download.php?id=1", download_url)
+
+    def test_find_specific_version_resolves_rebranded_twitter_url_directly(self: Self) -> None:
+        """Twitter releases on APKMirror are published under 'x' and should resolve on the first guess."""
+        valid_release_page = """
+            <div class="tab-pane noPadding">variants table here</div>
+        """
+        app = cast(
+            "APP",
+            SimpleNamespace(
+                app_name="TWITTER_PIKO",
+                app_version="12.19.1-release.0",
+                download_source="https://www.apkmirror.com/apk/x-corp/twitter/",
+                effective_cli_argsf="morphe-cli",
+            ),
+        )
+
+        with TemporaryDirectory() as tmp_dir:
+            downloader = ApkMirror(_config(Path(tmp_dir)))
+            with patch.object(downloader, "_extract_source", return_value=valid_release_page) as extract:
+                result = downloader._find_specific_version_page(app, "12.19.1-release.0")
+
+        self.assertEqual(
+            "https://www.apkmirror.com/apk/x-corp/twitter/x-12-19-1-release-0-release/",
+            result,
+        )
+        extract.assert_called_once_with(
+            "https://www.apkmirror.com/apk/x-corp/twitter/x-12-19-1-release-0-release/",
+        )
+
+    def test_guess_release_urls_handles_twitter_rebrand(self: Self) -> None:
+        """The candidate release URLs for Twitter should place the modern 'x' prefix first."""
+        urls = ApkMirror._guess_release_urls(
+            "https://www.apkmirror.com/apk/x-corp/twitter/",
+            "12.19.1-release.0",
+        )
+        self.assertEqual(
+            [
+                "https://www.apkmirror.com/apk/x-corp/twitter/x-12-19-1-release-0-release/",
+                "https://www.apkmirror.com/apk/x-corp/twitter/twitter-12-19-1-release-0-release/",
+            ],
+            urls,
+        )
+
+    def test_find_specific_version_paginates_listing_when_not_on_first_page(self: Self) -> None:
+        """When an older version has fallen off page 1, subsequent listing pages should be inspected."""
+        page_1 = """
+            <div class="listWidget p-relative">
+                <div class="appRow">
+                    <span class="appRowTitle">X 12.30.0-release.0</span>
+                    <a class="downloadLink" href="/apk/x-corp/twitter/x-12-30-0-release-0-release/">Download</a>
+                </div>
+            </div>
+        """
+        page_2 = """
+            <div class="listWidget p-relative">
+                <div class="appRow">
+                    <span class="appRowTitle">X 12.19.1-release.0</span>
+                    <a class="downloadLink" href="/apk/x-corp/twitter/x-12-19-1-release-0-release/">Download</a>
+                </div>
+            </div>
+        """
+        app = cast(
+            "APP",
+            SimpleNamespace(
+                app_name="TWITTER_PIKO",
+                app_version="12.19.1-release.0",
+                download_source="https://www.apkmirror.com/apk/x-corp/twitter/",
+                effective_cli_argsf="morphe-cli",
+            ),
+        )
+
+        with TemporaryDirectory() as tmp_dir:
+            downloader = ApkMirror(_config(Path(tmp_dir)))
+            # Guessed URLs fail, page 1 doesn't have it, page 2 matches.
+            with patch.object(
+                downloader,
+                "_extract_source",
+                side_effect=[
+                    ScrapingError("404"),
+                    ScrapingError("404"),
+                    page_1,
+                    page_2,
+                ],
+            ):
+                result = downloader._find_specific_version_page(app, "12.19.1-release.0")
+
+        self.assertEqual(
+            "https://www.apkmirror.com/apk/x-corp/twitter/x-12-19-1-release-0-release/",
+            result,
+        )
 
     def test_get_download_page_rejects_missing_release_table(self: Self) -> None:
         """A normal APKMirror 404 page should fail as a download error instead of a NoneType parser crash."""
