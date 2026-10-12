@@ -78,37 +78,62 @@ class Apkeep(Downloader):
         logger.debug(f"Zipped {folder_path} to {zip_path}")
         return zip_path.name
 
-    def _find_apkeep_output(self: Self, package_name: str) -> Path | None:
-        """Locate whatever apkeep just produced for this package.
+    def _find_apkeep_output(self: Self, package_name: str, version: str) -> Path | None:
+        """Locate whatever apkeep just produced for this package and version.
 
         apkeep names output after the exact -a identifier (package_name, or package_name@version when
         pinning a version), but that convention isn't verified across every provider, so this falls
         back to matching anything apkeep created for this package rather than failing on a name that's
         merely slightly off. Restricted to plausible identifier boundaries (., @, _) so it can't match
-        an unrelated package that happens to share this one as a prefix.
+        an unrelated package that happens to share this one as a prefix, and to candidates whose tail
+        actually contains the requested version (or has no '@' at all when no version was requested) so
+        a leftover download for a different version is never mistaken for this one.
         """
         for candidate in sorted(self.config.temp_folder.glob(f"{package_name}*")):
             if candidate.name != package_name and candidate.name[len(package_name)] not in ".@_":
+                continue
+            tail = candidate.name[len(package_name) :]
+            if version:
+                if version not in tail:
+                    continue
+            elif "@" in tail:
                 continue
             if candidate.is_dir() or candidate.suffix in {".apk", ".xapk", ".zip"}:
                 return candidate
         return None
 
+    def _cached_name(self: Self, provider: str, identifier: str, suffix: str) -> str:
+        """Build this downloader's own provider-qualified cache filename for an apkeep identifier.
+
+        apkeep's native output naming has no concept of provider, so two providers asked for the same
+        package/version would otherwise collide on the same native filename. Fetched output is claimed
+        under this provider-qualified name instead, so a prior download from a different provider is
+        never mistaken for this one.
+        """
+        return f"{provider}__{identifier}{suffix}"
+
+    def _claim_apkeep_output(self: Self, native_path: Path, provider: str, identifier: str) -> str:
+        """Move apkeep's freshly produced output into this downloader's provider-qualified cache slot."""
+        cached_path = self.config.temp_folder / self._cached_name(provider, identifier, native_path.suffix)
+        native_path.replace(cached_path)
+        return cached_path.name
+
     def _run_apkeep(self: Self, app: APP, version: str = "") -> str:
         """Run apkeep CLI to fetch an APK from whichever provider the app's source selects."""
         package_name = app.package_name
+        provider = self._provider_from_source(app.download_source)
         identifier = self._apkeep_identifier(package_name, version)
-        file_path = self.config.temp_folder / f"{identifier}.apk"
-        folder_path = self.config.temp_folder / identifier
-        zip_path = self.config.temp_folder / f"{identifier}.zip"
 
-        # If already downloaded, return it
-        if file_path.exists():
-            logger.debug(f"{file_path.name} already downloaded.")
-            return file_path.name
-        if zip_path.exists():
-            logger.debug(f"{zip_path.name} already zipped and exists.")
-            return zip_path.name
+        cached_apk = self.config.temp_folder / self._cached_name(provider, identifier, ".apk")
+        cached_zip = self.config.temp_folder / self._cached_name(provider, identifier, ".zip")
+
+        # If already downloaded from this provider, return it
+        if cached_apk.exists():
+            logger.debug(f"{cached_apk.name} already downloaded.")
+            return cached_apk.name
+        if cached_zip.exists():
+            logger.debug(f"{cached_zip.name} already zipped and exists.")
+            return cached_zip.name
 
         cmd, safe_cmd = self._build_apkeep_command(app, version)
         # Keep the exact execution command separate from the log-safe command so credentials never reach CI logs.
@@ -128,14 +153,18 @@ class Apkeep(Downloader):
             raise DownloadError(msg)
         logger.info(f"Downloading completed for app {package_name} in {perf_counter() - start:.2f} seconds.")
 
+        file_path = self.config.temp_folder / f"{identifier}.apk"
+        folder_path = self.config.temp_folder / identifier
         if file_path.exists():
-            return file_path.name
+            return self._claim_apkeep_output(file_path, provider, identifier)
         if folder_path.exists() and folder_path.is_dir():
-            return self._zip_apkeep_output(folder_path, zip_path)
-        if found := self._find_apkeep_output(package_name):
+            zip_name = self._zip_apkeep_output(folder_path, self.config.temp_folder / f"{identifier}.zip")
+            return self._claim_apkeep_output(self.config.temp_folder / zip_name, provider, identifier)
+        if found := self._find_apkeep_output(package_name, version):
             if found.is_dir():
-                return self._zip_apkeep_output(found, zip_path)
-            return found.name
+                zip_name = self._zip_apkeep_output(found, self.config.temp_folder / f"{identifier}.zip")
+                return self._claim_apkeep_output(self.config.temp_folder / zip_name, provider, identifier)
+            return self._claim_apkeep_output(found, provider, identifier)
         msg = "APK file or folder not found after apkeep execution."
         raise DownloadError(msg)
 
