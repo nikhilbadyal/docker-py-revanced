@@ -23,17 +23,25 @@ if TYPE_CHECKING:
 class _Env:
     """Small env double that returns APKEEP credentials by key."""
 
-    def str(self: Self, key: str) -> str:
+    def str(self: Self, key: str, default: str = "") -> str:
         """Return stable fake credentials so log assertions can detect leaks."""
         values = {"APKEEP_EMAIL": "user@example.test", "APKEEP_TOKEN": "super-secret-token"}
-        return values[key]
+        return values.get(key, default)
 
 
-def _apkeep_config(temp_folder: Path) -> RevancedConfig:
+class _NoCredsEnv:
+    """Env double with no APKEEP credentials configured, for providers that don't need them."""
+
+    def str(self: Self, key: str, default: str = "") -> str:
+        """Always fall back to the default, simulating unset credentials."""
+        return default
+
+
+def _apkeep_config(temp_folder: Path, env: object = None) -> RevancedConfig:
     """Build the minimum RevancedConfig-shaped object needed by Apkeep."""
     return cast(
         "RevancedConfig",
-        SimpleNamespace(env=_Env(), temp_folder=temp_folder, temp_folder_name=str(temp_folder)),
+        SimpleNamespace(env=env or _Env(), temp_folder=temp_folder, temp_folder_name=str(temp_folder)),
     )
 
 
@@ -77,7 +85,7 @@ class RuntimeGuardTests(TestCase):
                 patch("src.downloader.apkeep.logger.debug") as debug_log,
             ):
                 # latest_version is the public APKEEP path that internally builds and logs the command.
-                app = cast("APP", SimpleNamespace(package_name="com.example"))
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep"))
                 Apkeep(_apkeep_config(temp_folder)).latest_version(app)
 
         logged_text = "\n".join(str(call.args) for call in debug_log.call_args_list)
@@ -85,3 +93,142 @@ class RuntimeGuardTests(TestCase):
         self.assertNotIn("super-secret-token", logged_text)
         self.assertIn("<redacted-email>", logged_text)
         self.assertIn("<redacted-token>", logged_text)
+
+    def test_apkeep_uses_provider_from_source_suffix(self: Self) -> None:
+        """`apkeep:<provider>` should pass that provider straight through to apkeep's -d flag."""
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            process = _ApkeepProcess(temp_folder / "com.example.apk")
+
+            with patch("src.downloader.apkeep.Popen", return_value=process) as popen:
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep:f-droid"))
+                Apkeep(_apkeep_config(temp_folder)).latest_version(app)
+
+        cmd = popen.call_args.args[0]
+        self.assertIn("f-droid", cmd)
+        self.assertNotIn("google-play", cmd)
+
+    def test_apkeep_defaults_to_google_play_without_a_provider_suffix(self: Self) -> None:
+        """A bare `apkeep` source (no `:provider`) should keep defaulting to google-play."""
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            process = _ApkeepProcess(temp_folder / "com.example.apk")
+
+            with patch("src.downloader.apkeep.Popen", return_value=process) as popen:
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep"))
+                Apkeep(_apkeep_config(temp_folder)).latest_version(app)
+
+        cmd = popen.call_args.args[0]
+        self.assertIn("google-play", cmd)
+
+    def test_apkeep_specific_version_appends_at_version_to_the_package_arg(self: Self) -> None:
+        """specific_version should use apkeep's `package@version` convention (unsupported on google-play)."""
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            process = _ApkeepProcess(temp_folder / "com.example@1.2.3.apk")
+
+            with patch("src.downloader.apkeep.Popen", return_value=process) as popen:
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep:f-droid"))
+                Apkeep(_apkeep_config(temp_folder)).specific_version(app, "1.2.3")
+
+        cmd = popen.call_args.args[0]
+        self.assertIn("com.example@1.2.3", cmd)
+
+    def test_apkeep_specific_version_finds_output_named_after_the_full_identifier(self: Self) -> None:
+        """Apkeep names its output after the -a identifier, not the bare package name, when pinning a version.
+
+        Regression test: apkeep produced `com.example@1.2.3.apk` for a versioned pull, but the lookup
+        used to only ever check for `com.example.apk`, so it never found the file apkeep actually wrote
+        and raised "APK file or folder not found" even though the download had succeeded.
+        """
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            process = _ApkeepProcess(temp_folder / "com.example@1.2.3.apk")
+
+            with patch("src.downloader.apkeep.Popen", return_value=process):
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep:f-droid"))
+                file_name, _ = Apkeep(_apkeep_config(temp_folder)).specific_version(app, "1.2.3")
+
+        self.assertEqual(file_name, "f-droid__com.example@1.2.3.apk")
+
+    def test_apkeep_falls_back_to_a_glob_match_for_an_unexpected_output_name(self: Self) -> None:
+        """A provider naming its output slightly differently than expected should still be found.
+
+        This is the safety net for _apkeep_identifier being a best-effort guess at apkeep's real
+        naming convention, not a hard requirement - anything apkeep clearly wrote for this package
+        should be picked up even if it doesn't match the exact expected identifier.
+        """
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            # Simulate a provider that drops the version instead of using package@version.
+            process = _ApkeepProcess(temp_folder / "com.example_1.2.3.apk")
+
+            with patch("src.downloader.apkeep.Popen", return_value=process):
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep:f-droid"))
+                file_name, _ = Apkeep(_apkeep_config(temp_folder)).specific_version(app, "1.2.3")
+
+        self.assertEqual(file_name, "f-droid__com.example@1.2.3.apk")
+
+    def test_apkeep_glob_fallback_does_not_match_an_unrelated_package_with_a_shared_prefix(self: Self) -> None:
+        """The glob fallback must not treat `com.example2` as a match for `com.example`."""
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            (temp_folder / "com.example2.apk").write_bytes(b"apk")
+
+            found = Apkeep(_apkeep_config(temp_folder))._find_apkeep_output("com.example", "")  # noqa: SLF001
+
+        self.assertIsNone(found)
+
+    def test_apkeep_glob_fallback_does_not_match_a_different_version(self: Self) -> None:
+        """A leftover download pinned to one version must not be mistaken for a different version's output.
+
+        Regression test: the glob fallback only checked package-name boundaries, so a stale
+        `com.example@1.0.apk` left over from an earlier run could be returned for a `2.0` request even
+        though apkeep had actually just written `com.example_2.0.apk` for this call.
+        """
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            (temp_folder / "com.example@1.0.apk").write_bytes(b"stale-1.0-apk")
+            # Simulate a provider that drops the version instead of using package@version.
+            process = _ApkeepProcess(temp_folder / "com.example_2.0.apk")
+
+            with patch("src.downloader.apkeep.Popen", return_value=process):
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep:f-droid"))
+                file_name, _ = Apkeep(_apkeep_config(temp_folder)).specific_version(app, "2.0")
+
+        self.assertEqual(file_name, "f-droid__com.example@2.0.apk")
+
+    def test_apkeep_cached_output_is_isolated_per_provider(self: Self) -> None:
+        """A cached download from one provider must not be reused for a different provider's request.
+
+        Regression test: the "already downloaded" shortcut and apkeep's native output filename are
+        both keyed only by package/version, so a package already fetched via google-play could be
+        silently served back for a request that actually asked for f-droid.
+        """
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            # Pretend google-play already has a cached download for this package.
+            (temp_folder / "google-play__com.example.apk").write_bytes(b"old-google-play-apk")
+            process = _ApkeepProcess(temp_folder / "com.example.apk")
+
+            with patch("src.downloader.apkeep.Popen", return_value=process) as popen:
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep:f-droid"))
+                file_name, _ = Apkeep(_apkeep_config(temp_folder)).latest_version(app)
+
+        popen.assert_called_once()
+        self.assertEqual(file_name, "f-droid__com.example.apk")
+
+    def test_apkeep_omits_credential_flags_when_not_configured(self: Self) -> None:
+        """A provider that doesn't need Google credentials shouldn't require APKEEP_EMAIL/TOKEN."""
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            process = _ApkeepProcess(temp_folder / "com.example.apk")
+            config = _apkeep_config(temp_folder, env=_NoCredsEnv())
+
+            with patch("src.downloader.apkeep.Popen", return_value=process) as popen:
+                app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep:f-droid"))
+                Apkeep(config).latest_version(app)
+
+        cmd = popen.call_args.args[0]
+        self.assertNotIn("-e", cmd)
+        self.assertNotIn("-t", cmd)
