@@ -198,6 +198,21 @@ class RuntimeGuardTests(TestCase):
 
         self.assertEqual(file_name, "f-droid__com.example@2.0.apk")
 
+    def test_apkeep_glob_fallback_requires_an_exact_version_match(self: Self) -> None:
+        """Requesting `1.0` must not match output for `1.0.1` or `11.0`, only for exactly `1.0`."""
+        with TemporaryDirectory() as tmp_dir:
+            temp_folder = Path(tmp_dir)
+            (temp_folder / "com.example@1.0.1.apk").write_bytes(b"apk")
+            (temp_folder / "com.example@11.0.apk").write_bytes(b"apk")
+            apkeep = Apkeep(_apkeep_config(temp_folder))
+
+            self.assertIsNone(apkeep._find_apkeep_output("com.example", "1.0"))  # noqa: SLF001
+
+            (temp_folder / "com.example_1.0.apk").write_bytes(b"apk")
+            found = apkeep._find_apkeep_output("com.example", "1.0")  # noqa: SLF001
+
+        self.assertEqual(found.name if found else None, "com.example_1.0.apk")
+
     def test_apkeep_cached_output_is_isolated_per_provider(self: Self) -> None:
         """A cached download from one provider must not be reused for a different provider's request.
 

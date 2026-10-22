@@ -85,16 +85,19 @@ class Apkeep(Downloader):
         pinning a version), but that convention isn't verified across every provider, so this falls
         back to matching anything apkeep created for this package rather than failing on a name that's
         merely slightly off. Restricted to plausible identifier boundaries (., @, _) so it can't match
-        an unrelated package that happens to share this one as a prefix, and to candidates whose tail
-        actually contains the requested version (or has no '@' at all when no version was requested) so
-        a leftover download for a different version is never mistaken for this one.
+        an unrelated package that happens to share this one as a prefix, and to candidates whose tail is
+        exactly a separator plus the requested version (so 1.0 never matches 1.0.1 or 11.0), or has no '@'
+        at all when no version was requested, so a leftover download for a different version is never
+        mistaken for this one.
         """
         for candidate in sorted(self.config.temp_folder.glob(f"{package_name}*")):
             if candidate.name != package_name and candidate.name[len(package_name)] not in ".@_":
                 continue
             tail = candidate.name[len(package_name) :]
+            if candidate.is_file() and candidate.suffix in {".apk", ".xapk", ".zip"}:
+                tail = tail[: -len(candidate.suffix)]
             if version:
-                if version not in tail:
+                if not any(tail == f"{sep}{version}" for sep in "@_."):
                     continue
             elif "@" in tail:
                 continue
