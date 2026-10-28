@@ -281,13 +281,13 @@ full option details.
         2. Example Link - https://spotify.en.uptodown.com/android
    3. APKEEP - Support downloading using [APKEEP](https://github.com/EFForg/apkeep). Set `<APP_NAME>_DL_SOURCE`
       to `apkeep` (defaults to the `google-play` provider) or `apkeep:<provider>` to pick any provider apkeep
-      itself supports - e.g. `apkeep:f-droid`, `apkeep:apk-pure`, `apkeep:huawei-app-gallery`.
+      itself supports - e.g. `apkeep:f-droid`, `apkeep:apk-pure`.
         1. Link Format - `apkeep` or `apkeep:<provider>`
         2. Example Link - `apkeep:f-droid`
       Note - APKEEP_EMAIL and APKEEP_TOKEN (in the **DOCKER_PY_REVANCED_SECRETS** Github Secrets) are only
       needed for the `google-play` provider, since that's the only one apkeep requires an authenticated
-      Google account for. `google-play` ignores `<APP_NAME>_VERSION` and always fetches the latest
-      release. Only `f-droid` and `apk-pure` are documented by apkeep as supporting `<APP_NAME>_VERSION`
+      Google account for. `google-play` cannot download a specific `<APP_NAME>_VERSION`; use `latest`
+      for that provider. Only `f-droid` and `apk-pure` are documented by apkeep as supporting `<APP_NAME>_VERSION`
       pinning to a specific version - other providers' version-pinning support isn't documented, so
       don't assume it works there.
 
