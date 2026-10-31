@@ -262,6 +262,10 @@ class ApkMirror(Downloader):
     # Twitter was rebranded to X, so modern releases use 'x-' while legacy builds used 'twitter-'.
     _SLUG_PREFIX_CANDIDATES: ClassVar[dict[str, tuple[str, ...]]] = {
         "twitter": ("x", "twitter"),
+        # The Instagram listing lives at `/instagram-instagram/` but its release slugs are `instagram-<version>-release`
+        # (not `instagram-instagram-<version>-release`). Without this alias the direct URL guess always misses, and the
+        # 3-page listing fallback cannot reach older builds because Instagram publishes many versions per week.
+        "instagram-instagram": ("instagram", "instagram-instagram"),
     }
 
     @classmethod
