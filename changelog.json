@@ -1,1 +1,32 @@
-{}
+{
+    "ReVanced/GmsCore": {
+        "ResourceName": "[ReVanced/GmsCore](https://github.com/ReVanced/GmsCore/releases/tag/v0.3.13.2.250932)",
+        "Version": "v0.3.13.2.250932",
+        "Changelog": "# Download\r\n\r\n| Default | Huawei |\r\n| -------- | -------- |\r\n| [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-signed.apk) |  [Download](https://github.com/ReVanced/GmsCore/releases/download/v0.3.13.2.250932/app.revanced.android.gms-250932004-hw-signed.apk) |\r\n",
+        "PublishedOn": "2026-02-16T01:57:27Z"
+    },
+    "REAndroid/APKEditor": {
+        "ResourceName": "[REAndroid/APKEditor](https://github.com/REAndroid/APKEditor/releases/tag/V1.4.9)",
+        "Version": "V1.4.9",
+        "Changelog": "## What's Changed\r\n* Fix: Merging issue #228 \r\n* Fix: Smali wide register handling #229 \r\n\r\n\r\n**Full Changelog**: https://github.com/REAndroid/APKEditor/compare/V1.4.8...V1.4.9",
+        "PublishedOn": "2026-05-19T11:25:01Z"
+    },
+    "MorpheApp/morphe-cli": {
+        "ResourceName": "[MorpheApp/morphe-cli](https://github.com/MorpheApp/morphe-desktop/releases/tag/v1.20.0)",
+        "Version": "v1.20.0",
+        "Changelog": "# [1.20.0](https://github.com/MorpheApp/morphe-desktop/compare/v1.19.1...v1.20.0) (2026-10-30)\r\n\r\n\r\n### Bug Fixes\r\n\r\n* Update to latest Patcher ([4f580f0](https://github.com/MorpheApp/morphe-desktop/commit/4f580f0cf7eeaf9943c13d685765916a16199c1e))\r\n\r\n\r\n### Features\r\n\r\n* Verify patch bundle signatures and pin the signing key ([67dcf06](https://github.com/MorpheApp/morphe-desktop/commit/67dcf060f3231570dae3903d237768a372a2146c))\r\n",
+        "PublishedOn": "2026-10-30T11:58:35Z"
+    },
+    "MorpheApp/morphe-patches": {
+        "ResourceName": "[MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches/releases/tag/v2.1.0-dev.3)",
+        "Version": "v2.1.0-dev.3",
+        "Changelog": "## [2.1.0-dev.3](https://github.com/MorpheApp/morphe-patches/compare/v2.1.0-dev.2...v2.1.0-dev.3) (2026-10-31)\n\n### \u2728 New Features\n\n* **YouTube - Minimal miniplayer:** Add \"Docked miniplayer\" setting ([f89b66f](https://github.com/MorpheApp/morphe-patches/commit/f89b66f2e5c63637346def8aae49858d76bb14dd))\n* **YouTube - Minimal miniplayer:** Add \"Expand with swipe up\" setting ([e0e36ba](https://github.com/MorpheApp/morphe-patches/commit/e0e36ba3d11e2bd56ba561292887a6c9f626ff72))\n* **YouTube:** Add `Change PiP actions` patch ([#4175](https://github.com/MorpheApp/morphe-patches/issues/4175)) ([d9fc859](https://github.com/MorpheApp/morphe-patches/commit/d9fc85939f31340a2678e38375f2290a8d49da7f))\n\n### \ud83d\udc1b Bug Fixes\n\n* **YouTube - Downloads:** App can crash when downloading Short in-app ([bae1787](https://github.com/MorpheApp/morphe-patches/commit/bae1787e9d2f56e5d5dc845d1916cc46b5c8c288))\n* **YouTube - Feed video actions:** Inline watch later button performClick logic superseeded by direct app command ([7f343df](https://github.com/MorpheApp/morphe-patches/commit/7f343df16754bec9a4e102076c450bbf585c94a8))\n* **YouTube - Navigation bar:** Swap create with notifications button does not change the toolbar of the You tab ([3c03bbb](https://github.com/MorpheApp/morphe-patches/commit/3c03bbb585c9bcfa05f2cc4d1252e341e0904cb5))\n* **YouTube - Navigation bar:** Swiping the miniplayer does not cancel autoplay with Disable auto hide navigation bar ([136d5bc](https://github.com/MorpheApp/morphe-patches/commit/136d5bcbe4672192be5e3486ee100fe8529453a6))\n* **YouTube - Swipe controls:** Fix double tap to skip chapters ([#4219](https://github.com/MorpheApp/morphe-patches/issues/4219)) ([602533c](https://github.com/MorpheApp/morphe-patches/commit/602533c6f54e5590cd581e977b185b7feaa26eb6))\n* **YouTube Music - Downloads:** Download can fail with \"Audio stream unavailable\" with TV spoof client ([2406f60](https://github.com/MorpheApp/morphe-patches/commit/2406f60bc256a6dc1848e74b5fd544aec6bb4267))\n",
+        "PublishedOn": "2026-10-31T15:25:02Z"
+    },
+    "crimera/piko": {
+        "ResourceName": "[crimera/piko](https://github.com/crimera/piko/releases/tag/v3.11.0-dev.3)",
+        "Version": "v3.11.0-dev.3",
+        "Changelog": "## [3.11.0-dev.3](https://github.com/crimera/piko/compare/v3.11.0-dev.2...v3.11.0-dev.3) (2026-10-25)\n\n### \ud83d\udc1b Bug Fixes\n\n* **Instagram:** Fix hide feed posts with Patcher 2.0.1 ([abfc1c7](https://github.com/crimera/piko/commit/abfc1c7c1310c40415729ef086feae818e8f4ccb))\n\n### \ud83d\udd27 Improvements\n\n* **Instagram:** Respect settings dependencies ([a9f4ad0](https://github.com/crimera/piko/commit/a9f4ad065d2b5cb007233e6a9bf081a81de251b1))\n* **Instagram:** Restore recommended patches and complete patch status reporting ([eb8b4db](https://github.com/crimera/piko/commit/eb8b4db0e1c6a6f0c5e18301859622fe14e0f15c))\n",
+        "PublishedOn": "2026-10-25T17:20:44Z"
+    }
+}
