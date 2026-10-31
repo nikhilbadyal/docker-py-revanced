@@ -26,12 +26,14 @@ CLOAK_NETWORK_IDLE_TIMEOUT_MS = 15_000
 # Playwright expects milliseconds while the rest of the downloader config stores request timeouts in seconds.
 CLOAK_REQUEST_TIMEOUT_MS = request_timeout * 1000
 # APKMirror sometimes returns challenge HTML with HTTP 200, so the body needs explicit marker detection.
+# Deliberately excludes bare "captcha" and "challenge-platform": real APKMirror release pages embed a reCAPTCHA
+# script and Cloudflare's passive `/cdn-cgi/challenge-platform/scripts/jsd/main.js` beacon, so those strings made
+# fully loaded pages (title, variants table and all) look like challenges and every lookup failed. Genuine
+# interstitials are still caught by their title/body text and `cf-chl` tokens below.
 CLOAK_CHALLENGE_MARKERS = (
     "attention required",
-    "captcha",
     "cf-chl",
     "cf-turnstile",
-    "challenge-platform",
     "checking if the site connection is secure",
     "checking your browser",
     "just a moment",
