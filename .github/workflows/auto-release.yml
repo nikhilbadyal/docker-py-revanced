@@ -38,7 +38,8 @@ jobs:
         env:
           # Pass ENVS as step env var rather than inline string interpolation to prevent shell syntax issues if secret contains special characters.
           ENVS: ${{ secrets.ENVS }}
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          # Fall back to built-in GITHUB_TOKEN if PERSONAL_ACCESS_TOKEN secret is not set.
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN || secrets.GITHUB_TOKEN }}
         run: |
           # Safely append ENVS secret to .env using printf to prevent shell interpolation parsing errors.
           printf '%s\n' "$ENVS" >> .env

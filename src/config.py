@@ -19,7 +19,9 @@ class RevancedConfig(object):
         self.ci_test = env.bool("CI_TEST", False)
         self.rip_libs_apps: list[str] = []
         self.existing_downloaded_apks = env.list("EXISTING_DOWNLOADED_APKS", [])
-        self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None)
+        # Prefer explicit PERSONAL_ACCESS_TOKEN if configured, otherwise fall back to GITHUB_TOKEN
+        # automatically provided in GitHub Actions runners to avoid requiring manual PAT creation.
+        self.personal_access_token = env.str("PERSONAL_ACCESS_TOKEN", None) or env.str("GITHUB_TOKEN", None)
         self.dry_run = env.bool("DRY_RUN", False)
         self.global_cli_dl = env.str("GLOBAL_CLI_DL", default_cli)
         self.global_patches_dl = env.str("GLOBAL_PATCHES_DL", default_patches)

@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING, Self, cast
 from unittest import TestCase
 from unittest.mock import patch
 
+from environs import Env
+
 from src.config import RevancedConfig
 from src.downloader.apkeep import Apkeep
 from src.exceptions import DownloadError
@@ -298,3 +300,19 @@ class RuntimeGuardTests(TestCase):
             app = cast("APP", SimpleNamespace(package_name="com.example", download_source="apkeep"))
             with self.assertRaises(DownloadError):
                 Apkeep(_apkeep_config(Path(tmp_dir))).specific_version(app, "1.0")
+
+    def test_config_uses_github_token_when_personal_access_token_is_unset(self: Self) -> None:
+        """Verify that RevancedConfig falls back to GITHUB_TOKEN when PERSONAL_ACCESS_TOKEN is not configured."""
+        # Clean environment to guarantee only GITHUB_TOKEN is observed.
+        with patch.dict("os.environ", {"GITHUB_TOKEN": "gh_fallback_token"}, clear=True):
+            env = Env()
+            config = RevancedConfig(env)
+            self.assertEqual("gh_fallback_token", config.personal_access_token)
+
+    def test_config_prefers_personal_access_token_when_both_set(self: Self) -> None:
+        """Verify that an explicitly provided PERSONAL_ACCESS_TOKEN takes priority over GITHUB_TOKEN."""
+        # Both tokens present; explicit personal access token must take priority.
+        with patch.dict("os.environ", {"PERSONAL_ACCESS_TOKEN": "pat_token", "GITHUB_TOKEN": "gh_token"}, clear=True):
+            env = Env()
+            config = RevancedConfig(env)
+            self.assertEqual("pat_token", config.personal_access_token)
