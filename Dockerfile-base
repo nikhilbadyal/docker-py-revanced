@@ -1,5 +1,5 @@
-# Use a specific version of the base Python image
-ARG PYTHON_VERSION=3.15.2-slim-bookworm
+# Use Debian Trixie based slim Python image to provide GLIBC >= 2.38 required by modern tools (such as apkeep >= 1.1.0)
+ARG PYTHON_VERSION=3.15.2-slim-trixie
 
 FROM python:${PYTHON_VERSION} AS python
 
@@ -11,35 +11,36 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 WORKDIR ${APP_HOME}
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
-ARG ZULU_REPO_VER=1.0.0-3
 
 
-# Update package lists and install required packages
+# Update package lists and install required packages.
+# Debian Trixie uses modern /etc/apt/keyrings instead of deprecated apt-key and does not package software-properties-common.
 RUN apt-get -qq update && \
-    apt-get -qq -y --no-install-recommends install gnupg software-properties-common locales curl tzdata git && \
+    apt-get -qq -y --no-install-recommends install gnupg locales curl tzdata git && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 0xB1998361219BD9C9 && \
-    curl -sLO https://cdn.azul.com/zulu/bin/zulu-repo_${ZULU_REPO_VER}_all.deb && dpkg -i zulu-repo_${ZULU_REPO_VER}_all.deb && \
+    mkdir -p /etc/apt/keyrings && \
+    curl -fsSL https://repos.azul.com/azul-repo.key | gpg --dearmor -o /etc/apt/keyrings/azul.gpg && \
+    echo "deb [signed-by=/etc/apt/keyrings/azul.gpg] https://repos.azul.com/zulu/deb stable main" > /etc/apt/sources.list.d/zulu.list && \
     apt-get -qq update && \
     apt-get -qq -y upgrade && \
     mkdir -p /usr/share/man/man1 && \
     # Pin and install Azul Zulu Java 21 JDK to meet the minimum Java 21 requirement.
     echo "Package: zulu21-*\nPin-Priority: 1001" > /etc/apt/preferences && \
     apt-get -qq -y --no-install-recommends install zulu21-jdk && \
-    apt-get -qq -y purge gnupg software-properties-common curl && \
+    apt-get -qq -y purge gnupg curl && \
     apt-get -y autoremove && \
-    rm -rf /var/lib/apt/lists/* zulu-repo_${ZULU_REPO_VER}_all.deb
+    rm -rf /var/lib/apt/lists/*
 
-# Set Java home environment variable for Zulu 21 Java runtime location.
-ENV JAVA_HOME=/usr/lib/jvm/zulu21-ca-amd64
+# Set Java home environment variable to the architecture-independent Zulu 21 symlink.
+ENV JAVA_HOME=/usr/lib/jvm/zulu21
 
-# Ensure curl and jq are available for the next step
+# libssl3 (or libssl3t64 in trixie) provides libssl/libcrypto needed by apkeep; curl and jq are used to resolve and download the binary.
 RUN apt-get update && \
-    apt-get install -y curl jq libssl3 && \
+    apt-get install -y --no-install-recommends curl jq libssl3 && \
     rm -rf /var/lib/apt/lists/*
 ENV PATH="/usr/local/bin:${PATH}"
-# Now use them safely
+# Fetch the latest apkeep release dynamically for the host architecture.
 RUN set -eux; \
     ARCH="$(uname -m)"; \
     case "$ARCH" in \
