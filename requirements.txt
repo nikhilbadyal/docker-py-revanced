@@ -5,7 +5,7 @@ environs==15.2.0
 google-play-scraper==1.2.7
 lastversion==3.6.19
 loguru==0.8.0
-packaging==26.3
+packaging==26.4
 pre-commit==4.7.0
 python-dotenv==1.2.4
 requests==2.34.2
