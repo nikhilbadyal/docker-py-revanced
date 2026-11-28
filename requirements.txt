@@ -3,7 +3,7 @@ cloakbrowser==0.7.3
 cloudscraper==1.2.71
 environs==15.2.0
 google-play-scraper==1.2.7
-lastversion==3.6.19
+lastversion==3.6.20
 loguru==0.8.0
 packaging==26.4
 pre-commit==4.7.0
